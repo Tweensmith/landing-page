@@ -4,7 +4,7 @@ import { motionTokens } from "virtual:catalogue";
 /**
  * A ring that trails the pointer and comes to rest on it. It moves on the kit's `snappy` spring (tokens.json),
  * integrated here so it carries the hand's speed; it widens over anything that can be pressed and tightens on a press.
- * Over an element with `data-cursor="word"` it opens and carries that word (the hero's words say "throw").
+ * Over an element with `data-cursor="word"` it opens and carries that word (the hero's words say "throw", the free set's row says "drag").
  * The system cursor stays as it is: this is a companion, not a replacement. It only exists for a mouse or trackpad,
  * and not under reduced motion. No frame is requested once the ring is on the pointer.
  */

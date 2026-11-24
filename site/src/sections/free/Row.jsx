@@ -99,7 +99,10 @@ export function Row({ mode, order }) {
         </div>
         <div className="frow__mark" aria-hidden><i /></div>
         <div className="frow__view" ref={view} role="listbox" aria-label="Free components" aria-orientation="horizontal" aria-activedescendant={"row-" + list[at].slug} tabIndex={0} onKeyDown={onKey}
-          data-cursor={reduce ? undefined : "throw"}>
+          // the word the cursor's ring carries over the row: what the hand does to it. It said "throw", the hero's word,
+          // which fits a thing you pick up and let go of; a row is dragged (owner, 2026-11-24: "Change the text to
+          // something fitting for the action you want it to do")
+          data-cursor={reduce ? undefined : "drag"}>
           <motion.div className="frow__row" ref={row} style={{ x }}
             drag={reduce ? false : "x"} dragElastic={0.18} dragConstraints={{ left: xFor(list.length - 1), right: xFor(0) }}
             dragTransition={{ power: 0.32, timeConstant: 280, modifyTarget: (t) => xFor(nearest(t)), bounceStiffness: PS * 1.6, bounceDamping: PD * 1.9 }}

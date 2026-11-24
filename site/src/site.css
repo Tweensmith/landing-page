@@ -9,7 +9,13 @@ body { margin: 0; overflow-x: clip; -webkit-font-smoothing: antialiased; -moz-os
 .page { min-height: 100vh; background: var(--ts-bg); font-size: 16px; line-height: 1.5; overflow-x: clip;
   --gutter: clamp(16px, 4vw, 44px); --max: 1240px; }
 .page :where(a) { color: inherit; }
-.page :where(button, a, input, [tabindex]):focus-visible { outline: 2px solid var(--ts-focus); outline-offset: 3px; }
+/* The page's focus ring, for anything that has none of its own. The whole selector is inside :where(), so it
+   weighs nothing and any component's own rule wins: a kit part that shows focus its own way (a ring on the field
+   round an input, as the Accordion's search does, or a ring drawn by a pseudo-element, as the Card's link does)
+   resets its outline, and that reset now holds. Before, this rule outranked those resets and drew a second ring
+   on top (owner, 2026-11-24: "Look at the search field in the accordion, see the bug? Fix it", then "Find other
+   places where that bug is present and fix"). */
+:where(.page) :where(button, a, input, [tabindex]):where(:focus-visible) { outline: 2px solid var(--ts-focus); outline-offset: 3px; }
 main:focus { outline: none; }
 section[tabindex="-1"]:focus { outline: none; }
 

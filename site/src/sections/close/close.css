@@ -3,7 +3,9 @@
 /* The section runs the full width of the page so the rings can reach its edges; the band keeps the wide column.
    --zone is the clear space the logo stands in under the band; --below is the gap the footer leaves above itself
    (.foot's margin-top in site.css), which the rings also cross. */
-.clr { position: relative; --top: clamp(64px, 9vw, 120px); --zone: clamp(250px, 31vw, 440px); --below: clamp(72px, 10vw, 120px); --edge: 26px; }
+.clr { position: relative; --top: clamp(64px, 9vw, 120px); --zone: clamp(250px, 31vw, 440px); --below: clamp(72px, 10vw, 120px); --edge: 26px;
+  /* the mark's height, and how far its middle stands above the section's lower edge (midway between band and footer) */
+  --mark: clamp(132px, 17.5vw, 240px); --mark-up: calc((var(--zone) - var(--below)) * .5); }
 .clr__in { position: relative; z-index: 4; max-width: 1400px; margin: 0 auto; padding: var(--top) var(--gutter) 0; }
 .clr__zone { height: var(--zone); }
 
@@ -15,8 +17,39 @@
    so the rings' box reaches --edge further, is rounded the same and sits one step above the strip. If the
    footer changes, --edge changes with it. */
 .clr .clr__rings { position: absolute; z-index: 3; inset: 0 0 calc(-1 * (var(--below) + var(--edge))) 0; width: auto; height: auto; color: var(--ts-ink); border-radius: 0 0 var(--edge) var(--edge);
-  --tsf-size: clamp(132px, 17.5vw, 240px); --tsf-x: 50%; --tsf-y: calc(100% - var(--edge) - (var(--zone) + var(--below)) * .5);
+  --tsf-size: var(--mark); --tsf-x: 50%; --tsf-y: calc(100% - var(--edge) - (var(--zone) + var(--below)) * .5);
   -webkit-mask-image: linear-gradient(to bottom, transparent, #000 72px); mask-image: linear-gradient(to bottom, transparent, #000 72px); }
+
+/* The light beneath the mark, shown while the pointer is on it (CloseBand.jsx). It is the page's own layer, under
+   the brand's picture (z-index 2 under its 3), so the hairlines stay one colour and cross it untouched.
+   Two parts, both centred on the mark:
+   - a wide soft patch of the first colour, 2.6 marks across;
+   - the mark's own shape (the brand's filled mark as a mask; its file is the 64 grid, the mark 54 of it), filled
+     with a gradient of the two colours that turns once in 9s, and blurred so it bleeds past the outline.
+   It comes up over the kit's `move` time and leaves over its `fade` time, on the kit's out curve. The gradient
+   turns only while it is lit. Green is the brand's on-state green, and it is the one colour on both pages, at
+   the same strengths. The light page had an orange of its own, louder (#ff5a1f into #ffab1f, halo 20%, fill
+   .62); the brand session passed on the owner's "Yes, pass them" to its changes (2026-11-24): one colour for
+   the mark in both modes, and no louder on light. Its ceiling, if this reads too faint on light: halo 16%, fill .5. */
+.clr { --bleed-a: #22c55e; --bleed-b: #2de0c0; --bleed-halo: 13%; --bleed-fill: .4; }
+.clr__bleed { position: absolute; z-index: 2; left: 50%; bottom: var(--mark-up); width: 0; height: 0; pointer-events: none;
+  opacity: 0; transition: opacity .28s cubic-bezier(.2, .8, .2, 1); }
+.clr__bleed[data-lit] { opacity: 1; transition-duration: .45s; }
+.clr__halo, .clr__fill { position: absolute; left: 0; top: 0; aspect-ratio: 1; translate: -50% -50%; }
+.clr__halo { width: calc(var(--mark) * 2.6); border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--bleed-a) var(--bleed-halo), transparent), transparent); }
+.clr__fill { width: calc(var(--mark) * 64 / 54); opacity: var(--bleed-fill); filter: blur(calc(var(--mark) * .055)); }
+.clr__fill > i { position: absolute; inset: 0; overflow: hidden;
+  -webkit-mask: url("../../../../brand/system/marks/mark-black.svg") center / 100% 100% no-repeat; mask: url("../../../../brand/system/marks/mark-black.svg") center / 100% 100% no-repeat; }
+.clr__fill > i::before { content: ""; position: absolute; inset: -25%;
+  background: conic-gradient(from 0deg, var(--bleed-a), var(--bleed-b) 30%, var(--bleed-a) 55%, color-mix(in srgb, var(--bleed-a) 35%, transparent) 80%, var(--bleed-a));
+  animation: clr-turn 9s linear infinite paused; }
+.clr__bleed[data-lit] .clr__fill > i::before { animation-play-state: running; }
+@keyframes clr-turn { to { rotate: 1turn; } }
+@media (prefers-reduced-motion: reduce) { .clr__fill > i::before { animation: none; } }
+
+/* where the pointer has to be to light it: the mark's own square, over everything else in the section */
+.clr__mark { position: absolute; z-index: 5; left: 50%; bottom: var(--mark-up); width: var(--mark); aspect-ratio: 1; translate: -50% 50%; border-radius: 22%; }
 
 /* the footer's edge is smaller on a phone, and there is none where the footer does not lift (reduced motion) */
 @media (max-width: 640px) { .clr { --edge: 20px; } }

@@ -22,6 +22,16 @@ const OutlineRings = lazy(() => import("../../../brand/outline/react/OutlineRing
 // the mark is never cropped or covered, nothing follows the pointer, one colour.
 // The two other ways shown to the owner were the same picture above the band, at rest (pulsing only on arrival
 // and on the key) and always moving: `loop={false} lights={false}` and the space placed before the band.
+//
+// The logo answers the pointer (owner, 2026-11-24: "Let this animated outline logo react when hovered upon, by
+// allowing it to reveal subtle animated gradient bleed beneath it or let it glow subtle green on hover in dark
+// mode and another visible color in light mode"). Both halves of that are one thing here: while the pointer is
+// on the mark, a soft coloured light in the mark's own shape comes up beneath the hairlines and turns slowly,
+// green on both pages (the light page's was orange at first; see close.css), and one pulse goes out through the rings. The light is
+// the page's own layer, under the brand's component, which is not changed and keeps drawing in one colour. It
+// answers that the pointer is on the mark, not where on it. A touch lights it for a moment, since a finger does
+// not hover. Under reduced motion the light comes up and stays still.
+const TOUCH_MS = 2400; // how long a touch keeps the light up
 const go = (hash) => { location.hash = hash; };
 const onKey = (el) => !!el?.closest?.(".ts-cta-target");
 
@@ -32,9 +42,25 @@ export function CloseBand({ mode }) {
   useEffect(() => { if (near) setLoad(true); }, [near]);
 
   const pulse = () => { rings.current?.pulse(); };
+  const [lit, setLit] = useState(false);
+  const off = useRef(0);
+  useEffect(() => () => clearTimeout(off.current), []);
+  const light = (e) => {
+    clearTimeout(off.current);
+    setLit(true); pulse();
+    if (e.pointerType === "touch") off.current = setTimeout(() => setLit(false), TOUCH_MS);
+  };
+  const dim = (e) => { if (e.pointerType !== "touch") setLit(false); };
   const repoLive = links.repo.live && links.repo.href;
   return (
-    <section className="clr" id="close" ref={section} aria-labelledby="cta-wrap-h">
+    <section className="clr" id="close" ref={section} aria-labelledby="cta-wrap-h" data-mode={mode === "dark" ? "dark" : "light"}>
+      {/* the light beneath the mark: a wide soft patch, and the mark's own shape filled with a turning gradient */}
+      {load && (
+        <span className="clr__bleed" data-lit={lit ? "" : undefined} aria-hidden>
+          <span className="clr__halo" />
+          <span className="clr__fill"><i /></span>
+        </span>
+      )}
       {load && (
         <Suspense fallback={null}>
           {/* `ground` draws the rings stronger on the light page (the brand's setting; owner, 2026-11-23: "Yes, strengthen") */}
@@ -68,6 +94,8 @@ export function CloseBand({ mode }) {
         {/* the space the logo stands in, clear of the band */}
         <div className="clr__zone" aria-hidden />
       </div>
+      {/* where the pointer has to be: the mark's own square. It is not a control and does nothing when pressed. */}
+      <span className="clr__mark" aria-hidden onPointerEnter={light} onPointerLeave={dim} />
     </section>
   );
 }

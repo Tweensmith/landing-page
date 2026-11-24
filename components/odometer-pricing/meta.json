@@ -1,0 +1,319 @@
+{
+  "name": "Odometer Pricing",
+  "slug": "odometer-pricing",
+  "export": "OdometerPricing",
+  "order": 5,
+  "kind": "bands",
+  "category": "pricing",
+  "platform": "web",
+  "level": "hero",
+  "tier": "pro",
+  "hint": "Drag the seat slider. Toggle billing.",
+  "description": "A seat-based pricing card in frosted glass. The price rolls digit by digit like an odometer, the tier name swaps at thresholds, and features unlock as seats grow. Prices, plans, features, currency and words are yours.",
+  "intents": [
+    "pick a pricing plan for a team",
+    "seat based subscription pricing",
+    "pricing calculator",
+    "monthly vs yearly billing toggle",
+    "usage based plan",
+    "upgrade checkout card"
+  ],
+  "tags": [
+    "pricing",
+    "plans",
+    "billing",
+    "saas",
+    "slider",
+    "glass",
+    "odometer",
+    "numbers",
+    "checkout",
+    "seats",
+    "calculator"
+  ],
+  "usage": "Use for usage- or seat-based pricing where the number itself sells. One card, centred, on its own dark stage (the card's text is white; give its parent a dark background such as the gallery stage). Pass `base` and `perSeat` (or `price({ seats, yearly })` for your own maths), `discount` for yearly billing, `tiers` ({ id, name, from, blurb }: the plan in force from that many seats) and `features` ({ label, tier }: unlocked from that tier's index or id). The currency is yours: `currency` as a prefix (\"€\", \"USD \") or `formatPrice(n)` for the whole number (digits roll, other characters stay still). Seats: `seats` + `onSeatsChange` (controlled) or `defaultSeats`; billing: `billing` + `onBillingChange` or `defaultBilling`. The button calls `onSelect({ tier, tierId, seats, price, yearly, billing })`; set `loading` while you act on it. Every word is in `labels`. With no props it shows a 0 price and no plans; `demo` shows the gallery sample.",
+  "stage": {
+    "bg": "radial-gradient(120% 100% at 25% 0%, #13684e 0%, #063024 52%, #03140f 100%)",
+    "accent": "#b8ffd9",
+    "theme": "dark"
+  },
+  "controls": [
+    {
+      "group": "Pricing",
+      "key": "base",
+      "label": "Base price",
+      "type": "range",
+      "min": 0,
+      "max": 99,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "group": "Pricing",
+      "key": "perSeat",
+      "label": "Per seat",
+      "type": "range",
+      "min": 0,
+      "max": 49,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "group": "Pricing",
+      "key": "discount",
+      "label": "Yearly discount",
+      "type": "range",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "%",
+      "default": 0
+    },
+    {
+      "group": "Pricing",
+      "key": "maxSeats",
+      "label": "Max seats",
+      "type": "range",
+      "min": 20,
+      "max": 200,
+      "step": 5,
+      "default": 60
+    },
+    {
+      "group": "Glass",
+      "key": "blur",
+      "label": "Frost",
+      "type": "range",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "group": "Glass",
+      "key": "tint",
+      "label": "Tint",
+      "type": "range",
+      "min": 0,
+      "max": 0.4,
+      "step": 0.01,
+      "default": 0.12
+    },
+    {
+      "group": "Glass",
+      "key": "rim",
+      "label": "Rim light",
+      "type": "range",
+      "min": 0,
+      "max": 1,
+      "step": 0.01,
+      "default": 0.55
+    },
+    {
+      "group": "Glass",
+      "key": "orbs",
+      "label": "Backdrop orbs",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Motion",
+      "key": "digitStiffness",
+      "label": "Digit stiffness",
+      "type": "range",
+      "min": 40,
+      "max": 600,
+      "step": 10,
+      "default": 220
+    },
+    {
+      "group": "Motion",
+      "key": "digitDamping",
+      "label": "Digit damping",
+      "type": "range",
+      "min": 6,
+      "max": 50,
+      "step": 1,
+      "default": 22
+    },
+    {
+      "group": "State",
+      "key": "loading",
+      "label": "Busy",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Slot machine": {
+      "digitStiffness": 90,
+      "digitDamping": 9
+    },
+    "Crisp": {
+      "digitStiffness": 520,
+      "digitDamping": 40,
+      "blur": 10
+    },
+    "Heavy frost": {
+      "blur": 46,
+      "tint": 0.22,
+      "rim": 0.9
+    }
+  },
+  "demoProps": {
+    "demo": true,
+    "base": 19,
+    "perSeat": 9,
+    "discount": 20
+  },
+  "dataProps": [
+    {
+      "key": "base",
+      "type": "number",
+      "description": "Flat monthly price before seats.",
+      "default": 0
+    },
+    {
+      "key": "perSeat",
+      "type": "number",
+      "description": "Monthly price per seat.",
+      "default": 0
+    },
+    {
+      "key": "discount",
+      "type": "number",
+      "description": "Percent off with yearly billing; 0 hides the discount badge.",
+      "default": 0
+    },
+    {
+      "key": "price",
+      "type": "function",
+      "description": "({ seats, yearly, billing }) => number: your own monthly price, replacing base + perSeat × seats − discount. Rounded to a whole number for the reels."
+    },
+    {
+      "key": "formatPrice",
+      "type": "function",
+      "description": "(price: number, { yearly, seats }) => string: the number as shown (\"1.234\", \"12k\"). Digits roll; other characters sit still. Default: the locale's grouping, no currency."
+    },
+    {
+      "key": "locale",
+      "type": "string",
+      "description": "Locale for the default number grouping. Default: the locale of the nearest <Theme> (\"en-US\" when none sets one)."
+    },
+    {
+      "key": "currency",
+      "type": "string",
+      "description": "Prefix drawn small before the number (\"€\", \"£\", \"USD\"). None by default; the demo shows \"$\"."
+    },
+    {
+      "key": "tiers",
+      "type": "array",
+      "description": "Plans by seat count: { id, name, from, blurb? }, ascending by `from`. The last one whose `from` the seat count reaches is in force; names after the first mark the slider. Empty shows no plan line.",
+      "default": []
+    },
+    {
+      "key": "features",
+      "type": "array",
+      "description": "{ id?, label, tier }: tier is the index or id of the first plan that includes it; included ones get a check. Empty shows no list.",
+      "default": []
+    },
+    {
+      "key": "seats",
+      "type": "number",
+      "description": "Seat count. Controlled when passed with onSeatsChange; on its own it is the starting count (as before)."
+    },
+    {
+      "key": "defaultSeats",
+      "type": "number",
+      "description": "Starting seat count when uncontrolled. Defaults to minSeats (8 in the demo)."
+    },
+    {
+      "key": "onSeatsChange",
+      "type": "function",
+      "description": "(seats: number) => void as the slider moves."
+    },
+    {
+      "key": "minSeats",
+      "type": "number",
+      "description": "Lowest seat count on the slider.",
+      "default": 1
+    },
+    {
+      "key": "maxSeats",
+      "type": "number",
+      "description": "Highest seat count on the slider.",
+      "default": 60
+    },
+    {
+      "key": "billing",
+      "type": "\"monthly\" | \"yearly\"",
+      "description": "Controlled billing period. Pass with onBillingChange."
+    },
+    {
+      "key": "defaultBilling",
+      "type": "\"monthly\" | \"yearly\"",
+      "description": "Starting billing period when uncontrolled.",
+      "default": "monthly"
+    },
+    {
+      "key": "onBillingChange",
+      "type": "function",
+      "description": "(billing: \"monthly\" | \"yearly\") => void from the toggle."
+    },
+    {
+      "key": "onSelect",
+      "type": "function",
+      "description": "({ tier: name | null, tierId, seats, price, yearly, billing }) => void when the button is pressed."
+    },
+    {
+      "key": "loading",
+      "type": "boolean",
+      "description": "You are acting on the choice: the button shows a spinner and will not fire again until you clear it.",
+      "default": false
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Toggle, slider and button inert and the card dimmed.",
+      "default": false
+    },
+    {
+      "key": "labels",
+      "type": "object",
+      "description": "Words, merged over defaults: { monthly: \"Monthly\", yearly: \"Yearly\", discount: (pct) => string, perMonth, billedMonthly, billedYearly, seats: \"Seats\", billing, cta: (tier | null) => string, price: (text, yearly) => string (the screen-reader sentence) }."
+    },
+    {
+      "key": "accent",
+      "type": "string",
+      "description": "Colour of the pill, slider, checks, button and first orb (any CSS colour). This card carries its own stage colours.",
+      "default": "#b8ffd9"
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Gallery sample: three plans, six features, 8 seats and a \"$\" prefix where you pass none (the gallery also sets base 19, perSeat 9, discount 20). Leave off in real UI.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLDivElement>",
+      "description": "The root (the stage that holds orbs and card). className, style and other props go on it too."
+    }
+  ],
+  "example": "<OdometerPricing\n  base={0}\n  perSeat={12}\n  discount={15}\n  currency=\"€\"\n  locale=\"de-DE\"\n  tiers={[\n    { id: \"solo\", name: \"Solo\", from: 1, blurb: \"One person.\" },\n    { id: \"team\", name: \"Team\", from: 3, blurb: \"Small teams.\" },\n  ]}\n  features={[\n    { label: \"Unlimited boards\", tier: \"solo\" },\n    { label: \"Shared spaces\", tier: \"team\" },\n  ]}\n  seats={seats}\n  onSeatsChange={setSeats}\n  loading={busy}\n  onSelect={({ tierId, seats, yearly }) => startCheckout({ tierId, seats, yearly })}\n/>"
+}

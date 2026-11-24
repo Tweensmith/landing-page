@@ -1,0 +1,294 @@
+{
+  "name": "Mega Menu",
+  "slug": "mega-menu",
+  "export": "MegaMenu",
+  "order": 49,
+  "kind": "components",
+  "category": "navigation",
+  "subcategory": "app-navigation",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Open Products, then slide across to Resources: the panel morphs instead of closing.",
+  "description": "Top navigation with large dropdown panels that takes your sections and links. One panel stays open as you move between top-level items and morphs its width, height and position to the next section, while the content slides in from the direction you moved and the caret glides along. Hover intent delays, full keyboard support (arrow keys between items, Escape back to the trigger), disclosure buttons rather than ARIA menus, and a narrow form that does not rely on hover: a menu button whose two lines cross, and a sheet that wipes down from the bar to fill the screen beneath it, an accordion with large section lines and your actions at the foot, while the page behind holds still. A floating layout lifts the bar into a centred pill, and on narrow widths turns the sheet into a card that opens out of the pill over the page blurred.",
+  "intents": [
+    "mega menu for a marketing site",
+    "big dropdown navigation with product categories",
+    "nav with products, solutions and resources panels",
+    "header dropdown with featured card",
+    "website navigation with large menus"
+  ],
+  "tags": [
+    "mega menu",
+    "navigation",
+    "dropdown",
+    "header",
+    "nav panel",
+    "morph",
+    "products menu",
+    "hover intent"
+  ],
+  "usage": "Use when a site has more destinations than fit in a navbar, grouped into three to five sections. Pass `items` for the bar ([{ id, label, href }]) and `panels` keyed by item id ({ columns: [{ heading, links: [{ label, description, href, icon }] }], featured: <YourCard />, footer, width }); an item without a panel is a plain link. Put your logo in `brand` and your call to action in `actions`. Pass `renderLink` so your router's Link handles clicks, and `onNavigate` to track them. Keep each panel scannable: icons with one-line descriptions, plus at most one featured card. It is a sticky header by default (sticky={false} to place it yourself); below `compactBelow` px of its own width it becomes a menu button and a sheet that fills the screen under the bar (with `demo`, the frame), with your `actions` full width at its foot; while the sheet is open the page behind does not scroll and is inert. Pass layout=\"floating\" for a pill centred near the top of the screen: panels open under it, the page beside it stays clickable, and on narrow widths the sheet becomes a card under the pill, over the page blurred, with your actions at its end; a press on the blur closes it. In the bar layout, set `--mm-pad-start` (default 18px) and `--mm-pad-end` (default 12px) on the menu to line its sides up with your page; the narrow sheet's lines follow `--mm-pad-start`, so they start where your brand does.",
+  "states": [
+    "default",
+    "open"
+  ],
+  "controls": [
+    {
+      "group": "Behaviour",
+      "key": "openOn",
+      "label": "Open on",
+      "type": "select",
+      "options": [
+        "hover",
+        "click"
+      ],
+      "default": "hover"
+    },
+    {
+      "group": "Behaviour",
+      "key": "openDelay",
+      "label": "Open delay (ms)",
+      "type": "range",
+      "min": 0,
+      "max": 400,
+      "step": 20,
+      "default": 80
+    },
+    {
+      "group": "Behaviour",
+      "key": "closeDelay",
+      "label": "Close delay (ms)",
+      "type": "range",
+      "min": 0,
+      "max": 600,
+      "step": 20,
+      "default": 220
+    },
+    {
+      "group": "Behaviour",
+      "key": "defaultOpen",
+      "label": "Open on mount",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Motion",
+      "key": "morph",
+      "label": "Morph between panels",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Look",
+      "key": "showCaret",
+      "label": "Caret",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Look",
+      "key": "layout",
+      "label": "Layout",
+      "type": "select",
+      "options": [
+        "bar",
+        "floating"
+      ],
+      "default": "bar"
+    },
+    {
+      "group": "Demo",
+      "key": "frameHeight",
+      "label": "Page height",
+      "type": "range",
+      "min": 400,
+      "max": 720,
+      "step": 10,
+      "default": 540
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Click to open": {
+      "openOn": "click"
+    },
+    "No morph": {
+      "morph": false
+    },
+    "Floating": {
+      "layout": "floating"
+    }
+  },
+  "previewProps": {
+    "defaultOpen": true
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "items",
+      "type": "array",
+      "description": "Top bar entries [{ id, label, href, disabled }]: an id with an entry in panels is a disclosure button, otherwise the item is a plain link to href."
+    },
+    {
+      "key": "panels",
+      "type": "object",
+      "description": "{ [itemId]: { columns: [{ heading, links: [{ id, label, description, href, icon (name or node), disabled }] }], featured (node), footer (node), width (px, default 520) } }. Links with a description or icon render as rich rows."
+    },
+    {
+      "key": "brand",
+      "type": "node",
+      "description": "Your logo or wordmark at the start of the bar."
+    },
+    {
+      "key": "actions",
+      "type": "node",
+      "description": "Your call to action(s) at the end of the bar; at the bottom of the sheet on phones."
+    },
+    {
+      "key": "open",
+      "type": "string",
+      "description": "Controlled id of the open panel (null for none; true for the first). Pass with onOpenChange."
+    },
+    {
+      "key": "defaultOpen",
+      "type": "boolean | string",
+      "description": "Uncontrolled starting panel: true for the first, or an item id.",
+      "default": false
+    },
+    {
+      "key": "onOpenChange",
+      "type": "function",
+      "description": "(id | null, reason) => void; reason is \"hover\", \"click\", \"keyboard\", \"escape\", \"outside\", \"blur\", \"toggle\", \"navigate\" or \"resize\"."
+    },
+    {
+      "key": "menuOpen",
+      "type": "boolean",
+      "description": "Controlled phone sheet. Pass with onMenuOpenChange."
+    },
+    {
+      "key": "defaultMenuOpen",
+      "type": "boolean",
+      "description": "Uncontrolled starting phone sheet.",
+      "default": false
+    },
+    {
+      "key": "onMenuOpenChange",
+      "type": "function",
+      "description": "(open, reason) => void for the phone sheet."
+    },
+    {
+      "key": "current",
+      "type": "string",
+      "description": "Id or href of the current plain top-level link (aria-current=\"page\")."
+    },
+    {
+      "key": "renderLink",
+      "type": "function",
+      "description": "(props, link) => node to render every link with your router, e.g. (p) => <Link {...p} to={p.href} />. Spread props: they carry className, href, aria attributes and the click handler that closes the panel."
+    },
+    {
+      "key": "onNavigate",
+      "type": "function",
+      "description": "(link, event) => void for every link click (bar, panels and sheet); the panel or sheet then closes."
+    },
+    {
+      "key": "openOn",
+      "type": "string",
+      "description": "\"hover\" (with intent delays; click and keys still work) or \"click\".",
+      "default": "hover"
+    },
+    {
+      "key": "openDelay",
+      "type": "number",
+      "description": "Hover time in ms before a panel opens.",
+      "default": 80
+    },
+    {
+      "key": "closeDelay",
+      "type": "number",
+      "description": "Time in ms after the pointer leaves before the panel closes.",
+      "default": 220
+    },
+    {
+      "key": "morph",
+      "type": "boolean",
+      "description": "Morph one panel between sections instead of swapping.",
+      "default": true
+    },
+    {
+      "key": "showCaret",
+      "type": "boolean",
+      "description": "Caret under the open trigger.",
+      "default": true
+    },
+    {
+      "key": "compactBelow",
+      "type": "number",
+      "description": "Header width in px below which the bar becomes a menu button and accordion sheet.",
+      "default": 600
+    },
+    {
+      "key": "sticky",
+      "type": "boolean",
+      "description": "position:sticky; top:0 on the header.",
+      "default": true
+    },
+    {
+      "key": "layout",
+      "type": "\"bar\" | \"floating\"",
+      "default": "bar",
+      "description": "\"bar\" is full width with a rule under it. \"floating\" is a centred pill as wide as its contents, 10px from the top; the pointer passes through the header beside it, and on narrow widths its menu is a card under the pill over the page blurred, closed by a press on the blur."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Every trigger and link inert and announced as disabled.",
+      "default": false
+    },
+    {
+      "key": "ariaLabel",
+      "type": "string",
+      "description": "Accessible name of the nav landmark.",
+      "default": "Main"
+    },
+    {
+      "key": "labels",
+      "type": "object",
+      "description": "Text merged over { openMenu: \"Open menu\", closeMenu: \"Close menu\" }."
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Render the sample site in a browser frame, as in the gallery. Content you pass wins.",
+      "default": false
+    },
+    {
+      "key": "frameHeight",
+      "type": "number",
+      "description": "Demo frame height in px (demo only).",
+      "default": 540
+    },
+    {
+      "key": "ref",
+      "type": "ref",
+      "description": "The header element."
+    }
+  ],
+  "example": "<MegaMenu\n  brand={<Logo />}\n  items={[\n    { id: \"product\", label: \"Product\" },\n    { id: \"developers\", label: \"Developers\" },\n    { id: \"pricing\", label: \"Pricing\", href: \"/pricing\" },\n  ]}\n  panels={{\n    product: {\n      width: 600,\n      columns: [{ links: [\n        { icon: \"chart\", label: \"Analytics\", description: \"Every metric in one place.\", href: \"/analytics\" },\n        { icon: \"zap\", label: \"Automations\", description: \"Rules that run themselves.\", href: \"/automations\" },\n      ] }],\n      featured: <ReleaseCard />,\n    },\n    developers: {\n      width: 440,\n      columns: [\n        { heading: \"Build\", links: [{ label: \"Docs\", href: \"/docs\" }, { label: \"API\", href: \"/api\" }] },\n        { heading: \"Community\", links: [{ label: \"Forum\", href: \"/forum\" }] },\n      ],\n    },\n  }}\n  actions={<Button href=\"/signup\">Start free</Button>}\n  renderLink={(props) => <Link {...props} to={props.href} />}\n  current={pathname}\n/>"
+}

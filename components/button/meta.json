@@ -1,0 +1,260 @@
+{
+  "name": "Button",
+  "slug": "button",
+  "export": "Button",
+  "order": 10,
+  "kind": "components",
+  "category": "actions",
+  "subcategory": "buttons",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "hint": "Click it. Switch states, theme and mode in the panel.",
+  "description": "Themed button in primary, secondary, ghost, danger and danger-quiet variants. Presses on a spring; while `loading` it morphs into a circle with a spinner (keeping its place in the layout), and on `success` draws a check before the label returns. It never plays that cycle on its own: you drive it from your async work.",
+  "intents": [
+    "primary call to action",
+    "submit a form",
+    "save or confirm an action",
+    "button with loading state",
+    "submit button that shows it is saving",
+    "destructive delete button",
+    "secondary or ghost button",
+    "quiet or outline delete button"
+  ],
+  "tags": [
+    "button",
+    "cta",
+    "submit",
+    "action",
+    "loading",
+    "spinner",
+    "confirm",
+    "primary",
+    "secondary",
+    "ghost",
+    "danger",
+    "outline"
+  ],
+  "usage": "Use for every clickable action. One primary per view; secondary and ghost for the rest; danger only for destructive actions, danger-quiet for a destructive action that should not shout (a Remove link in a list, a Cancel subscription in settings). Start with `label` (or children) and `onClick`; set `type=\"submit\"` inside a form. Drive `loading` / `success` from your own async call: while either is on the button will not fire `onClick` or submit again, so a double click cannot run the action twice. `demo` (old name `simulate`) fakes a working-then-done cycle on click for the gallery; it is off by default, leave it off in real UI. One shape per surface, not a mix: to round every button, set `buttonShape=\"pill\"` on `<Theme>`, which also reaches the buttons that Modal, Card, CTA Band and the other components draw. `shape=\"pill\"` rounds this one button whatever the Theme says; the default, `\"rounded\"`, follows the Theme (its corner size unless `buttonShape` is set).",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "active",
+    "disabled",
+    "loading",
+    "success"
+  ],
+  "keyboard": [
+    {
+      "keys": "Enter / Space",
+      "does": "Presses the button and calls onClick.",
+      "when": "not loading, showing success or disabled"
+    },
+    {
+      "keys": "Enter / Space",
+      "does": "Does nothing: the press is dropped, so the action cannot run twice.",
+      "when": "loading or showing success"
+    }
+  ],
+  "screenReader": "A native button named by `label` or its text (pass `aria-label` when children are not plain text). While loading it is aria-busy and keeps its label as its name, and a polite live region says \"<label>: working\", then \"<label>: done\" on success. Disabled is the native disabled state, so it leaves the Tab order.",
+  "dataProps": [
+    {
+      "key": "label",
+      "type": "string",
+      "description": "The button text. Also its accessible name while it shows the spinner or the check.",
+      "default": "Continue"
+    },
+    {
+      "key": "children",
+      "type": "node",
+      "description": "Content instead of `label`, when you need markup. Wins over `label`; pass `aria-label` if it is not plain text."
+    },
+    {
+      "key": "onClick",
+      "type": "(event: MouseEvent) => void",
+      "description": "(event) => void. Called on click unless the button is loading, showing success or disabled. Two clicks in the same tick call it once."
+    },
+    {
+      "key": "icon",
+      "type": "node",
+      "description": "Optional leading icon, rendered before the label."
+    },
+    {
+      "key": "type",
+      "type": "\"button\" | \"submit\" | \"reset\"",
+      "description": "Native button type. Use \"submit\" inside a <form>; while loading or success a submit button does not submit again.",
+      "default": "button"
+    },
+    {
+      "key": "loading",
+      "type": "boolean",
+      "description": "You own it: set it when your async work starts and clear it when it ends. Shows the spinner and blocks clicks.",
+      "default": false
+    },
+    {
+      "key": "success",
+      "type": "boolean",
+      "description": "Set it briefly after the work succeeds to draw the check; clicks are blocked while it shows.",
+      "default": false
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Native disabled: not focusable, not clickable, dimmed.",
+      "default": false
+    },
+    {
+      "key": "variant",
+      "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-quiet\"",
+      "description": "Emphasis. danger-quiet is an outlined danger for destructive actions that should not be the loudest thing on screen.",
+      "default": "primary"
+    },
+    {
+      "key": "size",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "default": "\"md\"",
+      "description": "Height of the button: 34px, 42px or 52px. On a phone or a touch screen every size is at least 44px tall."
+    },
+    {
+      "key": "fullWidth",
+      "type": "boolean",
+      "default": "false",
+      "description": "Fill the width of the container. Use it for the one action of a form or a phone bar."
+    },
+    {
+      "key": "simulate",
+      "type": "boolean",
+      "description": "Old name for `demo`. Still works.",
+      "default": false
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other button attribute (name, value, form, aria-label, aria-describedby, data-*, tabIndex) goes to the <button>. className and style are merged with the button's own."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLButtonElement>",
+      "description": "Forwarded to the <button>, so a Button can be a Modal `trigger`, a popover anchor, or be focused after an error."
+    }
+  ],
+  "example": "const [saving, setSaving] = useState(false);\n\n<Button\n  label=\"Save changes\"\n  type=\"submit\"\n  loading={saving}\n  onClick={async () => {\n    setSaving(true);\n    try { await save(); } finally { setSaving(false); }\n  }}\n/>\n\n<Button variant=\"danger-quiet\" label=\"Remove member\" onClick={() => remove(id)} />",
+  "controls": [
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": "Continue"
+    },
+    {
+      "group": "Style",
+      "key": "variant",
+      "label": "Variant",
+      "type": "select",
+      "options": [
+        "primary",
+        "secondary",
+        "ghost",
+        "danger",
+        "danger-quiet"
+      ],
+      "default": "primary"
+    },
+    {
+      "group": "Style",
+      "key": "size",
+      "label": "Size",
+      "type": "select",
+      "options": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    {
+      "group": "Style",
+      "key": "shape",
+      "label": "Shape",
+      "type": "select",
+      "options": [
+        "rounded",
+        "pill"
+      ],
+      "default": "rounded"
+    },
+    {
+      "group": "Style",
+      "key": "fullWidth",
+      "label": "Full width",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Behaviour",
+      "key": "loading",
+      "label": "Loading",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Behaviour",
+      "key": "success",
+      "label": "Success",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Behaviour",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Motion",
+      "key": "pressScale",
+      "label": "Press scale",
+      "type": "range",
+      "min": 0.85,
+      "max": 1,
+      "step": 0.01,
+      "default": 0.96
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content (fake async on click)",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Delete": {
+      "variant": "danger",
+      "label": "Delete project"
+    },
+    "Quiet": {
+      "variant": "ghost",
+      "label": "Skip for now"
+    },
+    "Checkout": {
+      "size": "lg",
+      "fullWidth": true,
+      "label": "Pay now"
+    },
+    "Quiet delete": {
+      "variant": "danger-quiet",
+      "label": "Remove"
+    },
+    "Pill": {
+      "shape": "pill",
+      "label": "Get started"
+    }
+  },
+  "demoProps": {
+    "demo": true
+  }
+}

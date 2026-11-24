@@ -1,0 +1,253 @@
+{
+  "name": "Liquid Tabs",
+  "slug": "liquid-tabs",
+  "export": "LiquidTabs",
+  "order": 6,
+  "kind": "components",
+  "category": "navigation",
+  "subcategory": "page-navigation",
+  "platform": "web",
+  "level": "hero",
+  "tier": "free",
+  "hint": "Switch tabs. Watch the indicator stretch.",
+  "description": "Segmented tabs whose indicator behaves like liquid: the leading edge springs ahead, the trailing edge lags, a droplet follows behind, and a goo filter fuses them.",
+  "intents": [
+    "switch between dashboard sections",
+    "settings tabs",
+    "segmented control",
+    "filter mode switcher",
+    "pricing period selector",
+    "top navigation tabs"
+  ],
+  "tags": [
+    "tabs",
+    "segmented control",
+    "navigation",
+    "toggle",
+    "goo",
+    "liquid",
+    "indicator",
+    "settings",
+    "dashboard",
+    "switcher"
+  ],
+  "usage": "Use for 2–6 peer views: dashboard sections, settings panes, pricing period switches, filter modes. Keep labels to one word. Pass `tabs` (labels, or { id, label, icon, disabled, badge }) and own the selection with `value` + `onChange(index, label, id)`, or seed it with `defaultValue`. For real tabs, give each tab a `content` node or pass `renderPanel`, and the component renders the tabpanel; to render panels yourself, pass `panelId` (a function (index, tab) => id, or `panelId` on each tab), give each panel role=\"tabpanel\", that id and aria-labelledby=\"<id>-tab\", and set `showContent={false}`. Colours follow the theme; `accent` overrides the pill. `align=\"start\"` stops it centring itself; `align=\"stretch\"` fills the width with equal tabs.",
+  "states": [
+    "default",
+    "focus",
+    "disabled"
+  ],
+  "keyboard": [
+    {
+      "keys": "Tab",
+      "does": "Moves focus to the selected tab, skipping the others; Tab again moves to the panel."
+    },
+    {
+      "keys": "ArrowLeft / ArrowRight",
+      "does": "Moves to the previous or next enabled tab and selects it, wrapping at the ends; disabled tabs are skipped."
+    },
+    {
+      "keys": "Home / End",
+      "does": "Moves to the first or last enabled tab and selects it."
+    }
+  ],
+  "screenReader": "A tablist named by `ariaLabel` (\"Sections\" by default); each tab says its label and whether it is selected, and disabled tabs are aria-disabled. The panel is a tabpanel named by its tab, and is itself a Tab stop.",
+  "stage": {
+    "bg": "var(--ts-bg)",
+    "accent": "#6b4dff",
+    "theme": "light"
+  },
+  "dataProps": [
+    {
+      "key": "tabs",
+      "type": "Array<string | { id?: string | number; label?: node; icon?: string | node; disabled?: boolean; badge?: node; panelId?: string; content?: node }>",
+      "description": "The tabs: plain labels, or { id, label, icon?, disabled?, badge?, panelId?, content? }. icon is an icon name or a node; badge is a short count or node; content is that tab's panel. Empty renders nothing.",
+      "default": []
+    },
+    {
+      "key": "value",
+      "type": "string | number",
+      "description": "Controlled selection: the selected tab's id (or its index). Pass with onChange."
+    },
+    {
+      "key": "defaultValue",
+      "type": "string | number",
+      "description": "Uncontrolled starting tab: an id or index. Defaults to the first enabled tab."
+    },
+    {
+      "key": "onChange",
+      "type": "(index: number, label: node, id: string | number) => void",
+      "description": "(index, label, id) => void when the user picks another tab (click, arrows, Home/End)."
+    },
+    {
+      "key": "showContent",
+      "type": "boolean",
+      "description": "Render the tabpanel under the tabs when there is panel content (renderPanel, a tab's content, or demo). false gives the tab bar alone.",
+      "default": true
+    },
+    {
+      "key": "renderPanel",
+      "type": "(label: node, index: number, tab: { id?: string | number; label?: node; icon?: string | node; disabled?: boolean; badge?: node; panelId?: string; content?: node }) => node",
+      "description": "(label, index, tab) => node: the panel for the selected tab. The component wraps it in role=\"tabpanel\"."
+    },
+    {
+      "key": "panelId",
+      "type": "string | ((index: number, tab: { id?: string | number; label?: node; icon?: string | node; disabled?: boolean; badge?: node; panelId?: string; content?: node }) => string)",
+      "description": "Panels you render yourself: (index, tab) => id of that tab's panel (the tab's own id is that + \"-tab\"), or one id string for a single panel you swap. A tab's own panelId wins."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean | Array<number | string>",
+      "description": "true disables every tab; an array of indexes, ids or labels disables those. Disabled tabs are aria-disabled and skipped by the arrow keys.",
+      "default": []
+    },
+    {
+      "key": "ariaLabel",
+      "type": "string",
+      "description": "Accessible name of the tab list.",
+      "default": "Sections"
+    },
+    {
+      "key": "accentInk",
+      "type": "string",
+      "description": "Colour of the selected label. Defaults to --ts-accent-ink with the theme accent, and white with a custom accent."
+    },
+    {
+      "key": "align",
+      "type": "string",
+      "description": "\"center\" | \"start\" | \"end\" | \"stretch\": where the bar and panel sit in the component's box. \"stretch\" fills the width and gives every tab the same width.",
+      "default": "center"
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLDivElement>",
+      "description": "The root element."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-*, data-*) goes to the root <div>. className and style are merged with the component's own."
+    }
+  ],
+  "controls": [
+    {
+      "group": "Liquid",
+      "key": "goo",
+      "label": "Goo",
+      "type": "range",
+      "min": 0,
+      "max": 16,
+      "step": 0.5,
+      "default": 8
+    },
+    {
+      "group": "Liquid",
+      "key": "droplet",
+      "label": "Trailing droplet",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Liquid",
+      "key": "lead",
+      "label": "Lead stiffness",
+      "type": "range",
+      "min": 60,
+      "max": 900,
+      "step": 10,
+      "default": 520
+    },
+    {
+      "group": "Liquid",
+      "key": "trail",
+      "label": "Trail stiffness",
+      "type": "range",
+      "min": 30,
+      "max": 600,
+      "step": 10,
+      "default": 130
+    },
+    {
+      "group": "Liquid",
+      "key": "damping",
+      "label": "Damping",
+      "type": "range",
+      "min": 8,
+      "max": 60,
+      "step": 1,
+      "default": 26
+    },
+    {
+      "group": "Shape",
+      "key": "pillRadius",
+      "label": "Pill radius",
+      "type": "range",
+      "min": 4,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "group": "Shape",
+      "key": "padding",
+      "label": "Padding",
+      "type": "range",
+      "min": 2,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "default": 6
+    },
+    {
+      "group": "Colour",
+      "key": "accent",
+      "label": "Accent",
+      "type": "select",
+      "options": [
+        {
+          "value": "",
+          "label": "Theme accent"
+        },
+        {
+          "value": "var(--ts-ink)",
+          "label": "Ink"
+        },
+        {
+          "value": "#6b4dff",
+          "label": "Violet"
+        }
+      ],
+      "default": ""
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Mercury": {
+      "goo": 14,
+      "lead": 800,
+      "trail": 70,
+      "damping": 18
+    },
+    "Solid": {
+      "goo": 0,
+      "droplet": false,
+      "lead": 400,
+      "trail": 400
+    },
+    "Squircle": {
+      "pillRadius": 12,
+      "accent": "var(--ts-ink)"
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "example": "const [tab, setTab] = useState(\"activity\");\n\n<LiquidTabs\n  tabs={[\n    { id: \"overview\", label: \"Overview\", content: <Overview /> },\n    { id: \"activity\", label: \"Activity\", badge: 3, content: <Activity /> },\n    { id: \"billing\", label: \"Billing\", disabled: !isOwner, content: <Billing /> },\n  ]}\n  value={tab}\n  onChange={(index, label, id) => setTab(id)}\n  ariaLabel=\"Workspace sections\"\n  align=\"start\"\n/>"
+}

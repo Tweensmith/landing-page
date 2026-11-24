@@ -1,0 +1,285 @@
+{
+  "name": "Tag Input",
+  "slug": "tag-input",
+  "export": "TagInput",
+  "order": 29,
+  "kind": "components",
+  "category": "forms",
+  "subcategory": "text-entry",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "hint": "Type and press Enter or comma. Backspace twice removes the last tag.",
+  "description": "Chips input with suggestions, paste-to-split, a max count, and two-step Backspace removal. Adding a tag that already exists nudges the existing chip instead of duplicating it.",
+  "intents": [
+    "add tags or keywords",
+    "multi select chips",
+    "enter skills or topics",
+    "tokens input with suggestions"
+  ],
+  "tags": [
+    "tags",
+    "chips",
+    "tokens",
+    "multi select",
+    "keywords",
+    "autocomplete",
+    "labels",
+    "skills"
+  ],
+  "usage": "Use for free-form lists (skills, topics, recipients, keywords). Pass `value` + `onChange(tags)` if you own the list (or `defaultValue`), `suggestions` for the menu, and `name` to send the tags with a <form> (one hidden input per tag, so FormData.getAll(name) returns them). Set `allowCustom` false to restrict to `suggestions`; check each new tag with `validate(tag, tags)`; show a server error with `error`. `maxTags` 0 means no limit, otherwise the counter shows it. Text left in the box is added on blur; if it is refused, the reason shows and the text stays. Enter on an empty box submits the form. The ref is the text input. In a form with Text Field, Password Field or Textarea, give every field the same `labelPlacement` so the labels read as one design.",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "open",
+    "error",
+    "disabled"
+  ],
+  "keyboard": [
+    {
+      "keys": "Character",
+      "does": "Types into the box and filters the suggestions."
+    },
+    {
+      "keys": "Enter",
+      "does": "Adds the typed text as a tag, or the suggestion highlighted with the arrows; a tag that already exists is nudged instead of added twice.",
+      "when": "there is text or a highlight"
+    },
+    {
+      "keys": "Character",
+      "does": "A comma adds the typed text as a tag, as Enter does.",
+      "when": "the character is a comma"
+    },
+    {
+      "keys": "ArrowDown / ArrowUp",
+      "does": "Moves the highlight through the suggestions; after Escape, ArrowDown opens them again."
+    },
+    {
+      "keys": "Escape",
+      "does": "Closes the suggestions and keeps focus in the box; a second Escape leaves the box."
+    },
+    {
+      "keys": "Backspace",
+      "does": "Marks the last tag; a second Backspace removes it.",
+      "when": "the box is empty"
+    },
+    {
+      "keys": "Tab",
+      "does": "Stops on each tag's remove button, then on the text box."
+    },
+    {
+      "keys": "Enter / Space",
+      "does": "Removes that tag and puts focus back in the box.",
+      "when": "on a remove button"
+    }
+  ],
+  "screenReader": "The text box is a combobox named by `label`, with aria-expanded and aria-activedescendant for the suggestion listbox (named `messages.suggestions`). A polite live region reads the tag list after every add or remove (`messages.summary`) and says when a typed tag already exists (`messages.exists`); the hint line says when Backspace has marked a tag, and each remove button is named \"Remove <tag>\" (`messages.remove`). An error is linked with aria-describedby, read assertively and sets aria-invalid.",
+  "controls": [
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": "Tags"
+    },
+    {
+      "group": "Style",
+      "key": "labelPlacement",
+      "label": "Label placement",
+      "type": "select",
+      "options": [
+        "above",
+        "float"
+      ],
+      "default": "above"
+    },
+    {
+      "group": "Content",
+      "key": "placeholder",
+      "label": "Placeholder",
+      "type": "text",
+      "default": "Add a tag…"
+    },
+    {
+      "group": "Content",
+      "key": "hint",
+      "label": "Hint",
+      "type": "text",
+      "default": "Press Enter or comma to add. Backspace removes."
+    },
+    {
+      "group": "Behaviour",
+      "key": "maxTags",
+      "label": "Max tags",
+      "type": "range",
+      "min": 0,
+      "max": 12,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "group": "Behaviour",
+      "key": "allowCustom",
+      "label": "Allow custom tags",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Behaviour",
+      "key": "showSuggestions",
+      "label": "Suggestions",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "From list only": {
+      "allowCustom": false
+    },
+    "Unlimited": {
+      "maxTags": 0
+    }
+  },
+  "dataProps": [
+    {
+      "key": "labelPlacement",
+      "type": "\"above\" | \"float\"",
+      "description": "\"above\": a static label over the box (as Password Field and Textarea draw it by default). \"float\": the label sits inside the box on the first line and floats up on focus or once there is a tag or text, as Text Field draws it by default. Give every field in a form the same value so the labels read as one design.",
+      "default": "above"
+    },
+    {
+      "key": "value",
+      "type": "string[]",
+      "description": "Controlled tags. Pass with onChange."
+    },
+    {
+      "key": "defaultValue",
+      "type": "string[]",
+      "description": "Initial tags when uncontrolled. A <form> reset returns to them."
+    },
+    {
+      "key": "defaultTags",
+      "type": "string[]",
+      "description": "Older name for defaultValue; still works."
+    },
+    {
+      "key": "onChange",
+      "type": "(tags: string[]) => void",
+      "description": "(tags: string[]) => void after any add, remove, paste or reset."
+    },
+    {
+      "key": "onAdd",
+      "type": "(tag: string) => void",
+      "description": "(tag: string) => void for each tag added."
+    },
+    {
+      "key": "onRemove",
+      "type": "(tag: string) => void",
+      "description": "(tag: string) => void for each tag removed."
+    },
+    {
+      "key": "suggestions",
+      "type": "string[]",
+      "description": "Options for the menu, filtered as you type. Empty by default."
+    },
+    {
+      "key": "validate",
+      "type": "(tag: string, tags: string[]) => string | null | undefined",
+      "description": "(tag, tags) => string | null. Return a message to refuse the tag (shown as the error, text kept), or null to accept."
+    },
+    {
+      "key": "error",
+      "type": "string",
+      "description": "An error you already have (for example from the server), shown under the field."
+    },
+    {
+      "key": "messages",
+      "type": "{ max?: (n: number) => string; notInList?: string; armed?: string; remove?: (tag: string) => string; suggestions?: (label: string) => string; summary?: (tags: string[]) => string; exists?: (tag: string) => string }",
+      "description": "Copy, merged over neutral defaults: { max: (n) => `You can add up to ${n}`, notInList: \"Pick one from the list\", armed: \"Press Backspace again to remove\", remove: (tag) => `Remove ${tag}`, suggestions: (label) => `${label} suggestions`, summary: (tags) => `${tags.length} tags: …`, exists: (tag) => `${tag} is already added` (read out when a typed tag is already in the list) }."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLInputElement>",
+      "description": "Forwarded to the text input: focus()."
+    },
+    {
+      "key": "id",
+      "type": "string",
+      "description": "id of the text input. Generated when omitted."
+    },
+    {
+      "key": "name",
+      "type": "string",
+      "description": "Form field name. Each tag is a hidden input with this name."
+    },
+    {
+      "key": "autoComplete",
+      "type": "string",
+      "description": "autocomplete of the text input.",
+      "default": "off"
+    },
+    {
+      "key": "autoFocus",
+      "type": "boolean",
+      "description": "Focus the text input on mount.",
+      "default": false
+    },
+    {
+      "key": "required",
+      "type": "boolean",
+      "description": "At least one tag: the text input is required (native constraint) while the list is empty, and the label gets *.",
+      "default": false
+    },
+    {
+      "key": "readOnly",
+      "type": "boolean",
+      "description": "Show the tags without remove buttons; nothing can be added.",
+      "default": false
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Sample content for the gallery: tags Motion and Typography, a list of design-skill suggestions. Off by default.",
+      "default": false
+    },
+    {
+      "key": "maxWidth",
+      "type": "number | string",
+      "description": "Widest the field grows, in px or a CSS length. 0 removes the cap so it fills its container.",
+      "default": 440
+    },
+    {
+      "key": "portal",
+      "type": "boolean | Element | RefObject<Element>",
+      "description": "Where the suggestion list renders. true: through a portal into document.body, carrying the theme tokens found at the field, so an ancestor with overflow:hidden, transform or filter can't clip or move it; it keeps the field's width, follows it and flips above it when there is no room below. false: in the field's own DOM (still placed against the viewport). An element or ref: portaled into that element instead.",
+      "default": true
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (name, autoComplete, aria-*, data-*) goes to the text <input>. className and style go to the root <div> and are merged with the component's own."
+    }
+  ],
+  "demoProps": {
+    "demo": true,
+    "label": "Skills",
+    "placeholder": "Add a skill…",
+    "maxTags": 6
+  },
+  "example": "<form onSubmit={save}>\n  <TagInput\n    ref={tagsRef}\n    label=\"Topics\"\n    name=\"topics\"\n    placeholder=\"Add a topic…\"\n    value={topics}\n    onChange={setTopics}\n    suggestions={allTopics}\n    maxTags={5}\n    validate={(t) => (t.length > 24 ? \"Keep each topic under 24 characters\" : null)}\n    error={serverError}\n  />\n</form>"
+}

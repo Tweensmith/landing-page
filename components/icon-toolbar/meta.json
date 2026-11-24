@@ -1,0 +1,202 @@
+{
+  "name": "Icon Toolbar",
+  "slug": "icon-toolbar",
+  "export": "IconToolbar",
+  "order": 15,
+  "kind": "components",
+  "category": "actions",
+  "subcategory": "buttons",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "hint": "Hover one icon, then slide to its neighbours.",
+  "description": "A row of icon buttons with tooltips and toggle states. The first tooltip waits; moving to a neighbour shows its tooltip instantly. role=toolbar with roving focus (arrow keys and Home/End inside, Tab leaves; disabled buttons are skipped). Also exports IconButton.",
+  "intents": [
+    "editor toolbar",
+    "toolbar of icon buttons with tooltips",
+    "formatting controls bold italic",
+    "icon button with tooltip"
+  ],
+  "tags": [
+    "toolbar",
+    "icon",
+    "icon button",
+    "tooltip",
+    "editor",
+    "formatting",
+    "toggle",
+    "actions bar"
+  ],
+  "usage": "Use for groups of compact actions: text editors, canvas tools, card action rows, media controls. Pass `items` (each needs an `id` and a `label`: the label is the tooltip and the accessible name) and `onSelect(id, item, event)`. Mark toggles with `toggle: true` and read their pressed set from `onChange(ids)`; control it with `value`, or seed it with `defaultValue`. Give the toolbar a `label` (\"Text formatting\") when the page has more than one. With no items it renders nothing.",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "active",
+    "disabled"
+  ],
+  "keyboard": [
+    {
+      "keys": "Tab",
+      "does": "Moves focus into the toolbar, onto the last focused button (the first enabled one at first); the toolbar is a single Tab stop."
+    },
+    {
+      "keys": "ArrowLeft / ArrowRight",
+      "does": "Moves to the previous or next enabled button, wrapping at the ends, and shows its tooltip."
+    },
+    {
+      "keys": "Home / End",
+      "does": "Moves to the first or last enabled button."
+    },
+    {
+      "keys": "Enter / Space",
+      "does": "Activates the focused button; a toggle flips its pressed state."
+    },
+    {
+      "keys": "Escape",
+      "does": "Hides the tooltip without moving focus.",
+      "when": "a tooltip shows"
+    }
+  ],
+  "screenReader": "A toolbar named by `label` (or aria-label). Each button is named by its item's `label`, and the tooltip is hidden from screen readers so the name is not read twice; toggle items report aria-pressed and shortcuts are exposed as aria-keyshortcuts.",
+  "controls": [
+    {
+      "group": "Buttons",
+      "key": "size",
+      "label": "Button size",
+      "type": "select",
+      "options": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    {
+      "group": "Buttons",
+      "key": "shape",
+      "label": "Shape",
+      "type": "select",
+      "options": [
+        "square",
+        "circle"
+      ],
+      "default": "square"
+    },
+    {
+      "group": "Tooltip",
+      "key": "tooltipDelay",
+      "label": "First tooltip delay",
+      "type": "range",
+      "min": 0,
+      "max": 1200,
+      "step": 10,
+      "unit": "ms",
+      "default": 450
+    },
+    {
+      "group": "Tooltip",
+      "key": "showShortcuts",
+      "label": "Show shortcuts",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Accessibility",
+      "key": "label",
+      "label": "Toolbar label",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Round": {
+      "shape": "circle",
+      "size": 42
+    },
+    "Dense": {
+      "size": "sm",
+      "tooltipDelay": 250
+    }
+  },
+  "dataProps": [
+    {
+      "key": "items",
+      "type": "Array<{ id: string; label: string; icon: node | string; shortcut?: string; disabled?: boolean; toggle?: boolean; pressed?: boolean; variant?: \"ghost\" | \"solid\" } | { sep: true }>",
+      "description": "[{ id, label, icon, shortcut?, disabled?, toggle?, pressed?, variant? } | { sep: true }]. `icon` is a React node or a built-in icon name (\"bold\", \"link\"…). `pressed` (boolean) controls that one toggle directly.",
+      "default": []
+    },
+    {
+      "key": "onSelect",
+      "type": "(id: string, item: { id: string; label: string; icon: node | string; shortcut?: string; disabled?: boolean; toggle?: boolean; pressed?: boolean; variant?: \"ghost\" | \"solid\" }, event: MouseEvent) => void",
+      "description": "(id, item, event) => void. Called when a button is activated by click, Enter or Space. Not called for disabled buttons."
+    },
+    {
+      "key": "value",
+      "type": "string[]",
+      "description": "Controlled: ids of the toggle items that are pressed. Pair with onChange."
+    },
+    {
+      "key": "defaultValue",
+      "type": "string[]",
+      "description": "Pressed toggle ids on first render when uncontrolled.",
+      "default": []
+    },
+    {
+      "key": "onChange",
+      "type": "(ids: Array<string>, change: { id: string; pressed: boolean; item: { id: string; label: string; icon: node | string; shortcut?: string; disabled?: boolean; toggle?: boolean; pressed?: boolean; variant?: \"ghost\" | \"solid\" } }) => void",
+      "description": "(ids, { id, pressed, item }) => void. Called when a toggle item flips."
+    },
+    {
+      "key": "onAction",
+      "type": "(id: string) => void",
+      "description": "Old handler, (id) => void. Still called; prefer onSelect."
+    },
+    {
+      "key": "label",
+      "type": "string",
+      "description": "Accessible name of the toolbar (role=toolbar). Not shown.",
+      "default": ""
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Disables every button (each item can also set `disabled`).",
+      "default": false
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Other attributes (id, aria-*, data-*) go to the toolbar root <div>; className and style too."
+    },
+    {
+      "key": "size",
+      "type": "\"sm\" | \"md\" | \"lg\" | number",
+      "description": "Width and height of each button: sm 30px (a dense panel), md 38px, lg 46px (touch-first and media controls); the bar adds 4px around them. On a phone or a touch screen every button is at least 44px. A number sets it in px exactly.",
+      "default": "md"
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLDivElement>",
+      "description": "Forwarded to the toolbar root <div>."
+    }
+  ],
+  "example": "const [marks, setMarks] = useState([]);\n\n<IconToolbar\n  label=\"Text formatting\"\n  items={[\n    { id: \"bold\", label: \"Bold\", icon: \"bold\", shortcut: \"⌘B\", toggle: true },\n    { id: \"italic\", label: \"Italic\", icon: \"italic\", toggle: true },\n    { sep: true },\n    { id: \"link\", label: \"Add link\", icon: <LinkIcon />, disabled: !selection },\n  ]}\n  value={marks}\n  onChange={setMarks}\n  onSelect={(id) => id === \"link\" && openLinkDialog()}\n/>",
+  "demoProps": {
+    "demo": true
+  }
+}

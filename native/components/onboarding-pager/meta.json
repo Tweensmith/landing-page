@@ -1,0 +1,104 @@
+{
+  "name": "Onboarding Pager",
+  "slug": "onboarding-pager",
+  "export": "OnboardingPager",
+  "order": 67,
+  "kind": "components",
+  "category": "mobile",
+  "platform": "native",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Swipe slowly between pages: every layer of the illustration moves at its own speed, the page pill stretches, and the round Next button grows into Get started on the last page.",
+  "description": "First-run onboarding pager for React Native, shown as the welcome flow of a music sketchbook app. Everything is scrubbed by the swipe rather than by timers: each illustration is four or five parallax layers (backdrops hang back, stickers race ahead and rotate, a record spins out of its sleeve), the headline and body slide at their own rates and fade, and the whole background cross-fades between palettes taken from each page's artwork. The page indicator is a liquid pill whose leading edge runs ahead of the trailing one, and the round arrow button widens into Get started as the last page slides in. Releases project the flick to the nearest page with a spring and rubber-band past the ends, with a selection haptic on each settle and a success haptic on Get started. Optional auto-advance runs on a UI-thread timer that pauses while you touch. Reduce Motion swaps parallax for a simple slide and cross-fade, and the pager is a screen-reader adjustable that announces Page 2 of 4.",
+  "intents": [
+    "onboarding screens with parallax swipe",
+    "react native welcome carousel for first launch",
+    "intro pager with page dots and get started button",
+    "app walkthrough slides with liquid page indicator"
+  ],
+  "tags": [
+    "carousel",
+    "expo",
+    "first run",
+    "get started",
+    "haptics",
+    "intro",
+    "liquid",
+    "onboarding",
+    "page indicator",
+    "pager",
+    "parallax",
+    "react native",
+    "swipe",
+    "walkthrough",
+    "welcome"
+  ],
+  "usage": "Use for a short first-run flow of three or four pages that each sell one idea. Keep one headline and one sentence per page, always offer Skip, and never put required setup (permissions, account) inside the swipe: ask for those after Get started, in context.",
+  "states": [
+    "default",
+    "success"
+  ],
+  "controls": [
+    {
+      "group": "Content",
+      "key": "pageCount",
+      "label": "Pages",
+      "type": "range",
+      "min": 3,
+      "max": 4,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "group": "Content",
+      "key": "showSkip",
+      "label": "Skip button",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Style",
+      "key": "buttonStyle",
+      "label": "Primary button",
+      "type": "select",
+      "options": [
+        { "label": "Morphing arrow", "value": "morph" },
+        { "label": "Text button", "value": "text" }
+      ],
+      "default": "morph"
+    },
+    {
+      "group": "Motion",
+      "key": "parallaxDepth",
+      "label": "Parallax depth",
+      "type": "range",
+      "min": 0,
+      "max": 1.5,
+      "step": 0.25,
+      "default": 1
+    },
+    {
+      "group": "Motion",
+      "key": "autoAdvance",
+      "label": "Auto-advance",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Deep parallax": {
+      "parallaxDepth": 1.5
+    },
+    "Flat": {
+      "parallaxDepth": 0,
+      "buttonStyle": "text"
+    },
+    "Auto-advance": {
+      "autoAdvance": true
+    },
+    "Three pages": {
+      "pageCount": 3,
+      "showSkip": false
+    }
+  }
+}

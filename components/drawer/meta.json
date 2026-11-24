@@ -1,0 +1,272 @@
+{
+  "name": "Drawer",
+  "slug": "drawer",
+  "export": "Drawer",
+  "order": 43,
+  "kind": "components",
+  "category": "overlays",
+  "subcategory": "dialogs",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Drag the header and flick: velocity decides whether it closes.",
+  "description": "Side sheet or bottom sheet you can throw closed: release decides by distance and velocity, the bottom sheet snaps between half and full, and the backdrop fades with the drag. Holds any content: a title, a description, your children as the scrolling body and a pinned footer. Modal: focus trap, inert page behind, scroll lock, focus returns.",
+  "intents": [
+    "slide out cart panel",
+    "side drawer",
+    "bottom sheet on mobile",
+    "off canvas panel with filters"
+  ],
+  "tags": [
+    "drawer",
+    "sheet",
+    "side sheet",
+    "bottom sheet",
+    "off-canvas",
+    "panel",
+    "drag to close",
+    "cart"
+  ],
+  "usage": "Use for secondary tasks that keep page context (cart, filters, details, navigation on a phone). Pass `title`, `description`, the body as `children` and actions as `footer` (a node or ({ close, busy }) => node). Pick `side` (right, left, bottom) and `size` (sm, md, lg) or `width`. It opens from its own trigger button; pass `trigger` as your own element or `(props) => <Button {...props} />`, or control it with `open` / `onOpenChange` (opened by state with no `trigger`, it renders no button). Set `busy` while your save runs: the drawer cannot be closed until you clear it. On phones it becomes a bottom sheet; `sheetOnPhone={false}` keeps a side drawer. Keep the header as the drag handle so content can still scroll.",
+  "states": [
+    "default",
+    "open"
+  ],
+  "controls": [
+    {
+      "group": "Layout",
+      "key": "side",
+      "label": "Side",
+      "type": "select",
+      "options": [
+        "right",
+        "left",
+        "bottom"
+      ],
+      "default": "right"
+    },
+    {
+      "group": "Layout",
+      "key": "width",
+      "label": "Width (sides)",
+      "type": "range",
+      "min": 300,
+      "max": 560,
+      "step": 10,
+      "default": 400
+    },
+    {
+      "group": "Behaviour",
+      "key": "snapPoints",
+      "label": "Half / full snap (bottom)",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Behaviour",
+      "key": "closeThreshold",
+      "label": "Close past (fraction)",
+      "type": "range",
+      "min": 0.15,
+      "max": 0.7,
+      "step": 0.05,
+      "default": 0.35
+    },
+    {
+      "group": "Behaviour",
+      "key": "defaultOpen",
+      "label": "Open on mount",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Behaviour",
+      "key": "sheetOnPhone",
+      "label": "Bottom sheet on phones",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Content",
+      "key": "triggerLabel",
+      "label": "Trigger label",
+      "type": "text",
+      "default": "Open"
+    },
+    {
+      "group": "Content",
+      "key": "title",
+      "label": "Title",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "description",
+      "label": "Description",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Bottom sheet": {
+      "side": "bottom"
+    },
+    "Left": {
+      "side": "left"
+    }
+  },
+  "previewProps": {
+    "defaultOpen": true
+  },
+  "demoProps": {
+    "demo": true,
+    "triggerLabel": "Cart",
+    "title": "Your cart"
+  },
+  "dataProps": [
+    {
+      "key": "children",
+      "type": "node | function",
+      "description": "The scrolling body: any content, or ({ close, busy }) => node. Empty by default; the gallery's cart appears only with `demo`."
+    },
+    {
+      "key": "title",
+      "type": "string",
+      "description": "Heading of the drawer; also its accessible name.",
+      "default": ""
+    },
+    {
+      "key": "description",
+      "type": "string",
+      "description": "One line under the title, linked as the dialog's description.",
+      "default": ""
+    },
+    {
+      "key": "footer",
+      "type": "node | function",
+      "description": "Pinned actions under the body: any node, or ({ close, busy }) => node. None by default."
+    },
+    {
+      "key": "side",
+      "type": "string",
+      "description": "right, left or bottom. On phones every drawer is a bottom sheet unless sheetOnPhone is false.",
+      "default": "right"
+    },
+    {
+      "key": "size",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "description": "sm, md or lg. Side sheets: 320, 400 or 560px wide (overrides width). Bottom sheets: hug the content up to half the screen, 88% of the screen, or 94%. Left unset, a bottom sheet hugs its content up to 88% of the screen."
+    },
+    {
+      "key": "width",
+      "type": "number",
+      "description": "Width of a side sheet in px (capped at the screen width).",
+      "default": 400
+    },
+    {
+      "key": "sheetOnPhone",
+      "type": "boolean",
+      "description": "On phones, turn a side drawer into a bottom sheet. false keeps it a side drawer, at most the screen width minus 48px.",
+      "default": true
+    },
+    {
+      "key": "open",
+      "type": "boolean",
+      "description": "Controlled open state. Leave undefined to let the drawer manage itself."
+    },
+    {
+      "key": "defaultOpen",
+      "type": "boolean",
+      "description": "Open on mount when uncontrolled.",
+      "default": false
+    },
+    {
+      "key": "onOpenChange",
+      "type": "function",
+      "description": "(open: boolean, reason) => void. reason: \"trigger\", \"button\" (Close), \"drag\", \"footer\" (your footer or children called close()), \"escape\" or \"outside\"."
+    },
+    {
+      "key": "onClose",
+      "type": "function",
+      "description": "(reason) => void when the drawer closes, with the same reasons."
+    },
+    {
+      "key": "closeOnEscape",
+      "type": "boolean",
+      "description": "Escape closes the drawer.",
+      "default": true
+    },
+    {
+      "key": "closeOnOutside",
+      "type": "boolean",
+      "description": "A press on the backdrop closes the drawer.",
+      "default": true
+    },
+    {
+      "key": "showClose",
+      "type": "boolean",
+      "description": "Show the Close (X) button in the header. If you hide it, give the footer a way out.",
+      "default": true
+    },
+    {
+      "key": "busy",
+      "type": "boolean",
+      "description": "Your own busy flag: Escape, outside press, Close and drag do nothing until it clears; the footer's close() still works.",
+      "default": false
+    },
+    {
+      "key": "closeWhileBusy",
+      "type": "boolean",
+      "description": "Let the drawer close while busy.",
+      "default": false
+    },
+    {
+      "key": "trigger",
+      "type": "node | function | null",
+      "description": "Your own trigger: an element (cloned with a ref, onClick and aria attributes), or (props) => node spreading { ref, onClick, aria-haspopup, aria-expanded, disabled }. Left out, a built-in button labelled `triggerLabel` shows, unless you pass `open`. null renders none."
+    },
+    {
+      "key": "triggerLabel",
+      "type": "string",
+      "description": "Label of the built-in trigger button; also the drawer's name when there is no title.",
+      "default": "Open"
+    },
+    {
+      "key": "triggerIcon",
+      "type": "string",
+      "description": "Icon name on the built-in trigger button, or \"none\".",
+      "default": "none"
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Disables the trigger so the drawer can't be opened from it.",
+      "default": false
+    },
+    {
+      "key": "returnFocusTo",
+      "type": "ref | element | string | function | false",
+      "description": "Where focus goes on close: a ref, an element, a CSS selector or a function returning one. Default: the trigger, else what had focus before opening, else the control nearest to it. false leaves focus alone."
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Show the gallery's cart when there are no children and no footer.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "ref",
+      "description": "The dialog panel (null while closed). className, style and other props go to it too."
+    }
+  ],
+  "example": "<Drawer\n  title=\"Filters\"\n  description=\"Narrow the list. Changes apply when you press Show.\"\n  side=\"right\"\n  size=\"sm\"\n  trigger={<Button variant=\"secondary\" label=\"Filters\" />}\n  footer={({ close }) => <Button label={`Show ${count} results`} fullWidth onClick={() => { apply(); close(); }} />}\n>\n  <FilterForm />\n</Drawer>\n\n{/* app navigation on a phone, opened by state */}\n<Drawer\n  side=\"left\"\n  sheetOnPhone={false}\n  title=\"Menu\"\n  open={navOpen}\n  onOpenChange={setNavOpen}\n>\n  <NavLinks onNavigate={() => setNavOpen(false)} />\n</Drawer>"
+}

@@ -1,0 +1,283 @@
+{
+  "name": "Skeleton",
+  "slug": "skeleton",
+  "export": "Skeleton",
+  "order": 37,
+  "kind": "components",
+  "category": "feedback",
+  "subcategory": "loading",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "hint": "Turn off Loading to see the content arrive where the blocks were.",
+  "description": "Placeholder drawn in the shape of the content it stands in for: whole blocks (card, list, article) or primitives (text lines, circle, rect) you compose into your own row. One continuous shimmer wave crosses every block, and your content crossfades in where the blocks were.",
+  "intents": [
+    "loading placeholder",
+    "skeleton screen while data loads",
+    "shimmer placeholder for a card",
+    "content loading state"
+  ],
+  "tags": [
+    "skeleton",
+    "placeholder",
+    "shimmer",
+    "loading",
+    "ghost",
+    "lazy"
+  ],
+  "usage": "Match the skeleton to the real layout, not a generic grey box. Wrap your content: <Skeleton loading={isLoading} layout=\"list\" rows={3} width=\"100%\">{content}</Skeleton>. To match a custom row, compose primitives (layout=\"circle\" | \"text\" | \"rect\", with label=\"\" on all but one) inside your own flex row. Show it only after ~300 ms so fast loads don't flash.",
+  "states": [
+    "default"
+  ],
+  "keyboard": [],
+  "screenReader": "While loading, the root has aria-busy=\"true\" and a visually hidden `label` (\"Loading\"); the placeholder blocks are hidden. When `loading` turns false, aria-busy clears, the label goes and `children` are read as normal.",
+  "controls": [
+    {
+      "group": "Layout",
+      "key": "layout",
+      "label": "Layout",
+      "type": "select",
+      "options": [
+        "card",
+        "list",
+        "article",
+        "text",
+        "circle",
+        "rect"
+      ],
+      "default": "card"
+    },
+    {
+      "group": "Layout",
+      "key": "rows",
+      "label": "Rows / lines",
+      "type": "range",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "group": "Layout",
+      "key": "width",
+      "label": "Width",
+      "type": "range",
+      "min": 240,
+      "max": 520,
+      "step": 10,
+      "default": 360
+    },
+    {
+      "group": "Layout",
+      "key": "framed",
+      "label": "Frame (card, list)",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Layout",
+      "key": "avatar",
+      "label": "Avatar (list)",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Layout",
+      "key": "trailing",
+      "label": "Trailing pill (list)",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Layout",
+      "key": "size",
+      "label": "Circle size",
+      "type": "select",
+      "options": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    {
+      "group": "Layout",
+      "key": "gap",
+      "label": "Line gap (text)",
+      "type": "range",
+      "min": 2,
+      "max": 24,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "group": "State",
+      "key": "loading",
+      "label": "Loading",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Demo",
+      "key": "cycle",
+      "label": "Cycle loading / loaded (timer)",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Shimmer",
+      "key": "shimmer",
+      "label": "Shimmer",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Shimmer",
+      "key": "speed",
+      "label": "Speed (s)",
+      "type": "range",
+      "min": 0.8,
+      "max": 4,
+      "step": 0.1,
+      "default": 1.8
+    },
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Hidden label",
+      "type": "text",
+      "default": "Loading"
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "List": {
+      "layout": "list",
+      "rows": 4
+    },
+    "Article": {
+      "layout": "article"
+    },
+    "Demo cycle": {
+      "cycle": true
+    },
+    "Text lines": {
+      "layout": "text",
+      "rows": 3
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "loading",
+      "type": "boolean",
+      "description": "true shows the placeholder; false crossfades to children.",
+      "default": true
+    },
+    {
+      "key": "children",
+      "type": "ReactNode",
+      "description": "Your real content, shown when loading is false. Without children (and without demo) nothing renders once loaded."
+    },
+    {
+      "key": "layout",
+      "type": "\"card\" | \"list\" | \"article\" | \"text\" | \"circle\" | \"rect\"",
+      "description": "Shape of the placeholder. text, circle and rect are primitives for composing your own layout.",
+      "default": "card"
+    },
+    {
+      "key": "rows",
+      "type": "number",
+      "description": "Text lines (text, card), list rows (list), or extra paragraph lines (article).",
+      "default": 3
+    },
+    {
+      "key": "width",
+      "type": "number | string",
+      "description": "Root width: number = px, or any CSS length (\"100%\" to fill). Ignored by circle.",
+      "default": 360
+    },
+    {
+      "key": "height",
+      "type": "number | string",
+      "description": "Line height for text (default 12) or block height for rect (default 96)."
+    },
+    {
+      "key": "size",
+      "type": "\"sm\" | \"md\" | \"lg\" | number",
+      "description": "Diameter of the circle layout: sm 28px (a small avatar), md 40px, lg 56px (a profile photo or app icon). A number sets it in px exactly.",
+      "default": "md"
+    },
+    {
+      "key": "radius",
+      "type": "number | string",
+      "description": "Corner radius for text lines and rect. Defaults to the theme's small radius."
+    },
+    {
+      "key": "widths",
+      "type": "Array<number | string>",
+      "description": "Per-line widths for text, e.g. [\"100%\", \"80%\", 120]. Missing entries: full width, the last line 60%."
+    },
+    {
+      "key": "gap",
+      "type": "number",
+      "description": "Gap between text lines in px.",
+      "default": 8
+    },
+    {
+      "key": "framed",
+      "type": "boolean",
+      "description": "card and list draw inside a bordered frame. false to sit inside your own card.",
+      "default": true
+    },
+    {
+      "key": "avatar",
+      "type": "boolean",
+      "description": "list rows start with a round avatar block.",
+      "default": true
+    },
+    {
+      "key": "trailing",
+      "type": "boolean",
+      "description": "list rows end with a pill block.",
+      "default": true
+    },
+    {
+      "key": "label",
+      "type": "string",
+      "description": "Hidden text read while loading. Pass \"\" on all but one Skeleton when you compose several.",
+      "default": "Loading"
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "With no children, show the gallery's sample card, list or article once loaded. Gallery only; leave off in real UI.",
+      "default": false
+    },
+    {
+      "key": "cycle",
+      "type": "boolean",
+      "description": "Gallery demo: flips loading on a 2.4 s timer. Leave off in real UI.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLDivElement>",
+      "description": "The root, which carries aria-busy."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-*, data-*) goes to the root <div>. className and style are merged with the component's own."
+    }
+  ],
+  "example": "// a whole block\n<Skeleton loading={!orders} layout=\"list\" rows={3} width=\"100%\" framed={false}>\n  <OrderList orders={orders} />\n</Skeleton>\n\n// your own row, composed from primitives\n<div style={{ display: \"flex\", gap: 12, alignItems: \"center\" }} aria-busy={loading}>\n  <Skeleton layout=\"circle\" size=\"md\" label=\"Loading member\" />\n  <Skeleton layout=\"text\" rows={2} widths={[\"60%\", \"40%\"]} width=\"100%\" label=\"\" />\n</div>"
+}

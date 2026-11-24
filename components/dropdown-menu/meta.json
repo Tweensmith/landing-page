@@ -1,0 +1,214 @@
+{
+  "name": "Dropdown Menu",
+  "slug": "dropdown-menu",
+  "export": "DropdownMenu",
+  "order": 44,
+  "kind": "components",
+  "category": "overlays",
+  "subcategory": "menus",
+  "platform": "web",
+  "level": "composite",
+  "tier": "free",
+  "hint": "Open Share, then cut diagonally to its submenu. Type a letter to jump.",
+  "description": "Action menu with nested submenus, checkbox items and typeahead. A safe triangle from the pointer to the submenu keeps it open while you cut diagonally across other items.",
+  "intents": [
+    "dropdown menu with actions",
+    "more options menu",
+    "nested submenu",
+    "overflow menu on a button"
+  ],
+  "tags": [
+    "dropdown",
+    "menu",
+    "submenu",
+    "actions",
+    "overflow",
+    "kebab",
+    "options",
+    "safe triangle"
+  ],
+  "usage": "Use for a list of actions behind one button (row actions, an overflow menu). Pass `items` as plain objects {id, label, icon, shortcut, disabled, danger, items (submenu), type:'checkbox'}, with {separator:true} between groups and {type:'label', label} for a group heading, and handle `onSelect(id, item)`. Labels are strings. The menu closes on select unless `closeOnSelect` is false. Swap the button with `trigger`, control it with `open` / `onOpenChange`, and hold checkbox state with `checked` / `onCheckedChange`. Keep to 3 levels and put destructive actions last.",
+  "states": [
+    "default",
+    "open"
+  ],
+  "keyboard": [
+    { "keys": "Enter / Space / ArrowDown", "does": "Opens the menu with focus on the first item.", "when": "on the button" },
+    { "keys": "ArrowUp", "does": "Opens the menu with focus on the last item.", "when": "on the button" },
+    { "keys": "ArrowDown / ArrowUp", "does": "Moves to the next or previous item, skipping disabled items and wrapping at the ends." },
+    { "keys": "Home / End", "does": "Moves to the first or last item." },
+    { "keys": "Character", "does": "Moves to the next item whose label starts with that letter; letters typed quickly match a longer start." },
+    { "keys": "Enter / Space", "does": "Chooses the item, closes the menu and returns focus to the button.", "when": "on a plain item" },
+    { "keys": "Enter / Space", "does": "Ticks or unticks the item and keeps the menu open.", "when": "on a checkbox item" },
+    { "keys": "Enter / Space / ArrowRight", "does": "Opens the submenu and moves to its first item.", "when": "on an item with a submenu" },
+    { "keys": "ArrowLeft / Escape", "does": "Closes the submenu and returns to the item that opened it.", "when": "in a submenu" },
+    { "keys": "Escape", "does": "Closes the menu and returns focus to the button." },
+    { "keys": "Tab", "does": "Closes the menu and leaves focus on the button." },
+    { "keys": "Enter / Space", "does": "Opens the submenu in place of the list, with a Back row first that returns to the level above.", "when": "phones and touch screens" }
+  ],
+  "screenReader": "The button has aria-haspopup=\"menu\", aria-expanded and aria-controls, and is named by `label` (or by your `trigger`'s own name). The menu is role menu named by `label`; items are menuitem, checkbox items menuitemcheckbox with aria-checked, items with a submenu carry aria-haspopup and aria-expanded, and disabled items aria-disabled. A chosen item's label is said through a polite live region.",
+  "controls": [
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Trigger label",
+      "type": "text",
+      "default": "Options"
+    },
+    {
+      "group": "Layout",
+      "key": "placement",
+      "label": "Placement",
+      "type": "select",
+      "options": [
+        "bottom-start",
+        "bottom-end",
+        "top-start",
+        "right-start"
+      ],
+      "default": "bottom-start"
+    },
+    {
+      "group": "Debug",
+      "key": "showSafeArea",
+      "label": "Show safe triangle",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Behaviour",
+      "key": "defaultOpen",
+      "label": "Open on mount",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "See the triangle": {
+      "showSafeArea": true
+    },
+    "Align end": {
+      "placement": "bottom-end"
+    }
+  },
+  "previewProps": {
+    "defaultOpen": true
+  },
+  "dataProps": [
+    {
+      "key": "items",
+      "type": "Array<{ id?: string; label: string; icon?: string; shortcut?: string; disabled?: boolean; danger?: boolean; type?: \"checkbox\"; closeOnSelect?: boolean; onSelect?: () => void; items?: Array<{ id?: string; label: string; icon?: string; shortcut?: string; disabled?: boolean; danger?: boolean; type?: \"checkbox\"; closeOnSelect?: boolean; onSelect?: () => void; items?: Array<{ id?: string; label: string; icon?: string; shortcut?: string; disabled?: boolean; danger?: boolean; type?: \"checkbox\"; closeOnSelect?: boolean; onSelect?: () => void } | { separator: true } | { type: \"separator\" } | { type: \"label\" | \"group\"; label: string } | null> } | { separator: true } | { type: \"separator\" } | { type: \"label\" | \"group\"; label: string } | null> } | { separator: true } | { type: \"separator\" } | { type: \"label\" | \"group\"; label: string } | null>",
+      "description": "[{ id, label, icon, shortcut, disabled, danger, items, type: 'checkbox', closeOnSelect }], plus { separator: true } and { type: 'label', label } for group headings. Empty by default; with no items the menu does not open. `icon` is an icon name; the type spells out three levels of submenu, and deeper levels take the same shape."
+    },
+    {
+      "key": "onSelect",
+      "type": "(id: string, item: { id?: string; label: string; icon?: string; shortcut?: string; disabled?: boolean; danger?: boolean; type?: \"checkbox\"; closeOnSelect?: boolean; onSelect?: () => void }) => void",
+      "description": "(id, item) => void when an item is chosen (not for checkbox items or submenu parents). id falls back to the label when an item has none."
+    },
+    {
+      "key": "label",
+      "type": "string",
+      "description": "Text of the built-in trigger button; also the menu's accessible name.",
+      "default": "Options"
+    },
+    {
+      "key": "icon",
+      "type": "string",
+      "description": "Icon before the label on the built-in trigger, or \"none\".",
+      "default": "more"
+    },
+    {
+      "key": "trigger",
+      "type": "node | ((props: { ref: (el: HTMLElement | null) => void; onClick: () => void; onKeyDown: (event: { key: string; preventDefault: () => void }) => void; disabled?: boolean; open: boolean; \"aria-haspopup\": \"menu\"; \"aria-expanded\": boolean; \"aria-controls\"?: string }) => node)",
+      "description": "Your own trigger: an element (cloned with ref, onClick, onKeyDown and aria attributes) or (props) => node spreading { ref, onClick, onKeyDown, disabled, aria-haspopup, aria-expanded }."
+    },
+    {
+      "key": "open",
+      "type": "boolean",
+      "description": "Controlled open state."
+    },
+    {
+      "key": "defaultOpen",
+      "type": "boolean",
+      "description": "Open on mount when uncontrolled.",
+      "default": false
+    },
+    {
+      "key": "onOpenChange",
+      "type": "(open: boolean, reason: \"trigger\" | \"select\" | \"escape\" | \"outside\") => void",
+      "description": "(open: boolean, reason) => void; reason is \"trigger\", \"select\", \"escape\" (Escape or Tab) or \"outside\"."
+    },
+    {
+      "key": "closeOnSelect",
+      "type": "boolean",
+      "description": "Close after an item is chosen. An item's own closeOnSelect wins.",
+      "default": true
+    },
+    {
+      "key": "closeOnEscape",
+      "type": "boolean",
+      "description": "Escape closes the menu (it still closes an open submenu).",
+      "default": true
+    },
+    {
+      "key": "closeOnOutside",
+      "type": "boolean",
+      "description": "A press outside closes the menu.",
+      "default": true
+    },
+    {
+      "key": "checked",
+      "type": "Record<string, boolean>",
+      "description": "Controlled checkbox state, { [id]: boolean }."
+    },
+    {
+      "key": "defaultChecked",
+      "type": "Record<string, boolean>",
+      "description": "Initial checkbox state when uncontrolled. `defaultChecks` is the older name and still works.",
+      "default": {}
+    },
+    {
+      "key": "defaultChecks",
+      "type": "Record<string, boolean>",
+      "description": "Older name for `defaultChecked`, kept so existing code works. Use `defaultChecked`."
+    },
+    {
+      "key": "onCheckedChange",
+      "type": "(id: string, checked: boolean, all: Record<string, boolean>) => void",
+      "description": "(id, checked, all) => void when a checkbox item is toggled."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Disables the trigger.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLElement>",
+      "description": "The trigger button. className, style and other props go to it too."
+    },
+    {
+      "key": "portal",
+      "type": "boolean | Element | RefObject<Element | null>",
+      "description": "Where the menu renders. true: through a portal into document.body, carrying the theme tokens found at the trigger, so an ancestor with overflow:hidden, transform, filter or backdrop-filter can't clip or move it (it still opens above a Modal or Drawer it sits in, and stays part of it for focus and outside presses). false: in place inside the component, as before. An element or ref: portaled into that element instead.",
+      "default": true
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-*, data-*) goes to the menu's <button>, and so do className and style, merged with the button's own."
+    }
+  ],
+  "demoProps": {
+    "demo": true
+  },
+  "example": "<DropdownMenu\n  label=\"More\"\n  placement=\"bottom-end\"\n  items={[\n    { id: \"rename\", label: \"Rename\", icon: \"edit\", shortcut: \"F2\" },\n    { id: \"copy\", label: \"Copy link\", icon: \"link\" },\n    { separator: true },\n    { id: \"delete\", label: \"Delete\", icon: \"trash\", danger: true },\n  ]}\n  onSelect={(id) => run(id)}\n/>\n\n{/* your own trigger, controlled checkboxes */}\n<DropdownMenu\n  trigger={(props) => <Button {...props} variant=\"ghost\" label=\"View\" />}\n  items={[{ type: \"label\", label: \"Show\" }, { id: \"grid\", label: \"Grid\", type: \"checkbox\" }]}\n  checked={view}\n  onCheckedChange={(id, on) => setView((v) => ({ ...v, [id]: on }))}\n/>"
+}

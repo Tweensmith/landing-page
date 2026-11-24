@@ -1,0 +1,157 @@
+{
+  "about": "The product's structure: kinds, their categories, and subcategories. Every meta.json names its place with `kind`, `category` and, where the category has them, `subcategory`; every recipe names its `category` under Screens. Platform (web, native) and tier (free, pro) are filters, not categories. A category whose description names places that hold only Pro components also has `coreDescription`, the sentence for the free Core.",
+  "kinds": [
+    {
+      "id": "components",
+      "name": "Components",
+      "description": "The parts you compose.",
+      "categories": [
+        {
+          "id": "actions",
+          "name": "Actions",
+          "description": "Things you press: buttons, confirmations and buttons with an effect.",
+          "coreDescription": "Things you press: buttons, a copy button and an icon toolbar.",
+          "subcategories": [
+            { "id": "buttons", "name": "Buttons" },
+            { "id": "confirmations", "name": "Confirmations" },
+            { "id": "effect-buttons", "name": "Effect buttons" }
+          ]
+        },
+        {
+          "id": "forms",
+          "name": "Forms",
+          "description": "Text entry, choices, pickers, and the labels and validation around them.",
+          "subcategories": [
+            { "id": "text-entry", "name": "Text entry" },
+            { "id": "choices", "name": "Choices" },
+            { "id": "pickers", "name": "Pickers" },
+            { "id": "labels-and-validation", "name": "Labels and validation" }
+          ]
+        },
+        {
+          "id": "feedback",
+          "name": "Feedback",
+          "description": "Status, loading and messages: badges, alerts, progress, skeletons, toasts, empty states.",
+          "subcategories": [
+            { "id": "status", "name": "Status" },
+            { "id": "loading", "name": "Loading" },
+            { "id": "messages", "name": "Messages" }
+          ]
+        },
+        {
+          "id": "overlays",
+          "name": "Overlays",
+          "description": "Dialogs, menus and popovers that open above the page.",
+          "subcategories": [
+            { "id": "dialogs", "name": "Dialogs" },
+            { "id": "menus", "name": "Menus" },
+            { "id": "popovers", "name": "Popovers" }
+          ]
+        },
+        {
+          "id": "navigation",
+          "name": "Navigation",
+          "description": "Moving within a page and around an app: tabs, breadcrumbs, pagination, navbars, sidebars.",
+          "coreDescription": "Moving within a page: tabs, breadcrumbs and pagination.",
+          "subcategories": [
+            { "id": "page-navigation", "name": "Page navigation" },
+            { "id": "app-navigation", "name": "App navigation" }
+          ]
+        },
+        {
+          "id": "display",
+          "name": "Display",
+          "description": "Showing content: containers, people, numbers, lists, charts, tables and boards.",
+          "coreDescription": "Showing content: containers, people and numbers.",
+          "subcategories": [
+            { "id": "containers", "name": "Containers" },
+            { "id": "people", "name": "People" },
+            { "id": "numbers", "name": "Numbers" },
+            { "id": "lists", "name": "Lists" },
+            { "id": "charts", "name": "Charts" },
+            { "id": "tables-and-boards", "name": "Tables and boards" }
+          ]
+        },
+        {
+          "id": "ai",
+          "name": "AI",
+          "description": "Conversation and agent work: composers, streaming output, steps, results, diffs, voice.",
+          "subcategories": [
+            { "id": "conversation", "name": "Conversation" },
+            { "id": "agent-work", "name": "Agent work" }
+          ]
+        },
+        {
+          "id": "showpieces",
+          "name": "Showpieces",
+          "description": "Art-directed cards and galleries that carry their own stage, and wrappers that set what they hold in motion.",
+          "subcategories": [
+            { "id": "cards", "name": "Cards" },
+            { "id": "galleries", "name": "Galleries" },
+            { "id": "wrappers", "name": "Wrappers" }
+          ]
+        },
+        {
+          "id": "mobile",
+          "name": "Expo patterns",
+          "interim": true,
+          "description": "React Native and Expo patterns, not yet sorted into the categories above; they take the same categories, with platform as a filter, when the native core is built."
+        }
+      ]
+    },
+    {
+      "id": "bands",
+      "name": "Bands",
+      "description": "Page sections: openers, proof, features, pricing and closers.",
+      "categories": [
+        {
+          "id": "openers",
+          "name": "Openers",
+          "description": "The first thing on a page."
+        },
+        {
+          "id": "proof",
+          "name": "Proof",
+          "description": "Logos, testimonials and numbers that back a claim."
+        },
+        {
+          "id": "features",
+          "name": "Features",
+          "description": "Sections that show what a product does and how it changes."
+        },
+        {
+          "id": "pricing",
+          "name": "Pricing",
+          "description": "Plans, comparisons and prices."
+        },
+        {
+          "id": "closers",
+          "name": "Closers",
+          "description": "The last call to action and the footer."
+        }
+      ]
+    },
+    {
+      "id": "screens",
+      "name": "Screens",
+      "description": "Whole screens, built from a recipe (get_recipe).",
+      "categories": [
+        {
+          "id": "getting-in",
+          "name": "Getting in",
+          "description": "Signing in and the first minutes."
+        },
+        {
+          "id": "working",
+          "name": "Working",
+          "description": "The screens people work in."
+        },
+        {
+          "id": "selling",
+          "name": "Selling",
+          "description": "Pricing, checkout and launches."
+        }
+      ]
+    }
+  ]
+}

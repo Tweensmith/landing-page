@@ -1,0 +1,152 @@
+{
+  "name": "Radio Group",
+  "slug": "radio-group",
+  "export": "RadioGroup",
+  "order": 23.4,
+  "kind": "components",
+  "category": "forms",
+  "subcategory": "choices",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "added": "2026-11-21",
+  "hint": "Pick another option, or use the arrow keys: the dot travels.",
+  "description": "Radio buttons for one choice out of a few, all visible, each with a line of explanation, on real native radios (one Tab stop, arrow keys, required, form reset). There is one selection dot per group: when the choice changes it travels from the old ring to the new one on a spring, stretching along its direction of travel and settling round, and the new ring tightens around it as it lands. Also exports Radio for markup between options.",
+  "intents": [
+    "choose one option from a short list",
+    "radio buttons with descriptions",
+    "pick one setting in a form",
+    "single choice question",
+    "radio group for delivery or frequency options"
+  ],
+  "tags": [
+    "radio",
+    "radio button",
+    "radio group",
+    "single choice",
+    "pick one",
+    "option list",
+    "form",
+    "exclusive"
+  ],
+  "usage": "Use for one choice out of a few (two to six) where every option should stay visible and each is explained by a line of text: how often a digest is sent, a shipping speed, a seat type. Pass `options` ([{ value, label, description?, disabled? }]), `label` (rendered as the <legend>), then `value` + `onChange(value, option, event)` (controlled) or `defaultValue`. Inside a <form> set `name` (generated when absent, so the radios still form one group); `required` blocks the submit natively and a form reset returns to `defaultValue`. `bordered` draws the options as hairline rows in one card, like a settings list; `orientation=\"horizontal\"` puts short options in wrapping rows. `readOnly` keeps the choice focusable and announced but fixed. When options need a card each with an icon, price or artwork, use Choice Cards; for two to five one-word options that switch a view, use Segmented Control; for a long list, use Select; for several choices at once, use CheckboxGroup (from Checkbox). Need markup between options? Use children: <RadioGroup label=\"...\"><Radio value=\"a\" label=\"...\" /></RadioGroup>. The ref goes to the <fieldset>, and ref.current.focus() focuses the checked radio, or the first enabled one.",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "active",
+    "selected",
+    "disabled",
+    "error"
+  ],
+  "keyboard": [
+    { "keys": "Tab", "does": "Moves to the checked option, or the first enabled one when none is checked; the group is one stop." },
+    { "keys": "ArrowDown / ArrowRight", "does": "Moves to the next enabled option and chooses it, wrapping from the last to the first." },
+    { "keys": "ArrowUp / ArrowLeft", "does": "Moves to the previous enabled option and chooses it, wrapping from the first to the last." },
+    { "keys": "Space", "does": "Chooses the focused option." },
+    { "keys": "ArrowDown / ArrowUp / ArrowRight / ArrowLeft", "does": "Moves focus between options without changing the choice.", "when": "readOnly" }
+  ],
+  "screenReader": "A radiogroup named by `label` (its legend), with `description` and `error` read as the group's description; each radio says its label, its position, whether it is checked, and its own description. With `error` the group is marked invalid; disabled options are announced as unavailable.",
+  "dataProps": [
+    {
+      "key": "options",
+      "type": "Array<{ value: string; label?: node; description?: node; disabled?: boolean }>",
+      "description": "The choices, in order. A disabled one is skipped by the arrow keys."
+    },
+    {
+      "key": "value",
+      "type": "string | null",
+      "description": "Controlled choice. Pass it with onChange; null shows nothing chosen. Leave undefined to let the group keep its own."
+    },
+    {
+      "key": "defaultValue",
+      "type": "string | null",
+      "description": "Starting choice when uncontrolled; also what a form reset returns to (null: nothing chosen)."
+    },
+    {
+      "key": "onChange",
+      "type": "(value: string | null, option: { value: string; label?: node; description?: node; disabled?: boolean } | null, event: Event | null) => void",
+      "description": "(value, option, event) => void, on every change, and with option and event null on a form reset that changes the choice."
+    },
+    {
+      "key": "label",
+      "type": "string | node",
+      "description": "The group's <legend>; it names the radiogroup.",
+      "default": ""
+    },
+    {
+      "key": "description",
+      "type": "string | node",
+      "description": "A line under the legend, linked with aria-describedby.",
+      "default": ""
+    },
+    {
+      "key": "name",
+      "type": "string",
+      "description": "Form name shared by the radios; generated with useId when absent."
+    },
+    {
+      "key": "id",
+      "type": "string",
+      "description": "Id of the fieldset."
+    },
+    {
+      "key": "error",
+      "type": "string",
+      "description": "An error you already have, shown under the group and announced."
+    },
+    {
+      "key": "maxWidth",
+      "type": "number",
+      "description": "Widest the group grows, in px. 0 fills the container.",
+      "default": 480
+    },
+    {
+      "key": "children",
+      "type": "node",
+      "description": "Radio elements (and any markup between them), used instead of options."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLFieldSetElement>",
+      "description": "Goes to the <fieldset>; ref.current.focus() focuses the checked radio, else the first enabled one."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-*, data-*) goes to the root <fieldset>. className and style are merged with the component's own."
+    }
+  ],
+  "exports": [
+    {
+      "export": "Radio",
+      "description": "One option inside a RadioGroup, for callers who need markup between options. It reads the group (name, selection, size, disabled) through context; outside a group it renders nothing and warns once in development.",
+      "props": [
+        { "key": "value", "type": "string", "description": "The value this option submits and reports." },
+        { "key": "label", "type": "string | node", "description": "Visible label; it names the radio." },
+        { "key": "description", "type": "string | node", "description": "Second line, linked with aria-describedby." },
+        { "key": "disabled", "type": "boolean", "description": "This option cannot be chosen and is skipped by the arrow keys.", "default": false }
+      ]
+    }
+  ],
+  "controls": [
+    { "group": "Content", "key": "label", "label": "Legend", "type": "text", "default": "" },
+    { "group": "Content", "key": "description", "label": "Description", "type": "text", "default": "" },
+    { "group": "Style", "key": "size", "label": "Size", "type": "select", "options": ["sm", "md", "lg"], "default": "md" },
+    { "group": "Style", "key": "orientation", "label": "Orientation", "type": "select", "options": ["vertical", "horizontal"], "default": "vertical" },
+    { "group": "Style", "key": "bordered", "label": "Bordered rows", "type": "toggle", "default": false },
+    { "group": "Style", "key": "controlPlacement", "label": "Ring placement", "type": "select", "options": ["start", "end"], "default": "start" },
+    { "group": "State", "key": "disabled", "label": "Disabled", "type": "toggle", "default": false },
+    { "group": "State", "key": "readOnly", "label": "Read-only", "type": "toggle", "default": false },
+    { "group": "State", "key": "required", "label": "Required", "type": "toggle", "default": false },
+    { "group": "Demo", "key": "demo", "label": "Sample content", "type": "toggle", "default": false }
+  ],
+  "presets": {
+    "Settings card": { "bordered": true },
+    "Horizontal": { "orientation": "horizontal" }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "example": "<RadioGroup\n  label=\"Delivery\"\n  name=\"delivery\"\n  options={[\n    { value: \"standard\", label: \"Standard\", description: \"3 to 5 working days.\" },\n    { value: \"express\", label: \"Express\", description: \"Next working day if ordered by 2pm.\" },\n    { value: \"pickup\", label: \"Collect in store\", description: \"Ready in two hours.\", disabled: !storeOpen },\n  ]}\n  value={delivery}\n  onChange={(value) => setDelivery(value)}\n  required\n/>"
+}

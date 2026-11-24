@@ -1,0 +1,300 @@
+{
+  "name": "Modal",
+  "slug": "modal",
+  "export": "Modal",
+  "order": 42,
+  "kind": "components",
+  "category": "overlays",
+  "subcategory": "dialogs",
+  "platform": "web",
+  "level": "composite",
+  "tier": "free",
+  "hint": "Open it: the dialog grows out of the button and shrinks back into it.",
+  "description": "Dialog that grows out of the button that opened it and shrinks back on close, over a dimmed, blurred background. It holds any content: a title, a description, your children as the body and a footer of actions. Focus trap, inert page behind, Escape, press outside, scroll lock, and focus goes back to the trigger (or somewhere sensible if the trigger is gone).",
+  "intents": [
+    "open a dialog",
+    "modal popup with a form",
+    "confirm in a modal window",
+    "dialog with custom content and actions",
+    "invite people dialog"
+  ],
+  "tags": [
+    "modal",
+    "dialog",
+    "popup",
+    "overlay",
+    "lightbox dialog",
+    "shared element",
+    "focus trap"
+  ],
+  "usage": "Use for short, focused tasks that block the page (invite, confirm, edit one thing). Pass `title`, `description` and the body as `children`; the default footer is Cancel plus one confirm button wired to `onConfirm` (return false to keep it open, or a promise to show loading until it settles). Pass `footer` for your own actions or `footer={null}` for none. It opens from its own trigger button by default; pass `trigger` as your own element or `(props) => <Button {...props} />`, or `trigger={null}` and control it with `open` / `onOpenChange`. Set `busy` while your own save runs: the confirm button shows loading and the dialog cannot be closed until you clear it. If the trigger can disappear (a delete that removes its row), pass `returnFocusTo`. `closeOnEscape` / `closeOnOutside` switch off those exits. Keep one primary action. For long forms or browsing, use a Drawer.",
+  "states": [
+    "default",
+    "open"
+  ],
+  "keyboard": [
+    {
+      "keys": "Enter / Space",
+      "does": "Opens the dialog and moves focus to its first input, else its first control.",
+      "when": "on the trigger"
+    },
+    {
+      "keys": "Tab / Shift+Tab",
+      "does": "Cycles through the dialog's controls; focus does not leave the dialog."
+    },
+    {
+      "keys": "Escape",
+      "does": "Closes the dialog and returns focus to the trigger.",
+      "when": "closeOnEscape on, not busy"
+    },
+    {
+      "keys": "Enter / Space",
+      "does": "Closes the dialog and returns focus to the trigger.",
+      "when": "on Close or Cancel"
+    }
+  ],
+  "screenReader": "A dialog with aria-modal, named by `title` (by `triggerLabel` when there is no title) and described by `description`; the page behind is inert while it is open. The trigger reports aria-haspopup=\"dialog\" and aria-expanded; while busy the dialog is aria-busy and the confirm button is announced as working.",
+  "dataProps": [
+    {
+      "key": "children",
+      "type": "node | ((api: { close: () => void; busy: boolean }) => node)",
+      "description": "The dialog body: any content, or ({ close, busy }) => node. Empty by default; the gallery's invite sample appears only with `demo`."
+    },
+    {
+      "key": "title",
+      "type": "string",
+      "description": "Heading of the dialog; also its accessible name.",
+      "default": ""
+    },
+    {
+      "key": "description",
+      "type": "string",
+      "description": "One line under the title, linked as the dialog's description.",
+      "default": ""
+    },
+    {
+      "key": "footer",
+      "type": "node | ((api: { close: () => void; busy: boolean }) => node) | null",
+      "description": "Replaces the default actions: any node, or ({ close, busy }) => node. null removes the footer. Left undefined you get Cancel + a confirm button."
+    },
+    {
+      "key": "onConfirm",
+      "type": "() => boolean | void | { then: (onFulfilled: (value: boolean | void) => void, onRejected: (reason: unknown) => void) => unknown }",
+      "description": "Called by the default confirm button. Return false to keep the dialog open; return a promise and the button shows loading until it settles (a rejection or false keeps it open). Otherwise the dialog closes."
+    },
+    {
+      "key": "confirmLabel",
+      "type": "string",
+      "description": "Label of the default confirm button. \"\" hides it.",
+      "default": "Confirm"
+    },
+    {
+      "key": "cancelLabel",
+      "type": "string",
+      "description": "Label of the default cancel button. \"\" hides it.",
+      "default": "Cancel"
+    },
+    {
+      "key": "confirmVariant",
+      "type": "string",
+      "description": "Variant of the default confirm button: primary, secondary, ghost or danger. Use danger for destructive actions.",
+      "default": "primary"
+    },
+    {
+      "key": "confirmDisabled",
+      "type": "boolean",
+      "description": "Disables the default confirm button, for example until a typed confirmation matches.",
+      "default": false
+    },
+    {
+      "key": "busy",
+      "type": "boolean",
+      "description": "Your own busy flag: the confirm button shows loading and won't fire, and Escape, outside press, Close and Cancel do nothing until it clears.",
+      "default": false
+    },
+    {
+      "key": "closeWhileBusy",
+      "type": "boolean",
+      "description": "Let the dialog close while busy.",
+      "default": false
+    },
+    {
+      "key": "open",
+      "type": "boolean",
+      "description": "Controlled open state. Leave undefined to let the modal manage itself."
+    },
+    {
+      "key": "defaultOpen",
+      "type": "boolean",
+      "description": "Open on mount when uncontrolled.",
+      "default": false
+    },
+    {
+      "key": "onOpenChange",
+      "type": "(open: boolean, reason: \"trigger\" | \"button\" | \"confirm\" | \"footer\" | \"escape\" | \"outside\") => void",
+      "description": "(open: boolean, reason) => void, whenever the modal wants to open or close. reason: \"trigger\", \"button\", \"confirm\", \"footer\" (your own footer or children called close()), \"escape\" or \"outside\"."
+    },
+    {
+      "key": "onClose",
+      "type": "(reason: \"button\" | \"confirm\" | \"footer\" | \"escape\" | \"outside\") => void",
+      "description": "(reason) => void with \"button\", \"confirm\", \"footer\", \"escape\" or \"outside\"."
+    },
+    {
+      "key": "closeOnEscape",
+      "type": "boolean",
+      "description": "Escape closes the dialog.",
+      "default": true
+    },
+    {
+      "key": "closeOnOutside",
+      "type": "boolean",
+      "description": "A press on the backdrop closes the dialog.",
+      "default": true
+    },
+    {
+      "key": "trigger",
+      "type": "element | ((props: { ref: Ref<HTMLButtonElement>; onClick: () => void; \"aria-haspopup\": \"dialog\"; \"aria-expanded\": boolean; disabled?: boolean }) => node) | null",
+      "description": "Your own trigger: an element (cloned with a ref, onClick and aria attributes), or (props) => node spreading { ref, onClick, aria-haspopup, aria-expanded, disabled }. The dialog grows from it. Left out, a built-in button labelled `triggerLabel` is shown, unless you pass `open`: a dialog opened by state has no built-in button. null always renders none."
+    },
+    {
+      "key": "triggerLabel",
+      "type": "string",
+      "description": "Label of the built-in trigger button; also the dialog's name when there is no title.",
+      "default": "Open"
+    },
+    {
+      "key": "triggerIcon",
+      "type": "string",
+      "description": "Icon name on the built-in trigger button, or \"none\".",
+      "default": "user"
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Disables the trigger so the dialog can't be opened from it.",
+      "default": false
+    },
+    {
+      "key": "returnFocusTo",
+      "type": "RefObject<HTMLElement> | HTMLElement | string | (() => RefObject<HTMLElement> | HTMLElement | string | null) | false",
+      "description": "Where focus goes on close: a ref, an element, a CSS selector or a function returning one. Default: the trigger, else what had focus before opening, else the control nearest to where the trigger was. false leaves focus alone."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLDivElement>",
+      "description": "The dialog element (null while closed). className, style and other props go to it too."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-*, data-*) goes to the dialog panel, a <div>, and so do className and style, merged with the panel's own."
+    }
+  ],
+  "example": "<Modal\n  triggerLabel=\"Delete workspace\"\n  triggerIcon=\"none\"\n  title=\"Delete this workspace?\"\n  description=\"This removes every inbox and cannot be undone.\"\n  size=\"sm\"\n  confirmLabel=\"Delete\"\n  confirmVariant=\"danger\"\n  confirmDisabled={name !== workspace.slug}\n  onConfirm={async () => { await deleteWorkspace(); }}\n  returnFocusTo=\"#restore-button\"\n>\n  <p>Type the workspace name to confirm.</p>\n  <input data-autofocus value={name} onChange={(e) => setName(e.target.value)} />\n</Modal>\n\n{/* opened by state, your own actions, your own busy flag */}\n<Modal\n  title=\"Change plan\"\n  open={open}\n  onOpenChange={setOpen}\n  trigger={null}\n  busy={saving}\n  footer={({ close, busy }) => <Button label=\"Save\" loading={busy} onClick={save} />}\n>\n  <PlanPicker />\n</Modal>\n\n{/* a kit Button as the trigger: the dialog grows from it and focus returns to it */}\n<Modal title=\"Invite people\" trigger={<Button label=\"Invite\" />}>\n  <InviteForm />\n</Modal>",
+  "controls": [
+    {
+      "group": "Content",
+      "key": "triggerLabel",
+      "label": "Trigger label",
+      "type": "text",
+      "default": "Open"
+    },
+    {
+      "group": "Content",
+      "key": "title",
+      "label": "Title",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "description",
+      "label": "Description",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "confirmLabel",
+      "label": "Confirm label",
+      "type": "text",
+      "default": "Confirm"
+    },
+    {
+      "group": "Look",
+      "key": "size",
+      "label": "Size",
+      "type": "select",
+      "options": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    {
+      "group": "Look",
+      "key": "blur",
+      "label": "Backdrop blur",
+      "type": "range",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "group": "Behaviour",
+      "key": "grow",
+      "label": "Grow from trigger",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Behaviour",
+      "key": "closeOnOutside",
+      "label": "Close on outside press",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Behaviour",
+      "key": "closeOnEscape",
+      "label": "Close on Escape",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Behaviour",
+      "key": "defaultOpen",
+      "label": "Open on mount",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Plain fade": {
+      "grow": false
+    },
+    "Large": {
+      "size": "lg",
+      "blur": 12
+    }
+  },
+  "previewProps": {
+    "defaultOpen": true
+  },
+  "demoProps": {
+    "demo": true,
+    "triggerLabel": "Invite people",
+    "title": "Invite to Northwind",
+    "description": "They'll get an email with a link to join. Invites expire after 7 days.",
+    "confirmLabel": "Send invite"
+  }
+}

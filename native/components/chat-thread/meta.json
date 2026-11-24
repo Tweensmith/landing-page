@@ -1,0 +1,101 @@
+{
+  "name": "Chat Thread + Composer",
+  "slug": "chat-thread",
+  "export": "ChatThread",
+  "order": 71,
+  "kind": "components",
+  "category": "mobile",
+  "platform": "native",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Type and send: the bubble flies out of the field into the thread, then Mira types back. Drag the thread left for times, long-press a bubble to react.",
+  "description": "A messaging conversation for React Native, shown as a thread with a musician the week her single comes out. Sending lifts the draft out of the composer and flies it along a curve into its place at the foot of the thread, the text cross-fading into a filled bubble while the thread springs up to make room; a beat later the receipt turns to Read, the contact's typing bubble breathes in with three dots pulsing in sequence on the UI thread, and the reply grows out of it. Bubbles group by sender with tighter concentric corners where they meet and the tail only on the last, under day separators. Drag the whole thread left to reveal per-message times (rubber-banded, springing back on release), and long-press any bubble to lift it out with a tapback row and a Reply / Copy menu, with haptics. The composer grows line by line to five lines then scrolls, + opens a tray of camera, photos, location and file, attachments sit inside the field as removable thumbnails and chips, and the send button morphs in only when there is something to send. Keyboard avoidance is built in; Reduce Motion swaps the flight and springs for quick fades.",
+  "intents": [
+    "imessage style chat screen with typing indicator",
+    "chat composer that grows with attachments",
+    "send message animation bubble flies into thread",
+    "react native messaging conversation with tapback reactions"
+  ],
+  "tags": [
+    "chat",
+    "messages",
+    "messaging",
+    "imessage",
+    "conversation",
+    "bubbles",
+    "composer",
+    "typing indicator",
+    "attachments",
+    "tapback",
+    "reactions",
+    "read receipt",
+    "keyboard avoiding",
+    "shared element",
+    "haptics",
+    "react native",
+    "expo"
+  ],
+  "usage": "Use for one-to-one or small group conversations. Keep the send button hidden until there is content, keep reactions reachable without the long-press (they are screen-reader actions on every bubble), and keep the message text in the bubble's accessible label with its time, so the drag-to-reveal times are never the only way to read them.",
+  "states": [
+    "default",
+    "empty",
+    "loading"
+  ],
+  "controls": [
+    {
+      "group": "Conversation",
+      "key": "group",
+      "label": "Thread",
+      "type": "select",
+      "options": [
+        { "label": "One to one", "value": "direct" },
+        { "label": "Group", "value": "group" }
+      ],
+      "default": "direct"
+    },
+    {
+      "group": "Look",
+      "key": "bubbleStyle",
+      "label": "Bubbles",
+      "type": "select",
+      "options": [
+        { "label": "Tails", "value": "tail" },
+        { "label": "Soft", "value": "soft" }
+      ],
+      "default": "tail"
+    },
+    {
+      "group": "Behaviour",
+      "key": "autoReply",
+      "label": "Contact replies",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Behaviour",
+      "key": "showTimestamps",
+      "label": "Drag for times",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Behaviour",
+      "key": "readReceipts",
+      "label": "Read receipts",
+      "type": "toggle",
+      "default": true
+    }
+  ],
+  "presets": {
+    "Group chat": {
+      "group": "group"
+    },
+    "Soft bubbles": {
+      "bubbleStyle": "soft"
+    },
+    "Quiet": {
+      "autoReply": false,
+      "readReceipts": false
+    }
+  }
+}

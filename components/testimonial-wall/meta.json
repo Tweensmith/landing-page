@@ -1,0 +1,291 @@
+{
+  "name": "Testimonial Wall",
+  "slug": "testimonial-wall",
+  "export": "TestimonialWall",
+  "order": 98,
+  "kind": "bands",
+  "category": "proof",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Hover to stop a column, drag or flick it, click a card to pull it into the spotlight, then filter by role.",
+  "description": "A landing-page section of customer voices as a wall of drifting columns. Each column loops at its own pace, opposite to its neighbour, behind a window with faded edges. The pointer slows the wall and stops the column under it, the hovered card lifts while the others step back, and columns can be dragged, flicked or scrubbed with the wheel without trapping page scroll. A card opens into a centred spotlight with the full quote, its metric and next and previous, then returns to its place in the column. Filter chips re-deal the columns with FLIP. Phones get a snap rail with a peek and a bottom sheet; reduced motion gets a static masonry list with a fold. An optional heading block carries an eyebrow, a lede and an average-rating score, and it sizes itself by its container. Shows only the quotes you pass; the invented sample voices appear only with `demo`.",
+  "intents": [
+    "testimonial wall with scrolling columns",
+    "customer quotes section for a landing page",
+    "wall of love with reviews and star ratings",
+    "social proof marquee that pauses on hover",
+    "filterable testimonials with a spotlight"
+  ],
+  "tags": [
+    "testimonials",
+    "testimonial wall",
+    "wall of love",
+    "reviews",
+    "quotes",
+    "social proof",
+    "marquee",
+    "scrolling columns",
+    "masonry",
+    "landing page",
+    "section",
+    "customers"
+  ],
+  "usage": "Use once on a marketing page, below the product story and above pricing, with 12 to 24 real quotes of mixed length. Pass `voices` as { id, name, quote, role?, venue?, city?, group?, source?, rating?, avatar?, more?, metric?: { value, unit, dir, label }, video?: { title, duration, poster } } and keep the pause control visible. `groups` ({ id, label, noun }) adds filter chips (voices match on `group`); `sources` maps a voice's `source` key to { label, icon }. Opening a card calls `onOpen(voice)`; the spotlight is `openId` + `onOpenIdChange` (or `defaultOpenId`), the filter `filter` + `onFilterChange`, the drift's pause `paused` + `onPausedChange`. Pass `heading`, `eyebrow`, `lede` and `score` ({ value, label, text }) for the heading block. The columns slow and stop under the pointer and hold while a card has focus; reduced motion gets the static list. Give it the full content width; it picks four, three or two columns, or a snap rail on phones, from its own width. `demo` shows the invented sample (gallery only).",
+  "states": [
+    "default",
+    "hover",
+    "open"
+  ],
+  "controls": [
+    {
+      "group": "Layout",
+      "key": "layout",
+      "label": "Layout",
+      "type": "select",
+      "options": [
+        "wall",
+        "masonry"
+      ],
+      "default": "wall"
+    },
+    {
+      "group": "Layout",
+      "key": "columns",
+      "label": "Columns",
+      "type": "select",
+      "options": [
+        "auto",
+        "2",
+        "3",
+        "4"
+      ],
+      "default": "auto"
+    },
+    {
+      "group": "Layout",
+      "key": "height",
+      "label": "Window height",
+      "type": "range",
+      "min": 420,
+      "max": 820,
+      "step": 20,
+      "default": 620
+    },
+    {
+      "group": "Motion",
+      "key": "speed",
+      "label": "Drift speed (px/s)",
+      "type": "range",
+      "min": 8,
+      "max": 80,
+      "step": 2,
+      "default": 26
+    },
+    {
+      "group": "Motion",
+      "key": "pauseOnHover",
+      "label": "Slow and stop on hover",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Content",
+      "key": "showFilters",
+      "label": "Filter chips",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Content",
+      "key": "heading",
+      "label": "Heading",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Read all": {
+      "layout": "masonry"
+    },
+    "Two slow columns": {
+      "columns": "2",
+      "speed": 14,
+      "height": 520
+    },
+    "Brisk and tall": {
+      "speed": 48,
+      "height": 760,
+      "pauseOnHover": false
+    },
+    "No filters": {
+      "showFilters": false
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "voices",
+      "type": "{ id: string, name: string, quote: string, role?, venue?, city?, group?: string, source?: string | { label, icon }, rating?: number, avatar?: string | ReactNode, more?: string, metric?: { value, unit?, dir?: 'up' | 'down', label? }, video?: { title?, duration?, poster?: string } }[]",
+      "description": "The quotes, in order. `avatar` is an image URL or a node (initials otherwise); `more` is extra text shown in the spotlight.",
+      "default": []
+    },
+    {
+      "key": "heading",
+      "type": "ReactNode",
+      "description": "Section heading. Blank shows none.",
+      "default": ""
+    },
+    {
+      "key": "eyebrow",
+      "type": "ReactNode",
+      "description": "Small mono line above the heading. Blank shows none.",
+      "default": ""
+    },
+    {
+      "key": "eyebrowIcon",
+      "type": "ReactNode",
+      "description": "Icon before the eyebrow. None unless passed."
+    },
+    {
+      "key": "lede",
+      "type": "ReactNode",
+      "description": "Paragraph under the heading. Blank shows none.",
+      "default": ""
+    },
+    {
+      "key": "score",
+      "type": "{ value: number | string, display?: ReactNode, max?: number, label?: string, text?: ReactNode }",
+      "description": "The rating block beside the heading: the number, stars when `value` is a number (named by `label`), and a line of `text`. None unless passed."
+    },
+    {
+      "key": "headingLevel",
+      "type": "1 | 2 | 3 | 4 | 5 | 6",
+      "description": "Heading level of the heading element.",
+      "default": 2
+    },
+    {
+      "key": "groups",
+      "type": "{ id: string, label: string, noun: string }[]",
+      "description": "Filter chips after 'All'; a voice belongs to the group named by its `group`. No chips unless passed.",
+      "default": []
+    },
+    {
+      "key": "sources",
+      "type": "Record<string, string | { label: ReactNode, icon?: ReactNode }>",
+      "description": "How a voice's `source` key is shown (label and icon). A key not in the map is shown as its own text."
+    },
+    {
+      "key": "filter",
+      "type": "string",
+      "description": "Controlled filter ('all' or a group id). Pass it with onFilterChange."
+    },
+    {
+      "key": "defaultFilter",
+      "type": "string",
+      "description": "Uncontrolled starting filter.",
+      "default": "all"
+    },
+    {
+      "key": "onFilterChange",
+      "type": "(filter: string) => void",
+      "description": "Called with the group id when a chip is pressed."
+    },
+    {
+      "key": "openId",
+      "type": "string | null",
+      "description": "Controlled spotlight: the open voice's id, or null. Pass it with onOpenIdChange."
+    },
+    {
+      "key": "defaultOpenId",
+      "type": "string | null",
+      "description": "Voice open in the spotlight at first, uncontrolled.",
+      "default": null
+    },
+    {
+      "key": "onOpenIdChange",
+      "type": "(id: string | null, voice) => void",
+      "description": "Called when a card is opened, next / previous is pressed, or the spotlight closes (null)."
+    },
+    {
+      "key": "onOpen",
+      "type": "(voice) => void",
+      "description": "Called with the voice object each time the spotlight opens on a card."
+    },
+    {
+      "key": "onVideoPlay",
+      "type": "(voice, playing: boolean) => void",
+      "description": "Called when the spotlight's play button on a video voice is pressed."
+    },
+    {
+      "key": "onLayoutChange",
+      "type": "(layout: 'wall' | 'masonry') => void",
+      "description": "Called when 'Read all' / 'Back to the wall' switches the layout."
+    },
+    {
+      "key": "paused",
+      "type": "boolean",
+      "description": "Controlled pause of the drift. Pass it with onPausedChange."
+    },
+    {
+      "key": "defaultPaused",
+      "type": "boolean",
+      "description": "Uncontrolled starting pause.",
+      "default": false
+    },
+    {
+      "key": "onPausedChange",
+      "type": "(paused: boolean) => void",
+      "description": "Called when the Pause / Play button is pressed."
+    },
+    {
+      "key": "labels",
+      "type": "{ all, allNoun, filters, list(group), rated(voice), open(voice), watch, playFilm, pauseFilm, showing(n, total), status(n, total, group), pause, play, pauseWall, playWall, readAll(n), backToWall, showMore(n), showFewer, emptyGroup(group), empty, close, prev, next, hint, position(i, n, voice) }",
+      "description": "Every word the wall uses, merged over the English defaults."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Cards do not open, chips and buttons are disabled.",
+      "default": false
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Fill blank voices, heading, eyebrow, lede, score, groups and sources with the invented sample. Gallery only; leave off in real UI.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLElement>",
+      "description": "The root <section>."
+    },
+    {
+      "key": "className",
+      "type": "string",
+      "description": "Added to the root."
+    },
+    {
+      "key": "style",
+      "type": "CSSProperties",
+      "description": "Merged onto the root."
+    }
+  ],
+  "example": "<TestimonialWall\n  heading=\"What customers say\"\n  voices={reviews.map((r) => ({ id: r.id, name: r.author, role: r.title, venue: r.company, quote: r.text, rating: r.stars, avatar: r.photoUrl, group: r.segment }))}\n  groups={[{ id: \"smb\", label: \"Small teams\", noun: \"small teams\" }, { id: \"ent\", label: \"Enterprise\", noun: \"enterprise teams\" }]}\n  onOpen={(voice) => track(\"testimonial_open\", voice.id)}\n/>"
+}

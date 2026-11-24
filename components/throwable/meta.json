@@ -1,0 +1,109 @@
+{
+  "name": "Throwable",
+  "slug": "throwable",
+  "export": "Throwable",
+  "order": 4.5,
+  "kind": "components",
+  "category": "showpieces",
+  "subcategory": "wrappers",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "added": "2026-11-24",
+  "hint": "Pick up any piece and throw it; it comes back to rest. Press one without moving and it works as usual. Tab to the note or the number and use the arrow keys.",
+  "description": "A wrapper that makes whatever is inside it something you can pick up and throw. Let go, it flies on with the speed it was released at and comes back to rest where it was, on one of the kit's named springs, settling at its lean. It can be caught on the way back and thrown again. A press that does not travel still works what is inside. ThrowableTray rests several pieces together: their bounds, their places and an entrance in which they drop in one after another.",
+  "intents": [
+    "make a card or widget something you can pick up and throw",
+    "playful onboarding screen while a workspace is set up",
+    "pieces that spring back into place after you drag them",
+    "a tray of live components set down askew",
+    "physics toy made of real ui",
+    "drag and fling an element that snaps back"
+  ],
+  "tags": [
+    "throw",
+    "throwable",
+    "fling",
+    "toss",
+    "drag",
+    "spring back",
+    "snap back",
+    "physics",
+    "rubber band",
+    "playful",
+    "wrapper",
+    "tray",
+    "momentum",
+    "onboarding"
+  ],
+  "usage": "Use around small things people may play with while they wait or explore: an onboarding or setup screen, a launch page, an empty state, a gallery of your own components. Not for things people must act on quickly or precisely (a form they are filling in, a primary action, a navigation): a piece that moves when touched slows them down. Wrap anything: `<Throwable lean={-4}>…</Throwable>`. It returns on `spring` (one of the kit's named springs; `settle` by default) and settles at `lean` degrees. A press that travels under 4px is a press on what is inside and is not touched; a press that starts on an input, textarea, select, contenteditable or role=slider, or inside an element marked `data-throwable-ignore`, is never a throw (mark a part that drags by itself, like a segmented control's thumb or a slider's track). `suppressClick` swallows the click that follows a throw. Put pieces in a ThrowableTray (give it a size in CSS): the tray is their default bounds, `at={[x, y]}` places a piece's centre in percent of the tray, and with `entrance` they drop in one after another when the tray comes on screen. Outside a tray a piece flies free unless you pass `bounds` (a ref or an element); `give` is how far it can be pulled past an edge, as a fraction of its own size, rubber-banded. Keyboard: content with nothing focusable inside makes the piece its own tab stop, named by `label` (arrow keys flick it, Enter or Space tosses it, and a polite status line says so and says when it is back at rest); content with a control inside adds no tab stop and keeps every plain key, and Alt+Arrow or Alt+Enter moves the piece while focus is inside, never from editable text. Touch and scrolling: a finger that lands on a piece moves the piece, not the page (touch-action: none on the piece only); the room between pieces scrolls the page as usual, so leave some, and keep pieces at least 44px in both directions. Under reduced motion the pieces rest at their lean and cannot be picked up or flicked, there is no entrance and onThrow / onRest do not fire; what is inside works as always. A pulled or thrown piece can reach past its tray by its give: a tray with overflow: clip cuts it there, so give the clip a margin (overflow-clip-margin) or leave room around the tray. The piece's lifted shadow and focus ring follow `--ts-throw-radius` (default var(--ts-radius-lg)); set it to the radius of what you wrap. `demo` shows a workspace being set up (gallery only).",
+  "states": [
+    "default",
+    "dragging",
+    "focus",
+    "disabled"
+  ],
+  "keyboard": [
+    { "keys": "Tab", "does": "Reaches a piece whose content has nothing focusable; a piece with a control inside adds no stop, and Tab goes to the control." },
+    { "keys": "ArrowLeft / ArrowRight / ArrowUp / ArrowDown", "does": "Flicks the piece that way; it comes back to rest.", "when": "on a piece that is its own tab stop" },
+    { "keys": "Enter / Space", "does": "Tosses the piece up; it comes back to rest.", "when": "on a piece that is its own tab stop" },
+    { "keys": "Alt+ArrowLeft / Alt+ArrowRight / Alt+ArrowUp / Alt+ArrowDown", "does": "Flicks the piece that way, while focus is on a control inside it.", "when": "focus inside a piece, not in editable text" },
+    { "keys": "Alt+Enter", "does": "Tosses the piece, while focus is on a control inside it.", "when": "focus inside a piece, not in editable text" }
+  ],
+  "screenReader": "A piece with nothing focusable inside is a button named by `label` (or by its text), described as \"Arrow keys flick it. Enter or Space tosses it.\" A piece with a control inside is a group named by `label` and described as \"Alt and an arrow key flick this piece. Alt and Enter toss it.\"; the control inside is announced as itself. After a keyboard flick or toss a polite status says \"<label> flicked left.\" or \"<label> tossed.\", and \"<label> is back at rest.\" when it settles. ThrowableTray is a group named by its `label`. Under reduced motion, disabled or keyboard={false} the piece adds nothing for screen readers.",
+  "controls": [
+    { "group": "Rest", "key": "lean", "label": "Lean", "type": "range", "min": -15, "max": 15, "step": 0.5, "unit": "°", "default": 0 },
+    { "group": "Return", "key": "spring", "label": "Spring", "type": "select", "options": ["snappy", "settle", "soft", "entrance", "playful"], "default": "settle" },
+    { "group": "Return", "key": "maxSpeed", "label": "Release speed cap", "type": "range", "min": 600, "max": 9000, "step": 100, "unit": "px/s", "default": 5200 },
+    { "group": "Hold", "key": "lift", "label": "Lift", "type": "range", "min": 1, "max": 1.2, "step": 0.01, "default": 1.06 },
+    { "group": "Hold", "key": "give", "label": "Give past an edge", "type": "range", "min": 0, "max": 1, "step": 0.01, "default": 0.22 },
+    { "group": "Behaviour", "key": "suppressClick", "label": "Swallow the click after a throw", "type": "toggle", "default": true },
+    { "group": "Behaviour", "key": "keyboard", "label": "Keyboard", "type": "toggle", "default": true },
+    { "group": "State", "key": "disabled", "label": "Disabled", "type": "toggle", "default": false },
+    { "group": "Demo", "key": "demo", "label": "Sample content", "type": "toggle", "default": false }
+  ],
+  "presets": {
+    "Lively": { "spring": "playful", "lift": 1.1, "give": 0.35 },
+    "Firm": { "spring": "snappy", "lift": 1.03, "give": 0.1, "maxSpeed": 3200 }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    { "key": "children", "type": "ReactNode", "description": "What can be picked up and thrown. It keeps working: a press that does not travel reaches it untouched." },
+    { "key": "lean", "type": "number", "description": "Degrees it sits at when at rest (and returns to after a throw). While held it straightens.", "default": 0 },
+    { "key": "spring", "type": "\"snappy\" | \"settle\" | \"soft\" | \"entrance\" | \"playful\"", "description": "The kit's named spring it returns on (tokens.json motion.springs).", "default": "settle" },
+    { "key": "bounds", "type": "RefObject<HTMLElement> | HTMLElement | \"tray\"", "description": "What it stays inside: its edges are a rubber band while held and a soft wall in flight. Default: the ThrowableTray it is in, else none (free to go anywhere)." },
+    { "key": "give", "type": "number", "description": "0 to 1: how far it can be pulled or thrown past an edge of its bounds, as a fraction of its own size, rubber-banded.", "default": 0.22 },
+    { "key": "maxSpeed", "type": "number", "description": "Cap on the release speed, in px/s.", "default": 5200 },
+    { "key": "lift", "type": "number", "description": "Scale while held.", "default": 1.06 },
+    { "key": "suppressClick", "type": "boolean", "description": "Swallow the click that follows a throw (or a catch), so a throw is not also a press on what is inside.", "default": true },
+    { "key": "keyboard", "type": "boolean", "description": "Arrow keys and Enter / Space on a piece that is its own tab stop; Alt+Arrow and Alt+Enter from a control inside. false turns all of it off, and the piece adds no tab stop.", "default": true },
+    { "key": "label", "type": "string", "description": "The piece's name for screen readers: the button's name when it is its own tab stop, the group's when a control is inside, and the word used in the status line (\"Piece\" when none)." },
+    { "key": "disabled", "type": "boolean", "description": "It rests at its lean and cannot be picked up or flicked; what is inside still works.", "default": false },
+    { "key": "at", "type": "[number, number]", "description": "Inside a ThrowableTray only: where its centre rests, as [x, y] in percent of the tray. Without it the piece is laid out by the tray's own CSS." },
+    { "key": "onThrow", "type": "(throw: { velocity: { x: number; y: number }; speed: number; by: \"pointer\" | \"keyboard\" }) => void", "description": "Called when it is let go after a throw (velocity in px/s, after the cap) or flicked or tossed from the keyboard. Not called for a press that did not travel, or under reduced motion." },
+    { "key": "onRest", "type": "() => void", "description": "Called when it is back at rest after a throw, flick or toss (not after the tray's entrance)." },
+    { "key": "demo", "type": "boolean", "description": "With no children: a workspace being set up, with a tray of seven live pieces. Gallery only; leave off in real UI.", "default": false },
+    { "key": "className", "type": "string", "description": "Class on the wrapper." },
+    { "key": "style", "type": "React.CSSProperties", "description": "Style on the wrapper (set --ts-throw-radius here to match what you wrap)." },
+    { "key": "ref", "type": "Ref<HTMLDivElement>", "description": "The wrapper <div> (it stays in place; the part that moves is inside it)." },
+    { "key": "...rest", "type": "attributes", "description": "Any other attribute (id, data-*, aria-*, event handlers) goes to the wrapper <div>." }
+  ],
+  "exports": [
+    {
+      "export": "ThrowableTray",
+      "description": "The field several Throwables rest on together. It is the default bounds of the Throwables inside it, places those that have `at` (their centre, in percent of the tray), and, with `entrance`, keeps them hidden until it comes on screen and then drops them in one after another (0.06s apart, on the kit's entrance spring) to come to rest. While a piece is away, a dashed outline marks where it will land. Its size is yours: give it a width and height in CSS. It is a group named by `label`. No entrance under reduced motion.",
+      "props": [
+        { "key": "children", "type": "node", "description": "The Throwables (and anything else that sits on the tray)." },
+        { "key": "entrance", "type": "boolean", "description": "When it first comes on screen the pieces drop in one after another and come to rest.", "default": true },
+        { "key": "label", "type": "string", "description": "Accessible name of the group." },
+        { "key": "className", "type": "string", "description": "Class on the tray; other props (id, data-*, aria-*) go there too." },
+        { "key": "style", "type": "React.CSSProperties", "description": "Style on the tray: give it its size here or in your CSS." },
+        { "key": "ref", "type": "Ref<HTMLDivElement>", "description": "The tray <div>." }
+      ],
+      "example": "<ThrowableTray label=\"Your workspace\" style={{ height: 480, borderRadius: 24 }}>\n  <Throwable at={[30, 25]} lean={-4} label=\"Default view\">\n    <ViewPicker />\n  </Throwable>\n  <Throwable at={[72, 60]} lean={6} label=\"128 projects imported\">\n    <StatCard value={128} caption=\"projects imported\" />\n  </Throwable>\n</ThrowableTray>"
+    }
+  ],
+  "example": "import { Throwable, ThrowableTray } from \"@tweensmith/ui/throwable\";\n\n<ThrowableTray label=\"Your new workspace\" style={{ height: 520 }}>\n  <Throwable at={[28, 30]} lean={-4} label=\"Weekly digest\">\n    <Switch label=\"Weekly digest\" defaultChecked />\n  </Throwable>\n  <Throwable at={[70, 34]} lean={5} label=\"Kickoff note\" spring=\"playful\" onRest={() => track(\"note-thrown\")}>\n    <div className=\"note\"><b>Kickoff</b> Thursday 10:00</div>\n  </Throwable>\n</ThrowableTray>"
+}

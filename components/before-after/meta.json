@@ -1,0 +1,284 @@
+{
+  "name": "Before/After Slider",
+  "slug": "before-after",
+  "export": "BeforeAfter",
+  "order": 102,
+  "kind": "bands",
+  "category": "features",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Drag or flick the line, click to glide it, and hover for the loupe.",
+  "description": "A before-and-after section for a product whose result you can see. The comparison behaves like a precision instrument: the divider is sprung, so you drag it, flick it and it coasts and settles, or click anywhere and it glides there; a viewfinder scale along the edge brightens under it. It is a real slider on the keyboard (arrows, Shift for tens, Home and End, \"62% after\"). The Before and After labels sit on a dark glass backing that stays legible over any image and fade as the divider covers them, and a split loupe magnifies the same spot in both states, following the pointer, lifting above it while you drag, and holding where you leave it on touch. Three modes: wipe (left to right or top to bottom), hold to peek, and side by side with linked loupes. Thumbnails switch pairs: the divider dips and sweeps back across to reveal the new after while the caption and the \"what changed\" figures roll to the new values. You pass the image pairs (URLs or your own nodes), captions and measured changes; `demo` shows a sample photo restoration app with procedural photos. Sized by its container; on phones it stacks with a portrait frame and a thumbnail snap rail.",
+  "intents": [
+    "before and after image comparison slider",
+    "compare two images with a draggable divider",
+    "photo editing or restoration landing page section",
+    "image comparison with a magnifier loupe",
+    "show product results side by side"
+  ],
+  "tags": [
+    "before after",
+    "comparison",
+    "image compare",
+    "slider",
+    "divider",
+    "wipe",
+    "reveal",
+    "loupe",
+    "magnifier",
+    "side by side",
+    "hold to peek",
+    "photo",
+    "restoration",
+    "landing page",
+    "section"
+  ],
+  "usage": "Use once on a landing page when the product's result is visual: photo and video tools, design and print, cleaning or renovation, skincare. Pass `pairs`: each with an `id`, a `title`, `before` and `after` image URLs (or nodes such as <img> or <picture>) and `alt.before` / `alt.after`; add a `caption` and three or four measured `changes` if you have them. Add `heading`, `intro` and `actions` with `onPrimary` for the section around it. Read or drive the divider with `position` + `onPositionChange` and the shown pair with `pair` + `onPairChange` (each is the caller's when passed with its handler; `defaultPosition` / `defaultPair` otherwise). Keep the after on the start side so the divider reads as how much is after. Turn on `autoDemo` to sweep once on first view. With no `pairs` it shows nothing (or only the header you pass).",
+  "states": [
+    "default",
+    "active"
+  ],
+  "controls": [
+    {
+      "group": "Comparison",
+      "key": "mode",
+      "label": "Mode",
+      "type": "select",
+      "options": [
+        "wipe",
+        "peek",
+        "side"
+      ],
+      "default": "wipe"
+    },
+    {
+      "group": "Comparison",
+      "key": "orientation",
+      "label": "Orientation",
+      "type": "select",
+      "options": [
+        "horizontal",
+        "vertical"
+      ],
+      "default": "horizontal"
+    },
+    {
+      "group": "Comparison",
+      "key": "defaultPosition",
+      "label": "Divider (% after)",
+      "type": "range",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 50
+    },
+    {
+      "group": "Comparison",
+      "key": "showLoupe",
+      "label": "Loupe",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Content",
+      "key": "defaultPair",
+      "label": "Photo",
+      "type": "select",
+      "options": [
+        {
+          "value": "",
+          "label": "First"
+        },
+        {
+          "value": "night-portrait",
+          "label": "Night portrait"
+        },
+        {
+          "value": "faded-print",
+          "label": "Faded print"
+        },
+        {
+          "value": "low-light-street",
+          "label": "Low-light street"
+        },
+        {
+          "value": "old-scan",
+          "label": "Old scan"
+        }
+      ],
+      "default": ""
+    },
+    {
+      "group": "Motion",
+      "key": "autoDemo",
+      "label": "Auto-demo on first view",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Vertical wipe": {
+      "orientation": "vertical",
+      "defaultPair": "low-light-street"
+    },
+    "Hold to peek": {
+      "mode": "peek",
+      "defaultPair": "faded-print"
+    },
+    "Side by side": {
+      "mode": "side",
+      "defaultPair": "old-scan"
+    },
+    "Mostly restored": {
+      "defaultPosition": 78,
+      "autoDemo": false
+    },
+    "No loupe": {
+      "showLoupe": false
+    }
+  },
+  "demoProps": {
+    "demo": true,
+    "autoDemo": true
+  },
+  "dataProps": [
+    {
+      "key": "pairs",
+      "type": "Array<{ id: string, title?: ReactNode, label?: ReactNode, before: string | ReactNode, after: string | ReactNode, alt?: { before: string, after: string }, caption?: ReactNode, meta?: ReactNode, changes?: Array<{ label: string, note?: string, value: number, unit?: string, decimals?: number, sign?: boolean, from?: number, to?: number }> }>",
+      "description": "The comparisons. `before` / `after` are image URLs (drawn with object-fit: cover) or your own nodes; `alt` describes each image (falls back to the title and the label). `label` is accepted for `title`. `changes` fill the \"what changed\" list (`from` / `to` are 0 to 1 for the little bar). More than one pair shows thumbnails. Empty shows no comparison.",
+      "default": []
+    },
+    {
+      "key": "pair",
+      "type": "string",
+      "description": "The id of the pair shown. Passed with onPairChange it is controlled: thumbnails ask through onPairChange and the pair changes when you change this. Passed alone, it is where the comparison starts and follows when it changes."
+    },
+    {
+      "key": "defaultPair",
+      "type": "string",
+      "description": "Starting pair id when uncontrolled (\"\" is the first pair). Changing it later selects that pair.",
+      "default": ""
+    },
+    {
+      "key": "onPairChange",
+      "type": "function",
+      "description": "(pair, index: number) => void, when the reader picks another pair."
+    },
+    {
+      "key": "position",
+      "type": "number",
+      "description": "Divider position, 0 to 100 (% of the after shown). Passed with onPositionChange it is controlled: moves are reported and the divider springs back to this value if you do not take them. Passed alone, it is the resting point the divider glides to whenever it changes."
+    },
+    {
+      "key": "defaultPosition",
+      "type": "number",
+      "description": "Starting divider position when uncontrolled. Changing it later glides the divider there.",
+      "default": 50
+    },
+    {
+      "key": "onPositionChange",
+      "type": "function",
+      "description": "(position: number) => void, whole percent, while the reader drags, flicks, clicks or uses the keys."
+    },
+    {
+      "key": "eyebrow",
+      "type": "ReactNode",
+      "description": "Small line above the heading. Blank shows none."
+    },
+    {
+      "key": "eyebrowIcon",
+      "type": "ReactNode",
+      "description": "An icon or mark before the eyebrow."
+    },
+    {
+      "key": "heading",
+      "type": "ReactNode",
+      "description": "The section heading (names the section for screen readers). Blank shows none."
+    },
+    {
+      "key": "intro",
+      "type": "ReactNode",
+      "description": "A sentence or two beside the heading. Blank shows none."
+    },
+    {
+      "key": "labels",
+      "type": "{ before?: string, after?: string, changes?: string, list?: string, mode?: string }",
+      "description": "Words on the image labels and the slider (`before`, `after`), the heading of the changes list, the accessible names of the thumbnail list and the mode switch.",
+      "default": {
+        "before": "Before",
+        "after": "After",
+        "changes": "What changed",
+        "list": "Comparisons",
+        "mode": "Comparison mode"
+      }
+    },
+    {
+      "key": "note",
+      "type": "ReactNode",
+      "description": "A line with a check mark under the changes (a promise or a footnote). Blank shows none."
+    },
+    {
+      "key": "actions",
+      "type": "{ primary?: string, secondary?: string, href?: string }",
+      "description": "Call to action under the report: a primary button and a secondary link (to `href`) or, without `href`, a secondary button. Blank shows none."
+    },
+    {
+      "key": "onPrimary",
+      "type": "function",
+      "description": "(event, pair, index) => void, for the primary button."
+    },
+    {
+      "key": "onSecondary",
+      "type": "function",
+      "description": "(event, pair, index) => void, for the secondary link or button."
+    },
+    {
+      "key": "zoom",
+      "type": "number",
+      "description": "Loupe magnification, 1.5 to 5.",
+      "default": 3
+    },
+    {
+      "key": "headingLevel",
+      "type": "number",
+      "description": "Level of the section heading (1 to 5); the pair title is one level below.",
+      "default": 2
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "The divider, loupe, mode switch, thumbnails and actions stop responding; the slider leaves the tab order and is announced as disabled.",
+      "default": false
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Show the sample restoration app (four procedural photo pairs, its heading, copy and actions) when no pairs are passed. Gallery only; leave off in real UI.",
+      "default": false
+    },
+    {
+      "key": "className",
+      "type": "string",
+      "description": "Added to the root section."
+    },
+    {
+      "key": "style",
+      "type": "CSSProperties",
+      "description": "Merged into the root section's style."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLElement>",
+      "description": "The root section, for measuring or scrolling to it."
+    }
+  ],
+  "example": "const pairs = [\n  { id: \"kitchen\", title: \"Kitchen\", before: \"/work/kitchen-before.jpg\", after: \"/work/kitchen-after.jpg\", alt: { before: \"The kitchen with old tiles\", after: \"The same kitchen retiled in white\" }, caption: \"Retiled in four days.\" },\n  { id: \"hall\", title: \"Hallway\", before: \"/work/hall-before.jpg\", after: \"/work/hall-after.jpg\", alt: { before: \"A dark hallway\", after: \"The hallway painted and lit\" } },\n];\nconst [shown, setShown] = useState(\"kitchen\");\n\n<BeforeAfter\n  heading=\"See the difference.\"\n  intro=\"Drag the line on any of our recent jobs.\"\n  pairs={pairs}\n  pair={shown}\n  onPairChange={(p) => setShown(p.id)}\n  actions={{ primary: \"Get a quote\", secondary: \"All projects\", href: \"/work\" }}\n  onPrimary={() => openQuote()}\n/>"
+}

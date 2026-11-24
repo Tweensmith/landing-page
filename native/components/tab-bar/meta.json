@@ -1,0 +1,114 @@
+{
+  "name": "Tab Bar",
+  "slug": "tab-bar",
+  "export": "TabBar",
+  "order": 60,
+  "kind": "components",
+  "category": "mobile",
+  "platform": "native",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Press and drag along the bar: the lens lifts and magnifies each icon it passes. Scroll down to fold the bar into the mini player.",
+  "description": "Bottom tab navigation for React Native in the iOS 26 shape, demoed in a music app. The selection is a liquid lens whose leading edge springs ahead while the trailing edge lags, so it stretches toward the chosen tab. Press and drag to scrub: the lens lifts, follows the finger and magnifies the icons it passes, with a selection haptic per tab. Search sits apart in its own circle. Scrolling down folds the bar to the current tab and slides the mini player into the gap, where its cover turns into a spinning disc; scrolling up restores it. Floating or classic full-width, safe-area aware.",
+  "intents": [
+    "bottom tab bar for a mobile app",
+    "react native tab navigation",
+    "ios style floating tab bar",
+    "app bottom navigation with badges"
+  ],
+  "tags": [
+    "android",
+    "bottom navigation",
+    "bottom tabs",
+    "expo",
+    "haptics",
+    "ios",
+    "liquid",
+    "liquid glass",
+    "mini player",
+    "music",
+    "react native",
+    "tab bar"
+  ],
+  "usage": "Use for three to five top-level destinations in a phone app. Keep labels to one short word; put everything else inside the screens. Pair with your navigator by calling it from a custom tabBar renderer.",
+  "states": [
+    "default"
+  ],
+  "controls": [
+    {
+      "group": "Style",
+      "key": "variant",
+      "label": "Variant",
+      "type": "select",
+      "options": [
+        "floating",
+        "classic"
+      ],
+      "default": "floating"
+    },
+    {
+      "group": "Style",
+      "key": "showLabels",
+      "label": "Labels",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Style",
+      "key": "showBadge",
+      "label": "Badge on Library",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Tabs",
+      "key": "tabCount",
+      "label": "Tabs",
+      "type": "range",
+      "min": 3,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "group": "Motion",
+      "key": "stretch",
+      "label": "Liquid stretch",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Motion",
+      "key": "scrub",
+      "label": "Drag to scrub",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Motion",
+      "key": "minimize",
+      "label": "Fold on scroll",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Content",
+      "key": "showPlayer",
+      "label": "Mini player",
+      "type": "toggle",
+      "default": true
+    }
+  ],
+  "presets": {
+    "Classic": {
+      "variant": "classic"
+    },
+    "Icons only": {
+      "showLabels": false,
+      "tabCount": 5
+    },
+    "No player": {
+      "showPlayer": false
+    }
+  }
+}

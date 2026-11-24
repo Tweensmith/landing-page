@@ -1,0 +1,1111 @@
+{
+  "capturedAt": "2026-11-23",
+  "server": "tweensmith/mcp/server.mjs (stdio)",
+  "tool": "get_component",
+  "components": {
+    "avatar-group": {
+      "name": "Avatar Group",
+      "slug": "avatar-group",
+      "export": "AvatarGroup",
+      "tier": "free",
+      "platform": "web",
+      "intents": [
+        "avatar stack with +N overflow",
+        "show who is viewing this document",
+        "collaborators presence in a header",
+        "multiplayer avatars with follow mode",
+        "facepile with online status"
+      ],
+      "states": [
+        "default",
+        "hover",
+        "open"
+      ],
+      "presets": {
+        "Compact toolbar": {
+          "size": "sm",
+          "max": 4,
+          "overlap": 35
+        },
+        "Roomy header": {
+          "size": "lg",
+          "max": 6,
+          "overlap": 20
+        },
+        "Right on top": {
+          "stackOrder": "last-on-top",
+          "overlap": 40
+        },
+        "Static roster": {
+          "live": false,
+          "showPresence": false,
+          "lift": 0
+        }
+      },
+      "ranges": [
+        {
+          "key": "max",
+          "label": "Max visible",
+          "min": 1,
+          "max": 8,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "key": "overlap",
+          "label": "Overlap %",
+          "min": 10,
+          "max": 50,
+          "step": 5,
+          "default": 30
+        },
+        {
+          "key": "interval",
+          "label": "Live interval (ms)",
+          "min": 1500,
+          "max": 6000,
+          "step": 500,
+          "default": 3000
+        },
+        {
+          "key": "lift",
+          "label": "Magnet lift (px)",
+          "min": 0,
+          "max": 20,
+          "step": 2,
+          "default": 10
+        }
+      ],
+      "propCount": 19,
+      "files": [
+        {
+          "path": "avatar-group/index.jsx",
+          "lines": 1201
+        },
+        {
+          "path": "_shared/theme.jsx",
+          "lines": 194
+        },
+        {
+          "path": "_shared/themes.js",
+          "lines": 101
+        },
+        {
+          "path": "_shared/media.js",
+          "lines": 21
+        },
+        {
+          "path": "_shared/page.jsx",
+          "lines": 112
+        },
+        {
+          "path": "_shared/icons.jsx",
+          "lines": 100
+        },
+        {
+          "path": "_shared/art.jsx",
+          "lines": 164
+        },
+        {
+          "path": "_shared/rolling-number.jsx",
+          "lines": 31
+        },
+        {
+          "path": "_shared/chart.jsx",
+          "lines": 414
+        },
+        {
+          "path": "_shared/overlay.jsx",
+          "lines": 350
+        }
+      ],
+      "fields": [
+        "name",
+        "slug",
+        "export",
+        "order",
+        "category",
+        "platform",
+        "level",
+        "tier",
+        "hint",
+        "description",
+        "intents",
+        "tags",
+        "usage",
+        "states",
+        "keyboard",
+        "screenReader",
+        "controls",
+        "presets",
+        "props",
+        "install",
+        "theming",
+        "files",
+        "usageSnippet",
+        "preview"
+      ]
+    },
+    "switch": {
+      "name": "Switch",
+      "slug": "switch",
+      "export": "Switch",
+      "tier": "free",
+      "platform": "web",
+      "intents": [
+        "toggle a setting on or off",
+        "notification preferences",
+        "settings row with a switch",
+        "enable dark mode toggle"
+      ],
+      "states": [
+        "default",
+        "hover",
+        "focus",
+        "selected",
+        "disabled"
+      ],
+      "presets": {
+        "Bare switch": {
+          "showRow": false
+        },
+        "Dark mode": {
+          "label": "Dark mode",
+          "description": "Follows your system by default.",
+          "defaultChecked": true
+        },
+        "Plain row": {
+          "bordered": false
+        }
+      },
+      "ranges": [],
+      "propCount": 21,
+      "files": [
+        {
+          "path": "switch/index.jsx",
+          "lines": 205
+        },
+        {
+          "path": "_shared/theme.jsx",
+          "lines": 194
+        },
+        {
+          "path": "_shared/themes.js",
+          "lines": 101
+        },
+        {
+          "path": "_shared/field.jsx",
+          "lines": 130
+        },
+        {
+          "path": "_shared/icons.jsx",
+          "lines": 100
+        }
+      ],
+      "fields": [
+        "name",
+        "slug",
+        "export",
+        "order",
+        "category",
+        "platform",
+        "level",
+        "tier",
+        "hint",
+        "description",
+        "intents",
+        "tags",
+        "usage",
+        "states",
+        "keyboard",
+        "screenReader",
+        "controls",
+        "presets",
+        "props",
+        "install",
+        "theming",
+        "files",
+        "usageSnippet",
+        "preview"
+      ]
+    },
+    "progress": {
+      "name": "Progress",
+      "slug": "progress",
+      "export": "Progress",
+      "tier": "free",
+      "platform": "web",
+      "intents": [
+        "upload progress bar",
+        "loading percentage",
+        "circular progress ring",
+        "show progress through steps"
+      ],
+      "states": [
+        "default",
+        "loading",
+        "success"
+      ],
+      "presets": {
+        "Ring": {
+          "kind": "ring"
+        },
+        "Steps": {
+          "kind": "steps",
+          "value": 50
+        },
+        "Indeterminate": {
+          "indeterminate": true
+        },
+        "Live": {
+          "simulate": true
+        }
+      },
+      "ranges": [
+        {
+          "key": "value",
+          "label": "Value",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 0
+        },
+        {
+          "key": "thickness",
+          "label": "Thickness",
+          "min": 2,
+          "max": 14,
+          "step": 1,
+          "default": 6
+        },
+        {
+          "key": "steps",
+          "label": "Steps",
+          "min": 2,
+          "max": 8,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "key": "width",
+          "label": "Width",
+          "min": 200,
+          "max": 560,
+          "step": 10,
+          "default": 380
+        }
+      ],
+      "propCount": 29,
+      "files": [
+        {
+          "path": "progress/index.jsx",
+          "lines": 220
+        },
+        {
+          "path": "_shared/theme.jsx",
+          "lines": 194
+        },
+        {
+          "path": "_shared/themes.js",
+          "lines": 101
+        },
+        {
+          "path": "_shared/icons.jsx",
+          "lines": 100
+        },
+        {
+          "path": "_shared/rolling-number.jsx",
+          "lines": 31
+        }
+      ],
+      "fields": [
+        "name",
+        "slug",
+        "export",
+        "order",
+        "category",
+        "platform",
+        "level",
+        "tier",
+        "hint",
+        "description",
+        "intents",
+        "tags",
+        "usage",
+        "states",
+        "keyboard",
+        "screenReader",
+        "controls",
+        "presets",
+        "props",
+        "install",
+        "theming",
+        "files",
+        "usageSnippet",
+        "preview"
+      ]
+    },
+    "rating": {
+      "name": "Rating",
+      "slug": "rating",
+      "export": "Rating",
+      "tier": "free",
+      "platform": "web",
+      "intents": [
+        "star rating input",
+        "rate a product",
+        "leave a review score",
+        "show average rating stars"
+      ],
+      "states": [
+        "default",
+        "hover",
+        "focus",
+        "disabled"
+      ],
+      "presets": {
+        "Average": {
+          "readOnly": true,
+          "defaultValue": 4.5,
+          "showWords": false,
+          "label": "4,218 reviews"
+        },
+        "Compact": {
+          "size": 18,
+          "gap": 2,
+          "showWords": false
+        }
+      },
+      "ranges": [
+        {
+          "key": "defaultValue",
+          "label": "Initial value",
+          "min": 0,
+          "max": 10,
+          "step": 0.5,
+          "default": 0
+        },
+        {
+          "key": "max",
+          "label": "Stars",
+          "min": 3,
+          "max": 10,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "key": "gap",
+          "label": "Gap",
+          "min": 0,
+          "max": 16,
+          "step": 1,
+          "unit": "px",
+          "default": 6
+        }
+      ],
+      "propCount": 26,
+      "files": [
+        {
+          "path": "rating/index.jsx",
+          "lines": 236
+        },
+        {
+          "path": "_shared/theme.jsx",
+          "lines": 194
+        },
+        {
+          "path": "_shared/themes.js",
+          "lines": 101
+        },
+        {
+          "path": "_shared/field.jsx",
+          "lines": 130
+        },
+        {
+          "path": "_shared/icons.jsx",
+          "lines": 100
+        }
+      ],
+      "fields": [
+        "name",
+        "slug",
+        "export",
+        "order",
+        "category",
+        "platform",
+        "level",
+        "tier",
+        "hint",
+        "description",
+        "intents",
+        "tags",
+        "usage",
+        "states",
+        "keyboard",
+        "screenReader",
+        "controls",
+        "presets",
+        "props",
+        "install",
+        "theming",
+        "files",
+        "usageSnippet",
+        "preview"
+      ]
+    },
+    "button": {
+      "name": "Button",
+      "slug": "button",
+      "export": "Button",
+      "tier": "free",
+      "platform": "web",
+      "intents": [
+        "primary call to action",
+        "submit a form",
+        "save or confirm an action",
+        "button with loading state",
+        "submit button that shows it is saving",
+        "destructive delete button",
+        "secondary or ghost button",
+        "quiet or outline delete button"
+      ],
+      "states": [
+        "default",
+        "hover",
+        "focus",
+        "active",
+        "disabled",
+        "loading",
+        "success"
+      ],
+      "presets": {
+        "Delete": {
+          "variant": "danger",
+          "label": "Delete project"
+        },
+        "Quiet": {
+          "variant": "ghost",
+          "label": "Skip for now"
+        },
+        "Checkout": {
+          "size": "lg",
+          "fullWidth": true,
+          "label": "Pay now"
+        },
+        "Quiet delete": {
+          "variant": "danger-quiet",
+          "label": "Remove"
+        },
+        "Pill": {
+          "shape": "pill",
+          "label": "Get started"
+        }
+      },
+      "ranges": [
+        {
+          "key": "pressScale",
+          "label": "Press scale",
+          "min": 0.85,
+          "max": 1,
+          "step": 0.01,
+          "default": 0.96
+        }
+      ],
+      "propCount": 24,
+      "files": [
+        {
+          "path": "button/index.jsx",
+          "lines": 217
+        },
+        {
+          "path": "_shared/theme.jsx",
+          "lines": 194
+        },
+        {
+          "path": "_shared/themes.js",
+          "lines": 101
+        }
+      ],
+      "fields": [
+        "name",
+        "slug",
+        "export",
+        "order",
+        "category",
+        "platform",
+        "level",
+        "tier",
+        "hint",
+        "description",
+        "intents",
+        "tags",
+        "usage",
+        "states",
+        "keyboard",
+        "screenReader",
+        "controls",
+        "presets",
+        "props",
+        "install",
+        "theming",
+        "files",
+        "usageSnippet",
+        "preview"
+      ]
+    },
+    "text-field": {
+      "name": "Text Field",
+      "slug": "text-field",
+      "export": "TextField",
+      "tier": "free",
+      "platform": "web",
+      "intents": [
+        "email input field",
+        "form text input with validation",
+        "floating label input",
+        "sign up form field"
+      ],
+      "states": [
+        "default",
+        "hover",
+        "focus",
+        "disabled",
+        "error",
+        "success"
+      ],
+      "presets": {
+        "Full name": {
+          "label": "Full name",
+          "type": "text",
+          "validate": "required",
+          "icon": "user",
+          "hint": "As it appears on your ID."
+        },
+        "Website": {
+          "label": "Website",
+          "type": "url",
+          "validate": "url",
+          "icon": "link",
+          "hint": ""
+        },
+        "Bio": {
+          "label": "Short bio",
+          "type": "text",
+          "validate": "none",
+          "icon": "none",
+          "maxLength": 80,
+          "hint": "Shown on your profile."
+        }
+      },
+      "ranges": [
+        {
+          "key": "maxLength",
+          "label": "Max length (0 = off)",
+          "min": 0,
+          "max": 200,
+          "step": 1,
+          "default": 0
+        }
+      ],
+      "propCount": 41,
+      "files": [
+        {
+          "path": "text-field/index.jsx",
+          "lines": 216
+        },
+        {
+          "path": "_shared/theme.jsx",
+          "lines": 194
+        },
+        {
+          "path": "_shared/themes.js",
+          "lines": 101
+        },
+        {
+          "path": "_shared/field.jsx",
+          "lines": 130
+        },
+        {
+          "path": "_shared/icons.jsx",
+          "lines": 100
+        }
+      ],
+      "fields": [
+        "name",
+        "slug",
+        "export",
+        "order",
+        "category",
+        "platform",
+        "level",
+        "tier",
+        "hint",
+        "description",
+        "intents",
+        "tags",
+        "usage",
+        "states",
+        "keyboard",
+        "screenReader",
+        "controls",
+        "presets",
+        "props",
+        "install",
+        "theming",
+        "files",
+        "usageSnippet",
+        "preview"
+      ]
+    },
+    "copy-button": {
+      "name": "Copy Button",
+      "slug": "copy-button",
+      "export": "CopyButton",
+      "tier": "free",
+      "platform": "web",
+      "intents": [
+        "copy install command",
+        "copy to clipboard",
+        "copy api key",
+        "share link with a copy button"
+      ],
+      "states": [
+        "default",
+        "hover",
+        "focus",
+        "success",
+        "error",
+        "disabled"
+      ],
+      "presets": {
+        "API key": {
+          "value": "sk_live_8f2c…a91d",
+          "prompt": "key"
+        },
+        "Icon only": {
+          "showValue": false,
+          "showLabel": false
+        }
+      },
+      "ranges": [
+        {
+          "key": "resetAfter",
+          "label": "Reset after",
+          "min": 600,
+          "max": 4000,
+          "step": 100,
+          "unit": "ms",
+          "default": 1600
+        }
+      ],
+      "propCount": 19,
+      "files": [
+        {
+          "path": "copy-button/index.jsx",
+          "lines": 145
+        },
+        {
+          "path": "_shared/theme.jsx",
+          "lines": 194
+        },
+        {
+          "path": "_shared/themes.js",
+          "lines": 101
+        },
+        {
+          "path": "_shared/icons.jsx",
+          "lines": 100
+        }
+      ],
+      "fields": [
+        "name",
+        "slug",
+        "export",
+        "order",
+        "category",
+        "platform",
+        "level",
+        "tier",
+        "hint",
+        "description",
+        "intents",
+        "tags",
+        "usage",
+        "states",
+        "keyboard",
+        "screenReader",
+        "controls",
+        "presets",
+        "props",
+        "install",
+        "theming",
+        "files",
+        "usageSnippet",
+        "preview"
+      ]
+    },
+    "checkbox": {
+      "name": "Checkbox",
+      "slug": "checkbox",
+      "export": "Checkbox",
+      "tier": "free",
+      "platform": "web",
+      "intents": [
+        "agree to the terms checkbox",
+        "tick several boxes in a list",
+        "select all checkbox with indeterminate state",
+        "checkbox group in a form",
+        "select rows in a table with checkboxes",
+        "multi select filter checkboxes"
+      ],
+      "states": [
+        "default",
+        "hover",
+        "focus",
+        "active",
+        "selected",
+        "disabled",
+        "error"
+      ],
+      "presets": {
+        "Terms": {
+          "label": "I agree to the terms of service",
+          "required": true
+        },
+        "Bordered row": {
+          "label": "Keep me signed in",
+          "description": "On this device for 30 days.",
+          "bordered": true
+        },
+        "Mixed": {
+          "label": "Select all",
+          "indeterminate": true
+        }
+      },
+      "ranges": [],
+      "propCount": 24,
+      "files": [
+        {
+          "path": "checkbox/index.jsx",
+          "lines": 572
+        },
+        {
+          "path": "_shared/theme.jsx",
+          "lines": 194
+        },
+        {
+          "path": "_shared/themes.js",
+          "lines": 101
+        },
+        {
+          "path": "_shared/field.jsx",
+          "lines": 130
+        },
+        {
+          "path": "_shared/icons.jsx",
+          "lines": 100
+        }
+      ],
+      "fields": [
+        "name",
+        "slug",
+        "export",
+        "order",
+        "category",
+        "platform",
+        "level",
+        "tier",
+        "added",
+        "hint",
+        "description",
+        "intents",
+        "tags",
+        "usage",
+        "states",
+        "keyboard",
+        "screenReader",
+        "exports",
+        "controls",
+        "presets",
+        "props",
+        "install",
+        "theming",
+        "files",
+        "usageSnippet",
+        "preview"
+      ]
+    },
+    "otp-input": {
+      "name": "OTP Input",
+      "slug": "otp-input",
+      "export": "OtpInput",
+      "tier": "free",
+      "platform": "web",
+      "intents": [
+        "verification code input",
+        "enter the code we sent you",
+        "two factor authentication code",
+        "pin code entry"
+      ],
+      "states": [
+        "default",
+        "focus",
+        "error",
+        "success",
+        "disabled"
+      ],
+      "presets": {
+        "4-digit PIN": {
+          "length": 4,
+          "groupAfter": 0,
+          "mask": true,
+          "expected": "4242",
+          "label": "Enter your PIN",
+          "hint": "Try 4242."
+        },
+        "Compact": {
+          "cellSize": 40
+        }
+      },
+      "ranges": [
+        {
+          "key": "length",
+          "label": "Length",
+          "min": 4,
+          "max": 8,
+          "step": 1,
+          "default": 6
+        },
+        {
+          "key": "groupAfter",
+          "label": "Group after (0 = off)",
+          "min": 0,
+          "max": 6,
+          "step": 1,
+          "default": 3
+        },
+        {
+          "key": "cellSize",
+          "label": "Cell size",
+          "min": 36,
+          "max": 68,
+          "step": 1,
+          "unit": "px",
+          "default": 52
+        }
+      ],
+      "propCount": 25,
+      "files": [
+        {
+          "path": "otp-input/index.jsx",
+          "lines": 251
+        },
+        {
+          "path": "_shared/theme.jsx",
+          "lines": 194
+        },
+        {
+          "path": "_shared/themes.js",
+          "lines": 101
+        },
+        {
+          "path": "_shared/field.jsx",
+          "lines": 130
+        },
+        {
+          "path": "_shared/icons.jsx",
+          "lines": 100
+        }
+      ],
+      "fields": [
+        "name",
+        "slug",
+        "export",
+        "order",
+        "category",
+        "platform",
+        "level",
+        "tier",
+        "hint",
+        "description",
+        "intents",
+        "tags",
+        "usage",
+        "states",
+        "keyboard",
+        "screenReader",
+        "controls",
+        "presets",
+        "props",
+        "install",
+        "theming",
+        "files",
+        "usageSnippet",
+        "preview"
+      ]
+    },
+    "number-ticker": {
+      "name": "Number Ticker",
+      "slug": "number-ticker",
+      "export": "NumberTicker",
+      "tier": "free",
+      "platform": "web",
+      "intents": [
+        "animated number counter",
+        "odometer rolling digits",
+        "live fundraising total that ticks up",
+        "count up stat on scroll into view",
+        "stock price ticker with up down flash"
+      ],
+      "states": [
+        "default",
+        "loading",
+        "empty"
+      ],
+      "presets": {
+        "Mechanical counter": {
+          "direction": "carry",
+          "blur": 1.6,
+          "stiffness": 120,
+          "damping": 20,
+          "stagger": 75
+        },
+        "Snappy, shortest path": {
+          "direction": "shortest",
+          "blur": 0.4,
+          "stiffness": 420,
+          "damping": 34,
+          "stagger": 15
+        },
+        "Million moment": {
+          "value": 999640,
+          "format": "compact-currency",
+          "interval": 1100
+        },
+        "Count up on view": {
+          "countUp": true,
+          "live": false
+        },
+        "Percent of goal": {
+          "format": "percent"
+        },
+        "Quiet": {
+          "cue": false,
+          "blur": 0,
+          "size": "sm",
+          "interval": 2600
+        }
+      },
+      "ranges": [
+        {
+          "key": "value",
+          "label": "Value",
+          "min": 0,
+          "max": 2500000,
+          "step": 0.01,
+          "unit": "$",
+          "default": 0
+        },
+        {
+          "key": "blur",
+          "label": "Motion blur",
+          "min": 0,
+          "max": 2,
+          "step": 0.1,
+          "default": 1
+        },
+        {
+          "key": "stiffness",
+          "label": "Stiffness",
+          "min": 60,
+          "max": 600,
+          "step": 10,
+          "default": 170
+        },
+        {
+          "key": "damping",
+          "label": "Damping",
+          "min": 8,
+          "max": 60,
+          "step": 1,
+          "default": 22
+        },
+        {
+          "key": "stagger",
+          "label": "Carry stagger",
+          "min": 0,
+          "max": 120,
+          "step": 5,
+          "unit": "ms",
+          "default": 45
+        },
+        {
+          "key": "interval",
+          "label": "Pledge interval",
+          "min": 600,
+          "max": 4000,
+          "step": 100,
+          "unit": "ms",
+          "default": 1600
+        }
+      ],
+      "propCount": 35,
+      "files": [
+        {
+          "path": "number-ticker/index.jsx",
+          "lines": 730
+        },
+        {
+          "path": "_shared/theme.jsx",
+          "lines": 194
+        },
+        {
+          "path": "_shared/themes.js",
+          "lines": 101
+        },
+        {
+          "path": "_shared/page.jsx",
+          "lines": 112
+        },
+        {
+          "path": "_shared/icons.jsx",
+          "lines": 100
+        },
+        {
+          "path": "_shared/art.jsx",
+          "lines": 164
+        },
+        {
+          "path": "_shared/chart.jsx",
+          "lines": 414
+        }
+      ],
+      "fields": [
+        "name",
+        "slug",
+        "export",
+        "order",
+        "category",
+        "platform",
+        "level",
+        "tier",
+        "hint",
+        "description",
+        "intents",
+        "tags",
+        "usage",
+        "states",
+        "keyboard",
+        "screenReader",
+        "controls",
+        "presets",
+        "props",
+        "install",
+        "theming",
+        "files",
+        "usageSnippet",
+        "preview"
+      ]
+    }
+  }
+}

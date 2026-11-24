@@ -1,0 +1,255 @@
+{
+  "name": "Suggestion Chips",
+  "slug": "suggestion-chips",
+  "export": "SuggestionChips",
+  "order": 110,
+  "kind": "components",
+  "category": "ai",
+  "subcategory": "conversation",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Pick a follow-up: the chip lifts, flies into the thread and becomes your message. Try Fill mode, Refresh and Delete.",
+  "description": "Prompt suggestions for an AI assistant, in two places: starter cards on the empty first screen, grouped under icon-and-label headings, and compact follow-ups after an answer. Choosing one is visible: the chip lifts, travels to the thread (send) or into the composer with its editable parts highlighted and the first one selected (fill), and morphs into the message while the remaining chips close the gap. While follow-ups are generated, skeleton chips of plausible widths hold their place; then the new set arrives, staggered once. Refresh shuffles the set and keeps focus, single chips can be dismissed, long suggestions truncate in the middle, and phones get one snap rail with edge fades.",
+  "intents": [
+    "suggested follow-up questions under an AI chat answer",
+    "conversation starters on an empty chat screen",
+    "prompt suggestion chips that fill the chat input",
+    "quick reply chips for an assistant or copilot",
+    "example prompts grid for an AI product"
+  ],
+  "tags": [
+    "suggestions",
+    "suggestion chips",
+    "follow-ups",
+    "quick replies",
+    "prompt starters",
+    "example prompts",
+    "chat",
+    "assistant",
+    "ai",
+    "chips"
+  ],
+  "usage": "Use it for follow-up suggestions under an assistant's answer, or starter cards on an empty chat. Pass `suggestions` as [{ id, text, icon?, group?, title?, slots? }] (`label` works in place of `text`); `icon` is an icon name or your own node, `group` a short label, `title` the starter card's heading, and [brackets] in `text` (or `slots`) mark the parts a user is expected to edit in fill mode. `status` is yours: \"loading\" holds the space with skeleton chips while the model answers, \"ready\" shows the set (it arrives staggered), \"empty\" shows `emptyText`, \"error\" shows `errorText` with a retry button that calls `onRetry` (or `onRefresh`). `onChoose(item, { mode, text })` fires when one is chosen: in send mode append `text` as the user's message, in fill mode put it in your composer. `onRefresh()` asks for another set (replace `suggestions`), `onDismiss(item)` reports a dismissed chip (it hides at once). Pass `flyTo` (a ref, or a function returning the composer or the thread's last row) and the chosen chip flies there; without it, it lifts and fades. `count` caps how many are shown (4 by default). Keyboard: one tab stop, arrows and Home/End move, Enter or Space chooses, Delete dismisses. With no props it renders nothing. The framed chat stage (thread, composer) and the sample kitchen deck appear only with `demo`, or set `frame` yourself.",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "loading",
+    "selected",
+    "empty"
+  ],
+  "controls": [
+    {
+      "group": "Layout",
+      "key": "kind",
+      "label": "Kind",
+      "type": "select",
+      "options": [
+        "followups",
+        "starters"
+      ],
+      "default": "followups"
+    },
+    {
+      "group": "Behaviour",
+      "key": "mode",
+      "label": "On choose",
+      "type": "select",
+      "options": [
+        "send",
+        "fill"
+      ],
+      "default": "send"
+    },
+    {
+      "group": "Content",
+      "key": "count",
+      "label": "Suggestions",
+      "type": "range",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "group": "Behaviour",
+      "key": "showRefresh",
+      "label": "Refresh control",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Behaviour",
+      "key": "dismissible",
+      "label": "Dismissible",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Empty screen starters": {
+      "kind": "starters",
+      "count": 6
+    },
+    "Fill the composer": {
+      "mode": "fill"
+    },
+    "Quiet row": {
+      "count": 3,
+      "showRefresh": false,
+      "dismissible": false
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "suggestions",
+      "type": "Array<{ id, text, icon?, group?, title?, slots? }>",
+      "description": "The suggestions, in order. text (or label) is what is sent; icon is an icon name or a ReactNode; group labels a run of chips; title heads a starter card; slots lists the editable parts (or put them in [brackets])."
+    },
+    {
+      "key": "status",
+      "type": "\"loading\" | \"ready\" | \"empty\" | \"error\"",
+      "description": "Owned by the caller. loading shows skeleton chips and blocks choosing; empty shows emptyText; error shows errorText with a retry button."
+    },
+    {
+      "key": "onChoose",
+      "type": "function",
+      "description": "(item, { mode: \"send\" | \"fill\", text }) => void, when a suggestion is chosen by click, Enter or Space."
+    },
+    {
+      "key": "onRefresh",
+      "type": "function",
+      "description": "() => void, when the refresh control is pressed. Replace `suggestions` with a new set. Without it (and with your own suggestions) the refresh control is hidden."
+    },
+    {
+      "key": "onDismiss",
+      "type": "function",
+      "description": "(item) => void, when a chip is dismissed with its x or Delete. It is hidden locally at once; a new `suggestions` array clears that."
+    },
+    {
+      "key": "onRetry",
+      "type": "function",
+      "description": "() => void, for the retry button in the error state (falls back to onRefresh)."
+    },
+    {
+      "key": "onSend",
+      "type": "function",
+      "description": "(text) => void, when the built-in composer is submitted. Only with the frame."
+    },
+    {
+      "key": "flyTo",
+      "type": "Ref<Element> | () => Element",
+      "description": "Where the chosen chip flies (your composer or the thread's last row). Without it the chip lifts and fades out in place."
+    },
+    {
+      "key": "frame",
+      "type": "boolean",
+      "description": "Draws the built-in chat stage around the chips: header, thread, composer. Defaults to the value of demo.",
+      "default": "demo"
+    },
+    {
+      "key": "heading",
+      "type": "ReactNode",
+      "description": "The small heading over the set.",
+      "default": "\"Suggestions\" (starters: \"Start with\")"
+    },
+    {
+      "key": "label",
+      "type": "string",
+      "description": "Accessible name of the group of chips.",
+      "default": "\"Suggested follow-ups\" (starters: \"Conversation starters\")"
+    },
+    {
+      "key": "emptyText",
+      "type": "ReactNode",
+      "description": "Shown when the set is empty. Empty string shows nothing.",
+      "default": "Nothing more to suggest here. Ask anything."
+    },
+    {
+      "key": "errorText",
+      "type": "ReactNode",
+      "description": "Shown when status is \"error\".",
+      "default": "Couldn't load suggestions."
+    },
+    {
+      "key": "retryLabel",
+      "type": "string",
+      "description": "Text of the retry button in the error state.",
+      "default": "Try again"
+    },
+    {
+      "key": "refreshLabel",
+      "type": "string",
+      "description": "Text of the refresh control.",
+      "default": "\"New ideas\" (starters: \"Show others\")"
+    },
+    {
+      "key": "assistant",
+      "type": "string",
+      "description": "The assistant's name in the framed stage (header, composer placeholder).",
+      "default": "\"Assistant\""
+    },
+    {
+      "key": "thread",
+      "type": "{ title, ask, answer: { title, body, meta } } | null",
+      "description": "The conversation shown in the framed stage above the follow-ups. Demo only by default."
+    },
+    {
+      "key": "greeting",
+      "type": "{ title, line } | null",
+      "description": "The empty-screen greeting over the starters in the framed stage. Demo only by default."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Chips, refresh and retry are disabled; dismiss buttons are hidden.",
+      "default": false
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Shows the sample kitchen-assistant deck, thread and greeting inside the frame, and plays the scripted pick once, when no suggestions or status are passed.",
+      "default": false
+    },
+    {
+      "key": "kind",
+      "type": "\"followups\" | \"starters\"",
+      "default": "followups",
+      "description": "Which suggestions they are: \"followups\" are chips that arrive after an answer and make way for the next set, and \"starters\" are cards that open an empty conversation and stay put while the assistant answers."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLDivElement>",
+      "description": "The root element."
+    },
+    {
+      "key": "className",
+      "type": "string",
+      "description": "Added to the root."
+    },
+    {
+      "key": "style",
+      "type": "CSSProperties",
+      "description": "Merged into the root style."
+    }
+  ],
+  "example": "const composer = useRef(null);\n<SuggestionChips\n  suggestions={[\n    { id: \"a\", text: \"Summarise this thread\", icon: \"doc\" },\n    { id: \"b\", text: \"Draft a reply to [Sam]\", icon: \"mail\", group: \"Write\" },\n  ]}\n  status={isAnswering ? \"loading\" : \"ready\"}\n  flyTo={composer}\n  onChoose={(item, { text }) => send(text)}\n  onRefresh={loadMore}\n  onDismiss={(item) => hide(item.id)}\n/>"
+}

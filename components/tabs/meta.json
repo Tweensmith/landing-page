@@ -1,0 +1,231 @@
+{
+  "name": "Tabs",
+  "slug": "tabs",
+  "export": "Tabs",
+  "order": 47,
+  "kind": "components",
+  "category": "navigation",
+  "subcategory": "page-navigation",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "added": "2026-11-22",
+  "hint": "Click a tab, or Tab into the list and use the arrow keys: the indicator stretches as it travels and the panel follows from that side.",
+  "description": "Everyday tabs for sections of one page or panel that share a place: Overview / Activity / Files / Settings, Details / Reviews. One section shows at a time and its tab says which. One measured indicator for the whole list travels to the selected tab on two edge springs, so it stretches in the direction of travel and settles; a faint surface follows the pointer under the hovered tab. The new panel comes in from the side you moved toward while the old one leaves the other way, and the panel area's height springs to the new panel. Three surfaces (an underline, a pill, a boxed tray), three sizes with Button's heights, icons and count badges, vertical lists, a scrolling list with edge fades when the tabs do not fit, and tabs as links for routes. The full WAI-ARIA tabs pattern on native buttons: roving focus, arrow keys, Home / End, automatic or manual activation.",
+  "intents": [
+    "tabs to switch between sections of a page",
+    "tab bar with overview activity and settings panels",
+    "tabbed panel for details and reviews",
+    "underline tabs with a sliding indicator",
+    "vertical tabs beside a settings panel",
+    "route tabs as links across the top of an app page"
+  ],
+  "tags": [
+    "tabs",
+    "tab",
+    "tablist",
+    "tabpanel",
+    "tabbed",
+    "tab bar",
+    "sections",
+    "panels",
+    "underline",
+    "indicator",
+    "navigation"
+  ],
+  "usage": "Use for two to about eight sections of one page or panel that share a place (Overview / Activity / Settings, Details / Reviews), when only one section needs to be seen at a time. Pass `tabs` (strings, or { id, label, icon?, badge?, disabled?, title?, href?, content?, ariaLabel?, panelId? }) and either `value` + `onChange(id, tab, event)` or `defaultValue` (left out: the first enabled tab). Panels: give each tab a `content` node, or pass `renderPanel(tab)` (or `children` as a function of the tab); the component renders the tabpanels, keeps only the selected one in the DOM, and animates between them. Set `keepMounted` when a panel holds a form that must keep what was typed. To draw panels yourself, pass no content and a `panelId` function (tab, index) => id: each tab gets aria-controls=<id> and the id <id>-tab, so your panel takes role=\"tabpanel\", that id and aria-labelledby=\"<id>-tab\". Give every list an accessible name with `label` (or aria-label / aria-labelledby); it is required when a page has more than one tablist. Tabs with `href` render as links in a nav, the selected one with aria-current=\"page\", and no panels: use that shape when each tab is its own route, and keep `value` in step with the route. `surface` is \"line\" (an underline on a hairline), \"pill\" (a filled accent pill) or \"boxed\" (a quiet tray with a raised thumb). `activation=\"manual\"` makes the arrow keys move focus only, with Enter or Space selecting, for panels that are slow to render. `fullWidth` shares the width equally; otherwise the list hugs its tabs and scrolls sideways inside itself when they do not fit. `orientation=\"vertical\"` puts the list beside the panel; in a container narrower than 520px it falls back to horizontal. Do not use it to choose a value in a form (use Segmented Control) or to move between pages of an app (use Navbar or Sidebar); Liquid Tabs is the showpiece version of this for a landing page, Tabs is the everyday one.",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "active",
+    "disabled"
+  ],
+  "keyboard": [
+    {
+      "keys": "Tab",
+      "does": "Moves focus to the selected tab, skipping the others; Tab again moves to the panel."
+    },
+    {
+      "keys": "ArrowLeft / ArrowRight",
+      "does": "Moves to the previous or next enabled tab and selects it, wrapping at the ends; disabled tabs are skipped.",
+      "when": "horizontal, activation auto"
+    },
+    {
+      "keys": "ArrowLeft / ArrowRight",
+      "does": "Moves focus to the previous or next enabled tab without selecting it.",
+      "when": "horizontal, activation manual"
+    },
+    {
+      "keys": "ArrowUp / ArrowDown",
+      "does": "Moves to the previous or next enabled tab, selecting it when activation is auto.",
+      "when": "vertical"
+    },
+    {
+      "keys": "Home / End",
+      "does": "Moves to the first or last enabled tab, selecting it when activation is auto."
+    },
+    {
+      "keys": "Enter / Space",
+      "does": "Selects the focused tab.",
+      "when": "activation manual"
+    }
+  ],
+  "screenReader": "A tablist named by `label` (or aria-label / aria-labelledby) with aria-orientation; each tab says its label, whether it is selected, and aria-disabled when it is disabled. The panel is a tabpanel named by its tab. With `href` tabs it is a nav of links instead, the current one marked aria-current=\"page\".",
+  "dataProps": [
+    {
+      "key": "tabs",
+      "type": "Array<string | number | { id?: string | number; label?: node; icon?: string | node; badge?: node; disabled?: boolean; title?: string; href?: string; content?: node; ariaLabel?: string; panelId?: string }>",
+      "description": "Strings (id and label), or { id, label, icon?, badge?, disabled?, title?, href?, content?, ariaLabel?, panelId? }. icon is an icon name or a node; badge is a short count or word after the label, in tabular figures; title is a tooltip (say why a tab is disabled); href makes every tab a link; content is the tab's panel. No tabs renders nothing.",
+      "default": []
+    },
+    {
+      "key": "value",
+      "type": "string | number | null",
+      "description": "Controlled selected tab id. Pass it with onChange and the list shows exactly this; null selects nothing."
+    },
+    {
+      "key": "defaultValue",
+      "type": "string | number | null",
+      "description": "Starting tab id when uncontrolled. Left out, the first enabled tab."
+    },
+    {
+      "key": "onChange",
+      "type": "(id: string | number, tab: string | number | { id?: string | number; label?: node; icon?: string | node; badge?: node; disabled?: boolean; title?: string; href?: string; content?: node; ariaLabel?: string; panelId?: string }, event: MouseEvent | KeyboardEvent) => void",
+      "description": "(id, tab, event) => void when a tab is selected by a click, a tap, an arrow key (activation auto), Home / End, or Enter / Space (activation manual). tab is the object or string you passed. Selecting the selected tab fires nothing."
+    },
+    {
+      "key": "renderPanel",
+      "type": "(tab: { id?: string | number; label?: node; icon?: string | node; badge?: node; disabled?: boolean; title?: string; href?: string; content?: node; ariaLabel?: string; panelId?: string }) => node",
+      "description": "(tab) => node: the panel for a tab that has no `content`. tab is the normalised object ({ id, label, ...yours })."
+    },
+    {
+      "key": "children",
+      "type": "(tab: { id?: string | number; label?: node; icon?: string | node; badge?: node; disabled?: boolean; title?: string; href?: string; content?: node; ariaLabel?: string; panelId?: string }) => node",
+      "description": "(tab) => node, the same as renderPanel. Other children are ignored."
+    },
+    {
+      "key": "panelId",
+      "type": "(tab: { id?: string | number; label?: node; icon?: string | node; badge?: node; disabled?: boolean; title?: string; href?: string; content?: node; ariaLabel?: string; panelId?: string }, index: number) => string",
+      "description": "(tab, index) => id, for panels you render yourself: the tab gets aria-controls=<id> and the id <id>-tab. A tab's own `panelId` field wins."
+    },
+    {
+      "key": "maxWidth",
+      "type": "number",
+      "description": "Caps the width in pixels; 0 fills the container.",
+      "default": 0
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLDivElement>",
+      "description": "The tablist element (the link list in link mode). ref.current.focus() focuses the selected tab, else the first enabled one."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-*, data-*) goes to the root <div>. className and style are merged with the component's own."
+    }
+  ],
+  "controls": [
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Accessible name",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Style",
+      "key": "surface",
+      "label": "Surface",
+      "type": "select",
+      "options": [
+        "line",
+        "pill",
+        "boxed"
+      ],
+      "default": "line"
+    },
+    {
+      "group": "Style",
+      "key": "size",
+      "label": "Size",
+      "type": "select",
+      "options": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    {
+      "group": "Style",
+      "key": "orientation",
+      "label": "Orientation",
+      "type": "select",
+      "options": [
+        "horizontal",
+        "vertical"
+      ],
+      "default": "horizontal"
+    },
+    {
+      "group": "Style",
+      "key": "fullWidth",
+      "label": "Full width",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Behaviour",
+      "key": "activation",
+      "label": "Activation",
+      "type": "select",
+      "options": [
+        "auto",
+        "manual"
+      ],
+      "default": "auto"
+    },
+    {
+      "group": "Behaviour",
+      "key": "keepMounted",
+      "label": "Keep visited panels mounted",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Pill": {
+      "surface": "pill"
+    },
+    "Boxed": {
+      "surface": "boxed",
+      "size": "sm"
+    },
+    "Vertical": {
+      "orientation": "vertical"
+    },
+    "Full width": {
+      "fullWidth": true
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "example": "const [section, setSection] = useState(\"details\");\n\n<Tabs\n  label=\"Product\"\n  value={section}\n  onChange={(id) => setSection(id)}\n  tabs={[\n    { id: \"details\", label: \"Details\", content: <ProductDetails /> },\n    { id: \"reviews\", label: \"Reviews\", badge: reviews.length, content: <ReviewList reviews={reviews} /> },\n    { id: \"shipping\", label: \"Shipping\", content: <ShippingInfo /> },\n  ]}\n/>"
+}

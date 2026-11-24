@@ -1,0 +1,128 @@
+{
+  "name": "Bottom Sheet",
+  "slug": "bottom-sheet",
+  "export": "BottomSheet",
+  "order": 61,
+  "kind": "components",
+  "category": "mobile",
+  "platform": "native",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Tap another pin: the map flies there. Drag the sheet: the city glides to keep the place centred above it.",
+  "description": "Draggable bottom sheet with peek, half and full detents for React Native, shown as a maps place card. The default inset style is the iOS 26 floating sheet: held in from the screen edges with corners concentric to the display, it grows edge to edge as it reaches full height; an edge-to-edge style is also available. The map keeps the selected place centred in the strip left visible above the sheet, so dragging the sheet glides the city with it, and picking another pin or nearby place flies the map there while the pin lifts into a teardrop with a pulsing halo. The release projects your flick forward and rubber-bands past the ends. Map buttons ride the sheet's edge and bow out as it rises; near full height the map recedes, rounds and dims like an iOS card. The popular-times chart grows in for each place. Tap the grabber to step through detents; screen readers can adjust it.",
+  "intents": [
+    "bottom sheet with snap points",
+    "draggable sheet over a map",
+    "react native modal sheet with detents",
+    "half height sheet that expands to full screen"
+  ],
+  "tags": [
+    "bottom sheet",
+    "detents",
+    "drawer",
+    "expo",
+    "floating sheet",
+    "gesture",
+    "inset sheet",
+    "ios 26",
+    "map",
+    "maps",
+    "pins",
+    "place card",
+    "react native",
+    "sheet",
+    "snap points"
+  ],
+  "usage": "Use for supporting content over a primary view (results over a map, details over a list). Keep the peek state useful on its own. For a blocking choice, use a modal instead.",
+  "states": [
+    "default",
+    "open"
+  ],
+  "controls": [
+    {
+      "group": "Look",
+      "key": "variant",
+      "label": "Style",
+      "type": "select",
+      "options": [
+        {
+          "label": "Inset (iOS 26)",
+          "value": "inset"
+        },
+        {
+          "label": "Edge to edge",
+          "value": "edge"
+        }
+      ],
+      "default": "inset"
+    },
+    {
+      "group": "Detents",
+      "key": "startAt",
+      "label": "Start at",
+      "type": "select",
+      "options": [
+        "peek",
+        "half",
+        "full"
+      ],
+      "default": "half"
+    },
+    {
+      "group": "Detents",
+      "key": "peekHeight",
+      "label": "Peek height",
+      "type": "range",
+      "min": 90,
+      "max": 220,
+      "step": 2,
+      "default": 150
+    },
+    {
+      "group": "Detents",
+      "key": "halfRatio",
+      "label": "Half height",
+      "type": "range",
+      "min": 0.35,
+      "max": 0.65,
+      "step": 0.01,
+      "default": 0.5
+    },
+    {
+      "group": "Motion",
+      "key": "projection",
+      "label": "Flick projection (s)",
+      "type": "range",
+      "min": 0,
+      "max": 0.4,
+      "step": 0.02,
+      "default": 0.2
+    },
+    {
+      "group": "Look",
+      "key": "recede",
+      "label": "Screen behind recedes",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Look",
+      "key": "dim",
+      "label": "Dim behind",
+      "type": "toggle",
+      "default": true
+    }
+  ],
+  "presets": {
+    "Peek first": {
+      "startAt": "peek"
+    },
+    "Flat": {
+      "recede": false,
+      "dim": false
+    },
+    "Edge to edge": {
+      "variant": "edge"
+    }
+  }
+}

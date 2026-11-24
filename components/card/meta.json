@@ -1,0 +1,553 @@
+{
+  "name": "Card",
+  "slug": "card",
+  "export": "Card",
+  "order": 0.5,
+  "kind": "components",
+  "category": "display",
+  "subcategory": "containers",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "added": "2026-11-22",
+  "hint": "Turn on Sample content, then hover the Billing card (it lifts, its arrow nudges) and open Danger zone.",
+  "description": "The general surface: a titled card or panel for a block of anything (a settings section, an order summary, a sign-in panel, a feed). Title, description, eyebrow, icon tile, header actions, media (above or beside), a body and a footer bar, all as props; CardHeader, CardBody, CardFooter and CardSection (a body slice divided by a rule) as named exports for richer layouts. Four surfaces (card, outline, plain, sunken), an accent tone for the one thing to do, comfortable or compact padding that follows the card's own width. With href or onClick the whole card is one link or button: it lifts on hover, gives under the press and nudges its arrow, while buttons inside stay clickable. collapsible folds the body on a height spring. Parts settle in once on first view.",
+  "intents": [
+    "card panel with a title, body and footer",
+    "settings section card with rows divided by rules",
+    "clickable card that links to a page",
+    "collapsible card that folds its content",
+    "order summary panel with a total in the footer",
+    "content card with an image on top"
+  ],
+  "tags": [
+    "card",
+    "panel",
+    "surface",
+    "container",
+    "box",
+    "section",
+    "tile",
+    "clickable card",
+    "link card",
+    "collapsible",
+    "settings block",
+    "header and footer"
+  ],
+  "usage": "Use for any titled block on a screen: a settings section, an order summary, a sign-in panel, a dashboard or feed panel, a profile block. Pass `title` (it labels the region; set its level with `titleAs`, h3 by default), then `description`, `eyebrow`, `icon` (a kit icon name or a node), `actions` (buttons or a menu at the header's end), `children` for the body and `footer` for a bar under a hairline (`footerAlign` end, start or between). `media` puts an image above the header, or beside it with `layout=\"side\"` (it stacks again on a narrow card); `mediaRatio` such as \"16/9\" fixes its shape. Put several body slices in `CardSection` (its own `title`, `description`, `actions` and a rule above every section after the first): settings rows are `<CardSection title description actions={<Switch showRow={false} aria-label=… />} />`. `flush` lets a table or list run edge to edge under the header. `surface`: card (default), outline, plain (structure only, no padding: for a card inside a card) or sunken (a well); `tone=\"accent\"` outlines the one card that says begin here. `density=\"compact\"` for tighter panels. Make the whole card one target with `href` (a link: middle-click and modifier-click open a new tab) or `onClick` (a button; with `selected` it is a toggle and says so); buttons and links inside stay clickable on their own. `collapsible` turns the header into a button that folds the body and footer (`open` / `defaultOpen` / `onOpenChange(open, event)`); a card is pressable or collapsible, not both (collapsible wins). A card with no visible title takes `aria-label`, which also names its link, button or toggle. Set `loading` while you fetch (bars in the body, the header stays) and `disabled` to dim it and make its link, button or fold inert. For anything richer, pass `CardHeader`, `CardBody` (`flush`) and `CardFooter` (`align`) as children instead of the props; the card still folds, links and arrives the same way. Not for: a figure with a trend (Stat Card), a set of options to choose from (Choice Cards), a file or generated output (Artifact Card), a message about the page's state (Alert Banner).",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "selected",
+    "loading",
+    "open"
+  ],
+  "keyboard": [
+    {
+      "keys": "Tab",
+      "does": "Stops on the card's link or button (its title), then on each control inside the card in turn; a folded body is skipped."
+    },
+    {
+      "keys": "Enter",
+      "does": "Follows the card's link, or presses the card's button.",
+      "when": "the card has href or onClick"
+    },
+    {
+      "keys": "Space",
+      "does": "Presses the card's button; a selectable card toggles selected.",
+      "when": "the card has onClick and no href"
+    },
+    {
+      "keys": "Enter / Space",
+      "does": "Opens or folds the body.",
+      "when": "collapsible, on the header"
+    }
+  ],
+  "screenReader": "A titled card is a region named by its title (`title`, or `aria-label`). A pressable card is one link or button named by the title and described by `description`; a selected link card is marked current and a selectable button card says pressed or not pressed. A collapsible header is a button that says expanded or collapsed, and a loading card is busy with a status that reads `loadingLabel`.",
+  "dataProps": [
+    {
+      "key": "title",
+      "type": "node",
+      "description": "The heading. Labels the card's region, and is the text of the card's link or button when it is pressable or collapsible."
+    },
+    {
+      "key": "description",
+      "type": "node",
+      "description": "A muted line under the title. Also describes the card's link, button or fold toggle."
+    },
+    {
+      "key": "eyebrow",
+      "type": "node",
+      "description": "A small mono uppercase label above the title (\"Billing\")."
+    },
+    {
+      "key": "icon",
+      "type": "string | node",
+      "description": "A kit icon name or a node, drawn in a tile before the title."
+    },
+    {
+      "key": "actions",
+      "type": "node",
+      "description": "Buttons, a menu trigger or a badge at the header's end. They wrap under the title on a narrow card and stay clickable on a pressable card."
+    },
+    {
+      "key": "media",
+      "type": "node",
+      "description": "An image, video or drawing, full bleed above the header (or beside it with layout=\"side\"). An <img> inside is cropped to cover."
+    },
+    {
+      "key": "mediaRatio",
+      "type": "string | number",
+      "description": "Aspect ratio of the media box (\"16/9\", 1.5). Without it the media keeps its own height."
+    },
+    {
+      "key": "layout",
+      "type": "\"stack\" | \"side\"",
+      "description": "Media above the header, or beside header and body. Side stacks again when the card is under 480px wide.",
+      "default": "stack"
+    },
+    {
+      "key": "children",
+      "type": "node",
+      "description": "The body. Or CardHeader / CardBody / CardFooter parts, which replace the header, body and footer props."
+    },
+    {
+      "key": "footer",
+      "type": "node",
+      "description": "Content of the footer bar under a hairline: actions, a total, a note."
+    },
+    {
+      "key": "footerAlign",
+      "type": "\"end\" | \"start\" | \"between\"",
+      "description": "How the footer's items sit in the bar.",
+      "default": "end"
+    },
+    {
+      "key": "surface",
+      "type": "\"card\" | \"outline\" | \"plain\" | \"sunken\"",
+      "description": "card: the surface colour with a hairline. outline: hairline only. plain: no surface and no padding, the structure only (a card inside a card). sunken: the second surface colour, no line (a well).",
+      "default": "card"
+    },
+    {
+      "key": "tone",
+      "type": "\"neutral\" | \"accent\"",
+      "description": "accent outlines the card in the accent at reduced strength: the one thing to do on a screen.",
+      "default": "neutral"
+    },
+    {
+      "key": "density",
+      "type": "\"comfortable\" | \"compact\"",
+      "description": "Padding: 24px (16px when the card is under 440px wide), or 16px (12px).",
+      "default": "comfortable"
+    },
+    {
+      "key": "flush",
+      "type": "boolean",
+      "description": "The body drops its side and bottom padding so a table or a list runs edge to edge; header and footer keep theirs.",
+      "default": false
+    },
+    {
+      "key": "href",
+      "type": "string",
+      "description": "Makes the whole card one link. Middle-click and modifier-click open a new tab as any link does."
+    },
+    {
+      "key": "target",
+      "type": "string",
+      "description": "Link target with href. _blank shows an external mark and adds rel=\"noopener noreferrer\"."
+    },
+    {
+      "key": "rel",
+      "type": "string",
+      "description": "Link rel with href."
+    },
+    {
+      "key": "onClick",
+      "type": "(event: MouseEvent) => void",
+      "description": "(event) => void. With href it runs on the link's click (preventDefault for client routing); alone it makes the whole card one button."
+    },
+    {
+      "key": "selected",
+      "type": "boolean",
+      "description": "Draws the chosen state (an accent ring and a check). Pass true or false on an onClick card and it is a toggle button (aria-pressed); leave it out and the card is a plain button. On a link, true sets aria-current."
+    },
+    {
+      "key": "collapsible",
+      "type": "boolean",
+      "description": "The header becomes a button with a turning chevron that folds the body and footer. Takes precedence over href / onClick.",
+      "default": false
+    },
+    {
+      "key": "open",
+      "type": "boolean",
+      "description": "Controlled open state of a collapsible card."
+    },
+    {
+      "key": "defaultOpen",
+      "type": "boolean",
+      "description": "Starting open state when uncontrolled.",
+      "default": true
+    },
+    {
+      "key": "onOpenChange",
+      "type": "(open: boolean, event: MouseEvent) => void",
+      "description": "(open, event) => void when the header is pressed."
+    },
+    {
+      "key": "loading",
+      "type": "boolean",
+      "description": "Keeps the header and footer and shows skeleton bars in the body (aria-busy).",
+      "default": false
+    },
+    {
+      "key": "loadingLabel",
+      "type": "string",
+      "description": "What a screen reader hears while loading.",
+      "default": "Loading"
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Dims the card and makes its link, button or fold toggle inert. Controls you put inside are yours to disable.",
+      "default": false
+    },
+    {
+      "key": "appear",
+      "type": "boolean",
+      "description": "Parts settle in once on first view (under 400ms). Never on re-render, after server rendering, when the card mounts scrolled past, or under reduced motion.",
+      "default": true
+    },
+    {
+      "key": "as",
+      "type": "string",
+      "description": "The root element. Default \"section\" when there is a title (a region named by it), else \"div\". Use \"article\" or \"li\" where that fits.",
+      "default": "section | div"
+    },
+    {
+      "key": "titleAs",
+      "type": "\"h2\" | \"h3\" | \"h4\"",
+      "description": "Heading level of the title; the caller sets it to fit the page outline.",
+      "default": "h3"
+    },
+    {
+      "key": "maxWidth",
+      "type": "number | string",
+      "description": "Caps the width (px or a CSS length). 0: none; the card fills its container.",
+      "default": 0
+    },
+    {
+      "key": "fullWidth",
+      "type": "boolean",
+      "description": "Ignore maxWidth and fill the container.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLElement>",
+      "description": "The root element."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-*, data-*) goes to the root: a <div>, a <section> when the card has a title, or the tag given in `as`. className and style are merged with the component's own."
+    }
+  ],
+  "exports": [
+    {
+      "export": "CardHeader",
+      "description": "The header row on its own: icon tile, eyebrow, title, description and actions, plus the card's arrow or chevron. Inside a pressable or collapsible Card its title becomes the link, button or fold toggle.",
+      "props": [
+        {
+          "key": "title",
+          "type": "node",
+          "description": "The heading; names the card's region."
+        },
+        {
+          "key": "description",
+          "type": "node",
+          "description": "A muted line under the title."
+        },
+        {
+          "key": "eyebrow",
+          "type": "node",
+          "description": "Small label above the title."
+        },
+        {
+          "key": "icon",
+          "type": "string | node",
+          "description": "Kit icon name or node in a tile."
+        },
+        {
+          "key": "actions",
+          "type": "node",
+          "description": "Controls at the header's end."
+        },
+        {
+          "key": "titleAs",
+          "type": "string",
+          "description": "Heading element.",
+          "default": "h3"
+        },
+        {
+          "key": "children",
+          "type": "node",
+          "description": "Extra content at the end of the row."
+        },
+        {
+          "key": "ref",
+          "type": "Ref<HTMLDivElement>",
+          "description": "The header <div>."
+        }
+      ],
+      "example": "<CardHeader icon=\"users\" title=\"Members\" description=\"12 of 15 seats used\" actions={<Button size=\"sm\" variant=\"secondary\" label=\"Invite\" />} />"
+    },
+    {
+      "export": "CardBody",
+      "description": "The body. Shows the card's skeleton while the Card is loading.",
+      "props": [
+        {
+          "key": "flush",
+          "type": "boolean",
+          "description": "No side or bottom padding: a table or list runs edge to edge.",
+          "default": false
+        },
+        {
+          "key": "children",
+          "type": "node",
+          "description": "The content."
+        },
+        {
+          "key": "ref",
+          "type": "Ref<HTMLDivElement>",
+          "description": "The body <div>."
+        }
+      ],
+      "example": "<CardBody flush><table>…</table></CardBody>"
+    },
+    {
+      "export": "CardFooter",
+      "description": "The footer bar under a hairline.",
+      "props": [
+        {
+          "key": "align",
+          "type": "\"end\" | \"start\" | \"between\"",
+          "description": "How the items sit.",
+          "default": "end"
+        },
+        {
+          "key": "children",
+          "type": "node",
+          "description": "Actions, a total, a note."
+        },
+        {
+          "key": "ref",
+          "type": "Ref<HTMLDivElement>",
+          "description": "The footer <div>."
+        }
+      ],
+      "example": "<CardFooter align=\"between\"><span>Total</span><strong>{total}</strong></CardFooter>"
+    },
+    {
+      "export": "CardSection",
+      "description": "A slice of the body with an optional title, description and actions, and a full-width rule above every section after the first. A settings row is a section whose actions hold the control.",
+      "props": [
+        {
+          "key": "title",
+          "type": "node",
+          "description": "Section heading; names it as a group."
+        },
+        {
+          "key": "description",
+          "type": "node",
+          "description": "A muted line under the title."
+        },
+        {
+          "key": "actions",
+          "type": "node",
+          "description": "A control at the row's end (a Switch, a Button)."
+        },
+        {
+          "key": "titleAs",
+          "type": "string",
+          "description": "Heading element.",
+          "default": "h4"
+        },
+        {
+          "key": "children",
+          "type": "node",
+          "description": "Content under the head."
+        },
+        {
+          "key": "ref",
+          "type": "Ref<HTMLDivElement>",
+          "description": "The section <div>."
+        }
+      ],
+      "example": "<CardSection title=\"Email digest\" description=\"Mondays at 9:00\" actions={<Switch showRow={false} aria-label=\"Email digest\" checked={digest} onChange={setDigest} />} />"
+    }
+  ],
+  "controls": [
+    {
+      "group": "Content",
+      "key": "title",
+      "label": "Title",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "description",
+      "label": "Description",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "eyebrow",
+      "label": "Eyebrow",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Look",
+      "key": "surface",
+      "label": "Surface",
+      "type": "select",
+      "options": [
+        "card",
+        "outline",
+        "plain",
+        "sunken"
+      ],
+      "default": "card"
+    },
+    {
+      "group": "Look",
+      "key": "tone",
+      "label": "Tone",
+      "type": "select",
+      "options": [
+        "neutral",
+        "accent"
+      ],
+      "default": "neutral"
+    },
+    {
+      "group": "Look",
+      "key": "density",
+      "label": "Density",
+      "type": "select",
+      "options": [
+        "comfortable",
+        "compact"
+      ],
+      "default": "comfortable"
+    },
+    {
+      "group": "Layout",
+      "key": "layout",
+      "label": "Media placement (your media)",
+      "type": "select",
+      "options": [
+        "stack",
+        "side"
+      ],
+      "default": "stack"
+    },
+    {
+      "group": "Layout",
+      "key": "footerAlign",
+      "label": "Footer align",
+      "type": "select",
+      "options": [
+        "end",
+        "start",
+        "between"
+      ],
+      "default": "end"
+    },
+    {
+      "group": "Layout",
+      "key": "flush",
+      "label": "Flush body",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Layout",
+      "key": "maxWidth",
+      "label": "Max width (0 = none)",
+      "type": "range",
+      "min": 0,
+      "max": 960,
+      "step": 10,
+      "default": 0
+    },
+    {
+      "group": "Layout",
+      "key": "fullWidth",
+      "label": "Full width",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Behaviour",
+      "key": "collapsible",
+      "label": "Collapsible",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Behaviour",
+      "key": "defaultOpen",
+      "label": "Open at first",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Motion",
+      "key": "appear",
+      "label": "Arrive on first view",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "State",
+      "key": "loading",
+      "label": "Loading",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Compact outline": {
+      "surface": "outline",
+      "density": "compact"
+    },
+    "Begin here": {
+      "tone": "accent"
+    },
+    "Well": {
+      "surface": "sunken"
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "example": "import { Card, CardSection } from \"./card\";\n\n// a settings block: two rows divided by a rule, Save in the footer\n<Card title=\"Notifications\" description=\"Where we reach you about orders.\" titleAs=\"h2\"\n  footer={<Button size=\"sm\" label=\"Save\" loading={saving} onClick={save} />}>\n  <CardSection title=\"Order emails\" description=\"A receipt and shipping updates.\"\n    actions={<Switch showRow={false} aria-label=\"Order emails\" checked={emails} onChange={setEmails} />} />\n  <CardSection title=\"Text messages\" description=\"Only when a courier is on the way.\"\n    actions={<Switch showRow={false} aria-label=\"Text messages\" checked={sms} onChange={setSms} />} />\n</Card>\n\n// the whole card is one link; the Pause button inside still works on its own\n<Card icon=\"calendar\" eyebrow=\"Subscription\" title=\"Coffee, every 2 weeks\" description={`Next box ${nextDate}`}\n  href=\"/subscriptions/42\" actions={<Button size=\"sm\" variant=\"ghost\" label=\"Pause\" onClick={pause} />} />\n\n// folds; the parent owns the state\n<Card title=\"Delivery notes\" collapsible open={notesOpen} onOpenChange={setNotesOpen}>{notes}</Card>\n\n// parts form, for a custom header and a table that runs edge to edge\n<Card>\n  <CardHeader title=\"Invoices\" actions={<Button size=\"sm\" variant=\"secondary\" label=\"Export\" />} />\n  <CardBody flush><table>…</table></CardBody>\n  <CardFooter align=\"between\"><span>{count} invoices</span><Pagination … /></CardFooter>\n</Card>"
+}

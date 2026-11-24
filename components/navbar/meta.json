@@ -1,0 +1,258 @@
+{
+  "name": "Navbar",
+  "slug": "navbar",
+  "export": "Navbar",
+  "order": 48,
+  "kind": "components",
+  "category": "navigation",
+  "subcategory": "app-navigation",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Scroll the page: the bar lifts into a frosted pill, then hides until you scroll back up.",
+  "description": "Sticky top navigation driven by scroll position. The floating layout starts flush and transparent, then lifts off the edges into a narrower, shorter, frosted pill as you scroll. It hides while you scroll down and returns on the first scroll up, never while it has focus or its menu is open. Narrow widths swap the links for a menu sheet.",
+  "intents": [
+    "sticky header that shrinks on scroll",
+    "top navigation bar for a website or marketing site",
+    "header that hides when scrolling down",
+    "frosted glass navbar",
+    "responsive nav with a hamburger menu"
+  ],
+  "tags": [
+    "navbar",
+    "header",
+    "top bar",
+    "sticky",
+    "shrink on scroll",
+    "hide on scroll",
+    "frosted",
+    "hamburger",
+    "navigation"
+  ],
+  "usage": "Use as the site header on marketing and docs pages, or as an app's top bar (layout=\"bar\"). Pass your own `brand`, `links` and, if you want them, `primaryAction` / `secondaryAction`; with none of them the bar is empty, and nothing is marked active until you pass `current` (or `defaultCurrent`). Keep it to five or six links plus one call to action. Render it as the first child of the page (it is a zero-height sticky element, so give the content below `height` px of top padding), or use position=\"fixed\" if something above it or padding on its parent would push it down. It follows the window's scroll, or pass `scroller` when the page scrolls inside an element. The bar floats over the page: scrolled, it covers `shrunkHeight` px (52 by default) plus 10px in the floating layout, and nothing while hidden; `onOffsetChange` reports that figure for sticky elements below it and for anchor offsets. Below 600px the links move into a menu sheet (`menuOpen` / `onMenuOpenChange`). `onNavigate(item, event)` fires for every link and action; call event.preventDefault() to route client-side. `demoPage` (the gallery's mock page) follows `demo`, so a real app needs neither; older code that passes demoPage={false} keeps working.",
+  "states": [
+    "default",
+    "scrolled",
+    "open",
+    "disabled"
+  ],
+  "dataProps": [
+    {
+      "key": "brand",
+      "type": "object",
+      "description": "{ name, href, icon } where icon is an icon name, or { name, href, mark: <YourLogo /> } for your own mark. Leave it out (or null) for no brand. With `demo` and no brand the sample \"Northwind\" shows."
+    },
+    {
+      "key": "links",
+      "type": "array",
+      "description": "Labels, or { label, href, id?, disabled? } objects. Leave it out for no links (the sample five with `demo`).",
+      "default": []
+    },
+    {
+      "key": "primaryAction",
+      "type": "object | null",
+      "description": "The call to action: { label, href?, onClick?, icon?, disabled? }. A link when it has an href, otherwise a button. Leave it out or pass null for none (the sample \"Get started\" with `demo`)."
+    },
+    {
+      "key": "secondaryAction",
+      "type": "object | null",
+      "description": "The quiet action beside it (dropped first when space is tight): { label, href?, onClick?, disabled? }. Leave it out or pass null for none (the sample \"Sign in\" with `demo`)."
+    },
+    {
+      "key": "current",
+      "type": "string",
+      "description": "Label, id or href of the active link (controlled); null marks none. Leave undefined and the bar tracks clicks itself, starting from defaultCurrent."
+    },
+    {
+      "key": "defaultCurrent",
+      "type": "string",
+      "description": "Active link on first render when uncontrolled. Leave it out and no link is active until one is clicked (the demo starts on its first link)."
+    },
+    {
+      "key": "onNavigate",
+      "type": "function",
+      "description": "(item, event) => void for the brand, every link and both actions. Call event.preventDefault() to route client-side."
+    },
+    {
+      "key": "onOffsetChange",
+      "type": "function",
+      "description": "(px) => void with the height the bar covers at the top right now: `height` at rest, `shrunkHeight` (+10 in the floating layout) once scrolled, 0 while hidden. Pass it to anything sticky below, such as Plan Comparison's `stickyOffset`."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Makes the brand, every link, both actions and the menu button inert: dimmed, out of the tab order, announced (aria-disabled), and clicks do nothing.",
+      "default": false
+    },
+    {
+      "key": "menuOpen",
+      "type": "boolean",
+      "description": "Controlled open state of the phone menu sheet (below 600px). Pass it with onMenuOpenChange."
+    },
+    {
+      "key": "defaultMenuOpen",
+      "type": "boolean",
+      "description": "Initial open state of the phone menu sheet when uncontrolled.",
+      "default": false
+    },
+    {
+      "key": "onMenuOpenChange",
+      "type": "function",
+      "description": "(open: boolean) => void, when the menu button, Escape, a press outside or a link in the sheet wants to open or close it."
+    },
+    {
+      "key": "menuLabel",
+      "type": "string",
+      "description": "Accessible name of the menu button while the sheet is closed.",
+      "default": "Open menu"
+    },
+    {
+      "key": "closeMenuLabel",
+      "type": "string",
+      "description": "Accessible name of the menu button while the sheet is open.",
+      "default": "Close menu"
+    },
+    {
+      "key": "position",
+      "type": "\"sticky\" | \"fixed\"",
+      "description": "\"sticky\" (default) sticks to the top once the page scrolls, so it must be the first child of an unpadded wrapper or it rests lower. \"fixed\" pins it to the top of the window whatever comes before it (window scrolling only; not with `scroller`).",
+      "default": "sticky"
+    },
+    {
+      "key": "scroller",
+      "type": "element | ref",
+      "description": "The scrolling element when it is not the window (only with demoPage={false})."
+    },
+    {
+      "key": "demoPage",
+      "type": "boolean",
+      "description": "true wraps the bar in the gallery's mock browser page with its own scroller and sample landing page. Follows `demo` when left out, so a real app gets the bare bar; set false explicitly to be safe."
+    },
+    {
+      "key": "ariaLabel",
+      "type": "string",
+      "description": "Accessible name of the <nav>.",
+      "default": "Main"
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Show the Northwind sample (brand, five links, Sign in, Get started) where you pass none, inside the gallery's demo page. Gallery only; leave off in real UI.",
+      "default": false
+    },
+    {
+      "key": "layout",
+      "type": "\"floating\" | \"bar\"",
+      "default": "floating",
+      "description": "How the bar sits: \"floating\" starts flush and lifts off the edges into a narrower frosted pill as you scroll, and \"bar\" stays full width and square, with a rule along its bottom once scrolled."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLElement>",
+      "description": "Forwarded to the <nav>: measure the bar, or focus into it. Other unknown props (aria-*, data-*) go to the <nav> too."
+    }
+  ],
+  "example": "const [path, setPath] = useState(\"/pricing\");\n\n<Navbar\n  brand={{ name: \"Relay\", href: \"/\", icon: \"message\" }}\n  links={[\n    { label: \"Product\", href: \"/product\" },\n    { label: \"Pricing\", href: \"/pricing\" },\n    { label: \"Docs\", href: \"/docs\" },\n  ]}\n  current={path}\n  secondaryAction={{ label: \"Sign in\", href: \"/login\" }}\n  primaryAction={{ label: \"Start free\", href: \"/signup\", icon: \"arrowRight\" }}\n  onNavigate={(item, e) => { if (item.href?.startsWith(\"/\")) { e.preventDefault(); setPath(item.href); router.push(item.href); } }}\n  onOffsetChange={setHeaderOffset}\n/>",
+  "controls": [
+    {
+      "group": "Style",
+      "key": "layout",
+      "label": "Layout",
+      "type": "select",
+      "options": [
+        "floating",
+        "bar"
+      ],
+      "default": "floating"
+    },
+    {
+      "group": "Style",
+      "key": "frost",
+      "label": "Frosted glass",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Scroll",
+      "key": "shrink",
+      "label": "Shrink on scroll",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Scroll",
+      "key": "hideOnScroll",
+      "label": "Hide when scrolling down",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Scroll",
+      "key": "threshold",
+      "label": "Hide after (px)",
+      "type": "range",
+      "min": 4,
+      "max": 120,
+      "step": 4,
+      "default": 24
+    },
+    {
+      "group": "Size",
+      "key": "height",
+      "label": "Height",
+      "type": "range",
+      "min": 52,
+      "max": 80,
+      "step": 2,
+      "default": 64
+    },
+    {
+      "group": "Size",
+      "key": "shrunkHeight",
+      "label": "Shrunk height",
+      "type": "range",
+      "min": 40,
+      "max": 64,
+      "step": 2,
+      "default": 52
+    },
+    {
+      "group": "Demo",
+      "key": "frameHeight",
+      "label": "Page height",
+      "type": "range",
+      "min": 400,
+      "max": 720,
+      "step": 10,
+      "default": 540
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Classic bar": {
+      "layout": "bar"
+    },
+    "Always visible": {
+      "hideOnScroll": false
+    },
+    "Solid": {
+      "frost": false
+    }
+  },
+  "demoProps": {
+    "demo": true
+  }
+}

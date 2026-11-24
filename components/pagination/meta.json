@@ -1,0 +1,252 @@
+{
+  "name": "Pagination",
+  "slug": "pagination",
+  "export": "Pagination",
+  "order": 52,
+  "kind": "components",
+  "category": "navigation",
+  "subcategory": "page-navigation",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "hint": "Page with ← →: the pill slides and the numbers glide; hover … to jump several pages.",
+  "description": "Page numbers with gaps that stay readable. The current page sits on a pill that slides to the new page while the numbers glide into their new slots, and the control keeps a constant width so nothing moves under the pointer. Hovering a gap turns it into a multi-page jump. A compact layout rolls the page number.",
+  "intents": [
+    "pagination for a table",
+    "page numbers for search results",
+    "next and previous page controls",
+    "paginate a long list"
+  ],
+  "tags": [
+    "pagination",
+    "pages",
+    "pager",
+    "page numbers",
+    "next",
+    "previous",
+    "table",
+    "results"
+  ],
+  "usage": "Use when people need to reach a specific page or share a page link. Pass the number of pages as `count` (or `total` items with `pageSize`), own the page with `page` + `onPageChange(page)`, and set `busy` while the next page loads. Pass `getHref(page)` when pages have URLs, so every page is a real link. For feeds people only scroll forward through, use infinite loading with a Load more button instead.",
+  "states": [
+    "default",
+    "disabled",
+    "loading"
+  ],
+  "keyboard": [
+    {
+      "keys": "Tab",
+      "does": "Moves through previous, each page, the … jumps and next; a disabled arrow is skipped."
+    },
+    {
+      "keys": "Enter / Space",
+      "does": "Goes to the focused page, to the page before or after, or jumps several pages; when the pressed control goes away or turns disabled, focus moves to the new current page (in the compact layout, to the arrow still enabled)."
+    },
+    {
+      "keys": "ArrowLeft / ArrowRight",
+      "does": "Goes to the previous or next page and focuses it."
+    },
+    {
+      "keys": "Home / End",
+      "does": "Goes to the first or last page and focuses it."
+    }
+  ],
+  "screenReader": "A nav landmark named by `ariaLabel` (\"Pagination\" by default). Each page button is named \"Page N\" (`labels.page`) and the current one carries aria-current=\"page\"; the arrows are \"Previous page\" and \"Next page\", natively disabled at the ends, and each … is named \"Jump forward 5 pages\" or \"Jump back 5 pages\". While `busy` the nav is aria-busy; the caption line and the compact \"Page N of M\" are polite live regions.",
+  "controls": [
+    {
+      "group": "Pages",
+      "key": "total",
+      "label": "Total pages",
+      "type": "range",
+      "min": 1,
+      "max": 60,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "group": "Pages",
+      "key": "defaultPage",
+      "label": "Start page",
+      "type": "range",
+      "min": 1,
+      "max": 60,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "group": "Pages",
+      "key": "siblings",
+      "label": "Neighbours each side",
+      "type": "range",
+      "min": 0,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "group": "Pages",
+      "key": "boundaries",
+      "label": "Pages kept at each end",
+      "type": "range",
+      "min": 1,
+      "max": 2,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "group": "Look",
+      "key": "layout",
+      "label": "Layout",
+      "type": "select",
+      "options": [
+        "numbers",
+        "compact"
+      ],
+      "default": "numbers"
+    },
+    {
+      "group": "Look",
+      "key": "showEdges",
+      "label": "First / last buttons",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Look",
+      "key": "size",
+      "label": "Button size",
+      "type": "select",
+      "options": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "busy",
+      "label": "Busy",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Compact": {
+      "layout": "compact"
+    },
+    "Wide": {
+      "siblings": 2,
+      "showEdges": true
+    }
+  },
+  "dataProps": [
+    {
+      "key": "page",
+      "type": "number",
+      "description": "Controlled current page (1-based). Pass with onPageChange."
+    },
+    {
+      "key": "defaultPage",
+      "type": "number",
+      "description": "Uncontrolled starting page.",
+      "default": 1
+    },
+    {
+      "key": "onPageChange",
+      "type": "(page: number, event: MouseEvent | KeyboardEvent) => void",
+      "description": "(page, event) => void when the user picks a page (number, previous / next, a … jump, arrow keys, Home / End). With getHref the event is the link click, so a router can preventDefault."
+    },
+    {
+      "key": "count",
+      "type": "number",
+      "description": "Number of pages. Wins over total."
+    },
+    {
+      "key": "total",
+      "type": "number",
+      "description": "With pageSize: the number of items (pages = ceil(total / pageSize)). Without pageSize: the number of pages.",
+      "default": 1
+    },
+    {
+      "key": "pageSize",
+      "type": "number",
+      "description": "Items per page; turns total into an item count and gives caption its from / to."
+    },
+    {
+      "key": "getHref",
+      "type": "(page: number) => string",
+      "description": "(page) => URL. Every page, previous / next and jump becomes an <a href>; unavailable ends are aria-disabled links with no href."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Every control inert and out of the tab order.",
+      "default": false
+    },
+    {
+      "key": "busy",
+      "type": "boolean",
+      "description": "You are loading a page: the nav is aria-busy and nothing fires until you clear it.",
+      "default": false
+    },
+    {
+      "key": "caption",
+      "type": "node | ((info: { page: number; count: number; from?: number; to?: number; total?: number }) => node)",
+      "description": "Line under the control: a node, or ({ page, count, from, to, total }) => node (from / to / total need pageSize)."
+    },
+    {
+      "key": "labels",
+      "type": "Partial<{ previous: string; next: string; first: string; last: string; page: (page: number) => string; jumpBack: (pages: number) => string; jumpForward: (pages: number) => string; compact: node; of: node }>",
+      "description": "Accessible names and compact text, merged over { previous: \"Previous page\", next: \"Next page\", first: \"First page\", last: \"Last page\", page: (p) => `Page ${p}`, jumpBack: (n) => …, jumpForward: (n) => …, compact: \"Page\", of: \"of\" }."
+    },
+    {
+      "key": "ariaLabel",
+      "type": "string",
+      "description": "Accessible name of the nav landmark.",
+      "default": "Pagination"
+    },
+    {
+      "key": "layout",
+      "type": "\"numbers\" | \"compact\"",
+      "description": "How the pages are shown between previous and next: \"numbers\" is the row of page buttons with a sliding pill and … jumps, \"compact\" is one line (\"Page 7 of 24\") whose number rolls.",
+      "default": "numbers"
+    },
+    {
+      "key": "size",
+      "type": "\"sm\" | \"md\" | \"lg\" | number",
+      "description": "Height of each page button: sm 30px (under a dense table), md 36px, lg 44px (beside 52px buttons); the bar adds 4px around them. On a touch screen every size is at least 44px, and on a narrow row buttons shrink before neighbours drop. A number sets it in px exactly.",
+      "default": "md"
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLDivElement>",
+      "description": "The root element (wraps the nav)."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-*, data-*) goes to the root <div>. className and style are merged with the component's own."
+    }
+  ],
+  "demoProps": {
+    "demo": true,
+    "total": 24,
+    "defaultPage": 7
+  },
+  "example": "const [page, setPage] = useState(1);\n\n<Pagination\n  total={results.total}\n  pageSize={25}\n  page={page}\n  onPageChange={setPage}\n  busy={isFetching}\n  caption={({ from, to, total }) => `Showing ${from}–${to} of ${total}`}\n/>"
+}

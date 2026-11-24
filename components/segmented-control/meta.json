@@ -1,0 +1,212 @@
+{
+  "name": "Segmented Control",
+  "slug": "segmented-control",
+  "export": "SegmentedControl",
+  "order": 23.6,
+  "kind": "components",
+  "category": "forms",
+  "subcategory": "choices",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "added": "2026-11-21",
+  "hint": "Click a segment, use the arrow keys, or grab the thumb and drag it; flick it toward a neighbour.",
+  "description": "Two to five short options that switch a view or a setting in place: Monthly / Yearly, List / Board / Calendar, Day / Week / Month. One thumb sits under the selected segment and travels on two edge springs, stretching in the direction of travel while each label's weight and colour follow it. The thumb can be grabbed and dragged; it previews the segment under it and snaps to the nearest enabled one on release, carrying the release velocity, so a flick selects the neighbour. Built on native radios under one name, so arrow keys, Tab, form submit and reset work. A toggle button group with exactly one choice.",
+  "intents": [
+    "switch between monthly and yearly",
+    "toggle between list board and calendar view",
+    "day week month switcher",
+    "segmented toggle button group with one choice",
+    "pick one of a few short options inline in a form",
+    "view switcher above a list"
+  ],
+  "tags": [
+    "segmented",
+    "segmented control",
+    "toggle group",
+    "button group",
+    "view switcher",
+    "radio",
+    "radiogroup",
+    "pill switch",
+    "draggable thumb",
+    "form"
+  ],
+  "usage": "Use for two to five short options that change a view or a setting in place (Monthly / Yearly, List / Board / Calendar). Pass `options` (strings, or { value, label, icon, count, disabled, ariaLabel }), a `label` (the group's accessible name; `showLabel` shows it above; or `aria-label`, and `aria-describedby` for extra help text), and either `value` + `onChange(value, option, event)` or `defaultValue`. With no `defaultValue` it starts on the first enabled option; pass `null` to start with nothing selected (then `required` blocks a form submit). In a <form> set `name` and the value submits like a radio group; reset returns to the starting value. `fill` stretches it to its container with equal segments (long labels truncate and keep their full text as the accessible name and a title); without `fill` it hugs its content and scrolls sideways inside itself when the options do not fit. `iconOnly` hides the labels visually and keeps them as accessible names (tooltips are yours to add). `onPreview(value | null)` reports the segment under a drag before release. `tone=\"accent\"` puts the thumb in the accent colour; the default neutral thumb matches the chart cards' small toggle. Do not use it to move between sections of a page: that is Tabs (Liquid Tabs is the showpiece version for a landing page). When each option needs a sentence of explanation, use Choice Cards (or a radio group); for an on/off setting use Switch.",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "active",
+    "disabled",
+    "error"
+  ],
+  "keyboard": [
+    { "keys": "Tab", "does": "Moves to the selected segment; the control is one stop." },
+    { "keys": "ArrowRight / ArrowDown", "does": "Selects the next enabled segment, wrapping from the last to the first." },
+    { "keys": "ArrowLeft / ArrowUp", "does": "Selects the previous enabled segment, wrapping from the first to the last." },
+    { "keys": "Home / End", "does": "Selects the first or last enabled segment." }
+  ],
+  "screenReader": "A radiogroup named by `label` (or `aria-label`); each segment is a radio named by its label and count (by `ariaLabel`, or the label text, when `iconOnly`) that says whether it is checked. With `error` the group is marked invalid and the message is read as its description.",
+  "dataProps": [
+    {
+      "key": "options",
+      "type": "Array<string | number | { value: string | number; label?: node; icon?: string | element; count?: number; disabled?: boolean; ariaLabel?: string }>",
+      "description": "Strings (value and label), or { value, label, icon?, count?, disabled?, ariaLabel? }. icon is an icon name or a node; count is a small number after the label in tabular figures. No options renders nothing.",
+      "default": []
+    },
+    {
+      "key": "value",
+      "type": "string | number | null",
+      "description": "Controlled value. Pass it with onChange and the control shows exactly this; null shows no selection."
+    },
+    {
+      "key": "defaultValue",
+      "type": "string | number | null",
+      "description": "Starting value when uncontrolled, and what a form reset returns to. Left out, the first enabled option; null starts with nothing selected."
+    },
+    {
+      "key": "onChange",
+      "type": "(value: string | number, option: string | number | { value: string | number; label?: node; icon?: string | element; count?: number; disabled?: boolean; ariaLabel?: string }, event: Event | null) => void",
+      "description": "(value, option, event) => void, once per change: on a click, an arrow key, the release of a drag, or a form reset. A click on the selected segment and a drag that returns to it fire nothing."
+    },
+    {
+      "key": "onPreview",
+      "type": "(value: string | number | null) => void",
+      "description": "(value | null) => void while a drag is held: the segment under the thumb, then null when the drag ends or is cancelled."
+    },
+    {
+      "key": "name",
+      "type": "string",
+      "description": "Form field name for the radios. Left out, each control gets its own generated name, so two controls never share one."
+    },
+    {
+      "key": "id",
+      "type": "string",
+      "description": "Id of the radiogroup element."
+    },
+    {
+      "key": "error",
+      "type": "string",
+      "description": "An error you already have, shown under the control and announced; the track gets the danger ring."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLDivElement>",
+      "description": "The root element. ref.current.focus() focuses the selected segment (else the first enabled one)."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-*, data-*) goes to the root <div>. className and style are merged with the component's own."
+    }
+  ],
+  "controls": [
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "showLabel",
+      "label": "Show label above",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Style",
+      "key": "size",
+      "label": "Size",
+      "type": "select",
+      "options": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    {
+      "group": "Style",
+      "key": "fill",
+      "label": "Fill the width",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Style",
+      "key": "iconOnly",
+      "label": "Icons only",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Style",
+      "key": "shape",
+      "label": "Shape",
+      "type": "select",
+      "options": [
+        "rounded",
+        "pill"
+      ],
+      "default": "rounded"
+    },
+    {
+      "group": "Style",
+      "key": "tone",
+      "label": "Thumb",
+      "type": "select",
+      "options": [
+        "neutral",
+        "accent"
+      ],
+      "default": "neutral"
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "readOnly",
+      "label": "Read only",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "required",
+      "label": "Required",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Full width": {
+      "fill": true
+    },
+    "Accent thumb": {
+      "tone": "accent"
+    },
+    "Pill": {
+      "shape": "pill",
+      "size": "sm"
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "example": "const [view, setView] = useState(\"board\");\n\n<SegmentedControl\n  label=\"View\"\n  name=\"view\"\n  options={[\n    { value: \"list\", label: \"List\", icon: \"menu\" },\n    { value: \"board\", label: \"Board\", icon: \"grid\", count: 18 },\n    { value: \"calendar\", label: \"Calendar\", icon: \"calendar\" },\n  ]}\n  value={view}\n  onChange={(v) => setView(v)}\n/>"
+}

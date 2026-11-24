@@ -1,0 +1,246 @@
+{
+  "name": "Lightbox",
+  "slug": "lightbox",
+  "export": "Lightbox",
+  "order": 47,
+  "kind": "components",
+  "category": "overlays",
+  "subcategory": "dialogs",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Open an image, then pinch, scroll or double-click to zoom. Drag down to close.",
+  "description": "Thumbnail grid that opens your images in a full-screen viewer: each image grows from its thumbnail and shrinks back, zooms toward the pointer with pinch, wheel or double-click, pans when zoomed, swipes between images and drags down to close. Takes items with sizes so nothing jumps, a controlled index and open state, loading and broken-image states.",
+  "intents": [
+    "image gallery with zoom",
+    "open photo full screen",
+    "lightbox for portfolio images",
+    "zoomable image viewer"
+  ],
+  "tags": [
+    "lightbox",
+    "gallery",
+    "image viewer",
+    "zoom",
+    "pinch",
+    "fullscreen",
+    "photos",
+    "carousel"
+  ],
+  "usage": "Use for portfolios, product photos and galleries. Pass `items` as [{ id, src, alt, thumbnail, title, caption, width, height }]; give width and height (or any pair with the image's aspect ratio) so the viewer doesn't resize when the image arrives, and a small `thumbnail` so the grid doesn't download full images. Track the open image with `index` / `onIndexChange` and the viewer with `open` / `onOpenChange`. To open it from your own thumbnails, pass `showGrid={false}` and set `index` and `open` in their onClick: it grows from the clicked element and focus returns to it. Keep captions short.",
+  "states": [
+    "default",
+    "open"
+  ],
+  "controls": [
+    {
+      "group": "Grid",
+      "key": "columns",
+      "label": "Columns",
+      "type": "range",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "group": "Grid",
+      "key": "gap",
+      "label": "Gap",
+      "type": "range",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "default": 10
+    },
+    {
+      "group": "Grid",
+      "key": "count",
+      "label": "Images (demo)",
+      "type": "range",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "group": "Viewer",
+      "key": "doubleClickZoom",
+      "label": "Double-click zoom",
+      "type": "range",
+      "min": 1.5,
+      "max": 4,
+      "step": 0.5,
+      "default": 2.5
+    },
+    {
+      "group": "Viewer",
+      "key": "showCaptions",
+      "label": "Captions",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Viewer",
+      "key": "showCounter",
+      "label": "Counter",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Viewer",
+      "key": "defaultOpen",
+      "label": "Open on mount",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Two columns": {
+      "columns": 2,
+      "count": 4
+    },
+    "Dense": {
+      "columns": 4,
+      "gap": 4,
+      "count": 8
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "items",
+      "type": "array",
+      "description": "[{ id, src, alt, thumbnail, title, caption, width, height, art }]. src is the full image (fetched only when shown, plus the next one); thumbnail the grid image (else src, lazily); alt names it; title and caption show under the viewer; width / height give the aspect ratio before it loads (else 4:3 until it does). Empty by default. `art` is for work drawn in code: an Art description from `components/_shared/art.jsx`, shown in place of `src` in the grid and the viewer."
+    },
+    {
+      "key": "index",
+      "type": "number",
+      "description": "Controlled index of the current image."
+    },
+    {
+      "key": "defaultIndex",
+      "type": "number",
+      "description": "Starting image when uncontrolled.",
+      "default": 0
+    },
+    {
+      "key": "onIndexChange",
+      "type": "function",
+      "description": "(index, item, reason) => void when the image changes. reason: \"thumbnail\", \"button\", \"keyboard\" or \"swipe\"."
+    },
+    {
+      "key": "open",
+      "type": "boolean",
+      "description": "Controlled open state of the viewer."
+    },
+    {
+      "key": "defaultOpen",
+      "type": "boolean",
+      "description": "Open the viewer on mount when uncontrolled.",
+      "default": false
+    },
+    {
+      "key": "onOpenChange",
+      "type": "function",
+      "description": "(open: boolean, reason) => void. reason: \"thumbnail\", \"button\" (Close), \"escape\", \"outside\" or \"drag\"."
+    },
+    {
+      "key": "showGrid",
+      "type": "boolean",
+      "description": "Render the built-in thumbnail grid. false renders only the viewer, opened by state from your own thumbnails.",
+      "default": true
+    },
+    {
+      "key": "renderThumbnail",
+      "type": "function",
+      "description": "(item, index) => node. Replaces a grid tile's content; the tile stays a button that opens the viewer."
+    },
+    {
+      "key": "maxWidth",
+      "type": "number",
+      "description": "Widest the grid grows, in px; it fills its container up to this. 0 for no cap.",
+      "default": 560
+    },
+    {
+      "key": "showCaptions",
+      "type": "boolean",
+      "description": "Show each item's title and caption under the viewer.",
+      "default": true
+    },
+    {
+      "key": "showCounter",
+      "type": "boolean",
+      "description": "Show the position (\"3 / 8\") in the viewer.",
+      "default": true
+    },
+    {
+      "key": "formatCount",
+      "type": "function",
+      "description": "(index, total) => string for the counter.",
+      "default": "(i, n) => `${i + 1} / ${n}`"
+    },
+    {
+      "key": "errorText",
+      "type": "string",
+      "description": "Shown in place of an image that fails to load.",
+      "default": "This image could not be loaded."
+    },
+    {
+      "key": "label",
+      "type": "string",
+      "description": "Accessible name of the viewer dialog.",
+      "default": "Image viewer"
+    },
+    {
+      "key": "closeOnEscape",
+      "type": "boolean",
+      "description": "Escape closes the viewer.",
+      "default": true
+    },
+    {
+      "key": "closeOnOutside",
+      "type": "boolean",
+      "description": "A click on the backdrop (not after a drag) closes the viewer.",
+      "default": true
+    },
+    {
+      "key": "returnFocusTo",
+      "type": "ref | element | string | function | false",
+      "description": "Where focus goes on close. Default: the current image's thumbnail, else what had focus before opening, else the control nearest to it. false leaves focus alone."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Thumbnails can't open the viewer.",
+      "default": false
+    },
+    {
+      "key": "count",
+      "type": "number",
+      "description": "How many sample images the demo shows.",
+      "default": 6
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Show the gallery's sample art when no items are passed.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "ref",
+      "description": "The grid element (with showGrid false, the viewer dialog, null while closed). className, style and other props go to it too."
+    }
+  ],
+  "example": "<Lightbox\n  columns={3}\n  items={photos.map((p) => ({\n    id: p.id,\n    src: p.url,\n    thumbnail: p.thumbUrl,\n    alt: p.description,\n    title: p.title,\n    caption: p.credit,\n    width: p.width,\n    height: p.height,\n  }))}\n/>\n\n{/* your own thumbnails, opened by state */}\nconst [open, setOpen] = useState(false);\nconst [index, setIndex] = useState(0);\n{photos.map((p, i) => (\n  <button key={p.id} onClick={() => { setIndex(i); setOpen(true); }}><img src={p.thumbUrl} alt={p.description} /></button>\n))}\n<Lightbox showGrid={false} items={items} index={index} onIndexChange={setIndex} open={open} onOpenChange={setOpen} />"
+}

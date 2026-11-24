@@ -1,0 +1,111 @@
+{
+  "name": "Paywall",
+  "slug": "paywall",
+  "export": "Paywall",
+  "order": 76,
+  "kind": "components",
+  "category": "mobile",
+  "platform": "native",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Switch between Yearly and Monthly: every digit of the price rolls to the new figure on its own spring. Then start the trial.",
+  "description": "Subscription paywall for React Native, shown as the upgrade screen of a music sketchbook (or a photo editor) with generated hero artwork, three benefit rows and a close button that is there from the first frame. The price is an odometer: picking a plan rolls each digit column to the new figure on its own spring, staggered right to left and always turning the way the price moved, while columns that appear or leave slide their width open or shut and the period swaps from /year to /month with a short lift. The selection ring morphs between plan cards with a leading and a trailing edge and a select haptic. The billed amount and renewal terms sit on the button at reading size, the trial timeline (Today, reminder day, charge day) fills down a capsule track as it scrolls into view, and the button presses softly, shows a spinner, then a calm check and You're in with a success haptic. Restore, Terms, Privacy and Cancel anytime in Settings are always visible, the Save badge is computed from the real prices, and every price is spoken in full to screen readers.",
+  "intents": [
+    "subscription paywall with free trial",
+    "react native upgrade screen with plan picker",
+    "in-app purchase screen yearly vs monthly",
+    "animated price that rolls like an odometer"
+  ],
+  "tags": [
+    "expo",
+    "free trial",
+    "haptics",
+    "in-app purchase",
+    "monetization",
+    "odometer",
+    "paywall",
+    "plan picker",
+    "pricing",
+    "pro upgrade",
+    "react native",
+    "restore purchases",
+    "subscription",
+    "trial timeline",
+    "upgrade"
+  ],
+  "usage": "Use for the moment someone chooses to upgrade, not as an interruption on launch. Show the billed amount and renewal terms at reading size next to the button, let people close it straight away, and keep Restore Purchases, Terms and Privacy visible. Compute savings from your real store prices.",
+  "states": [
+    "default",
+    "loading",
+    "success"
+  ],
+  "controls": [
+    {
+      "group": "Offer",
+      "key": "defaultPlan",
+      "label": "Selected plan",
+      "type": "select",
+      "options": [
+        { "label": "Yearly", "value": "yearly" },
+        { "label": "Monthly", "value": "monthly" },
+        { "label": "Family", "value": "family" }
+      ],
+      "default": "yearly"
+    },
+    {
+      "group": "Offer",
+      "key": "showFamily",
+      "label": "Family plan",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Offer",
+      "key": "trialDays",
+      "label": "Free trial",
+      "type": "range",
+      "min": 0,
+      "max": 14,
+      "step": 1,
+      "unit": " days",
+      "default": 7
+    },
+    {
+      "group": "Offer",
+      "key": "currency",
+      "label": "Currency",
+      "type": "select",
+      "options": [
+        { "label": "US dollar", "value": "USD" },
+        { "label": "Euro", "value": "EUR" },
+        { "label": "Pound", "value": "GBP" },
+        { "label": "Yen", "value": "JPY" }
+      ],
+      "default": "USD"
+    },
+    {
+      "group": "Content",
+      "key": "app",
+      "label": "App",
+      "type": "select",
+      "options": [
+        { "label": "Music sketchbook", "value": "music" },
+        { "label": "Photo editor", "value": "photo" }
+      ],
+      "default": "music"
+    }
+  ],
+  "presets": {
+    "Photo app": {
+      "app": "photo",
+      "currency": "EUR"
+    },
+    "No trial": {
+      "trialDays": 0
+    },
+    "Two plans, yen": {
+      "showFamily": false,
+      "currency": "JPY"
+    }
+  }
+}

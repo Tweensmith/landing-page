@@ -1,0 +1,347 @@
+{
+  "name": "Bar Chart",
+  "slug": "bar-chart",
+  "export": "BarChart",
+  "order": 82,
+  "kind": "components",
+  "category": "display",
+  "subcategory": "charts",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Switch Grouped → Stacked: the bars slide together and climb onto each other.",
+  "description": "Grouped, stacked and 100% bar chart for comparing categories across one or a few series: your rows, your series, your formats. The layout morphs instead of re-rendering: grouped bars slide together and climb into stacks with a 2px surface gap, 100% stretches them to full height while the axis re-labels to percentages, and sorting reorders categories with FLIP springs. Negative values hang from the zero baseline. Hovering lifts a bar and dims its siblings; the glass tooltip shows value and share, or the full breakdown and total in stacked modes. Arrow keys move between bars, the legend hides series without repainting the rest, values label only where they fit, and narrow containers flip to horizontal ranking bars. The sample content (`demo`) is a year of profit for six bike shops.",
+  "intents": [
+    "grouped bar chart comparing categories",
+    "stacked bar chart with percent toggle",
+    "sales by store per quarter chart",
+    "bar chart with negative values",
+    "animated bar chart that switches grouped and stacked"
+  ],
+  "tags": [
+    "bar chart",
+    "column chart",
+    "grouped bars",
+    "stacked bars",
+    "100% stacked",
+    "horizontal bar chart",
+    "sort",
+    "negative values",
+    "data visualization",
+    "chart",
+    "dashboard"
+  ],
+  "usage": "Use to compare a handful of categories (3 to 12) across 1 to 8 series that share one unit. Pass `data` (rows of plain objects), `xKey` (the category field) and `series: [{ key, label, tone }]` (or `yKey` for one series); format with `formatValue` (tooltip, table, hero), `formatAxis` (ticks) and `formatLabel` (labels on bars). Own the data states with `loading`, `error` + `onRetry` and `emptyMessage`; `onPointClick({ category, series, value, row })` fires on click or Enter. Pick grouped to compare series within a category, stacked for totals, 100% for mix; `sort` is \"total\", \"alpha\" or \"none\" (your row order; the older object shape always sorts by total). Keep one value axis; for a trend over many periods use Area Chart. The in-card switches are the kit's shared `Segmented` control from components/_shared/chart.jsx, which has no slug of its own. The older { title, subtitle, note, series, categories, values } object still works as `data`.",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "loading",
+    "empty",
+    "error"
+  ],
+  "controls": [
+    {
+      "group": "Layout",
+      "key": "layout",
+      "label": "Layout",
+      "type": "select",
+      "options": [
+        "grouped",
+        "stacked",
+        "percent"
+      ],
+      "default": "grouped"
+    },
+    {
+      "group": "Layout",
+      "key": "orientation",
+      "label": "Orientation",
+      "type": "select",
+      "options": [
+        "vertical",
+        "horizontal"
+      ],
+      "default": "vertical"
+    },
+    {
+      "group": "Layout",
+      "key": "sort",
+      "label": "Sort",
+      "type": "select",
+      "options": [
+        "total",
+        "alpha",
+        "none"
+      ],
+      "default": "none"
+    },
+    {
+      "group": "Layout",
+      "key": "height",
+      "label": "Plot height (vertical)",
+      "type": "range",
+      "min": 200,
+      "max": 440,
+      "step": 10,
+      "unit": "px",
+      "default": 340
+    },
+    {
+      "group": "Content",
+      "key": "labels",
+      "label": "Value labels",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Content",
+      "key": "hero",
+      "label": "Hero total",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Content",
+      "key": "toolbar",
+      "label": "In-card controls",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Motion",
+      "key": "stiffness",
+      "label": "Spring stiffness",
+      "type": "range",
+      "min": 120,
+      "max": 600,
+      "step": 10,
+      "default": 260
+    },
+    {
+      "group": "Motion",
+      "key": "damping",
+      "label": "Spring damping",
+      "type": "range",
+      "min": 12,
+      "max": 50,
+      "step": 1,
+      "default": 26
+    },
+    {
+      "group": "State",
+      "key": "loading",
+      "label": "Loading",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Stacked totals": {
+      "demo": true,
+      "layout": "stacked"
+    },
+    "Quarter mix (100%)": {
+      "demo": true,
+      "layout": "percent"
+    },
+    "Horizontal ranking": {
+      "demo": true,
+      "layout": "stacked",
+      "orientation": "horizontal"
+    },
+    "A–Z, bouncy": {
+      "demo": true,
+      "sort": "alpha",
+      "stiffness": 420,
+      "damping": 16
+    }
+  },
+  "demoProps": {
+    "demo": true,
+    "sort": "total"
+  },
+  "dataProps": [
+    {
+      "key": "data",
+      "type": "array | object",
+      "description": "Rows of plain objects, one per category: the category under `xKey` (and an optional stable `id`), one number per series under its key. Missing values count as 0. The older { title, subtitle, note, series: [{ id, label, long }], categories: [{ id, label, short }], values: { [id]: number[] } } object is still accepted."
+    },
+    {
+      "key": "xKey",
+      "type": "string",
+      "description": "Field holding each row's category label.",
+      "default": "label"
+    },
+    {
+      "key": "yKey",
+      "type": "string",
+      "description": "Shortcut for one series: the field holding its value. Ignored when `series` is given."
+    },
+    {
+      "key": "series",
+      "type": "array",
+      "description": "[{ key, label, long, tone }]: the value fields, in group / stack order. `long` adds a longer name to legend and tooltip; `tone` is a series slot 0–7 or a --ts-* token name. Series keep a fixed order in every group and stack, so position tells them apart as well as colour."
+    },
+    {
+      "key": "title",
+      "type": "node",
+      "description": "Card title (also the accessible name when a string)."
+    },
+    {
+      "key": "subtitle",
+      "type": "node",
+      "description": "Line under the title."
+    },
+    {
+      "key": "note",
+      "type": "node",
+      "description": "Footnote under the plot."
+    },
+    {
+      "key": "formatValue",
+      "type": "function",
+      "description": "(value, series) => string for tooltip, table, hero and summary. Default: Intl number in the Theme's locale, minus sign, no unit."
+    },
+    {
+      "key": "formatAxis",
+      "type": "function",
+      "description": "(value) => string for value-axis ticks. Default: compact Intl number."
+    },
+    {
+      "key": "formatLabel",
+      "type": "function",
+      "description": "(value) => string for the labels drawn on or beside bars. Default: formatAxis."
+    },
+    {
+      "key": "categoryLabel",
+      "type": "string",
+      "description": "Header of the category column in the table view.",
+      "default": "Category"
+    },
+    {
+      "key": "legendLabel",
+      "type": "string",
+      "description": "Accessible name of the legend.",
+      "default": "Series"
+    },
+    {
+      "key": "heroLabel",
+      "type": "string",
+      "description": "Caption under the hero total.",
+      "default": "Total"
+    },
+    {
+      "key": "totalLabel",
+      "type": "string",
+      "description": "Label of the total row in the stacked tooltip and of the table's total column.",
+      "default": "Total"
+    },
+    {
+      "key": "hero",
+      "type": "boolean | node",
+      "description": "true shows the total of what is visible above the plot; a node replaces it with your own.",
+      "default": true
+    },
+    {
+      "key": "onLayoutChange",
+      "type": "function",
+      "description": "(\"grouped\" | \"stacked\" | \"percent\") => void from the in-card switch. `layout` sets it from outside."
+    },
+    {
+      "key": "onSortChange",
+      "type": "function",
+      "description": "(\"total\" | \"alpha\") => void from the in-card switch. `sort` sets it from outside."
+    },
+    {
+      "key": "onOrientationChange",
+      "type": "function",
+      "description": "(\"vertical\" | \"horizontal\") => void from the in-card switch. `orientation` sets it from outside."
+    },
+    {
+      "key": "hiddenSeries",
+      "type": "string[]",
+      "description": "Controlled list of series keys switched off in the legend. Pass with onHiddenSeriesChange."
+    },
+    {
+      "key": "defaultHiddenSeries",
+      "type": "string[]",
+      "description": "Uncontrolled starting list of hidden series keys.",
+      "default": "[]"
+    },
+    {
+      "key": "onHiddenSeriesChange",
+      "type": "function",
+      "description": "(keys) => void when a legend item is toggled."
+    },
+    {
+      "key": "onPointClick",
+      "type": "function",
+      "description": "({ category, categoryLabel, series, seriesLabel, value, row }, event) => void on a bar click, or Enter / Space on the keyboard-focused bar."
+    },
+    {
+      "key": "summary",
+      "type": "string",
+      "description": "One-line text alternative for screen readers. Default: how many categories and series, the highest and lowest, from your formatters."
+    },
+    {
+      "key": "loading",
+      "type": "boolean",
+      "description": "You are fetching: bar-shaped placeholders, aria-busy.",
+      "default": false
+    },
+    {
+      "key": "error",
+      "type": "string | node",
+      "description": "Shown in the plot box instead of the bars, with Try again when onRetry is given."
+    },
+    {
+      "key": "onRetry",
+      "type": "function",
+      "description": "() => void from the error form's button."
+    },
+    {
+      "key": "emptyMessage",
+      "type": "string | node",
+      "description": "Shown in the plot box when there are no rows.",
+      "default": "No data to show"
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "The whole card inert: not focusable, dimmed, aria-disabled.",
+      "default": false
+    },
+    {
+      "key": "ariaLabel",
+      "type": "string",
+      "description": "Accessible name when there is no string title (the aria-label attribute works too)."
+    },
+    {
+      "key": "ref",
+      "type": "ref",
+      "description": "The root element around the card."
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Show the sample: six bike shops' quarterly profit in dollars, with its titles, note and copy. Your own props win over it.",
+      "default": false
+    }
+  ],
+  "example": "<BarChart\n  data={regions}          // [{ id: \"emea\", name: \"EMEA\", q1: 120, q2: -14 }, …]\n  xKey=\"name\"\n  series={[{ key: \"q1\", label: \"Q1\" }, { key: \"q2\", label: \"Q2\" }]}\n  title=\"Margin by region\"\n  formatValue={(v) => new Intl.NumberFormat(\"en-US\", { style: \"currency\", currency: \"EUR\" }).format(v)}\n  loading={isFetching}\n  error={error?.message}\n  onRetry={refetch}\n  onPointClick={({ row }) => openRegion(row.id)}\n/>"
+}

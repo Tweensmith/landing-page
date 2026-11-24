@@ -1,0 +1,33 @@
+/* The one line about Pro: heading, email field and key over a slow row of blank name-plates (sections/Pro.jsx). */
+
+.pw .section__title .muted { display: block; }
+.pw__wait { min-height: 140px; }
+
+/* the email field and its key, the same height, side by side, both fully round (owner, 2026-11-23). The kit's field
+   takes its corner from --ts-radius-md, so that variable is set for this form alone; the wider side padding keeps the
+   icon and the text off the curve. The kit's field keeps a line under its box for its own messages; what the form
+   says once an address is taken sits on that same line, so nothing moves. */
+.pwform { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 10px; align-items: start; width: 100%; max-width: 440px; }
+.pwform .ts-field { --ts-radius-md: 999px; }
+.pwform .ts-box { padding-inline: 22px; }
+.pwform .ts-btn { min-height: 56px; padding-inline: 24px; border-radius: 999px; }
+.pwform__say { grid-column: 1 / -1; margin: -26px 0 0; padding-left: 22px; min-height: 18px; font-size: 13.5px; line-height: 18px; color: var(--ts-ink2); pointer-events: none; }
+
+/* the heading and the field, side by side */
+.pwline { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 48px; }
+.pwline > .gt__not { margin-bottom: 10px; }
+.pwline > .pwform { margin-bottom: -18px; }   /* the field's box, not its message line, sits on the heading's baseline */
+
+/* the row of blank name-plates */
+.pwmore { width: calc(100% + var(--gutter) * 2); margin: clamp(28px, 3.6vw, 48px) calc(var(--gutter) * -1) 0; overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent); mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent); }
+.pwmore__row { display: flex; align-items: center; gap: clamp(18px, 2.4vw, 36px); width: max-content; padding: 2px 0; animation: pwmore 80s linear infinite paused; }
+.pwmore__row[data-run] { animation-play-state: running; }
+.pwmore__row > * { flex: none; }
+@keyframes pwmore { to { transform: translateX(calc(-50% - clamp(9px, 1.2vw, 18px))); } }
+@media (prefers-reduced-motion: reduce) { .pwmore__row { animation: none; } }
+
+@media (max-width: 640px) {
+  .pwline { flex-direction: column; align-items: flex-start; }
+  .pwform { max-width: none; }
+}

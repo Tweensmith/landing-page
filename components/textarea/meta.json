@@ -1,0 +1,369 @@
+{
+  "name": "Textarea",
+  "slug": "textarea",
+  "export": "Textarea",
+  "order": 21,
+  "kind": "components",
+  "category": "forms",
+  "subcategory": "text-entry",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "added": "2026-11-21",
+  "hint": "Type a few lines and watch the box grow.",
+  "description": "Multi-line text input in the field family: label above the box or floating inside it, a box that grows with a spring as lines are added (up to maxRows, then scrolls), validation on blur, a gentle shake on error and an n/max counter.",
+  "intents": [
+    "multi-line text input",
+    "bio or about me box on a profile form",
+    "message or comment box that grows as you type",
+    "feedback form with a long answer field",
+    "auto-growing textarea with character count"
+  ],
+  "tags": [
+    "textarea",
+    "multiline",
+    "multi-line",
+    "text area",
+    "message",
+    "bio",
+    "comment",
+    "long answer",
+    "auto grow",
+    "autosize",
+    "form",
+    "input"
+  ],
+  "usage": "Use for text that can run past one line: a bio, a message, a comment, a long answer. Give it `label` (or `aria-label` when there is no visible label), `name`, and `value` + `onChange` if you own the state. It starts at `rows` lines (3) and grows with a spring as lines are added, up to `maxRows` (8; 0 = no limit), then scrolls; `autoGrow={false}` keeps it at `rows`, and `resize=\"vertical\"` gives a manual drag handle instead. `maxLength` shows an n/max counter and a \"Keep it under N characters\" error once the text runs over (it never cuts the text); `showCount={false}` hides the counter. Show a server error with `error`; bump `revealErrors` on every submit so the field shakes even when the message is the same as last time. In a form with Text Field, Password Field and Tag Input, give every field the same `labelPlacement` (\"above\" or \"float\") so the labels read as one design. Enter adds a new line (it does not submit). The ref is the <textarea>; unknown props (aria-*, data-*, onKeyDown, spellCheck) go to it. A <form> reset puts it back to `defaultValue`.",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "disabled",
+    "error",
+    "success"
+  ],
+  "keyboard": [
+    {
+      "keys": "Tab",
+      "does": "Moves focus into the text box; leaving it checks the value and shows any error."
+    },
+    {
+      "keys": "Enter",
+      "does": "Starts a new line; the box grows with the text up to `maxRows`, then scrolls."
+    },
+    {
+      "keys": "Character",
+      "does": "Types into the box; once an error shows, it clears or changes as you type."
+    }
+  ],
+  "screenReader": "A multi-line text box named by `label`. The hint, error or success line is linked with aria-describedby and read in a live region (assertive for an error), and an error sets aria-invalid. With `maxLength` the count is part of the description, read as \"n of max characters\" (`messages.count`) when the box takes focus.",
+  "dataProps": [
+    {
+      "key": "label",
+      "type": "string",
+      "description": "Visible label. Empty by default: then pass aria-label so the box still has a name.",
+      "default": ""
+    },
+    {
+      "key": "labelPlacement",
+      "type": "\"above\" | \"float\"",
+      "description": "\"above\": a static label over the box (as Password Field and Tag Input draw it). \"float\": the label sits inside the box on the first line and floats up on focus or once there is text (as Text Field draws it). Use the same value on every field of a form.",
+      "default": "above"
+    },
+    {
+      "key": "hint",
+      "type": "string",
+      "description": "Help line under the box. An error or success message replaces it while it shows.",
+      "default": ""
+    },
+    {
+      "key": "placeholder",
+      "type": "string",
+      "description": "Shown inside the empty box (with labelPlacement=\"float\", once the label has floated)."
+    },
+    {
+      "key": "value",
+      "type": "string",
+      "description": "Controlled value: pass it with onChange and the box shows exactly this. Leave undefined to let it keep its own (seeded by defaultValue)."
+    },
+    {
+      "key": "defaultValue",
+      "type": "string",
+      "description": "Initial value when uncontrolled. A <form> reset returns to it.",
+      "default": ""
+    },
+    {
+      "key": "onChange",
+      "type": "(value: string) => void",
+      "description": "(value: string) => void, on every keystroke (and on form reset)."
+    },
+    {
+      "key": "onBlur",
+      "type": "(event: FocusEvent) => void",
+      "description": "(event) => void, after the field marks itself touched and validates."
+    },
+    {
+      "key": "onFocus",
+      "type": "(event: FocusEvent) => void",
+      "description": "(event) => void."
+    },
+    {
+      "key": "rows",
+      "type": "number",
+      "description": "Lines the box shows when empty; it never gets shorter than this.",
+      "default": 3
+    },
+    {
+      "key": "minRows",
+      "type": "number",
+      "description": "Same as rows (the shortest the box gets); wins over rows when both are set."
+    },
+    {
+      "key": "maxRows",
+      "type": "number",
+      "description": "Lines the box grows to before it scrolls. 0 lets it grow with the text.",
+      "default": 8
+    },
+    {
+      "key": "autoGrow",
+      "type": "boolean",
+      "description": "Grow with the text (a spring per added line; instant under reduced motion). false keeps the box at rows and scrolls.",
+      "default": true
+    },
+    {
+      "key": "resize",
+      "type": "\"none\" | \"vertical\"",
+      "description": "\"vertical\" shows the browser's drag handle so the person sets the height; auto-grow is off then.",
+      "default": "none"
+    },
+    {
+      "key": "maxLength",
+      "type": "number",
+      "description": "Character limit. Shows the n/max counter, turns it red when over and shows the tooLong error after blur. Never cuts the text. 0 = no limit.",
+      "default": 0
+    },
+    {
+      "key": "showCount",
+      "type": "boolean",
+      "description": "With maxLength set, show the n/max counter (11px mono, --ts-ink2). false keeps the length rule without the counter.",
+      "default": true
+    },
+    {
+      "key": "validate",
+      "type": "\"none\" | \"required\" | ((value: string, messages: { required?: string; tooLong?: string | ((max: number) => string); invalid?: string; count?: (n: number, max: number) => string }) => string | null)",
+      "description": "\"none\" | \"required\", or a function (value, messages) => string | null: return the error message, or null when the value is fine. Runs on blur, then live once an error shows.",
+      "default": "none"
+    },
+    {
+      "key": "messages",
+      "type": "{ required?: string; tooLong?: string | ((max: number) => string); invalid?: string; count?: (n: number, max: number) => string }",
+      "description": "Copy, merged over neutral defaults: { required: \"This field is required\", tooLong: (max) => `Keep it under ${max} characters`, invalid: \"Check this field\", count: (n, max) => `${n} of ${max} characters` (the counter as screen readers hear it) }."
+    },
+    {
+      "key": "error",
+      "type": "string",
+      "description": "An error you already have (for example from the server). Shown as the field's error until you clear it; the box shakes once when it appears."
+    },
+    {
+      "key": "successText",
+      "type": "string",
+      "description": "Message under the box once it validates (only with a validate rule). Empty by default: only the check shows.",
+      "default": ""
+    },
+    {
+      "key": "showSuccess",
+      "type": "boolean",
+      "description": "Show the check and successText when the value passes a validate rule. false keeps a valid field neutral.",
+      "default": true
+    },
+    {
+      "key": "revealErrors",
+      "type": "number",
+      "description": "Bump on every submit (0 → 1 → 2…): marks the field touched and shakes it while anything is wrong, including an `error` you pass, even if the message is the same as last time.",
+      "default": 0
+    },
+    {
+      "key": "required",
+      "type": "boolean",
+      "description": "Marks the textarea required (native constraint and aria) and adds * to the label. With validate=\"none\" it also applies the required rule.",
+      "default": false
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Not focusable, dimmed, left out of FormData.",
+      "default": false
+    },
+    {
+      "key": "readOnly",
+      "type": "boolean",
+      "description": "Text can be read and selected but not edited.",
+      "default": false
+    },
+    {
+      "key": "id",
+      "type": "string",
+      "description": "id of the <textarea>. Generated when omitted."
+    },
+    {
+      "key": "name",
+      "type": "string",
+      "description": "Form field name; the <textarea> carries the value in FormData."
+    },
+    {
+      "key": "autoComplete",
+      "type": "string",
+      "description": "autocomplete token, passed to the <textarea>. Unset by default."
+    },
+    {
+      "key": "autoFocus",
+      "type": "boolean",
+      "description": "Focus the textarea on mount.",
+      "default": false
+    },
+    {
+      "key": "maxWidth",
+      "type": "number",
+      "description": "Widest the field grows, in px. 0 lets it fill its container.",
+      "default": 380
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLTextAreaElement>",
+      "description": "Forwarded to the <textarea>: focus(), select(), setSelectionRange(), measure."
+    },
+    {
+      "key": "className",
+      "type": "string",
+      "description": "Added to the root (the element that holds label, box and message line)."
+    },
+    {
+      "key": "style",
+      "type": "React.CSSProperties",
+      "description": "Inline style on the root."
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Sample content for the gallery: label \"Message\", a hint and a placeholder. Your own label, hint and placeholder win. Off by default.",
+      "default": false
+    }
+  ],
+  "example": "<form onSubmit={save}>\n  <TextField label=\"Display name\" labelPlacement=\"above\" type=\"text\" icon=\"none\" validate=\"none\" name=\"name\" maxWidth={0} />\n  <Textarea\n    ref={bioRef}\n    label=\"Bio\"\n    labelPlacement=\"above\"\n    name=\"bio\"\n    placeholder=\"What you make and how, in a sentence or two.\"\n    rows={3}\n    maxRows={8}\n    maxLength={200}\n    value={bio}\n    onChange={setBio}\n    error={serverError}\n    revealErrors={submits}\n    maxWidth={0}\n  />\n</form>",
+  "controls": [
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "hint",
+      "label": "Hint",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Style",
+      "key": "labelPlacement",
+      "label": "Label placement",
+      "type": "select",
+      "options": [
+        "above",
+        "float"
+      ],
+      "default": "above"
+    },
+    {
+      "group": "Behaviour",
+      "key": "rows",
+      "label": "Rows",
+      "type": "range",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "group": "Behaviour",
+      "key": "maxRows",
+      "label": "Max rows (0 = no limit)",
+      "type": "range",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "group": "Behaviour",
+      "key": "maxLength",
+      "label": "Max length (0 = off)",
+      "type": "range",
+      "min": 0,
+      "max": 1000,
+      "step": 10,
+      "default": 0
+    },
+    {
+      "group": "Behaviour",
+      "key": "validate",
+      "label": "Validate",
+      "type": "select",
+      "options": [
+        "none",
+        "required"
+      ],
+      "default": "none"
+    },
+    {
+      "group": "Behaviour",
+      "key": "resize",
+      "label": "Resize handle",
+      "type": "select",
+      "options": [
+        "none",
+        "vertical"
+      ],
+      "default": "none"
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Bio": {
+      "label": "Bio",
+      "hint": "Shown on your profile.",
+      "maxLength": 200,
+      "rows": 3
+    },
+    "Floating label": {
+      "label": "Message",
+      "labelPlacement": "float",
+      "rows": 4
+    },
+    "Feedback": {
+      "label": "What could we do better?",
+      "validate": "required",
+      "rows": 4,
+      "maxRows": 12
+    }
+  },
+  "demoProps": {
+    "demo": true,
+    "maxLength": 500
+  }
+}

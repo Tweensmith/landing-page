@@ -1,0 +1,184 @@
+{
+  "name": "Copy Button",
+  "slug": "copy-button",
+  "export": "CopyButton",
+  "order": 16,
+  "kind": "components",
+  "category": "actions",
+  "subcategory": "buttons",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "hint": "Copy the command.",
+  "description": "A value (install command, API key, link) with a copy action. The icon morphs to a check and the label to Copied; if the clipboard is blocked it falls back to the older copy command, and if that fails too it selects the text, says Press ⌘C and calls onError.",
+  "intents": [
+    "copy install command",
+    "copy to clipboard",
+    "copy api key",
+    "share link with a copy button"
+  ],
+  "tags": [
+    "copy",
+    "clipboard",
+    "code",
+    "command",
+    "api key",
+    "snippet",
+    "share",
+    "button"
+  ],
+  "usage": "Use next to anything people paste elsewhere: commands, keys, invite links, coupon codes. Pass `value` (what is shown and copied); add `text` when the copied string differs from what is shown (a masked key). `onCopy(text)` fires after a successful copy, `onError(error, text)` when the clipboard refused. Keep the value visible so people can check what they copied; with `showValue={false}` and `showLabel={false}` it becomes an icon button whose accessible name is \"Copy <value>\". With no value it renders a disabled Copy button.",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "success",
+    "error",
+    "disabled"
+  ],
+  "keyboard": [
+    {
+      "keys": "Enter / Space",
+      "does": "Copies the text; the label turns to Copied, or to Press ⌘C with the value selected when the clipboard is blocked, and goes back after `resetAfter`."
+    }
+  ],
+  "screenReader": "A native button named by its text (`label`, \"Copy\" by default), or by `label` plus the value when `showLabel` is off. A polite live region says \"Copied to clipboard\" after a copy, or that the copy failed and the text is selected for a manual copy, and empties when the button goes back.",
+  "controls": [
+    {
+      "group": "Content",
+      "key": "value",
+      "label": "Value",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "prompt",
+      "label": "Prompt",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Button label",
+      "type": "text",
+      "default": "Copy"
+    },
+    {
+      "group": "Display",
+      "key": "showValue",
+      "label": "Show value",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Display",
+      "key": "showLabel",
+      "label": "Show label",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Timing",
+      "key": "resetAfter",
+      "label": "Reset after",
+      "type": "range",
+      "min": 600,
+      "max": 4000,
+      "step": 100,
+      "unit": "ms",
+      "default": 1600
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "API key": {
+      "value": "sk_live_8f2c…a91d",
+      "prompt": "key"
+    },
+    "Icon only": {
+      "showValue": false,
+      "showLabel": false
+    }
+  },
+  "dataProps": [
+    {
+      "key": "value",
+      "type": "string",
+      "description": "What is shown, and copied unless `text` is set.",
+      "default": ""
+    },
+    {
+      "key": "text",
+      "type": "string",
+      "description": "What is copied when it should differ from `value` (show \"sk_live_…a91d\", copy the full key)."
+    },
+    {
+      "key": "prompt",
+      "type": "string",
+      "description": "A dim prefix before the value, such as \"$\" for a shell command. Not copied.",
+      "default": ""
+    },
+    {
+      "key": "label",
+      "type": "string",
+      "description": "Button label before copying; also the start of the icon-only accessible name.",
+      "default": "Copy"
+    },
+    {
+      "key": "copiedLabel",
+      "type": "string",
+      "description": "Button label after a successful copy.",
+      "default": "Copied"
+    },
+    {
+      "key": "errorLabel",
+      "type": "string",
+      "description": "Button label when copying failed. Defaults to \"Press ⌘C\" (\"Press Ctrl+C\" off Apple devices) when the value is visible and selected for a manual copy, otherwise \"Copy failed\"."
+    },
+    {
+      "key": "onCopy",
+      "type": "(text: string) => void",
+      "description": "(text) => void. Called after the text is on the clipboard."
+    },
+    {
+      "key": "onError",
+      "type": "(error: unknown, text: string) => void",
+      "description": "(error, text) => void. Called when neither the Clipboard API nor the fallback could copy."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Native disabled on the button. It is also disabled when there is nothing to copy.",
+      "default": false
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Other attributes (aria-label, aria-describedby, data-*, title) go to the copy <button>; className and style go to the root."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLButtonElement>",
+      "description": "Forwarded to the copy <button>."
+    }
+  ],
+  "example": "<CopyButton\n  value={inviteUrl}\n  onCopy={() => track(\"invite_copied\")}\n  onError={() => toast.error(\"Couldn't copy. Select the link and copy it by hand.\")}\n/>\n\n<CopyButton value=\"sk_live_…a91d\" text={apiKey} prompt=\"key\" />",
+  "demoProps": {
+    "demo": true
+  }
+}

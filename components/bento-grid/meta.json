@@ -1,0 +1,209 @@
+{
+  "name": "Bento Grid",
+  "slug": "bento-grid",
+  "export": "BentoGrid",
+  "order": 96,
+  "kind": "bands",
+  "category": "features",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Move across the tiles: one light follows you and the tile you approach starts playing. Click a tile to open it.",
+  "description": "A features section of tiles in an asymmetric bento grid. You pass the tiles: a title, a line of copy, an optional tag, any node as the tile's visual, a size (small, wide, tall, hero or an explicit span) and an href or a click handler; a tile with a `panel` grows over the grid into that panel when opened, and Esc returns it. One pointer light (a single SVG gradient driven by motion values) crosses the whole grid and lights the borders of nearby tiles. With `demo` it shows the sample, set in an incident-response tool, where every tile is a small working demo instead of an icon and a paragraph: an alert is acknowledged and resolved, a latency line crosses its threshold and pages someone, a rota hands over on the hour, a command types itself, sources wire up, a status page flips to Operational; the tile you approach blooms into colour and plays, and each one opens into a hands-on version of itself. The layout follows the section's own width: 4 columns, 3, 2, or a phone stack where small tiles sit two-across.",
+  "intents": [
+    "bento grid features section for a landing page",
+    "mosaic of animated feature cards, each one a live product demo",
+    "asymmetric feature grid with a hover spotlight glow",
+    "feature card that expands into an interactive detail view",
+    "show what a SaaS product does on a marketing page"
+  ],
+  "tags": [
+    "bento",
+    "bento grid",
+    "features",
+    "feature grid",
+    "landing page",
+    "section",
+    "spotlight",
+    "glow",
+    "pointer light",
+    "expandable card",
+    "live demo",
+    "marketing",
+    "mosaic",
+    "feature cards",
+    "animated cards"
+  ],
+  "usage": "Use once per landing page as the features section, after the hero. Pass `items`: one feature per tile with an `id`, a `title` of a few words, a one-line `body`, a `visual` node (a screenshot, a chart, a small live demo) and a `size`; keep one tile `hero` and the rest quieter. Six or seven tiles is the limit. Make a tile a link with `href`, a button with `onClick` (or `onItemClick` for all tiles), or give it a `panel` node to open it over the grid; read or drive the open tile with `expanded` / `defaultExpanded` / `onExpandedChange`. Add `eyebrow`, `heading` and `intro` for the header. Tiles flow in the order given (row by row, no reordering), so plan the sizes to fill each row. With no `items` it shows nothing (or only the header you pass).",
+  "states": [
+    "default",
+    "hover",
+    "open"
+  ],
+  "controls": [
+    {
+      "group": "Content",
+      "key": "heading",
+      "label": "Heading",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Motion",
+      "key": "autoplay",
+      "label": "Autoplay demos",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Motion",
+      "key": "glow",
+      "label": "Pointer light",
+      "type": "range",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.7
+    },
+    {
+      "group": "Layout",
+      "key": "columns",
+      "label": "Columns",
+      "type": "select",
+      "options": [
+        "auto",
+        "2",
+        "3",
+        "4"
+      ],
+      "default": "auto"
+    },
+    {
+      "group": "Layout",
+      "key": "density",
+      "label": "Density",
+      "type": "select",
+      "options": [
+        "comfortable",
+        "compact"
+      ],
+      "default": "comfortable"
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Quiet": {
+      "autoplay": false,
+      "glow": 0
+    },
+    "Compact wall": {
+      "columns": "4",
+      "density": "compact"
+    },
+    "Two up": {
+      "columns": "2"
+    },
+    "Bright light": {
+      "glow": 1
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "items",
+      "type": "Array<{ id: string, title: ReactNode, body?: ReactNode, tag?: ReactNode, visual?: ReactNode, size?: \"small\" | \"wide\" | \"tall\" | \"hero\", span?: { cols: number, rows: number }, href?: string, target?: string, rel?: string, onClick?: (item, event) => void, panel?: ReactNode, panelIntro?: ReactNode, disabled?: boolean }>",
+      "description": "The tiles, in reading order. `size` sets the span (small 1×1, wide 2×1, tall 1×2, hero 2×2; `span` overrides it, clamped to the columns showing). The whole tile is the link (`href`) or button (`onClick`, `onItemClick`, or a `panel` to open). `tag` shows on wide and hero tiles. Empty shows no grid.",
+      "default": []
+    },
+    {
+      "key": "eyebrow",
+      "type": "ReactNode",
+      "description": "Small line above the heading (text, or a mark and text). Blank shows none."
+    },
+    {
+      "key": "heading",
+      "type": "ReactNode",
+      "description": "The section heading (names the section for screen readers). Blank shows none.",
+      "default": ""
+    },
+    {
+      "key": "intro",
+      "type": "ReactNode",
+      "description": "A sentence or two beside the heading. Blank shows none."
+    },
+    {
+      "key": "onItemClick",
+      "type": "function",
+      "description": "(item, index: number, event) => void, when any tile is activated (by pointer or keyboard). Called alongside the item's own onClick, and before a panel opens."
+    },
+    {
+      "key": "expanded",
+      "type": "string | null",
+      "description": "Controlled id of the tile whose panel is open (null for none). Pass it with onExpandedChange."
+    },
+    {
+      "key": "defaultExpanded",
+      "type": "string | null",
+      "description": "Tile whose panel is open on first render when uncontrolled.",
+      "default": null
+    },
+    {
+      "key": "onExpandedChange",
+      "type": "function",
+      "description": "(id: string | null, item | null) => void, when a tile asks to open its panel, or the panel asks to close (close button, Esc, the scrim)."
+    },
+    {
+      "key": "headingLevel",
+      "type": "number",
+      "description": "Level of the section heading (1 to 4); tile titles are one level below, panel sections two.",
+      "default": 2
+    },
+    {
+      "key": "scroller",
+      "type": "HTMLElement | RefObject<HTMLElement>",
+      "description": "On touch screens the pointer light follows scrolling; pass the scroll container if it is not the page."
+    },
+    {
+      "key": "closeLabel",
+      "type": "string",
+      "description": "Accessible name of the panel's close button.",
+      "default": "Close"
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "No tile can be activated or opened: links lose their href, buttons are disabled. Use an item's own `disabled` for one tile.",
+      "default": false
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Show the sample: seven working product demos with their own header, each opening into a hands-on version. Only when no items are passed. Gallery only; leave off in real UI.",
+      "default": false
+    },
+    {
+      "key": "className",
+      "type": "string",
+      "description": "Added to the root section."
+    },
+    {
+      "key": "style",
+      "type": "CSSProperties",
+      "description": "Merged into the root section's style."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLElement>",
+      "description": "The root section, for measuring or scrolling to it."
+    }
+  ],
+  "example": "const items = [\n  { id: \"sync\", size: \"hero\", tag: \"Sync\", title: \"Every device, same second.\", body: \"Edits land everywhere before you look up.\", visual: <img src=\"/f/sync.png\" alt=\"\" />, panel: <SyncDetails />, panelIntro: \"How sync handles conflicts.\" },\n  { id: \"search\", size: \"wide\", title: \"Search that reads.\", body: \"Finds the paragraph, not just the file.\", visual: <SearchMock /> },\n  { id: \"share\", title: \"Share a link.\", body: \"Viewers need no account.\", href: \"/features/share\" },\n  { id: \"api\", title: \"An API for all of it.\", body: \"Everything in the app is a call.\", href: \"/docs\" },\n];\n\n<BentoGrid\n  eyebrow=\"Features\"\n  heading=\"Built for the way you work.\"\n  items={items}\n  onItemClick={(item) => track(\"feature\", item.id)}\n/>"
+}

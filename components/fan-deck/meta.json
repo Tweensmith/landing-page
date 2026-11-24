@@ -1,0 +1,262 @@
+{
+  "name": "Fan Deck",
+  "slug": "fan-deck",
+  "export": "FanDeck",
+  "order": 3,
+  "kind": "components",
+  "category": "showpieces",
+  "subcategory": "cards",
+  "platform": "web",
+  "level": "hero",
+  "tier": "pro",
+  "hint": "Hover or arrow keys to part the deck. Click, Enter or tap to inspect; Esc puts it back.",
+  "description": "A hand of cards fanned from a pivot below. Hover or focus lifts a card and magnetically parts its neighbours; click pulls it out to inspect beside a name plaque while the rest of the hand sinks below the table edge. Reserves its own height, keyboard and touch ready.",
+  "intents": [
+    "choose one of a few options",
+    "pick a theme or template",
+    "select a plan card playfully",
+    "choose a character or avatar",
+    "wallet cards picker",
+    "show testimonials as cards"
+  ],
+  "tags": [
+    "cards",
+    "fan",
+    "deck",
+    "hand",
+    "stack",
+    "picker",
+    "gallery",
+    "selection",
+    "playful",
+    "hover"
+  ],
+  "usage": "Use for choosing one of a handful: themes, plans, templates, characters, wallet cards, testimonials. 4–9 cards; on a 390px phone 5 or fewer give every card a touch region of 44px or more (7 give about 34–38px). Great above the fold on playful brands. Pass `items` [{ id, title, caption?, image?, node?, palette?, variant?, disabled? }] and `cards={items.length}` (cards caps how many are dealt; your items are never repeated). A card shows `node`, else `image`, else procedural art from palette/variant (or an art id in `art`), else a plain surface. The inspected card is `value` / `defaultValue` (an item id, or null for none) with `onChange(id, item, index)`; `onSelect(index | null)` also reports it. `label` names the deck (default \"Card deck\"); `disabled` dims the whole deck, takes it out of the tab order and nothing opens; with no items the empty state shows `emptyLabel` and an optional `emptyHint`. An item with disabled: true stays in the hand and in the keyboard order, is hatched and tagged Unavailable, is announced as unavailable and cannot be inspected. Keyboard: one tab stop; Left/Right/Home/End move along the fan, Enter/Space inspect, Escape puts back, Left/Right browse while inspecting. Touch: each card owns the part of the fan nearest the middle of what is visible of it; tap or drag across, release to inspect. The component sizes its own height, so give it width, not a fixed height. `demo` deals the sample art (gallery only). The cards' shadows and tilt bleed 48px past the component on each side (12px when it is narrower than 640px): keep that much room between it and the edge of the page, or the page scrolls sideways.",
+  "stage": {
+    "bg": "#ede7da",
+    "accent": "#ff5a1f",
+    "theme": "light"
+  },
+  "controls": [
+    {
+      "group": "Fan",
+      "key": "cards",
+      "label": "Cards",
+      "type": "range",
+      "min": 3,
+      "max": 11,
+      "step": 1,
+      "default": 7
+    },
+    {
+      "group": "Fan",
+      "key": "spread",
+      "label": "Spread",
+      "type": "range",
+      "min": 0,
+      "max": 120,
+      "step": 1,
+      "unit": "°",
+      "default": 54
+    },
+    {
+      "group": "Fan",
+      "key": "pivot",
+      "label": "Pivot depth",
+      "type": "range",
+      "min": 250,
+      "max": 1200,
+      "step": 10,
+      "unit": "px",
+      "default": 560
+    },
+    {
+      "group": "Cards",
+      "key": "cardWidth",
+      "label": "Card width",
+      "type": "range",
+      "min": 120,
+      "max": 240,
+      "step": 2,
+      "unit": "px",
+      "default": 168
+    },
+    {
+      "group": "Cards",
+      "key": "radius",
+      "label": "Corner radius",
+      "type": "range",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "group": "Hover",
+      "key": "lift",
+      "label": "Lift",
+      "type": "range",
+      "min": 0,
+      "max": 120,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "group": "Hover",
+      "key": "push",
+      "label": "Neighbour push",
+      "type": "range",
+      "min": 0,
+      "max": 20,
+      "step": 0.5,
+      "unit": "°",
+      "default": 7
+    },
+    {
+      "group": "Inspect",
+      "key": "inspectScale",
+      "label": "Inspect scale",
+      "type": "range",
+      "min": 1,
+      "max": 2.2,
+      "step": 0.01,
+      "default": 1.5
+    },
+    {
+      "group": "Inspect",
+      "key": "dim",
+      "label": "Dim others",
+      "type": "range",
+      "min": 0,
+      "max": 1,
+      "step": 0.01,
+      "default": 0.55
+    },
+    {
+      "group": "Motion",
+      "key": "stiffness",
+      "label": "Stiffness",
+      "type": "range",
+      "min": 60,
+      "max": 600,
+      "step": 10,
+      "default": 260
+    },
+    {
+      "group": "Motion",
+      "key": "damping",
+      "label": "Damping",
+      "type": "range",
+      "min": 8,
+      "max": 50,
+      "step": 1,
+      "default": 24
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Poker hand": {
+      "cards": 5,
+      "spread": 40,
+      "pivot": 420,
+      "push": 10
+    },
+    "Wide arc": {
+      "cards": 11,
+      "spread": 110,
+      "pivot": 900,
+      "cardWidth": 140
+    },
+    "Tight stack": {
+      "spread": 12,
+      "push": 16,
+      "lift": 80
+    }
+  },
+  "states": [
+    "default",
+    "open",
+    "disabled",
+    "empty"
+  ],
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "items",
+      "type": "Array<{ id, title, caption?, image?, alt?, node?, art?, palette?, variant?, disabled? }>",
+      "description": "The cards, left to right. title shows on the card and the plaque and names it for screen readers; caption shows on the plaque; image (URL) or node (ReactNode) is the face, else procedural art, else a plain surface; disabled keeps it in the hand but it cannot be inspected.",
+      "default": []
+    },
+    {
+      "key": "value",
+      "type": "string | number | null",
+      "description": "Controlled inspected card: the item's id (its index if it has no id), or null for none."
+    },
+    {
+      "key": "defaultValue",
+      "type": "string | number | null",
+      "description": "Inspected card at mount when uncontrolled.",
+      "default": null
+    },
+    {
+      "key": "onChange",
+      "type": "function",
+      "description": "(id | null, item | null, index | null) => void, when a card is inspected or put back (click, keys, tap, swipe, Escape, a click on the table)."
+    },
+    {
+      "key": "onSelect",
+      "type": "function",
+      "description": "(index | null) => void, the same moments as onChange with just the index (kept for older callers)."
+    },
+    {
+      "key": "label",
+      "type": "string",
+      "description": "Accessible name of the deck.",
+      "default": "Card deck"
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "The whole deck: dimmed, not focusable, nothing opens.",
+      "default": false
+    },
+    {
+      "key": "emptyLabel",
+      "type": "ReactNode",
+      "description": "Headline of the empty state shown when there are no items.",
+      "default": "No cards to show"
+    },
+    {
+      "key": "emptyHint",
+      "type": "ReactNode",
+      "description": "Optional second line under the empty headline. None by default (the demo shows a sample line)."
+    },
+    {
+      "key": "labels",
+      "type": "{ unavailable?, inspected?, putBack?, of?, roledescription? }",
+      "description": "Words for the Unavailable tag and the screen-reader announcements, for translation. Defaults: \"Unavailable\", \"inspected\", \"put back\", \"of\", \"card deck\"."
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "With no items, deal the sample art (repeated to fill `cards`) and show a sample empty hint. Gallery only; leave off in real UI.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLDivElement>",
+      "description": "The root element, for measuring or scrolling to the deck. className, style and other props (data-*, aria-*) land on it too."
+    }
+  ],
+  "example": "const [pick, setPick] = useState(null);\n\n<FanDeck\n  items={themes.map((t) => ({ id: t.id, title: t.name, caption: t.blurb, image: t.preview }))}\n  cards={themes.length}\n  label=\"Choose a theme\"\n  value={pick}\n  onChange={(id) => setPick(id)}\n/>"
+}

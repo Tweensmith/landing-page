@@ -1,0 +1,358 @@
+{
+  "name": "Radial Gauge",
+  "slug": "radial-gauge",
+  "export": "RadialGauge",
+  "order": 84,
+  "kind": "components",
+  "category": "display",
+  "subcategory": "numbers",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Turn on Sample content: watch the needle swing with each live reading, and drag the target knob around the arc.",
+  "description": "One value on an arc between a min and a max. Zones named by tone (success, warning, danger, neutral, accent) sit on the track; the arc takes the current zone's colour and a pill names the zone with an icon and its label, so the zone is never told by colour alone. An optional target marker crosses the track. The arc and needle spring to each new value with a little inertia and cut straight there under reduced motion; nothing moves at rest. It is a role=\"meter\" with aria-valuenow, -min, -max and a full aria-valuetext, and has loading, no-data and error forms. Spans of 180°, 240° or 270°, comfortable or compact. The sample content is a live service-health instrument (CPU, memory, p95 latency) with a draggable target, concentric rings and status tiles.",
+  "intents": [
+    "live cpu usage gauge with thresholds",
+    "speedometer dial with needle and target",
+    "service health status page meter",
+    "activity rings for several metrics",
+    "slo latency gauge with warning and critical bands"
+  ],
+  "tags": [
+    "gauge",
+    "radial gauge",
+    "dial",
+    "meter",
+    "speedometer",
+    "needle",
+    "activity rings",
+    "kpi",
+    "threshold",
+    "slo",
+    "monitoring",
+    "live data",
+    "status page",
+    "chart"
+  ],
+  "usage": "Use for one value against known limits: utilisation, a score, latency against an SLO, a daily goal. Pass `value`, `min` / `max` and `label` first, then `zones` ([{ to: 70, tone: \"success\", label: \"Healthy\" }, { to: 85, tone: \"warning\", label: \"Elevated\" }, { tone: \"danger\", label: \"Critical\" }]) and an optional `target`. Format with `formatValue(v)` and `unit`. Keep zones to three and give each a label. Set `loading` while you fetch; an empty value shows the no-data form; `error` (with `onRetry`) shows no signal. Anything that needs history belongs in a line chart.",
+  "states": [
+    "default",
+    "loading",
+    "empty",
+    "error"
+  ],
+  "controls": [
+    {
+      "group": "Value",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Value",
+      "key": "unit",
+      "label": "Unit",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Value",
+      "key": "min",
+      "label": "Min",
+      "type": "range",
+      "min": -100,
+      "max": 0,
+      "step": 10,
+      "default": 0
+    },
+    {
+      "group": "Value",
+      "key": "max",
+      "label": "Max",
+      "type": "range",
+      "min": 10,
+      "max": 1000,
+      "step": 10,
+      "default": 100
+    },
+    {
+      "group": "State",
+      "key": "loading",
+      "label": "Loading",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Layout",
+      "key": "kind",
+      "label": "Kind (sample)",
+      "type": "select",
+      "options": [
+        "gauge",
+        "rings"
+      ],
+      "default": "gauge"
+    },
+    {
+      "group": "Layout",
+      "key": "span",
+      "label": "Arc span",
+      "type": "select",
+      "options": [
+        "180",
+        "240",
+        "270"
+      ],
+      "default": "270"
+    },
+    {
+      "group": "Layout",
+      "key": "density",
+      "label": "Density",
+      "type": "select",
+      "options": [
+        "comfortable",
+        "compact"
+      ],
+      "default": "comfortable"
+    },
+    {
+      "group": "Data",
+      "key": "metric",
+      "label": "Metric (sample)",
+      "type": "select",
+      "options": [
+        "cpu",
+        "memory",
+        "latency"
+      ],
+      "default": "cpu"
+    },
+    {
+      "group": "Data",
+      "key": "live",
+      "label": "Live stream (sample)",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Data",
+      "key": "interval",
+      "label": "Update interval (ms) (sample)",
+      "type": "range",
+      "min": 600,
+      "max": 3000,
+      "step": 100,
+      "default": 1100
+    },
+    {
+      "group": "Look",
+      "key": "needle",
+      "label": "Needle",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Look",
+      "key": "peakHold",
+      "label": "Peak hold (sample)",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Look",
+      "key": "ticks",
+      "label": "Tick marks",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Layout",
+      "key": "maxWidth",
+      "label": "Max width (0 = none)",
+      "type": "range",
+      "min": 0,
+      "max": 600,
+      "step": 20,
+      "default": 0
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Activity rings": {
+      "kind": "rings",
+      "span": "270"
+    },
+    "Half dial": {
+      "span": "180"
+    },
+    "Latency SLO": {
+      "metric": "latency",
+      "span": "240"
+    },
+    "Status tiles": {
+      "density": "compact",
+      "span": "240"
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "value",
+      "type": "number",
+      "description": "The reading. Clamped to min–max on the arc; empty (undefined / null) shows the no-data form."
+    },
+    {
+      "key": "min",
+      "type": "number",
+      "description": "Start of the scale.",
+      "default": 0
+    },
+    {
+      "key": "max",
+      "type": "number",
+      "description": "End of the scale.",
+      "default": 100
+    },
+    {
+      "key": "label",
+      "type": "string",
+      "description": "What it measures; the meter's accessible name and the line under the figure.",
+      "default": ""
+    },
+    {
+      "key": "formatValue",
+      "type": "function",
+      "description": "(value) => string for the figure, the target and aria-valuetext. Default: the locale's number, one decimal at most."
+    },
+    {
+      "key": "unit",
+      "type": "string",
+      "description": "Unit shown small after the figure and read after it (\"%\", \" ms\").",
+      "default": ""
+    },
+    {
+      "key": "zones",
+      "type": "array",
+      "description": "[{ id, from, to, tone, label }] in order. tone is success | warning | danger | neutral | accent (theme colours); from defaults to the previous zone's end (or min), to to the next zone's start (or max). The current zone's label and icon show under the figure."
+    },
+    {
+      "key": "target",
+      "type": "number",
+      "description": "Draws a target marker across the track and adds it to the reading."
+    },
+    {
+      "key": "targetLabel",
+      "type": "string",
+      "description": "Name of the target marker.",
+      "default": "Target"
+    },
+    {
+      "key": "caption",
+      "type": "node",
+      "description": "A line under the gauge (a delta, a timestamp)."
+    },
+    {
+      "key": "formatTick",
+      "type": "function",
+      "description": "(value) => string for tick labels. Default: compact locale number."
+    },
+    {
+      "key": "span",
+      "type": "\"180\" | \"240\" | \"270\"",
+      "description": "Arc sweep in degrees.",
+      "default": "270"
+    },
+    {
+      "key": "density",
+      "type": "\"comfortable\" | \"compact\"",
+      "description": "Track weight and tick density: \"comfortable\" is the full dial with labelled ticks, and \"compact\" is a lighter track with major ticks only, for tiles. The dial always scales to its container.",
+      "default": "comfortable"
+    },
+    {
+      "key": "needle",
+      "type": "boolean",
+      "description": "Draw a needle at the value.",
+      "default": true
+    },
+    {
+      "key": "ticks",
+      "type": "boolean",
+      "description": "Tick marks (and labels on comfortable).",
+      "default": true
+    },
+    {
+      "key": "maxWidth",
+      "type": "number",
+      "description": "Cap on the gauge's width in px; 0 means none (the dial still stops at its natural size).",
+      "default": 0
+    },
+    {
+      "key": "loading",
+      "type": "boolean",
+      "description": "A sweeping placeholder arc while you fetch.",
+      "default": false
+    },
+    {
+      "key": "emptyText",
+      "type": "node",
+      "description": "Shown when value is empty.",
+      "default": "No data"
+    },
+    {
+      "key": "error",
+      "type": "node | boolean",
+      "description": "No signal: the arc greys and this message shows (true shows \"No signal\")."
+    },
+    {
+      "key": "onRetry",
+      "type": "function",
+      "description": "Adds a retry button to the error message."
+    },
+    {
+      "key": "retryLabel",
+      "type": "string",
+      "description": "Text of the retry button.",
+      "default": "Retry"
+    },
+    {
+      "key": "announce",
+      "type": "boolean",
+      "description": "Speak the reading politely when it moves into another zone.",
+      "default": false
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Dims the gauge and disables the retry button.",
+      "default": false
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Show the sample live service-health instrument (kind, metric, live, interval and peakHold apply to it). Ignored once you pass value, label or zones.",
+      "default": false
+    },
+    {
+      "key": "kind",
+      "type": "\"gauge\" | \"rings\"",
+      "default": "gauge",
+      "description": "Which instrument the `demo` sample shows: \"gauge\" is one metric on a dial with a draggable target, and \"rings\" is concentric rings, one per metric, with a legend. It applies only to the sample; your own gauge is always one value on one arc."
+    },
+    {
+      "key": "ref",
+      "type": "ref",
+      "description": "The root element."
+    }
+  ],
+  "example": "<RadialGauge\n  label=\"CPU\"\n  value={cpu}\n  unit=\"%\"\n  zones={[\n    { to: 70, tone: \"success\", label: \"Healthy\" },\n    { to: 85, tone: \"warning\", label: \"Elevated\" },\n    { tone: \"danger\", label: \"Critical\" },\n  ]}\n  target={65}\n  targetLabel=\"Autoscale target\"\n  loading={cpu === undefined}\n/>"
+}

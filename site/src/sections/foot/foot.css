@@ -1,0 +1,68 @@
+/* The footer's big word: the logo's name (sections/Closing.jsx). The word is the kit Footer's; the page sets its
+   type and draws the ball on the i. */
+
+/* The logo's letters, from the brand's own file (brand/wordmark/web: the nine letters of the name, cut from
+   Bricolage Grotesque at optical size 60, weight 600, normal width; SIL Open Font License, OFL.txt beside it).
+   These are the outlines the logo itself is drawn from. The file holds this word and nothing else, so it is used
+   for this word only. It is 3.9 KB, small enough that the build carries it inside the stylesheet. */
+@font-face { font-family: "Tweensmith Name"; src: url("../../../../brand/wordmark/web/tweensmith-name.ttf") format("truetype"); font-weight: 600; font-display: block; }
+
+/* The logo's type (brand/wordmark/README.md): weight 600, letter spacing -0.01em. The kit measures the word in
+   .ts-ft-wm-meas and draws it in .ts-ft-wm-row, so both take the same type. */
+.foot .ts-ft-wm-meas, .foot .ts-ft-wm-row { font-family: "Tweensmith Name", system-ui, sans-serif; font-weight: 600; letter-spacing: -.01em; }
+
+/* The logo's kerning. The kit sets each letter as a piece of its own, at the place it measured for it in a line
+   of text. A browser splits a kerning value between the two letters of a pair when it reports those places, and
+   browsers do not all split it the same way, so letters set one by one land up to .007em from where the logo has
+   them (1.6 px at desktop size). So the measuring line is set without kerning, which every browser reports the
+   same way, and the logo's kerning is put back here letter by letter: each letter moves by the sum of the pairs
+   before it. The values are the brand's (brand/wordmark/outlines.json, the cut at 60, in thousandths of an em):
+   tw +3, we -15, ee +2, en +1, ns 0, sm +1, and 0 for the rest. If the brand changes them, change them here. */
+.foot .ts-ft-wm-meas { font-kerning: none; }
+.foot .ts-ft-wm-l:nth-child(2) { margin-left: .003em; }
+.foot .ts-ft-wm-l:nth-child(3) { margin-left: -.012em; }
+.foot .ts-ft-wm-l:nth-child(4) { margin-left: -.01em; }
+.foot .ts-ft-wm-l:nth-child(5), .foot .ts-ft-wm-l:nth-child(6) { margin-left: -.009em; }
+.foot .ts-ft-wm-l:nth-child(n+7) { margin-left: -.008em; }
+
+/* The ball on the i, as the logo has it: a true circle 12 units across on the logo's grid where the type is 57.25
+   units, so .21em; its middle .716em above the baseline, which puts its top level with the top of the logo's
+   mark. In this face the baseline is .83em down a line of height 1, and the i's stem is centred .1174em from the
+   letter's left (brand/wordmark/outlines.json, the cut at 60). The i is the eighth letter. The ball is drawn on both of the kit's copies of the letter (the
+   sharp one and the soft one), so it comes into focus with the word. It stands above the tall letters, so the
+   word is given that much more room above it. */
+.foot .ts-ft-wm { margin-top: calc(clamp(16px, 2.2cqi, 28px) + 2.4cqi); }
+.foot .ts-ft-wm-l:nth-child(8) > span::after { content: ""; position: absolute; left: calc(.1174em - .105em); top: calc(.83em - .716em - .105em); width: .21em; height: .21em; border-radius: 50%; background: var(--ts-ink); }
+.foot .ts-ft-wm-l:nth-child(8) > .ts-ft-wm-b::after { background: color-mix(in srgb, var(--ts-ink) 62%, transparent); }
+
+/* The fade on the word, and how it answers the pointer (owner, 2026-11-23: "Keep the fade and make it react to
+   hover"). The brand book says the logo carries no gradient; the owner was shown that and kept the fade here.
+   The fade is the kit's own (full ink at the top, greyer toward the bottom), redrawn with its two stops as
+   properties so they can move. The letter under the pointer goes to full ink at once and its two neighbours half
+   way; when the pointer leaves, each settles back to the fade on the kit's settle curve. Nothing moves or
+   changes size. The kit switches the pointer off on its word, so it is switched back on for the letters only.
+   Where a browser cannot animate a property it changes at once; a touch screen has no hover and shows the fade. */
+@property --site-wm-a { syntax: "<percentage>"; inherits: false; initial-value: 30%; }
+@property --site-wm-b { syntax: "<percentage>"; inherits: false; initial-value: 82%; }
+.foot .ts-ft-wm-l { pointer-events: auto; }
+.foot .ts-ft-wm-s { --site-wm-a: 30%; --site-wm-b: 82%;
+  background: linear-gradient(180deg, var(--ts-ink) var(--site-wm-a), color-mix(in srgb, var(--ts-ink) 52%, var(--ft-bg, var(--ts-bg))) var(--site-wm-b));
+  -webkit-background-clip: text; background-clip: text;
+  transition: --site-wm-a .9s cubic-bezier(.2, .8, .2, 1), --site-wm-b .9s cubic-bezier(.2, .8, .2, 1); }
+@media (hover: hover) {
+  .foot .ts-ft-wm-l:hover + .ts-ft-wm-l .ts-ft-wm-s, .foot .ts-ft-wm-l:has(+ .ts-ft-wm-l:hover) .ts-ft-wm-s { --site-wm-a: 62%; --site-wm-b: 124%; transition-duration: .22s; }
+  .foot .ts-ft-wm-l:hover .ts-ft-wm-s { --site-wm-a: 100%; --site-wm-b: 160%; transition-duration: .12s; }
+}
+@media (prefers-reduced-motion: reduce) { .foot .ts-ft-wm-s { transition: none; } }
+
+/* The "match the system" choice in the footer's appearance switch (owner, 2026-11-23: "change the system icon to
+   that of the correct icon for that"). The kit Footer draws that choice as a half-filled disc and has no way to
+   be given another icon, so the page hides the kit's drawing and puts a screen on a stand in its place: the
+   kit's own `desktop` icon (components/_shared/icons.jsx), at the same
+   size and line weight as the sun and the moon beside it. It takes the button's colour, so it dims and lights
+   with them. It is the third of the three choices. */
+.foot .ts-ft-appear button:nth-of-type(3) > svg { display: none; }
+.foot .ts-ft-appear button:nth-of-type(3)::before { content: ""; width: 15px; height: 15px; background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 4.5h17v11.5h-17zM12 16v4M8 20h8'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 4.5h17v11.5h-17zM12 16v4M8 20h8'/%3E%3C/svg%3E") center / contain no-repeat; }
+

@@ -1,0 +1,232 @@
+{
+  "name": "Logo Marquee",
+  "slug": "logo-marquee",
+  "export": "LogoMarquee",
+  "order": 97,
+  "kind": "bands",
+  "category": "proof",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Move toward the strip and it slows, then stops. Grab it and flick it. Hover a mark for their numbers.",
+  "description": "A trusted-by logo strip with physics instead of a CSS loop. One drive with a velocity moves the row: it eases down as the pointer approaches and stops under it, can be grabbed and flicked with inertia by mouse, touch or a sideways trackpad swipe, then coasts back to cruising speed. Page scroll pushes it faster and scrolling up briefly reverses it. Hovering, focusing or tapping a mark dims the others and drops a glass card with that customer's proof line and industry; arrow keys walk the marks and glide each to the centre. Edges dissolve through a mask, a pause button is always visible, and the loop stops off screen. Layouts: one row, two geared rows running opposite ways, or a ruled grid whose cells swap one at a time. Reduced motion gets the still grid. Shows only the brands you pass (a mark node, an image src, or the name as text); with no brands it renders nothing. The fourteen invented sample brands, drawn in SVG in one ink, appear only with `demo`.",
+  "intents": [
+    "trusted by logo strip for a landing page",
+    "infinite scrolling logo marquee with edge fade",
+    "customer logo wall with hover details",
+    "draggable logo carousel that pauses on hover",
+    "social proof band under a hero"
+  ],
+  "tags": [
+    "logo wall",
+    "partner logos",
+    "logo marquee",
+    "logo cloud",
+    "trusted by",
+    "customers",
+    "social proof",
+    "infinite scroll",
+    "ticker",
+    "edge fade",
+    "drag",
+    "inertia",
+    "pause",
+    "landing page"
+  ],
+  "usage": "Place directly under a hero or above pricing as a quiet supporting band, full width of its container. Pass `brands` as { id, name, mark | logo | src, industry, proof, since }: `mark` (or `logo`) is your SVG in currentColor so every logo takes the same ink, `src` is an image URL, and with neither the name is set as text. `industry`, `proof` and `since` fill the card that drops from a hovered or focused mark; leave them out and there is no card. Pass `heading` (one line; its first number rolls in once). `onSelect(brand, event)` reports a click or Enter on a mark. Pause is `paused` + `onPausedChange` or `defaultPaused`. Use the `double` layout when you have more than ten logos, `grid` when the page already has a lot of motion. Pass `scroller` if the page scrolls inside an element rather than the window. The strip slows and stops under the pointer, holds while a mark has focus, and reduced motion gets the still grid. `demo` shows the invented sample brands and heading (gallery only).",
+  "states": [
+    "default",
+    "hover"
+  ],
+  "controls": [
+    {
+      "group": "Layout",
+      "key": "layout",
+      "label": "Layout",
+      "type": "select",
+      "options": [
+        "marquee",
+        "double",
+        "grid"
+      ],
+      "default": "marquee"
+    },
+    {
+      "group": "Layout",
+      "key": "fade",
+      "label": "Edge fade (px)",
+      "type": "range",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "default": 96
+    },
+    {
+      "group": "Layout",
+      "key": "tape",
+      "label": "Ledger tape",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Motion",
+      "key": "speed",
+      "label": "Speed (px/s)",
+      "type": "range",
+      "min": 12,
+      "max": 160,
+      "step": 4,
+      "default": 48
+    },
+    {
+      "group": "Motion",
+      "key": "direction",
+      "label": "Direction",
+      "type": "select",
+      "options": [
+        "left",
+        "right"
+      ],
+      "default": "left"
+    },
+    {
+      "group": "Motion",
+      "key": "pauseOnHover",
+      "label": "Slow and stop on hover",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Motion",
+      "key": "defaultPaused",
+      "label": "Paused",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Content",
+      "key": "heading",
+      "label": "Heading",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Two rows": {
+      "layout": "double"
+    },
+    "Still grid": {
+      "layout": "grid"
+    },
+    "Slow drift": {
+      "speed": 20,
+      "fade": 160
+    },
+    "Rightward, no tape": {
+      "direction": "right",
+      "tape": false
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "brands",
+      "type": "{ id: string, name: string, mark?: ReactNode, logo?: ReactNode, src?: string, industry?: string, proof?: string, since?: string | number }[]",
+      "description": "The logos, in order. `mark` or `logo` is a node (SVG in currentColor), `src` an image URL; with neither the name is shown as text. `industry`, `proof` and `since` fill the hover / focus card; without them a mark has no card.",
+      "default": []
+    },
+    {
+      "key": "heading",
+      "type": "string",
+      "description": "One-line heading above the strip; its first number rolls in once. Blank shows no heading.",
+      "default": ""
+    },
+    {
+      "key": "headingLevel",
+      "type": "1 | 2 | 3 | 4 | 5 | 6",
+      "description": "Heading level of the heading element.",
+      "default": 2
+    },
+    {
+      "key": "paused",
+      "type": "boolean",
+      "description": "Controlled pause. Pass it with onPausedChange; leave it out to let the strip keep its own."
+    },
+    {
+      "key": "defaultPaused",
+      "type": "boolean",
+      "description": "Uncontrolled starting pause (a later change is followed too).",
+      "default": false
+    },
+    {
+      "key": "onPausedChange",
+      "type": "(paused: boolean) => void",
+      "description": "Called when the Pause / Play button is pressed, with the new value."
+    },
+    {
+      "key": "onSelect",
+      "type": "(brand, event) => void",
+      "description": "Called when a mark is clicked, tapped or activated with Enter / Space, with that brand object."
+    },
+    {
+      "key": "scroller",
+      "type": "Element | { current: Element }",
+      "description": "The scrolling element, when the page scrolls inside one instead of the window (scroll pushes the strip)."
+    },
+    {
+      "key": "labels",
+      "type": "{ play, pause, playStrip, pauseStrip, list, row(k), more(n), andMore, since(year) }",
+      "description": "Words the strip uses (button text and names, the list name, the grid's '+N more' cell, the card's 'Since' line). Merged over the English defaults."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Marks are not focusable, open no card and cannot be dragged; the Pause button is disabled.",
+      "default": false
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Fill blank `brands` and `heading` with the invented sample brands. Gallery only; leave off in real UI.",
+      "default": false
+    },
+    {
+      "key": "layout",
+      "type": "\"marquee\" | \"double\" | \"grid\"",
+      "default": "marquee",
+      "description": "How the marks are arranged: \"marquee\" is one moving row, \"double\" is two geared rows running opposite ways, and \"grid\" is a still, ruled wall whose cells swap one at a time. Reduced motion always gets the grid."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLElement>",
+      "description": "The root <section>."
+    },
+    {
+      "key": "className",
+      "type": "string",
+      "description": "Added to the root."
+    },
+    {
+      "key": "style",
+      "type": "CSSProperties",
+      "description": "Merged onto the root."
+    }
+  ],
+  "example": "<LogoMarquee\n  heading=\"Trusted by 1,200 teams\"\n  brands={customers.map((c) => ({ id: c.id, name: c.name, src: c.logoUrl, industry: c.sector, proof: c.quoteLine }))}\n  onSelect={(brand) => openCaseStudy(brand.id)}\n/>"
+}

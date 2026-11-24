@@ -1,0 +1,256 @@
+{
+  "name": "Hold to Confirm",
+  "slug": "hold-to-confirm",
+  "export": "HoldToConfirm",
+  "order": 12,
+  "kind": "components",
+  "category": "actions",
+  "subcategory": "confirmations",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "pro",
+  "hint": "Press and hold. Let go early to cancel.",
+  "description": "A destructive action that must be held rather than clicked. A fill sweeps across while held, drains on a spring if released early, and pops into a done state on completion. Works with Space/Enter held down.",
+  "intents": [
+    "hold to delete",
+    "prevent accidental destructive action",
+    "confirm deleting an account",
+    "press and hold to confirm"
+  ],
+  "tags": [
+    "button",
+    "hold",
+    "press",
+    "confirm",
+    "delete",
+    "destructive",
+    "danger",
+    "safety",
+    "long press"
+  ],
+  "usage": "Use instead of an 'Are you sure?' dialog for destructive actions people take often enough that a modal is annoying. Pass `label`, `doneLabel` and `onConfirm`. If `onConfirm` returns a promise (an async function), the button stays full and busy (spinner, `busyLabel`, cannot be held again) until it settles: resolve and it shows `doneLabel` for `resetAfter` ms, then resets by itself; reject (rethrow after showing your error) and it drains straight back so it can be held again. If your work is tracked elsewhere, set `busy` instead. Keep the hint visible: it takes its own space under the button (`hintPlacement` moves it), and the root keeps its own width in a flex column or grid cell, so no wrapper is needed.",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "active",
+    "disabled",
+    "success"
+  ],
+  "controls": [
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": "Hold to delete"
+    },
+    {
+      "group": "Content",
+      "key": "doneLabel",
+      "label": "Done label",
+      "type": "text",
+      "default": "Deleted"
+    },
+    {
+      "group": "Content",
+      "key": "hint",
+      "label": "Hint",
+      "type": "text",
+      "default": "Press and hold"
+    },
+    {
+      "group": "Style",
+      "key": "variant",
+      "label": "Variant",
+      "type": "select",
+      "options": [
+        "danger",
+        "primary",
+        "secondary"
+      ],
+      "default": "danger"
+    },
+    {
+      "group": "Style",
+      "key": "size",
+      "label": "Size",
+      "type": "select",
+      "options": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    {
+      "group": "Timing",
+      "key": "duration",
+      "label": "Hold duration",
+      "type": "range",
+      "min": 400,
+      "max": 4000,
+      "step": 50,
+      "unit": "ms",
+      "default": 1200
+    },
+    {
+      "group": "Timing",
+      "key": "resetAfter",
+      "label": "Reset after",
+      "type": "range",
+      "min": 600,
+      "max": 5000,
+      "step": 100,
+      "unit": "ms",
+      "default": 1800
+    },
+    {
+      "group": "Behaviour",
+      "key": "hintPlacement",
+      "label": "Hint placement",
+      "type": "select",
+      "options": [
+        "below",
+        "above",
+        "end",
+        "overlay"
+      ],
+      "default": "below"
+    },
+    {
+      "group": "Behaviour",
+      "key": "showHint",
+      "label": "Show hint",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Behaviour",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Quick": {
+      "duration": 600
+    },
+    "Deliberate": {
+      "duration": 2500,
+      "label": "Hold to wipe data",
+      "doneLabel": "Wiped"
+    },
+    "Archive": {
+      "variant": "secondary",
+      "label": "Hold to archive",
+      "doneLabel": "Archived"
+    }
+  },
+  "dataProps": [
+    {
+      "key": "onConfirm",
+      "type": "function",
+      "description": "() => void | Promise. Called once when a hold completes. Return a promise to keep the button busy until it settles: resolved shows doneLabel then resets after resetAfter; rejected drains back to idle with no done state (show your own error). Returning nothing shows doneLabel straight away."
+    },
+    {
+      "key": "label",
+      "type": "string",
+      "description": "Button text before and while holding.",
+      "default": "Hold to delete"
+    },
+    {
+      "key": "doneLabel",
+      "type": "string",
+      "description": "Text shown (and announced) after a confirmed hold, for resetAfter ms.",
+      "default": "Deleted"
+    },
+    {
+      "key": "busyLabel",
+      "type": "string",
+      "description": "Text while the promise from onConfirm is pending or `busy` is true, next to a spinner. Defaults to doneLabel."
+    },
+    {
+      "key": "busy",
+      "type": "boolean",
+      "description": "Caller-owned busy state: the fill stays full, a spinner shows with busyLabel, aria-busy is set and it cannot be held again until you clear it. Clearing it drains the fill unless a done state is showing.",
+      "default": false
+    },
+    {
+      "key": "resetAfter",
+      "type": "number",
+      "description": "Milliseconds the done state shows before the button resets itself and can be held again. It always resets; unmount it or set `disabled` if it must not be used again.",
+      "default": 1800
+    },
+    {
+      "key": "duration",
+      "type": "number",
+      "description": "Milliseconds the hold takes to fill.",
+      "default": 1200
+    },
+    {
+      "key": "hint",
+      "type": "string",
+      "description": "Hint under the button at rest. Blank with a blank holdingHint shows no hint.",
+      "default": "Press and hold"
+    },
+    {
+      "key": "holdingHint",
+      "type": "string",
+      "description": "Hint while it is being held.",
+      "default": "Keep holding…"
+    },
+    {
+      "key": "hintPlacement",
+      "type": "\"below\" | \"above\" | \"end\" | \"overlay\"",
+      "description": "Where the hint sits. below / above / end take their own space in the layout; overlay is the old look (absolutely positioned under the button, taking no space; the caller must leave room).",
+      "default": "below"
+    },
+    {
+      "key": "showHint",
+      "type": "boolean",
+      "description": "Show the hint. The button keeps aria-describedby pointing at it.",
+      "default": true
+    },
+    {
+      "key": "icon",
+      "type": "string | ReactNode | null",
+      "description": "Icon before the label: a built-in icon name or a node; null for none.",
+      "default": "trash"
+    },
+    {
+      "key": "doneIcon",
+      "type": "string | ReactNode | null",
+      "description": "Icon in the done state.",
+      "default": "check"
+    },
+    {
+      "key": "onHoldStart",
+      "type": "function",
+      "description": "() => void, when a hold begins (pointer down or Space/Enter)."
+    },
+    {
+      "key": "onHoldCancel",
+      "type": "function",
+      "description": "(progress: number) => void, when a hold is released before it completes; progress is 0–1."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Not holdable or focusable; the label stays at least 3:1 against the page so it can still be read.",
+      "default": false
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Other attributes (aria-*, data-*, id, event handlers) go to the <button>; className and style go to the root."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLButtonElement>",
+      "description": "The <button>: focus it, or measure it."
+    }
+  ],
+  "example": "const [error, setError] = useState(\"\");\n\n<HoldToConfirm\n  label=\"Hold to delete\"\n  busyLabel=\"Deleting…\"\n  doneLabel=\"Deleted\"\n  disabled={typed !== slug}\n  onConfirm={async () => {\n    setError(\"\");\n    try { await api.deleteWorkspace(); }\n    catch (e) { setError(e.message); throw e; } // rethrow: the button drains and can be held again\n  }}\n/>"
+}

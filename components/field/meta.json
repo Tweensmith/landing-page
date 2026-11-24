@@ -1,0 +1,302 @@
+{
+  "name": "Field",
+  "slug": "field",
+  "export": "Field",
+  "order": 19.5,
+  "kind": "components",
+  "category": "forms",
+  "subcategory": "labels-and-validation",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "added": "2026-11-22",
+  "hint": "Press Create workspace with the fields empty, then fix them one by one: each entry strikes through and folds away.",
+  "description": "Label, hint and error for any control, wired for screen readers, plus the parts around it: Fieldset groups fields under a legend with one error and one disabled switch, Label stands alone, and ErrorSummary lists a form's problems at the top after a failed submit. Each summary link scrolls to its field, focuses it and points at it with a ring; a fixed problem is struck through, ticks and folds away while the count rolls down.",
+  "intents": [
+    "label and error message for a custom input",
+    "error summary at the top of a form",
+    "group form fields with a legend",
+    "wrap a third-party input with a label and hint",
+    "list of form errors that link to each field",
+    "fieldset to disable a group of inputs"
+  ],
+  "tags": [
+    "field",
+    "form field",
+    "fieldset",
+    "legend",
+    "label",
+    "error summary",
+    "validation summary",
+    "form errors",
+    "hint",
+    "helper text",
+    "required",
+    "accessibility",
+    "aria-describedby",
+    "settings row"
+  ],
+  "usage": "Use Field around a control the kit does not draw itself (your own <input>, a native <select>, a third-party date picker, a contenteditable box, a custom slider) so it gets the same label, hint, error line and required mark as Text Field beside it. Give it `label`, `hint` and `error` (a string you already have), and pass the control as a function child `{(p) => <input {...p} />}` or as one element (Field adds id, aria-labelledby, aria-describedby, aria-invalid, aria-required, disabled and readOnly to it, keeping any you set and extending your aria-describedby). A custom control deeper inside calls useField() for the same values. Field is for controls without a label of their own: Text Field, Select, Textarea and the other kit fields already draw label, hint and error, so use their own props instead (a kit field that has its own `label` inside a Field keeps it and Field does not add a second). `layout=\"row\"` puts label and hint on the left for settings pages; it stacks below 440px of its own width. Bump `revealErrors` on every submit so a repeated error shakes again. Use Fieldset to group related fields under a `legend` (\"Delivery address\"), with one group `error` and `disabled` for everything inside; Radio Group and Checkbox Group are fieldsets already, so name them with their own `label` and only put them in a Fieldset that also holds other fields. Use ErrorSummary at the top of the form: keep it mounted, pass `errors` as [{ field: inputId, message }] (or `name` instead of `field`), and it opens on a failed submit, takes focus, links to each field and folds away entries as they are fixed. For a single message that is not about fields use Alert Banner.",
+  "states": [
+    "default",
+    "error",
+    "disabled"
+  ],
+  "keyboard": [
+    { "keys": "Tab", "does": "Moves to the control inside the Field; Field adds no stop of its own, and an open ErrorSummary's links come first." },
+    { "keys": "Enter", "does": "Scrolls to that entry's field, moves focus into it and points at it with a ring.", "when": "on an ErrorSummary link" }
+  ],
+  "screenReader": "Field names its control with a real label (also aria-labelledby) and links `hint` or `error` with aria-describedby; `error` sets aria-invalid and is read in a live region, and `required` sets aria-required. Fieldset is a fieldset named by its `legend`. ErrorSummary is an alert labelled by its `title` that takes focus when errors arrive; each entry is a link to its field, and fixed entries are hidden from screen readers as they fold away.",
+  "controls": [
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "hint",
+      "label": "Hint",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "error",
+      "label": "Error",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Style",
+      "key": "layout",
+      "label": "Layout",
+      "type": "select",
+      "options": [
+        "stack",
+        "row"
+      ],
+      "default": "stack"
+    },
+    {
+      "group": "State",
+      "key": "required",
+      "label": "Required mark",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Settings row": {
+      "layout": "row"
+    },
+    "Server error": {
+      "error": "That address is already in use"
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "label",
+      "type": "node",
+      "description": "Visible label (13px / 550, the family's). A real <label for> the control; also aria-labelledby on it, so custom widgets are named too. Clicking it focuses the control.",
+      "default": ""
+    },
+    {
+      "key": "hint",
+      "type": "node",
+      "description": "Help line. Stack: under the control, replaced by the error or success while one shows. Row: under the label on the left.",
+      "default": ""
+    },
+    {
+      "key": "error",
+      "type": "string",
+      "description": "An error you already have. Shown on the message line in --ts-danger with the alert icon, sets aria-invalid on the control, slides in and shakes the line once when it appears.",
+      "default": ""
+    },
+    {
+      "key": "success",
+      "type": "string",
+      "description": "A confirmation shown on the message line in --ts-success when there is no error.",
+      "default": ""
+    },
+    {
+      "key": "required",
+      "type": "boolean",
+      "description": "Adds the * to the label and aria-required to the control. Does not validate.",
+      "default": false
+    },
+    {
+      "key": "optionalLabel",
+      "type": "node",
+      "description": "Text after the label when the field is not required (\"Optional\"), in --ts-ink2. Part of the accessible name.",
+      "default": ""
+    },
+    {
+      "key": "labelAction",
+      "type": "node",
+      "description": "A node at the end of the label row: a \"Forgot?\" link, a character counter. It sits outside the <label>.",
+      "default": null
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Passes disabled to the control (aria-disabled on elements without the attribute) and dims it. A disabled Fieldset around the Field does the same.",
+      "default": false
+    },
+    {
+      "key": "readOnly",
+      "type": "boolean",
+      "description": "Passes readOnly to the control (aria-readonly on elements without the attribute).",
+      "default": false
+    },
+    {
+      "key": "labelPlacement",
+      "type": "\"above\"",
+      "description": "Only \"above\": a wrapper cannot float a label inside a control it does not draw. Matches Text Field's labelPlacement=\"above\".",
+      "default": "above"
+    },
+    {
+      "key": "layout",
+      "type": "\"stack\" | \"row\"",
+      "description": "stack: label, control, message line. row: label and hint on the left, control and message on the right, for settings pages; stacks below 440px of the field's own width.",
+      "default": "stack"
+    },
+    {
+      "key": "children",
+      "type": "((field: { id: string; \"aria-labelledby\"?: string; \"aria-describedby\"?: string; \"aria-invalid\"?: true; \"aria-required\"?: true; disabled: boolean; readOnly?: boolean }) => node) | node",
+      "description": "The control. A function ({ id, \"aria-labelledby\", \"aria-describedby\", \"aria-invalid\", \"aria-required\", disabled, readOnly }) => node to spread onto it, or one element that gets them added (your own id and aria-* win; your aria-describedby is extended)."
+    },
+    {
+      "key": "id",
+      "type": "string",
+      "description": "id for the control (the label's htmlFor). Generated when omitted; an element child's own id wins."
+    },
+    {
+      "key": "revealErrors",
+      "type": "number",
+      "description": "Bump on every submit (0 → 1 → 2…): the message line shakes again while there is an error, even an unchanged one.",
+      "default": 0
+    },
+    {
+      "key": "reserveMessage",
+      "type": "boolean",
+      "description": "Keep the 18px message line under the control even when it is empty, as Text Field does, so the form does not move when an error appears. false: the line exists only while there is a hint, error or success.",
+      "default": true
+    },
+    {
+      "key": "maxWidth",
+      "type": "number",
+      "description": "Widest the field grows, in px. 0 fills the container.",
+      "default": 0
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLDivElement>",
+      "description": "The Field's root element."
+    },
+    {
+      "key": "className",
+      "type": "string",
+      "description": "Added to the root. Other props (data-*, aria-*) go to the root too."
+    },
+    {
+      "key": "style",
+      "type": "React.CSSProperties",
+      "description": "Inline style on the root."
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "With no children: an invented \"Create a workspace\" form using Field, Fieldset and ErrorSummary. Off by default.",
+      "default": false
+    }
+  ],
+  "exports": [
+    {
+      "export": "Fieldset",
+      "description": "A real <fieldset> and <legend> for a group of fields. The legend lays out like a heading (15px / 620), with an optional description and one error for the group (an assertive live region; its space opens on a spring and the line shakes when it arrives). `disabled` is the native attribute, so every native control inside is disabled, kit fields included; Fields and useField() controls inside hear it too, and the contents dim once. Radio Group and Checkbox Group are fieldsets themselves: name one with its own `label`, and put it in a Fieldset only alongside other fields (a nested fieldset is announced with both legends). With `id`, the legend's id is `${id}-legend` (for aria-labelledby on an inner group that has no label of its own). The ref goes to the <fieldset>.",
+      "props": [
+        { "key": "legend", "type": "node", "description": "The group's heading, as the <legend>. Also its accessible name.", "default": "" },
+        { "key": "description", "type": "node", "description": "A line under the legend (13px, --ts-ink2), linked with aria-describedby.", "default": "" },
+        { "key": "error", "type": "string", "description": "One message for the whole group, above the fields. A card surface turns its ring --ts-danger.", "default": "" },
+        { "key": "disabled", "type": "boolean", "description": "Native fieldset disabled: every native control inside is disabled and the contents dim.", "default": false },
+        { "key": "required", "type": "boolean", "description": "Adds the * to the legend. Does not validate.", "default": false },
+        { "key": "layout", "type": "\"stack\" | \"row\" | \"grid\"", "description": "stack: one field per line. row: side by side, wrapping (each at least 200px). grid: `columns` equal columns, one column below 520px of the group's own width.", "default": "stack" },
+        { "key": "columns", "type": "number", "description": "Columns for layout=\"grid\". A child spans more with style={{ gridColumn: \"span 2\" }}.", "default": 2 },
+        { "key": "gap", "type": "number", "description": "Space between the fields, in px.", "default": 16 },
+        { "key": "surface", "type": "\"plain\" | \"card\"", "description": "plain: no box. card: the kit's card surface (--ts-surface, hairline, --ts-radius-lg, 20px padding).", "default": "plain" },
+        { "key": "revealErrors", "type": "number", "description": "Bump on every submit: the group error shakes again.", "default": 0 },
+        { "key": "id", "type": "string", "description": "id of the <fieldset>; the legend, description and error ids derive from it." },
+        { "key": "children", "type": "node", "description": "The fields." },
+        { "key": "className", "type": "string", "description": "Class on the <fieldset>; other props go there too." },
+        { "key": "style", "type": "React.CSSProperties", "description": "Style on the <fieldset>." },
+        { "key": "ref", "type": "Ref<HTMLFieldSetElement>", "description": "The <fieldset>." }
+      ],
+      "example": "<Fieldset legend=\"Delivery address\" description=\"We only ship within the EU.\" layout=\"grid\" columns={2} error={addressError}>\n  <Field label=\"Street\" error={errors.street} style={{ gridColumn: \"span 2\" }}>{(p) => <input {...p} name=\"street\" autoComplete=\"address-line1\" />}</Field>\n  <Field label=\"Postcode\" error={errors.postcode}>{(p) => <input {...p} name=\"postcode\" autoComplete=\"postal-code\" />}</Field>\n  <Field label=\"City\" error={errors.city}>{(p) => <input {...p} name=\"city\" autoComplete=\"address-level2\" />}</Field>\n</Fieldset>"
+    },
+    {
+      "export": "Label",
+      "description": "The family's field label on its own (the same 13px / 550 label and * mark as Text Field and Field), for the rare place a label sits apart from a Field. Renders through the shared FieldLabel; the ref and other props go to a wrapping span.",
+      "props": [
+        { "key": "htmlFor", "type": "string", "description": "id of the control it labels." },
+        { "key": "required", "type": "boolean", "description": "Adds the * mark (hidden from screen readers; put aria-required on the control).", "default": false },
+        { "key": "optionalLabel", "type": "node", "description": "Text after the label when not required (\"Optional\").", "default": "" },
+        { "key": "disabled", "type": "boolean", "description": "Dims the label.", "default": false },
+        { "key": "size", "type": "\"sm\" | \"md\" | \"lg\"", "description": "12 / 13 / 14.5px. md is the field label; lg matches Switch and Checkbox row labels.", "default": "md" },
+        { "key": "as", "type": "string", "description": "Element: \"label\" (with htmlFor) or \"span\" (name a custom widget with aria-labelledby={id}).", "default": "label" },
+        { "key": "id", "type": "string", "description": "id of the label element, for aria-labelledby." },
+        { "key": "children", "type": "node", "description": "The label text." },
+        { "key": "className", "type": "string", "description": "Class on the wrapping span." },
+        { "key": "style", "type": "React.CSSProperties", "description": "Style on the wrapping span." },
+        { "key": "ref", "type": "Ref<HTMLSpanElement>", "description": "The wrapping span." }
+      ],
+      "example": "<Label htmlFor=\"avatar\" optionalLabel=\"Optional\">Profile photo</Label>\n<input id=\"avatar\" type=\"file\" accept=\"image/*\" />"
+    },
+    {
+      "export": "ErrorSummary",
+      "description": "The block at the top of a form after a failed submit. Errors arrive as one block that grows open on a height spring, entries settling in on a short stagger; it is role=\"alert\" with tabIndex -1 and takes focus when errors arrive (focusOnShow) and again on a resubmit (revealErrors, when it also shakes). Each entry is a link: it scrolls its field into view below `scrollMargin`, focuses it, and points at it with a ring in the danger tone that grows from the field's edge and fades (drawn on a fixed overlay that tracks the field; the field's own styles are not touched). When a field is fixed its entry is struck through, ticks and folds away while the entries below close the gap and the count rolls down; when the last one goes the block folds shut and focus inside it goes back where it came from. Entries are keyed by id, field or name, so a changed message updates in place. With no errors it renders nothing and takes no space (a flex parent's gap opens and closes with it). Reduced motion: entries appear and disappear in place, no stagger, strike or rolling count, and a still ring for a moment. Keep it mounted and pass []; mounted with errors already present it shows them at rest and takes focus.",
+      "props": [
+        { "key": "errors", "type": "Array<{ id?: string; field?: string; name?: string; message: node }>", "description": "[{ id?, field?, name?, message }]. field: the id of the control to go to; name: looked up in the nearest <form> (the one around the summary, else the first after it); neither: plain text, not a link. id: a stable key when field and name are absent.", "default": [] },
+        { "key": "title", "type": "node | ((count: number) => string)", "description": "Heading. A function of the count, (n) => string, rolls the number inside it (\"3 things to fix\"); a string title gets a rolling count chip instead (showCount).", "default": "There is a problem" },
+        { "key": "titleAs", "type": "string", "description": "Element for the title (h2–h6, p).", "default": "h2" },
+        { "key": "focusOnShow", "type": "boolean", "description": "Move focus to the summary when errors arrive (none → some) and on every revealErrors bump, and scroll it into view.", "default": true },
+        { "key": "showCount", "type": "boolean", "description": "With a string title, a chip with the number of open problems that rolls as they are fixed and turns to a tick when none are left.", "default": true },
+        { "key": "scrollMargin", "type": "number", "description": "Space kept above the summary and above a field when scrolling to it, in px: a sticky header's height plus a little.", "default": 16 },
+        { "key": "revealErrors", "type": "number", "description": "Bump on every submit: shakes the block if it was already showing and takes focus again.", "default": 0 },
+        { "key": "onNavigate", "type": "(error: { id?: string; field?: string; name?: string; message: node }, element: HTMLElement | null, event: MouseEvent) => void", "description": "(error, element | null, event) => void, before a link moves focus. Call event.preventDefault() to handle it yourself (open a closed section first, switch a tab)." },
+        { "key": "id", "type": "string", "description": "id of the summary box; the title's id is `${id}-title`." },
+        { "key": "className", "type": "string", "description": "Class on the summary box; other props (aria-*, data-*) go there too." },
+        { "key": "style", "type": "React.CSSProperties", "description": "Style on the summary box." },
+        { "key": "ref", "type": "Ref<HTMLDivElement>", "description": "The summary box (role=\"alert\", tabIndex -1), so ref.current.focus() works. null while there are no errors." }
+      ],
+      "example": "const [errors, setErrors] = useState({});\nconst [reveal, setReveal] = useState(0);\n\n<form noValidate onSubmit={(e) => { e.preventDefault(); const next = validate(form); setErrors(next); setReveal((r) => r + 1); if (!Object.keys(next).length) save(); }}>\n  <ErrorSummary\n    errors={Object.entries(errors).map(([key, message]) => ({ field: \"f-\" + key, message }))}\n    title={(n) => (n === 1 ? \"1 thing to fix\" : `${n} things to fix`)}\n    revealErrors={reveal}\n    scrollMargin={72}\n  />\n  <TextField id=\"f-email\" label=\"Email\" labelPlacement=\"above\" error={errors.email} revealErrors={reveal} />\n</form>"
+    },
+    {
+      "export": "useField",
+      "returns": "{ id?: string, \"aria-labelledby\"?: string, \"aria-describedby\"?: string, \"aria-invalid\"?: boolean, \"aria-required\"?: boolean, disabled: boolean, readOnly: boolean }",
+      "description": "Hook for a custom control anywhere inside a Field: returns { id, \"aria-labelledby\", \"aria-describedby\", \"aria-invalid\", \"aria-required\", disabled, readOnly }, the same values a function child receives. Inside a Fieldset but no Field it returns disabled from the group (and the rest undefined), so a custom control can follow a disabled Fieldset.",
+      "props": [],
+      "example": "function Stars() {\n  const f = useField();\n  return <div role=\"slider\" tabIndex={f.disabled ? -1 : 0} aria-valuemin={0} aria-valuemax={5} aria-valuenow={rating} {...f} />;\n}\n\n<Field label=\"How was it?\" hint=\"Five is best.\"><Stars /></Field>"
+    }
+  ],
+  "example": "<Field\n  label=\"Workspace address\"\n  hint=\"Lowercase letters, numbers and dashes.\"\n  error={errors.slug}\n  required\n  revealErrors={reveal}\n  labelAction={<span>{slug.length}/32</span>}\n>\n  {(p) => <input {...p} name=\"slug\" value={slug} onChange={(e) => setSlug(e.target.value)} />}\n</Field>\n\n<Field label=\"Country\" optionalLabel=\"Optional\">\n  <select name=\"country\" aria-describedby=\"country-note\">{countries}</select>\n</Field>"
+}

@@ -1,0 +1,103 @@
+{
+  "name": "Map Card Sheet",
+  "slug": "map-card-sheet",
+  "export": "MapCardSheet",
+  "order": 75,
+  "kind": "components",
+  "category": "mobile",
+  "platform": "native",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Scroll the results: the top row's pin lifts and the map glides to frame what you can see. Tap a pin to jump to its row, or drag the map and search again.",
+  "description": "Search results in a sheet over a map for React Native, shown as a coffee search with filter chips, numbered pins and generated photos. The list and the map stay in sync both ways: the result at the top of the list is the active one, so as you scroll its pin lifts, grows and turns accent, pins you have scrolled past dim, and the map glides to frame the rows you can see inside the strip the sheet leaves uncovered. Tap a pin and the list scrolls its row to the top with a highlight. The sheet snaps between peek, half and full with flick projection and rubber-banding, and pulling down at the top of the list hands the drag to the sheet; as the sheet moves the map reframes to the space above it. Drag the map and a Search this area pill springs in; tapping it loads new results whose pins drop in one after another. Filter chips reflow the list with layout animations while pins that no longer match shrink away, with an empty state when nothing fits. At peek the list turns into a card carousel that snaps one card per flick and drives the pins too.",
+  "intents": [
+    "map with a list of search results in a bottom sheet",
+    "sync list scroll with map pins",
+    "react native store locator with map and results list",
+    "search this area button on a map"
+  ],
+  "tags": [
+    "bottom sheet",
+    "carousel",
+    "detents",
+    "expo",
+    "filter chips",
+    "haptics",
+    "layout animation",
+    "list",
+    "location",
+    "map",
+    "map pins",
+    "maps",
+    "react native",
+    "search results",
+    "search this area",
+    "store locator",
+    "sync"
+  ],
+  "usage": "Use when people choose among places by both where they are and how they compare: stores, restaurants, rentals, chargers. Keep the list and the pins in one order and number them the same, let the map follow the list rather than fight it, and stop following the moment someone drags the map. Offer the same results as a plain list for screen readers.",
+  "states": [
+    "default",
+    "open",
+    "loading",
+    "empty"
+  ],
+  "controls": [
+    {
+      "group": "Detents",
+      "key": "startAt",
+      "label": "Start at",
+      "type": "select",
+      "options": ["peek", "half", "full"],
+      "default": "half"
+    },
+    {
+      "group": "Detents",
+      "key": "carousel",
+      "label": "Card carousel at peek",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Pins",
+      "key": "pinStyle",
+      "label": "Pin label",
+      "type": "select",
+      "options": [
+        { "label": "Number", "value": "number" },
+        { "label": "Price", "value": "price" },
+        { "label": "Rating", "value": "rating" }
+      ],
+      "default": "number"
+    },
+    {
+      "group": "Pins",
+      "key": "dimPassed",
+      "label": "Dim pins scrolled past",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Map",
+      "key": "followList",
+      "label": "Map follows the list",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Motion",
+      "key": "projection",
+      "label": "Flick projection (s)",
+      "type": "range",
+      "min": 0,
+      "max": 0.4,
+      "step": 0.02,
+      "default": 0.2
+    }
+  ],
+  "presets": {
+    "Peek carousel": { "startAt": "peek" },
+    "Price pins": { "pinStyle": "price" },
+    "Fit all results": { "followList": false, "pinStyle": "rating" }
+  }
+}

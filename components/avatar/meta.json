@@ -1,0 +1,238 @@
+{
+  "name": "Avatar",
+  "slug": "avatar",
+  "export": "Avatar",
+  "order": 88.5,
+  "kind": "components",
+  "category": "display",
+  "subcategory": "people",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "added": "2026-11-21",
+  "hint": "Change the status: the mark morphs from shape to shape. A photo resolves over the initials once it has decoded.",
+  "description": "One person or team: their profile picture when there is one, otherwise initials on a tint that is always the same for the same name (the identity colours, the same hash Avatar Group uses). The initials are there at once and the photo resolves over them once it has loaded and decoded, blur to sharp; a failed image changes nothing and a cached one shows with no animation. Status (online, away, busy, offline) has its own shape each, morphs between them, and is part of the accessible name. A link or a button when given href or onClick, with a focus ring that follows the shape.",
+  "intents": [
+    "user avatar with initials fallback",
+    "profile picture of a person",
+    "show a user's online status on their avatar",
+    "team or workspace icon with initials",
+    "comment author picture",
+    "account button with the user's photo"
+  ],
+  "tags": [
+    "avatar",
+    "profile picture",
+    "profile photo",
+    "user photo",
+    "initials",
+    "presence",
+    "online status",
+    "user",
+    "person",
+    "team icon",
+    "identicon"
+  ],
+  "usage": "Use for one person or team beside their name: comment authors, a \"shared with\" row, the account menu button, a table cell. Pass `name` (it gives the initials, the tint and the accessible name) and `src` when you have a photo; the initials show until the photo has decoded and stay if it fails. `size` is \"sm\" (28), \"md\" (36), \"lg\" (44) like Avatar Group, or a number of pixels from 16 to 128. `shape=\"rounded\"` for teams and workspaces. `status` adds a mark with its own shape (online dot, away ring, busy bar, offline outline) and appends the word to the accessible name (`statusLabel` changes the word). `ring` draws a 2px gap in the surface colour for sitting on photos (set `--ts-avatar-ring` on a parent for another colour). `badge` is a node you draw, placed at the top corner. `loading` shows a skeleton in the avatar's shape. Give `href` for a link or `onClick` for a button; without either it is a plain image that takes no focus, so it can sit inside your own link as one tab stop. For several overlapping people use Avatar Group; for a logo with no person or team behind it use a plain image.",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "active",
+    "loading"
+  ],
+  "keyboard": [
+    {
+      "keys": "Enter / Space",
+      "does": "Activates the avatar (Enter only for a link).",
+      "when": "it has onClick or href"
+    }
+  ],
+  "screenReader": "A role=\"img\" named by `alt` or `name` with the status word appended (\"Ada Okafor, away\"; `statusLabel` changes the word); with `href` or `onClick` it is a link or button with the same name. The photo, initials, status mark and `badge` are hidden, so put what a badge says in `alt` or an aria-label.",
+  "dataProps": [
+    {
+      "key": "src",
+      "type": "string",
+      "description": "Photo URL. It comes in over the initials once loaded and decoded; a failure keeps the initials. Changing it cross-fades photo to photo."
+    },
+    {
+      "key": "alt",
+      "type": "string",
+      "description": "Accessible name, if it should differ from `name`. The status word is appended."
+    },
+    {
+      "key": "initials",
+      "type": "string",
+      "description": "Override for the initials (at most two characters). By default the first letter of the first and last word of `name`."
+    },
+    {
+      "key": "fallback",
+      "type": "node",
+      "description": "Shown instead of initials when there is no name (an icon, a logo mark). With neither, a neutral person glyph."
+    },
+    {
+      "key": "statusLabel",
+      "type": "string",
+      "description": "The word announced for `status` (defaults to online / away / busy / offline)."
+    },
+    {
+      "key": "badge",
+      "type": "node",
+      "description": "A node placed at the top corner, opposite the status: a count or a small logo you draw."
+    },
+    {
+      "key": "href",
+      "type": "string",
+      "description": "Makes the avatar a link (<a>) with hover lift, press give and a focus ring that follows the shape."
+    },
+    {
+      "key": "target",
+      "type": "string",
+      "description": "Link target; \"_blank\" also sets rel=\"noopener noreferrer\" unless `rel` is given."
+    },
+    {
+      "key": "rel",
+      "type": "string",
+      "description": "Link rel."
+    },
+    {
+      "key": "onClick",
+      "type": "(event: MouseEvent) => void",
+      "description": "(event) => void. Makes the avatar a <button>."
+    },
+    {
+      "key": "onLoad",
+      "type": "(event: { type: string; target: HTMLImageElement; currentTarget: HTMLImageElement; nativeEvent: Event }) => void",
+      "description": "(event) => void when the photo has loaded and decoded (also for a cached photo)."
+    },
+    {
+      "key": "onError",
+      "type": "(event: { type: string; target: HTMLImageElement; currentTarget: HTMLImageElement; nativeEvent: Event }) => void",
+      "description": "(event) => void when the photo fails; the initials stay."
+    },
+    {
+      "key": "imgProps",
+      "type": "{ loading?: \"eager\" | \"lazy\"; decoding?: \"sync\" | \"async\" | \"auto\"; fetchPriority?: \"high\" | \"low\" | \"auto\"; crossOrigin?: \"anonymous\" | \"use-credentials\"; referrerPolicy?: string; srcSet?: string; sizes?: string; width?: number; height?: number }",
+      "description": "Passed to the <img>: loading, decoding, referrerPolicy, srcSet, sizes, crossOrigin."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLAnchorElement | HTMLButtonElement | HTMLSpanElement>",
+      "description": "The root element: the <a>, the <button>, or the role=\"img\" <span>."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-*, data-*) goes to the avatar's root: a <span>, an <a> with href, a <button> with onClick. className and style are merged with the component's own."
+    }
+  ],
+  "controls": [
+    {
+      "group": "Content",
+      "key": "name",
+      "label": "Name",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Style",
+      "key": "size",
+      "label": "Size",
+      "type": "select",
+      "options": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    {
+      "group": "Style",
+      "key": "shape",
+      "label": "Shape",
+      "type": "select",
+      "options": [
+        "circle",
+        "rounded"
+      ],
+      "default": "circle"
+    },
+    {
+      "group": "Style",
+      "key": "tint",
+      "label": "Tint",
+      "type": "select",
+      "options": [
+        "auto",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "none"
+      ],
+      "default": "auto"
+    },
+    {
+      "group": "Style",
+      "key": "ring",
+      "label": "Gap ring",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "status",
+      "label": "Status",
+      "type": "select",
+      "options": [
+        "none",
+        "online",
+        "away",
+        "busy",
+        "offline"
+      ],
+      "default": "none"
+    },
+    {
+      "group": "State",
+      "key": "loading",
+      "label": "Loading",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Team": {
+      "name": "Design Ops",
+      "shape": "rounded",
+      "size": "lg"
+    },
+    "Online": {
+      "name": "Ada Okafor",
+      "status": "online",
+      "size": "lg"
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "example": "<Avatar\n  name={user.name}\n  src={user.photoUrl}\n  status={user.presence}\n  size=\"lg\"\n  href={`/people/${user.id}`}\n/>"
+}

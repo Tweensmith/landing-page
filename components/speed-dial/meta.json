@@ -1,0 +1,239 @@
+{
+  "name": "Speed Dial",
+  "slug": "speed-dial",
+  "export": "SpeedDial",
+  "order": 18,
+  "kind": "components",
+  "category": "actions",
+  "subcategory": "buttons",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "pro",
+  "hint": "Open the + button.",
+  "description": "A floating action button that fans out related create actions on an arc or a column, staggered, with labels. The + turns into ×. Escape or a press outside closes it; Escape and choosing an action return focus to the button.",
+  "intents": [
+    "floating action button with more actions",
+    "quick create menu",
+    "fab speed dial",
+    "add new item menu on mobile"
+  ],
+  "tags": [
+    "fab",
+    "floating",
+    "speed dial",
+    "create",
+    "add",
+    "menu",
+    "mobile",
+    "radial"
+  ],
+  "usage": "Use for 2–5 create actions in apps with one main 'add' flow, usually bottom-right on mobile. More than 5 actions belongs in a sheet or menu. Pass `actions` ([{ id, label, icon, onClick, disabled }]) and handle choices in each action's `onClick` or in `onAction(id, action, event)`; with no actions it renders nothing. `label` names the button and the group (\"Create\"). Open state is uncontrolled (`defaultOpen`) or controlled (`open` + `onOpenChange(open, reason)`). The actions are positioned in place around the button, not in a portal: give it room, and keep it out of ancestors with overflow hidden, which clip the fan (put it in a fixed corner of the page). The ref is the + button. From the + button, Up, Right or Home move focus into the actions (the nearest first) and Down, Left or End go to the farthest; if the menu is closed they open it first. Inside, the arrow keys, Home and End move between enabled actions, and Escape closes and returns focus to the + button.",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "open",
+    "disabled"
+  ],
+  "controls": [
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Menu name",
+      "type": "text",
+      "default": "Create"
+    },
+    {
+      "group": "Layout",
+      "key": "layout",
+      "label": "Layout",
+      "type": "select",
+      "options": [
+        "arc",
+        "column"
+      ],
+      "default": "arc"
+    },
+    {
+      "group": "Layout",
+      "key": "size",
+      "label": "Button size",
+      "type": "select",
+      "options": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    {
+      "group": "Layout",
+      "key": "radius",
+      "label": "Arc radius",
+      "type": "range",
+      "min": 60,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 104
+    },
+    {
+      "group": "Layout",
+      "key": "spread",
+      "label": "Arc spread",
+      "type": "range",
+      "min": 30,
+      "max": 180,
+      "step": 1,
+      "unit": "°",
+      "default": 110
+    },
+    {
+      "group": "Layout",
+      "key": "showLabels",
+      "label": "Labels",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Layout",
+      "key": "scrim",
+      "label": "Dim background",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Motion",
+      "key": "stagger",
+      "label": "Stagger",
+      "type": "range",
+      "min": 0,
+      "max": 0.15,
+      "step": 0.005,
+      "unit": "s",
+      "default": 0.04
+    },
+    {
+      "group": "Motion",
+      "key": "stiffness",
+      "label": "Stiffness",
+      "type": "range",
+      "min": 100,
+      "max": 800,
+      "step": 10,
+      "default": 420
+    },
+    {
+      "group": "Motion",
+      "key": "damping",
+      "label": "Damping",
+      "type": "range",
+      "min": 8,
+      "max": 50,
+      "step": 1,
+      "default": 26
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Column": {
+      "layout": "column"
+    },
+    "Wide fan": {
+      "spread": 170,
+      "radius": 120
+    },
+    "Focus mode": {
+      "scrim": true
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "actions",
+      "type": "array",
+      "description": "[{ id, label, icon, onClick, disabled }]. label is required (the visible pill and the button's accessible name); icon is a built-in icon name or a node; onClick(action, event) runs when it is chosen; disabled shows it dimmed and not choosable. Empty by default (the sample four with `demo`)."
+    },
+    {
+      "key": "onAction",
+      "type": "function",
+      "description": "(id, action, event) => void when an action is chosen; id falls back to the label. The menu then closes and focus returns to the + button."
+    },
+    {
+      "key": "open",
+      "type": "boolean",
+      "description": "Controlled open state. Pair with onOpenChange."
+    },
+    {
+      "key": "defaultOpen",
+      "type": "boolean",
+      "description": "Open state on mount when uncontrolled.",
+      "default": false
+    },
+    {
+      "key": "onOpenChange",
+      "type": "function",
+      "description": "(open, reason) => void; reason is \"trigger\", \"action\", \"escape\" or \"outside\"."
+    },
+    {
+      "key": "label",
+      "type": "string",
+      "description": "Accessible name of the + button and of the action group.",
+      "default": "Create"
+    },
+    {
+      "key": "closeLabel",
+      "type": "string",
+      "description": "Accessible name of the button while open. Defaults to \"Close <label> menu\"."
+    },
+    {
+      "key": "icon",
+      "type": "string | node",
+      "description": "The button's icon: a built-in icon name or a node. It turns 135° while open (shows × under reduced motion).",
+      "default": "plus"
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Native disabled on the + button; an open menu closes.",
+      "default": false
+    },
+    {
+      "key": "size",
+      "type": "\"sm\" | \"md\" | \"lg\" | number",
+      "description": "Diameter of the main button: sm 48px, md 58px, lg 68px; the actions are 76% of it. On a phone or a touch screen every action still takes a 44px press. A number sets it in px exactly.",
+      "default": "md"
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Uses four sample actions when `actions` is not given. For the gallery; off by default.",
+      "default": false
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Other attributes (id, aria-*, data-*, event handlers) go to the + button; className and style go to the root."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLButtonElement>",
+      "description": "The + button: focus it, or measure it."
+    }
+  ]
+}

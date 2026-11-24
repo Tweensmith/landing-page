@@ -1,0 +1,213 @@
+{
+  "name": "Slide to Confirm",
+  "slug": "slide-to-confirm",
+  "export": "SlideToConfirm",
+  "order": 13,
+  "kind": "components",
+  "category": "actions",
+  "subcategory": "confirmations",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "pro",
+  "hint": "Drag the thumb to the end. Or focus it and press Enter.",
+  "description": "Drag a thumb across a track to commit. Past the threshold it snaps to the end and completes; short of it, it springs back. The label shimmers, then fades as you drag. Keyboard: Enter or right arrow.",
+  "intents": [
+    "slide to pay",
+    "swipe to confirm a payment",
+    "slide to unlock",
+    "drag to send money"
+  ],
+  "tags": [
+    "slider",
+    "slide",
+    "swipe",
+    "drag",
+    "confirm",
+    "payment",
+    "mobile",
+    "checkout",
+    "unlock"
+  ],
+  "usage": "Use for irreversible actions on touch screens, especially payments and transfers. Pass `label` (\"Slide to send $240\"), `doneLabel` and `onConfirm`; blank labels show the neutral \"Slide to confirm\" / \"Confirmed\". If `onConfirm` returns a promise (an async function), the thumb stays at the end and busy (spinner, `busyLabel`, cannot be slid again) until it settles: resolve and it shows `doneLabel` for `resetAfter` ms, then resets by itself; reject (rethrow after showing your error) and it springs straight back so it can be slid again. If your work is tracked elsewhere, set `busy` instead. Keyboard: the thumb is a focusable slider; Enter, Space, right arrow or End confirms. Set `fullWidth` to fill a mobile layout's width (it measures its container), or give it a `width` in px. The ref is the thumb.",
+  "states": [
+    "default",
+    "focus",
+    "dragging",
+    "disabled",
+    "loading",
+    "success"
+  ],
+  "controls": [
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "doneLabel",
+      "label": "Done label",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Size",
+      "key": "width",
+      "label": "Width",
+      "type": "range",
+      "min": 200,
+      "max": 420,
+      "step": 2,
+      "unit": "px",
+      "default": 300
+    },
+    {
+      "group": "Size",
+      "key": "height",
+      "label": "Height",
+      "type": "range",
+      "min": 44,
+      "max": 72,
+      "step": 1,
+      "unit": "px",
+      "default": 58
+    },
+    {
+      "group": "Size",
+      "key": "fullWidth",
+      "label": "Full width",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Behaviour",
+      "key": "threshold",
+      "label": "Threshold",
+      "type": "range",
+      "min": 0.5,
+      "max": 1,
+      "step": 0.01,
+      "default": 0.85
+    },
+    {
+      "group": "Behaviour",
+      "key": "resetAfter",
+      "label": "Reset after",
+      "type": "range",
+      "min": 600,
+      "max": 5000,
+      "step": 100,
+      "unit": "ms",
+      "default": 2000
+    },
+    {
+      "group": "Behaviour",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Behaviour",
+      "key": "busy",
+      "label": "Busy",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Transfer": {
+      "label": "Slide to send $240",
+      "doneLabel": "Sent"
+    },
+    "Compact": {
+      "width": 240,
+      "height": 48
+    },
+    "Strict": {
+      "threshold": 0.97
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "onConfirm",
+      "type": "function",
+      "description": "() => void | Promise. Called once when the thumb reaches the end (drag past threshold, or Enter / Space / → / End). Return a promise to keep it busy until it settles: resolved shows doneLabel then resets after resetAfter; rejected springs back with no done state (show your own error). Returning nothing shows doneLabel straight away."
+    },
+    {
+      "key": "label",
+      "type": "string",
+      "description": "Text on the track before confirming, and the slider's accessible name. Blank shows \"Slide to confirm\" (the sample \"Slide to pay\" with `demo`).",
+      "default": ""
+    },
+    {
+      "key": "doneLabel",
+      "type": "string",
+      "description": "Text shown and announced after confirming, for resetAfter ms. Blank shows \"Confirmed\" (the sample \"Paid\" with `demo`).",
+      "default": ""
+    },
+    {
+      "key": "busyLabel",
+      "type": "string",
+      "description": "Text while the promise from onConfirm is pending or `busy` is true, next to a spinner on the thumb. Defaults to the done label."
+    },
+    {
+      "key": "busy",
+      "type": "boolean",
+      "description": "Caller-owned busy state: the thumb holds at the end with a spinner, aria-busy is set and it cannot be slid again. Clearing it springs the thumb back unless a done state is showing.",
+      "default": false
+    },
+    {
+      "key": "resetAfter",
+      "type": "number",
+      "description": "Milliseconds the done state shows before it resets itself and can be slid again. It always resets; unmount it or set `disabled` if it must not be used again.",
+      "default": 2000
+    },
+    {
+      "key": "width",
+      "type": "number",
+      "description": "Track width in px. Ignored with fullWidth.",
+      "default": 300
+    },
+    {
+      "key": "fullWidth",
+      "type": "boolean",
+      "description": "The track fills its container's width and measures it, so the thumb's travel follows the real width.",
+      "default": false
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Not draggable or focusable; dimmed and announced as disabled.",
+      "default": false
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Shows the sample labels \"Slide to pay\" / \"Paid\" where yours are blank. For the gallery; off by default.",
+      "default": false
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Other attributes (id, aria-*, data-*, event handlers) go to the thumb; className and style go to the track."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLDivElement>",
+      "description": "The thumb (role=slider): focus it, or measure it."
+    }
+  ]
+}

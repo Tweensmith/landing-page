@@ -1,0 +1,244 @@
+{
+  "name": "Empty State",
+  "slug": "empty-state",
+  "export": "EmptyState",
+  "order": 38,
+  "kind": "components",
+  "category": "feedback",
+  "subcategory": "messages",
+  "platform": "web",
+  "level": "composite",
+  "tier": "free",
+  "hint": "Change the seed for a new scene; switch the theme and it follows.",
+  "description": "Generated illustration, one sentence of why, and one clear next action. The illustration is drawn from theme tokens and a seed, so it matches every theme and each seed scatters its own shapes.",
+  "intents": [
+    "no projects yet first run screen",
+    "no search results",
+    "nothing here empty screen",
+    "all caught up inbox"
+  ],
+  "tags": [
+    "empty state",
+    "empty",
+    "zero state",
+    "no results",
+    "first run",
+    "illustration",
+    "blank slate"
+  ],
+  "usage": "Say why it's empty and give exactly one primary action. Pass `title`, `description`, `actionLabel` with `onAction` (and optionally `secondaryLabel` with `onSecondary`); a label left empty draws no button. Pick the drawn scene with `kind`, or pass your own `illustration` or a small `icon`. For no search results, put the user's query in the title.",
+  "states": [
+    "default"
+  ],
+  "keyboard": [
+    {
+      "keys": "Enter / Space",
+      "does": "Runs the focused action: the main button or the secondary link.",
+      "when": "actionLabel or secondaryLabel is set"
+    }
+  ],
+  "screenReader": "A section named by its title, a heading at `headingLevel` (h3 by default), followed by the description and the action buttons in reading order. The drawn scene, the `icon` tile and a custom `illustration` are hidden from assistive technology, so any words they carry belong in the title or description.",
+  "controls": [
+    {
+      "group": "Scene",
+      "key": "kind",
+      "label": "Kind",
+      "type": "select",
+      "options": [
+        "projects",
+        "search",
+        "inbox",
+        "offline"
+      ],
+      "default": "projects"
+    },
+    {
+      "group": "Scene",
+      "key": "seed",
+      "label": "Seed",
+      "type": "range",
+      "min": 1,
+      "max": 40,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "group": "Scene",
+      "key": "animate",
+      "label": "Float",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Scene",
+      "key": "showIllustration",
+      "label": "Illustration",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Content",
+      "key": "title",
+      "label": "Title",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "description",
+      "label": "Description",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "actionLabel",
+      "label": "Action",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "secondaryLabel",
+      "label": "Secondary",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Layout",
+      "key": "framed",
+      "label": "Framed",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "State",
+      "key": "loading",
+      "label": "Action busy",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "No results": {
+      "kind": "search"
+    },
+    "Inbox zero": {
+      "kind": "inbox",
+      "seed": 11
+    },
+    "Offline": {
+      "kind": "offline",
+      "seed": 21
+    }
+  },
+  "demoProps": {
+    "demo": true,
+    "animate": true
+  },
+  "dataProps": [
+    {
+      "key": "title",
+      "type": "ReactNode",
+      "description": "Heading: what is empty. Blank draws no heading.",
+      "default": ""
+    },
+    {
+      "key": "description",
+      "type": "ReactNode",
+      "description": "One or two sentences of why, and what happens next. Blank draws none.",
+      "default": ""
+    },
+    {
+      "key": "actionLabel",
+      "type": "string",
+      "description": "Primary button text. Empty draws no button.",
+      "default": ""
+    },
+    {
+      "key": "secondaryLabel",
+      "type": "string",
+      "description": "Secondary link-style button text. Empty draws none.",
+      "default": ""
+    },
+    {
+      "key": "onAction",
+      "type": "(event: MouseEvent) => void",
+      "description": "(event) => void, primary button. It runs in the click, so it can open a file picker (inputRef.current.click())."
+    },
+    {
+      "key": "onSecondary",
+      "type": "(event: MouseEvent) => void",
+      "description": "(event) => void, secondary button."
+    },
+    {
+      "key": "actionIcon",
+      "type": "ReactNode",
+      "description": "Icon inside the primary button. None by default."
+    },
+    {
+      "key": "illustration",
+      "type": "ReactNode",
+      "description": "Your own art in place of the drawn scene (an <img>, an <svg>, a product mock). Hidden from assistive technology like the drawn scene."
+    },
+    {
+      "key": "icon",
+      "type": "ReactNode",
+      "description": "A small icon in a rounded tile in place of the drawn scene, for compact panels."
+    },
+    {
+      "key": "children",
+      "type": "ReactNode",
+      "description": "Extra content under the actions (a hidden file input with a label, a help link, a shortcut hint)."
+    },
+    {
+      "key": "headingLevel",
+      "type": "number",
+      "description": "Heading element level for the title (1 to 6).",
+      "default": 3
+    },
+    {
+      "key": "loading",
+      "type": "boolean",
+      "description": "The primary action is running: the button shows a spinner and will not fire again until you clear it.",
+      "default": false
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Disables both actions.",
+      "default": false
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Fill blank title, description and labels with sample copy for the kind, plus the kind's action icon. Gallery only; leave off in real UI.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLElement>",
+      "description": "The root <section>."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-*, data-*) goes to the root <section>. className and style are merged with the component's own."
+    }
+  ],
+  "example": "<EmptyState\n  kind=\"search\"\n  title={`No invoices match “${query}”`}\n  description=\"Search looks at the customer, the number and the amount.\"\n  actionLabel=\"Clear search\"\n  onAction={() => setQuery(\"\")}\n  secondaryLabel=\"Show all invoices\"\n  onSecondary={showAll}\n/>"
+}

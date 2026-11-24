@@ -1,0 +1,59 @@
+{
+  "name": "Swipe-action Row",
+  "slug": "swipe-row",
+  "export": "SwipeRow",
+  "order": 63,
+  "kind": "components",
+  "category": "mobile",
+  "platform": "native",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Swipe a row left slowly: the action bubbles pop in one by one. Keep going and Delete stretches into a pill.",
+  "description": "List rows with swipe actions for React Native, shown as a mail inbox with generated avatars. The trailing actions are bubbles that pop in one by one as the finger uncovers them, overshooting with the swipe itself. Past the full-swipe line the others shrink away and Delete stretches into a liquid pill whose leading edge rides the row, with a heavy haptic; releasing commits it and the list springs shut. Swiping right does the same for Read and Unread. One row open at a time, every action is also a screen-reader action, and deletes can be undone.",
+  "intents": [
+    "swipe to delete list item",
+    "mail inbox rows with swipe actions",
+    "react native swipeable row",
+    "swipe left to archive"
+  ],
+  "tags": [
+    "actions",
+    "avatars",
+    "bubbles",
+    "expo",
+    "haptics",
+    "inbox",
+    "liquid",
+    "list row",
+    "react native",
+    "swipe",
+    "swipe to delete",
+    "swipeable",
+    "undo"
+  ],
+  "usage": "Use for quick actions on items people triage often (mail, tasks, notifications). Always offer the same actions another way (a long-press menu or the detail screen), and make destructive full swipes undoable.",
+  "states": [
+    "default"
+  ],
+  "controls": [
+    {
+      "group": "Behaviour",
+      "key": "fullSwipe",
+      "label": "Full swipe commits",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Behaviour",
+      "key": "showUndo",
+      "label": "Undo bar",
+      "type": "toggle",
+      "default": true
+    }
+  ],
+  "presets": {
+    "Reveal only": {
+      "fullSwipe": false
+    }
+  }
+}

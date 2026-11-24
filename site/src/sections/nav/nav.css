@@ -1,0 +1,38 @@
+/* The site's menu is the library's Mega Menu as the library designed it (sections/nav/Menu.jsx). The bar, the
+   panels, the floating pill, and on a narrow screen the button, the menu and the card are all the kit's and are
+   not restyled here. What is here is where the menu sits on this page, and nothing else. */
+
+/* ---- the header: the kit's bar from edge to edge ---- */
+/* The kit's bar is 60px with its rule. The top bar that was here before was 70px, and the hero is closed, so the
+   difference is kept under the bar and nothing below it moves. */
+.top.top--menu { display: block; max-width: none; padding: 0; margin-bottom: 10px; z-index: 30; }
+/* The bar's side padding is the page's, so the logo and GitHub stand on the page's own edges. These are the
+   kit's two variables for it; the narrow menu's lines follow the first, so they start where the logo does. */
+.top--menu .ts-mm { --mm-pad-start: max(var(--gutter), calc((100% - var(--max)) / 2 + var(--gutter))); --mm-pad-end: max(var(--gutter), calc((100% - var(--max)) / 2 + var(--gutter))); }
+
+/* The items stand in the middle of the bar (owner, 2026-11-23: "Let the header menu be centralized"), with the
+   logo at the left edge and GitHub at the right. The kit's bar runs logo, items, then its actions pushed to the
+   right, and has no setting for this; so the two ends are given equal shares of the room left over, which puts
+   the items on the page's centre line whatever the two ends measure. With the menu button (narrow screens)
+   there are no items in the bar and this changes nothing. */
+.top--menu .ts-mm__brand { flex: 1 1 0; margin-right: 0; }
+.top--menu .ts-mm__actions { flex: 1 1 0; margin-left: 0; justify-content: flex-end; }
+
+/* a link of the page's own at the foot of a panel: the kit's foot line, as a link */
+.sitemenu .ts-mm__foot .sitemenu__foot { display: inline-flex; align-items: center; gap: 6px; color: inherit; text-decoration: none; border-radius: 6px; }
+.sitemenu .ts-mm__foot .sitemenu__foot:hover { color: var(--ts-ink); }
+.sitemenu .ts-mm__foot .sitemenu__foot:focus-visible { outline: 2px solid var(--ts-focus); outline-offset: 3px; }
+
+/* On a narrow screen the kit pins its actions full width at the foot of the menu, 52px tall, and leaves that easy
+   to override; the page's small key is 44px and would win, so the height is said again here. On a tablet GitHub
+   stops at a button's width. */
+.top--menu .ts-mm__sheetact .key { min-height: 52px; font-size: 15px; max-width: 420px; }
+
+/* ---- the floating piece: the kit's floating layout, held at the top of the screen ---- */
+/* The pill, its distance from the screen's edges, the card it opens on a narrow screen and the blur behind that
+   card are the kit's (layout="floating"). The page only fixes it to the screen and shows or hides it (Menu.jsx). */
+.navfloat { position: fixed; left: 0; right: 0; top: 0; z-index: 60; pointer-events: none; }
+/* the logo in the pill: the page's own link back to the top */
+.navfloat__home { appearance: none; border: 0; background: none; color: inherit; cursor: pointer; flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 999px; text-decoration: none; }
+.navfloat__home:hover { background: color-mix(in srgb, var(--ts-ink) 7%, transparent); }
+.navfloat__home:focus-visible { outline: 2px solid var(--ts-focus); outline-offset: -2px; }

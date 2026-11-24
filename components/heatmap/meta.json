@@ -1,0 +1,336 @@
+{
+  "name": "Heatmap",
+  "slug": "heatmap",
+  "export": "Heatmap",
+  "order": 85,
+  "kind": "components",
+  "category": "display",
+  "subcategory": "charts",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Drag across the colour scale to isolate a band, then switch to By hour and watch each day fly to the hour you wrote it.",
+  "description": "A grid of values with row and column labels, coloured on a sequential scale from one token colour: your rows, columns and formats. Hovering or focusing a cell outlines it, lights its row and column labels and shows a glass tooltip; arrow keys move a focus ring cell by cell and the value is announced; Enter or a click reports the cell. The legend shows the scale's ends through your formatter, missing cells are outlined rather than filled, and the grid measures its box (scrolling sideways only when cells would drop under 14px). The sample content (`demo`) is a year of a writing app's daily log as a calendar heatmap or an hour × weekday matrix, whose legend is an instrument: drag across it to isolate a band.",
+  "intents": [
+    "calendar heatmap of daily activity",
+    "contribution graph like GitHub",
+    "busiest hours by day of week heatmap",
+    "writing or training streak calendar",
+    "punch card chart of activity by hour"
+  ],
+  "tags": [
+    "heatmap",
+    "calendar heatmap",
+    "contribution graph",
+    "punch card",
+    "streak",
+    "activity",
+    "hour by weekday",
+    "matrix",
+    "sequential colour",
+    "chart",
+    "data viz"
+  ],
+  "usage": "Use for one measure across two categorical axes (weekday × hour, team × week, a calendar year as 7 rows × 53 columns). Pass `data` as long rows [{ row, column, value }] (name your fields with `rowKey`, `columnKey`, `valueKey`), and `rows` / `columns` to fix their order and labels; format numbers with `formatValue`. Colours come from the theme's sequential ramp, or from one token with `tone`; set the scale's ends with `domain`. `onCellClick(cell)` fires on click or Enter, and `activeCell` + `onActiveCellChange` own the focused cell. Own the data states with `loading`, `error` + `onRetry` and `emptyMessage`. Keep it to a single sequential measure; for several series over time use Area Chart. The sample's metric and layout switches are the kit's shared `Segmented` control from components/_shared/chart.jsx, which has no slug of its own.",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "selected",
+    "loading",
+    "empty",
+    "error"
+  ],
+  "controls": [
+    {
+      "group": "Data",
+      "key": "title",
+      "label": "Title",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Scale",
+      "key": "bins",
+      "label": "Colour steps",
+      "type": "range",
+      "min": 5,
+      "max": 7,
+      "step": 1,
+      "default": 7
+    },
+    {
+      "group": "Look",
+      "key": "cellRadius",
+      "label": "Cell radius",
+      "type": "range",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "group": "Look",
+      "key": "cellSize",
+      "label": "Largest cell",
+      "type": "range",
+      "min": 16,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "group": "Sample",
+      "key": "layout",
+      "label": "Layout (sample)",
+      "type": "select",
+      "options": [
+        "calendar",
+        "matrix"
+      ],
+      "default": "calendar"
+    },
+    {
+      "group": "Sample",
+      "key": "metric",
+      "label": "Metric (sample)",
+      "type": "select",
+      "options": [
+        "words",
+        "sessions",
+        "minutes"
+      ],
+      "default": "words"
+    },
+    {
+      "group": "Sample",
+      "key": "showSummaries",
+      "label": "Edge totals (sample)",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Sample",
+      "key": "showCallouts",
+      "label": "Streak and best-day callouts (sample)",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Sample",
+      "key": "waveStagger",
+      "label": "Wave stagger, ms per column (sample)",
+      "type": "range",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "default": 9
+    },
+    {
+      "group": "State",
+      "key": "loading",
+      "label": "Loading",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Busiest hours": {
+      "demo": true,
+      "layout": "matrix"
+    },
+    "Sessions, five steps": {
+      "demo": true,
+      "metric": "sessions",
+      "bins": 5
+    },
+    "Quiet chrome": {
+      "demo": true,
+      "showSummaries": false,
+      "showCallouts": false,
+      "cellRadius": 2
+    },
+    "Slow wave": {
+      "demo": true,
+      "metric": "minutes",
+      "waveStagger": 20
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "data",
+      "type": "array",
+      "description": "Long rows of plain objects, one per cell: { row, column, value } under the keys you name. A missing cell, or a null value, is drawn as an outline and read as `missingLabel`."
+    },
+    {
+      "key": "rowKey",
+      "type": "string",
+      "description": "Field holding a cell's row id.",
+      "default": "row"
+    },
+    {
+      "key": "columnKey",
+      "type": "string",
+      "description": "Field holding a cell's column id.",
+      "default": "column"
+    },
+    {
+      "key": "valueKey",
+      "type": "string",
+      "description": "Field holding a cell's number.",
+      "default": "value"
+    },
+    {
+      "key": "rows",
+      "type": "array",
+      "description": "Row order and labels: strings, or [{ id, label }]. Without it, rows appear in the order the data first names them."
+    },
+    {
+      "key": "columns",
+      "type": "array",
+      "description": "Column order and labels, the same way."
+    },
+    {
+      "key": "formatValue",
+      "type": "function",
+      "description": "(value) => string for tooltip, legend ends, table and announcements. Default: Intl number, no unit."
+    },
+    {
+      "key": "formatRow",
+      "type": "function",
+      "description": "(rowValue) => label, when `rows` is not given."
+    },
+    {
+      "key": "formatColumn",
+      "type": "function",
+      "description": "(columnValue) => label, when `columns` is not given."
+    },
+    {
+      "key": "tone",
+      "type": "number | string",
+      "description": "Build the scale from one token colour instead of the theme's sequential ramp: a series slot 0–7 or a --ts-* token name (\"--ts-accent\")."
+    },
+    {
+      "key": "domain",
+      "type": "[number, number]",
+      "description": "The scale's ends. Default: the data's smallest and largest values."
+    },
+    {
+      "key": "height",
+      "type": "number",
+      "description": "Fixed grid height in px (cells stretch to fill it); 0 keeps cells square.",
+      "default": 0
+    },
+    {
+      "key": "title",
+      "type": "node",
+      "description": "Card title (also the accessible name when a string).",
+      "default": "\"\""
+    },
+    {
+      "key": "subtitle",
+      "type": "node",
+      "description": "Line under the title."
+    },
+    {
+      "key": "legendLabel",
+      "type": "node",
+      "description": "What the colour measures, shown before the scale and in the tooltip (\"Commits\")."
+    },
+    {
+      "key": "missingLabel",
+      "type": "string",
+      "description": "Name for cells without a value.",
+      "default": "No data"
+    },
+    {
+      "key": "activeCell",
+      "type": "{ row, column } | null",
+      "description": "Controlled focused cell. Pass with onActiveCellChange."
+    },
+    {
+      "key": "defaultActiveCell",
+      "type": "{ row, column } | null",
+      "description": "Uncontrolled starting focus cell (the first cell when null).",
+      "default": "null"
+    },
+    {
+      "key": "onActiveCellChange",
+      "type": "function",
+      "description": "({ row, column }) => void when arrow keys, a click or focus move the active cell."
+    },
+    {
+      "key": "onCellClick",
+      "type": "function",
+      "description": "({ row, column, rowLabel, columnLabel, value, datum }, event) => void on click, or Enter / Space on the focused cell."
+    },
+    {
+      "key": "summary",
+      "type": "string",
+      "description": "One-line text alternative for screen readers. Default: the grid's size, value range and where the highest value is."
+    },
+    {
+      "key": "loading",
+      "type": "boolean",
+      "description": "You are fetching: a pulsing grid in the expected shape (rows × columns if given, else 7 × 12), aria-busy.",
+      "default": false
+    },
+    {
+      "key": "error",
+      "type": "string | node",
+      "description": "Shown in the grid box, with Try again when onRetry is given."
+    },
+    {
+      "key": "onRetry",
+      "type": "function",
+      "description": "() => void from the error form's button."
+    },
+    {
+      "key": "emptyMessage",
+      "type": "string | node",
+      "description": "Shown in the grid box when no cell has a value.",
+      "default": "No data to show"
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "The whole card inert: cells not focusable, dimmed, aria-disabled.",
+      "default": false
+    },
+    {
+      "key": "ariaLabel",
+      "type": "string",
+      "description": "Accessible name when there is no string title (the aria-label attribute works too)."
+    },
+    {
+      "key": "ref",
+      "type": "ref",
+      "description": "The card's <section> element."
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Show the sample writing log (calendar and hour matrix, metric switch, streaks, legend instrument). The Sample controls only apply to it. Your own `data` wins over it.",
+      "default": false
+    }
+  ],
+  "example": "<Heatmap\n  data={commits}            // [{ day: \"Mon\", hour: 9, n: 14 }, …]\n  rowKey=\"day\"\n  columnKey=\"hour\"\n  valueKey=\"n\"\n  rows={[\"Mon\", \"Tue\", \"Wed\", \"Thu\", \"Fri\", \"Sat\", \"Sun\"]}\n  title=\"Commits by hour\"\n  legendLabel=\"Commits\"\n  formatValue={(v) => `${v} commits`}\n  onCellClick={({ row, column }) => filterTo(row, column)}\n/>"
+}

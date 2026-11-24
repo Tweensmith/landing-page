@@ -1,0 +1,299 @@
+{
+  "name": "Hero",
+  "slug": "hero",
+  "export": "Hero",
+  "order": 95,
+  "kind": "bands",
+  "category": "openers",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Move the pointer over the visual. Switch Layout to spotlight (a lamp over a hidden layer) or scrub (scroll the stage).",
+  "description": "A landing-page hero in three layouts: announcement pill, headline, sub-copy, one primary button, a quiet link and a proof line, all yours. Split puts the copy beside your visual, which assembles in while the headline's lines rise and then tilts with the pointer, or with scroll on touch. Spotlight is a typographic hero where a soft lamp follows the pointer and reveals your hidden layer through a lens while the headline catches the light; left alone the lamp drifts on a slow path with a pause control and follows keyboard focus, and in light themes it becomes an ink wash. Scrub pins a stage and scrubs your scene by scroll position with no video file: you get the progress (0 to 1) and redraw from it, figures count up, the headline swaps at each chapter and a thin progress line with chapter buttons shows where you are. It finds its own scroll container, reverses cleanly, never traps the scroll, and shows one captioned still frame per chapter under reduced motion. Sized by its container, not the window. With no content it renders nothing; `demo` shows a sample product (Halyard, a passage planner and logbook for sailors) with a layered product visual, a chart of soundings and a procedural passage scene.",
+  "intents": [
+    "landing page hero section with headline and call to action",
+    "hero with a product screenshot that has parallax depth",
+    "spotlight hero where the cursor reveals a hidden layer",
+    "scroll-scrubbed pinned hero animation without video",
+    "above the fold section for a marketing site"
+  ],
+  "tags": [
+    "hero",
+    "landing page",
+    "above the fold",
+    "headline",
+    "call to action",
+    "split hero",
+    "product visual",
+    "parallax",
+    "spotlight",
+    "cursor reveal",
+    "mask",
+    "scroll scrub",
+    "scrollytelling",
+    "sticky",
+    "pinned",
+    "announcement pill",
+    "social proof"
+  ],
+  "usage": "Use once, at the top of a marketing or product page. Pass `headline`, `subline`, `primaryLabel` with `onPrimary` (set `loading` while it works) and `secondaryLabel` with `secondaryHref` or `onSecondary`; optionally `announcement` (with `announcementHref`) and `proof`. Pick split when you have product UI to show and pass it as `visual`; spotlight for a typographic statement, with what the lamp reveals as `reveal` (a node, or ({ width, height }) => node); scrub when the product is a process worth walking through: pass `chapters` [{ at, label, title, time?, note? }], `scene` ((progress, { still }) => node, where progress is a motion value from 0 to 1) and optionally `stats` [{ label, unit?, format(progress) }]. Set `headingLevel` to 2 when the page already has an h1. For scrub, set minHeight to your viewport height for a full-screen pin and pass scroller when the page does not scroll on the window. Keep one primary button and one quiet link, and put nothing else loud in the same viewport.",
+  "states": [
+    "default",
+    "hover",
+    "scrolled"
+  ],
+  "controls": [
+    {
+      "group": "Layout",
+      "key": "layout",
+      "label": "Layout",
+      "type": "select",
+      "options": [
+        "split",
+        "spotlight",
+        "scrub"
+      ],
+      "default": "split"
+    },
+    {
+      "group": "Layout",
+      "key": "align",
+      "label": "Align (spotlight)",
+      "type": "select",
+      "options": [
+        "left",
+        "center"
+      ],
+      "default": "left"
+    },
+    {
+      "group": "Layout",
+      "key": "minHeight",
+      "label": "Min height (px)",
+      "type": "range",
+      "min": 520,
+      "max": 900,
+      "step": 20,
+      "default": 620
+    },
+    {
+      "group": "Content",
+      "key": "announcement",
+      "label": "Announcement",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "showProof",
+      "label": "Proof line",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Motion",
+      "key": "parallax",
+      "label": "Parallax strength",
+      "type": "range",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 16
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Spotlight": {
+      "layout": "spotlight"
+    },
+    "Spotlight, centred": {
+      "layout": "spotlight",
+      "align": "center"
+    },
+    "Scroll scrub": {
+      "layout": "scrub"
+    },
+    "Quiet split": {
+      "parallax": 0,
+      "showProof": false,
+      "announcement": ""
+    }
+  },
+  "demoProps": {
+    "demo": true,
+    "announcement": "Tide gates land in Halyard 2.4"
+  },
+  "dataProps": [
+    {
+      "key": "headline",
+      "type": "string",
+      "description": "The headline. Split into words that rise line by line; in spotlight it catches the light."
+    },
+    {
+      "key": "subline",
+      "type": "node",
+      "description": "The sub-copy under the headline."
+    },
+    {
+      "key": "announcement",
+      "type": "string",
+      "description": "Text of the announcement pill above the headline. \"\" or omitted: no pill.",
+      "default": ""
+    },
+    {
+      "key": "announcementLabel",
+      "type": "string",
+      "description": "The short label at the start of the pill. \"\" removes it.",
+      "default": "New"
+    },
+    {
+      "key": "announcementHref",
+      "type": "string",
+      "description": "Where the pill links. Without it the pill never navigates."
+    },
+    {
+      "key": "onAnnouncement",
+      "type": "function",
+      "description": "(event) => void when the pill is clicked. Call event.preventDefault() to stop the navigation."
+    },
+    {
+      "key": "primaryLabel",
+      "type": "string",
+      "description": "Label of the primary button. Omitted: no primary button."
+    },
+    {
+      "key": "onPrimary",
+      "type": "function",
+      "description": "(event) => void for the primary button. Not called while loading or disabled."
+    },
+    {
+      "key": "loading",
+      "type": "boolean",
+      "description": "The primary button's busy state, owned by you: set it while the work runs; it cannot fire again meanwhile.",
+      "default": false
+    },
+    {
+      "key": "secondaryLabel",
+      "type": "string",
+      "description": "Label of the quiet link beside the button. Omitted: no link."
+    },
+    {
+      "key": "secondaryHref",
+      "type": "string",
+      "description": "Where the quiet link goes. Without it the link never navigates."
+    },
+    {
+      "key": "onSecondary",
+      "type": "function",
+      "description": "(event) => void for the quiet link. Call event.preventDefault() to stop the navigation."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Makes the pill, the button, the link and the chapter buttons inert and announced as disabled.",
+      "default": false
+    },
+    {
+      "key": "proof",
+      "type": "node",
+      "description": "The proof line under the actions (a rating, logos, a count). Shown while showProof is on."
+    },
+    {
+      "key": "visual",
+      "type": "node",
+      "description": "Split: the visual beside the copy. It assembles in and tilts with the pointer by `parallax`. Omitted: the copy takes the full width."
+    },
+    {
+      "key": "reveal",
+      "type": "node | function",
+      "description": "Spotlight: what the lamp reveals, drawn at the hero's size. A node, or ({ width, height }) => node. Omitted: the lamp only lights the headline."
+    },
+    {
+      "key": "brand",
+      "type": "node",
+      "description": "Spotlight: your mark and name in the top row. Scrub: shown before the chapter counter."
+    },
+    {
+      "key": "eyebrow",
+      "type": "string",
+      "description": "Spotlight: the small line at the right of the top row."
+    },
+    {
+      "key": "hint",
+      "type": "string | null",
+      "description": "Spotlight: the line under the copy. Omitted: a short hint on how to move the lamp. null or \"\" removes it."
+    },
+    {
+      "key": "chapters",
+      "type": "array",
+      "description": "Scrub: [{ id?, at, label, title, time?, note?, still?, stillTime? }]. `at` (0 to 1) is where the chapter starts; `title` swaps into the headline; `label` and `time` name its button; `note` captions its still frame under reduced motion (taken at `still`, default `at`)."
+    },
+    {
+      "key": "chaptersLabel",
+      "type": "string",
+      "description": "Scrub: accessible name of the chapter buttons.",
+      "default": "Chapters"
+    },
+    {
+      "key": "onChapterChange",
+      "type": "function",
+      "description": "Scrub: (index, chapter) => void when scrolling enters another chapter."
+    },
+    {
+      "key": "scene",
+      "type": "function | node",
+      "description": "Scrub: (progress, { still }) => node. progress is a motion value from 0 to 1 that follows the scroll; read it in useMotionValueEvent or useTransform so the scene redraws per frame without re-rendering. Called with a fixed value for each still frame."
+    },
+    {
+      "key": "stats",
+      "type": "array",
+      "description": "Scrub: figures under the copy that count with the scroll, [{ id?, label, unit?, format(progress) => string }]."
+    },
+    {
+      "key": "stillSubline",
+      "type": "node",
+      "description": "Scrub: the sub-copy shown with the still frames under reduced motion. Defaults to subline."
+    },
+    {
+      "key": "headingLevel",
+      "type": "number",
+      "description": "Heading level of the headline (1 to 6). Use 2 when the page already has an h1.",
+      "default": 1
+    },
+    {
+      "key": "scrollLength",
+      "type": "number",
+      "description": "Scrub: how many pixels of scroll the passage takes while the stage is pinned.",
+      "default": 1400
+    },
+    {
+      "key": "scroller",
+      "type": "element | ref",
+      "description": "The scroll container, when it should not be found automatically."
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Fills every blank with the sample product (Halyard): copy, pill, proof, the layered visual, the chart of soundings, the passage scene, chapters and figures. Your own props still win.",
+      "default": false
+    },
+    {
+      "key": "layout",
+      "type": "\"split\" | \"spotlight\" | \"scrub\"",
+      "default": "split",
+      "description": "How the hero is arranged: \"split\" puts the copy beside your `visual`, which tilts with the pointer; \"spotlight\" is a typographic hero where a lamp follows the pointer and reveals your `reveal` layer; \"scrub\" is a pinned stage scrubbed by scroll through your `chapters` and `scene`."
+    },
+    {
+      "key": "ref",
+      "type": "ref",
+      "description": "Forwarded to the root <section>."
+    }
+  ],
+  "example": "<Hero\n  headingLevel={1}\n  announcement=\"Shared inboxes are here\"\n  announcementHref=\"/changelog\"\n  headline=\"Answer every customer from one calm inbox.\"\n  subline=\"Relay routes, assigns and drafts so your team spends its time on the hard questions.\"\n  primaryLabel=\"Start free\"\n  onPrimary={() => startSignup()}\n  loading={signingUp}\n  secondaryLabel=\"See a live demo\"\n  secondaryHref=\"/demo\"\n  proof={<span><b>4.9</b> from 1,200 teams</span>}\n  visual={<img src=\"/inbox.png\" alt=\"The Relay inbox with three assigned threads\" width=\"640\" height=\"520\" />}\n/>"
+}

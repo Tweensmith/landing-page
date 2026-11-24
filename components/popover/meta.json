@@ -1,0 +1,237 @@
+{
+  "name": "Popover",
+  "slug": "popover",
+  "export": "Popover",
+  "order": 46,
+  "kind": "components",
+  "category": "overlays",
+  "subcategory": "popovers",
+  "platform": "web",
+  "level": "composite",
+  "tier": "free",
+  "hint": "Drag the avatar toward an edge: the card flips and the arrow follows.",
+  "description": "Small non-modal panel anchored to your own trigger. It takes any content, flips to the other side or slides along its edge before it would leave the viewport, and its arrow keeps pointing at the anchor.",
+  "intents": [
+    "popover with a profile card",
+    "tooltip card on click",
+    "anchored popup panel",
+    "hover card for a user"
+  ],
+  "tags": [
+    "popover",
+    "popup",
+    "hover card",
+    "tooltip",
+    "anchored",
+    "flip",
+    "arrow",
+    "collision"
+  ],
+  "usage": "Use for light, dismissable content tied to one element (a profile card, quick settings, a short explanation). Pass `trigger` (your element, or `(props) => <Button {...props} />`) and the content as `children`; give it a `title` or `aria-label`. Control it with `open` / `onOpenChange`, or anchor it to an element you already have with `anchorRef` and open it by state. `placement` and `offset` set where it sits. Escape and outside press close it (`closeOnEscape` / `closeOnOutside`). Don't put forms that need saving in a popover; use a Modal.",
+  "states": [
+    "default",
+    "open"
+  ],
+  "keyboard": [
+    { "keys": "Enter / Space", "does": "Opens the panel and moves focus to its first control (or the panel), or closes it.", "when": "on the trigger" },
+    { "keys": "Tab / Shift+Tab", "does": "Moves through the panel's controls; Tab from the last continues after the trigger and Shift+Tab from the first returns to it, and the panel stays open (it does not trap focus)." },
+    { "keys": "Escape", "does": "Closes the panel and returns focus to the trigger.", "when": "closeOnEscape" },
+    { "keys": "ArrowLeft / ArrowRight / ArrowUp / ArrowDown", "does": "Moves the avatar 12px (36px with Shift) so the panel flips and its arrow follows.", "when": "the demo stage" }
+  ],
+  "screenReader": "The trigger carries aria-haspopup=\"dialog\", aria-expanded and, while open, aria-controls. The panel is a non-modal dialog named by `title` (its visible heading), else `aria-label`, else the trigger's text; the arrow is hidden from assistive technology.",
+  "controls": [
+    {
+      "group": "Placement",
+      "key": "placement",
+      "label": "Preferred side",
+      "type": "select",
+      "options": [
+        "top",
+        "bottom",
+        "left",
+        "right",
+        "top-start",
+        "bottom-end"
+      ],
+      "default": "top"
+    },
+    {
+      "group": "Placement",
+      "key": "offset",
+      "label": "Offset",
+      "type": "range",
+      "min": 4,
+      "max": 24,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "group": "Demo",
+      "key": "contain",
+      "label": "Stay inside the box (demo stage)",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Look",
+      "key": "width",
+      "label": "Width",
+      "type": "range",
+      "min": 220,
+      "max": 360,
+      "step": 10,
+      "default": 280
+    },
+    {
+      "group": "Look",
+      "key": "showArrow",
+      "label": "Arrow",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Demo",
+      "key": "areaHeight",
+      "label": "Box height",
+      "type": "range",
+      "min": 300,
+      "max": 560,
+      "step": 10,
+      "default": 400
+    },
+    {
+      "group": "Behaviour",
+      "key": "defaultOpen",
+      "label": "Open on mount",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Right side": {
+      "placement": "right"
+    },
+    "No arrow": {
+      "showArrow": false
+    }
+  },
+  "dataProps": [
+    {
+      "key": "trigger",
+      "type": "node | ((props: { ref: RefObject<HTMLElement | null>; id: string; onClick: () => void; disabled?: boolean; open: boolean; \"aria-haspopup\": \"dialog\"; \"aria-expanded\": boolean; \"aria-controls\"?: string }) => node)",
+      "description": "Your trigger: an element (cloned with ref, onClick, id and aria attributes) or (props) => node spreading { ref, id, onClick, disabled, aria-haspopup, aria-expanded, aria-controls }."
+    },
+    {
+      "key": "anchorRef",
+      "type": "RefObject<HTMLElement | null>",
+      "description": "Anchor to an element you already have instead of a trigger; open it with `open`."
+    },
+    {
+      "key": "children",
+      "type": "node",
+      "description": "The panel's content."
+    },
+    {
+      "key": "content",
+      "type": "node",
+      "description": "Same as children (wins over them)."
+    },
+    {
+      "key": "title",
+      "type": "string",
+      "description": "Visible heading at the top of the panel; also its accessible name. Without it, `aria-label` or the trigger's text names the dialog."
+    },
+    {
+      "key": "open",
+      "type": "boolean",
+      "description": "Controlled open state."
+    },
+    {
+      "key": "defaultOpen",
+      "type": "boolean",
+      "description": "Open on mount when uncontrolled.",
+      "default": false
+    },
+    {
+      "key": "onOpenChange",
+      "type": "(open: boolean, reason: \"trigger\" | \"escape\" | \"outside\") => void",
+      "description": "(open: boolean, reason) => void; reason is \"trigger\", \"escape\" or \"outside\"."
+    },
+    {
+      "key": "placement",
+      "type": "string",
+      "description": "Preferred side: top, bottom, left, right, with -start or -end. Flips when there is no room.",
+      "default": "top"
+    },
+    {
+      "key": "offset",
+      "type": "number",
+      "description": "Gap between anchor and panel in px.",
+      "default": 12
+    },
+    {
+      "key": "width",
+      "type": "number | string",
+      "description": "Panel width (px, or any CSS width). Never wider than the viewport less 16px.",
+      "default": 280
+    },
+    {
+      "key": "showArrow",
+      "type": "boolean",
+      "description": "Arrow pointing at the anchor.",
+      "default": true
+    },
+    {
+      "key": "closeOnEscape",
+      "type": "boolean",
+      "description": "Escape closes it.",
+      "default": true
+    },
+    {
+      "key": "closeOnOutside",
+      "type": "boolean",
+      "description": "A press outside the panel and trigger closes it.",
+      "default": true
+    },
+    {
+      "key": "autoFocus",
+      "type": "boolean",
+      "description": "Move focus into the panel on open ([data-autofocus], else the first control, else the panel).",
+      "default": true
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "The trigger can't open it.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLDivElement>",
+      "description": "The panel element (null while closed). className, style and other props go to it too."
+    },
+    {
+      "key": "portal",
+      "type": "boolean | Element | RefObject<Element | null>",
+      "description": "Where the panel renders. true: through a portal into document.body, carrying the theme tokens found at the anchor, so an ancestor with overflow:hidden, transform, filter or backdrop-filter can't clip or move it; Tab from the trigger still enters it and Tab from its last control continues after the trigger. false: in place, as before. An element or ref: portaled into that element instead.",
+      "default": true
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-label, aria-labelledby, data-*) goes to the panel, a <div>, and so do className and style, merged with the panel's own."
+    }
+  ],
+  "demoProps": {
+    "demo": true,
+    "defaultOpen": true
+  },
+  "example": "<Popover\n  trigger={<Button variant=\"secondary\" label=\"Maya Chen\" />}\n  title=\"Maya Chen\"\n  placement=\"bottom\"\n>\n  <p>Design lead. Usually replies within a day.</p>\n  <Button label=\"Message\" onClick={openChat} />\n</Popover>\n\n{/* controlled, with a render-prop trigger */}\n<Popover open={open} onOpenChange={setOpen} aria-label=\"Filters\"\n  trigger={(props) => <button {...props}>Filters</button>}>\n  <FilterList />\n</Popover>"
+}

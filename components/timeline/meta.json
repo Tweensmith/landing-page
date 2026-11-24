@@ -1,0 +1,262 @@
+{
+  "name": "Timeline",
+  "slug": "timeline",
+  "export": "Timeline",
+  "order": 53,
+  "kind": "components",
+  "category": "display",
+  "subcategory": "lists",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Turn on Sample content and press Advance: the line draws to the next step before that step lights up.",
+  "description": "Vertical or horizontal steps for order tracking, onboarding or a wizard header, from your own steps (title, description, time, status, icon). Progress is choreographed: advancing draws the connecting line first, and only when it arrives does the next node light up and the finished one draw its check; going back unwinds it. The current step pulses three times and then rests, an error step shows a warning glyph, and narrow horizontal layouts keep only the current label. It is an ordered list with the current step marked aria-current=\"step\"; steps become buttons only when you pass onStepClick.",
+  "intents": [
+    "order tracking timeline",
+    "delivery status steps",
+    "wizard step indicator",
+    "onboarding checklist progress",
+    "shipment progress tracker"
+  ],
+  "tags": [
+    "timeline",
+    "steps",
+    "stepper",
+    "progress tracker",
+    "order status",
+    "wizard",
+    "milestones",
+    "tracking"
+  ],
+  "usage": "Use to show where something is in a fixed sequence of three to seven steps. Pass `steps` ([{ id, title, description, time, status, icon }]) and either `current` (the index of the current step; earlier steps are done) or a `status` on each step (done / current / upcoming / error). Add `onStepClick(step, index)` to let people go back to finished steps, `label` for the list's accessible name, and `loading` / `error` while the steps load. For open-ended histories use Activity Feed instead.",
+  "states": [
+    "default",
+    "success",
+    "loading",
+    "empty",
+    "error"
+  ],
+  "controls": [
+    {
+      "group": "Layout",
+      "key": "orientation",
+      "label": "Orientation",
+      "type": "select",
+      "options": [
+        "vertical",
+        "horizontal"
+      ],
+      "default": "vertical"
+    },
+    {
+      "group": "Progress",
+      "key": "current",
+      "label": "Current step",
+      "type": "range",
+      "min": 0,
+      "max": 6,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "group": "Progress",
+      "key": "autoplay",
+      "label": "Autoplay (sample)",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Progress",
+      "key": "interval",
+      "label": "Autoplay interval (ms) (sample)",
+      "type": "range",
+      "min": 900,
+      "max": 4000,
+      "step": 100,
+      "default": 1800
+    },
+    {
+      "group": "Look",
+      "key": "dashed",
+      "label": "Dashed track",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Look",
+      "key": "showTime",
+      "label": "Timestamps",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Look",
+      "key": "label",
+      "label": "List label",
+      "type": "text",
+      "default": "Progress"
+    },
+    {
+      "group": "Look",
+      "key": "currentBadge",
+      "label": "Current badge",
+      "type": "text",
+      "default": "Now"
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "loading",
+      "label": "Loading",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Wizard header": {
+      "orientation": "horizontal",
+      "current": 2
+    },
+    "Autoplay": {
+      "autoplay": true
+    }
+  },
+  "demoProps": {
+    "demo": true,
+    "current": 3
+  },
+  "dataProps": [
+    {
+      "key": "steps",
+      "type": "array",
+      "description": "[{ id, title, description, time, status, icon, clickable, disabled }]. description is a node (text is accepted as its old name); status is done | current | upcoming | error; icon is a node or kit icon name shown in the node."
+    },
+    {
+      "key": "items",
+      "type": "array",
+      "description": "Same as steps, under the other common name."
+    },
+    {
+      "key": "current",
+      "type": "number",
+      "description": "Index of the current step (0-based): steps before it are done, steps after it upcoming; steps.length means all done. Ignored when any step has its own status.",
+      "default": 0
+    },
+    {
+      "key": "orientation",
+      "type": "\"vertical\" | \"horizontal\"",
+      "description": "Vertical shows descriptions; horizontal is a wizard header and keeps only the current label when narrow.",
+      "default": "vertical"
+    },
+    {
+      "key": "onStepClick",
+      "type": "function",
+      "description": "(step, index, event) => void. Makes actionable steps buttons: done, current and error steps, or any step with clickable: true; never a step with disabled: true."
+    },
+    {
+      "key": "renderStep",
+      "type": "function",
+      "description": "(step, { index, status }) => node. Replaces the title / time / description block; the node, line, list semantics and status word stay."
+    },
+    {
+      "key": "label",
+      "type": "string",
+      "description": "Accessible name of the ordered list.",
+      "default": "Progress"
+    },
+    {
+      "key": "currentBadge",
+      "type": "node",
+      "description": "Badge beside the current step's title (vertical). Empty hides it.",
+      "default": "Now"
+    },
+    {
+      "key": "statusLabels",
+      "type": "object",
+      "description": "Screen-reader words per status, merged over { done: \"Completed\", current: \"In progress\", upcoming: \"Not started\", error: \"Failed\" }."
+    },
+    {
+      "key": "dashed",
+      "type": "boolean",
+      "description": "Dashed track between steps.",
+      "default": false
+    },
+    {
+      "key": "showTime",
+      "type": "boolean",
+      "description": "Show each step's time.",
+      "default": true
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Dimmed, and no step is clickable.",
+      "default": false
+    },
+    {
+      "key": "loading",
+      "type": "boolean",
+      "description": "Three placeholder steps while you load.",
+      "default": false
+    },
+    {
+      "key": "emptyText",
+      "type": "node",
+      "description": "Shown when there are no steps.",
+      "default": "No steps yet"
+    },
+    {
+      "key": "error",
+      "type": "node | boolean",
+      "description": "Could not load: this message in place of the list (true shows a default)."
+    },
+    {
+      "key": "onRetry",
+      "type": "function",
+      "description": "Adds a retry button to the error message."
+    },
+    {
+      "key": "retryLabel",
+      "type": "string",
+      "description": "Text of the retry button.",
+      "default": "Retry"
+    },
+    {
+      "key": "autoplay",
+      "type": "boolean",
+      "description": "Sample only: steps advance on a timer.",
+      "default": false
+    },
+    {
+      "key": "interval",
+      "type": "number",
+      "description": "Sample only: autoplay interval in ms.",
+      "default": 1800
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Show the sample order with Back / Advance buttons. Ignored once you pass steps.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "ref",
+      "description": "The root element."
+    }
+  ],
+  "example": "<Timeline\n  label=\"Account setup\"\n  steps={[\n    { id: \"account\", title: \"Create account\", time: \"09:12\", status: \"done\" },\n    { id: \"team\", title: \"Invite your team\", description: \"Add at least one teammate.\", status: \"current\" },\n    { id: \"billing\", title: \"Add billing\", status: \"upcoming\" },\n  ]}\n  onStepClick={(step) => goTo(step.id)}\n/>"
+}

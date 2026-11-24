@@ -1,0 +1,279 @@
+{
+  "name": "Plan Comparison Table",
+  "slug": "plan-comparison",
+  "export": "PlanComparison",
+  "order": 92,
+  "kind": "bands",
+  "category": "pricing",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Flip Monthly / Yearly and watch every price roll. Turn on Show differences only, then scroll: the plan header condenses into a sticky bar.",
+  "description": "The detailed feature-by-plan table that sits below the pricing cards, for any number of plans and your own feature rows (the sample content is Quire, a docs and wiki tool: Free, Plus, Business and Enterprise across 28 features in six groups), with checks and dashes (with screen-reader text), limits, values, add-ons, roadmap items and footnote tooltips. The billing toggle (a measured segmented control with a Save 20% badge) rolls every price digit by digit and rewrites the yearly note; Show differences only folds the identical rows away with a height spring while each group's count rolls; a spring band follows the column under the pointer or keyboard focus across a soft accent wash on the recommended plan. When the plan header scrolls away, a condensed bar with name, price and CTA scrubs in at the top of the scroller and back out at the top. Collapsed groups keep a per-plan coverage meter. ARIA table semantics with plans as column headers and features as row headers. Under 720px it re-composes into a two-plan comparison: a chip rail with a two-wide pill picks the adjacent pair, or swipe the table sideways.",
+  "intents": [
+    "compare pricing plans feature by feature",
+    "plan comparison table below pricing cards",
+    "feature matrix with sticky plan header",
+    "show only differences between plans",
+    "monthly yearly toggle that updates every plan price"
+  ],
+  "tags": [
+    "pricing",
+    "plan comparison",
+    "comparison table",
+    "feature matrix",
+    "plans",
+    "billing toggle",
+    "sticky header",
+    "saas",
+    "table",
+    "accordion",
+    "tooltip",
+    "rolling number"
+  ],
+  "usage": "Put it under the pricing cards on a pricing page, for readers who want every line item. It shows only what you pass: no `plans` renders nothing, and `demo` fills the blanks with a sample docs tool. Pass your own `plans` (columns) and `groups` (sections of rows, each row with one value per plan), plus `currencies`, `unit`, `eyebrow`, `subtitle` and `footnote`; set `recommended` and `currency` to your own ids and codes. Prices come from each plan's `price`, so they stay in step with the billing toggle. Keep plans to four or fewer columns; group features into five to eight groups and footnote only the rows support gets asked about. Pass stickyOffset when the page has a fixed navbar so the condensed bar sits below it. For choosing a single plan by seats or usage, use Odometer Pricing instead. On a page with Pricing Table, keep one billing period: pass the same `billing` and `onBillingChange` to both, or set `showBilling={false}` here. Prices print as in Pricing Table (whole amounts bare, otherwise to the cent). Under a Navbar, feed its `onOffsetChange` into `stickyOffset`. `onSelectPlan(id, billing, plan)` acts on a plan button; set `loadingPlan` to that id while checkout starts. Amounts print through `formatPrice(amount, { currency, symbol })` and fixed words through `labels`.",
+  "states": [
+    "default",
+    "hover",
+    "scrolled",
+    "collapsed"
+  ],
+  "dataProps": [
+    {
+      "key": "billing",
+      "type": "\"annual\" | \"monthly\"",
+      "description": "The billing period, controlled when passed with `onBillingChange`. Passed alone (the older use, and the way to follow Pricing Table with showBilling={false}) it sets the prices and follows the prop when it changes."
+    },
+    {
+      "key": "differencesOnly",
+      "type": "boolean",
+      "description": "\"Show differences only\", controlled when passed with `onDifferencesOnlyChange`; passed alone it sets the switch and follows the prop."
+    },
+    {
+      "key": "onDifferencesOnlyChange",
+      "type": "function",
+      "description": "(on: boolean) => void when the reader flips \"Show differences only\"."
+    },
+    {
+      "key": "openGroups",
+      "type": "string[]",
+      "description": "Ids of the open feature groups, controlled when passed with `onOpenGroupsChange`. Groups without an id get g0, g1…"
+    },
+    {
+      "key": "defaultOpenGroups",
+      "type": "string[]",
+      "description": "Uncontrolled starting set of open groups. Default: every group open."
+    },
+    {
+      "key": "onOpenGroupsChange",
+      "type": "function",
+      "description": "(ids: string[]) => void when a group opens or closes, or on Expand all / Collapse all."
+    },
+    {
+      "key": "plans",
+      "type": "array",
+      "description": "The columns, in order: [{ id, name, tag, cta, short?, price, note?, priceLabel? }]. price: 0 = free, null = custom (shows priceLabel or \"Custom\"), a monthly number (yearly is derived from yearlyDiscount), [monthly, yearly], or either keyed by currency code ({ USD: 9, EUR: 9 }). note: the two small lines under the price, [line, line]; paid plans get them worked out when omitted. short: the label in the condensed sticky bar. Empty by default (nothing renders); `demo` shows the Quire sample.",
+      "default": []
+    },
+    {
+      "key": "groups",
+      "type": "array",
+      "description": "Sections of rows: [{ id?, name, icon?, rows: [{ id?, label, note?, v: [one value per plan] }] }]. A value is true (check), false (dash), text, { t, s } (value with a small line), { soon: true } (Coming soon) or { addon: true } (Add-on pill; add `s` for your own small line, or a number / per-currency object as its price). `note` adds a footnote tooltip. Empty by default.",
+      "default": []
+    },
+    {
+      "key": "currencies",
+      "type": "array",
+      "description": "[{ code, symbol }]. `currency` picks one by code (else the first). The symbol is printed before amounts unless you pass `formatPrice`. Empty by default (amounts print bare).",
+      "default": []
+    },
+    {
+      "key": "yearlyDiscount",
+      "type": "number",
+      "description": "Fraction taken off for yearly billing when a price gives only the monthly figure. The \"Save N%\" badge is worked out from the resulting prices (the best saving across plans), so it always agrees with them.",
+      "default": 0.2
+    },
+    {
+      "key": "unit",
+      "type": "string",
+      "description": "What a price is per, in \"per seat / month\". Default \"seat\" (\"member\" in the demo).",
+      "default": "seat"
+    },
+    {
+      "key": "addonPrice",
+      "type": "number | object",
+      "description": "Price printed under { addon: true } cells, a number or keyed by currency code. null (the default) prints none.",
+      "default": null
+    },
+    {
+      "key": "eyebrow",
+      "type": "string",
+      "description": "Small line above the title. Empty by default."
+    },
+    {
+      "key": "subtitle",
+      "type": "string",
+      "description": "Paragraph under the title. Empty by default."
+    },
+    {
+      "key": "footnote",
+      "type": "string",
+      "description": "Small print under the table. Empty by default."
+    },
+    {
+      "key": "stickyOffset",
+      "type": "number",
+      "description": "Pixels to leave above the condensed bar, for a fixed navbar.",
+      "default": 0
+    },
+    {
+      "key": "onSelectPlan",
+      "type": "function",
+      "description": "(planId, billing, plan) => void when a plan button is pressed: the id, \"annual\" or \"monthly\", and the plan object you passed. Not called while `disabled` or while `loadingPlan` is set."
+    },
+    {
+      "key": "onBillingChange",
+      "type": "function",
+      "description": "(billing: \"annual\" | \"monthly\") => void when the reader flips the switch. With `billing` it makes the switch controlled: share one state with Pricing Table."
+    },
+    {
+      "key": "showBilling",
+      "type": "boolean",
+      "description": "The Monthly / Yearly switch. Set false when another component on the page (Pricing Table) owns it; `billing` still drives the prices.",
+      "default": true
+    },
+    {
+      "key": "recommendedLabel",
+      "type": "string",
+      "description": "Badge over the recommended column. Match it to Pricing Table's badge.",
+      "default": "Recommended"
+    },
+    {
+      "key": "formatPrice",
+      "type": "function",
+      "description": "(amount: number, { currency, symbol }) => string. Prints every amount: column prices, the sticky bar, the yearly maths and add-on prices. Default: the currency's symbol, then the number with whole amounts bare and others to the cent."
+    },
+    {
+      "key": "labels",
+      "type": "object",
+      "description": "Replaces the fixed words: { billingPeriod, monthly, annual, save: (n) => string, differencesOnly, expandAll, collapseAll, billedYearly, billedMonthly, perMonth, pricesIn: (code) => string, soon, addon, included, notIncluded, custom, choose, feature, pairs, swipe }. Pass only the keys you change."
+    },
+    {
+      "key": "loadingPlan",
+      "type": "string | null",
+      "description": "Id of the plan whose checkout is running: its buttons show a spinner and no plan button fires until you set it back to null.",
+      "default": null
+    },
+    {
+      "key": "ref",
+      "type": "ref",
+      "description": "The root <section>."
+    }
+  ],
+  "example": "<PlanComparison\n  title=\"Compare plans\"\n  eyebrow=\"Relay plans\"\n  subtitle=\"Prices are per seat, before tax.\"\n  footnote=\"Switching plans is prorated to the day.\"\n  unit=\"seat\"\n  currency=\"USD\"\n  currencies={[{ code: \"USD\", symbol: \"$\" }]}\n  recommended=\"team\"\n  plans={[\n    { id: \"free\", name: \"Free\", tag: \"For trying Relay\", cta: \"Start free\", price: 0, note: [\"up to 3 seats\", \"No card needed\"] },\n    { id: \"team\", name: \"Team\", tag: \"For growing teams\", cta: \"Start trial\", price: 9 },\n    { id: \"business\", name: \"Business\", tag: \"For support orgs\", cta: \"Start trial\", price: 19 },\n  ]}\n  groups={[\n    { name: \"Inbox\", icon: \"message\", rows: [\n      { label: \"Shared inboxes\", v: [\"1\", \"5\", \"Unlimited\"] },\n      { label: \"Automations\", note: \"Rules that route and tag mail.\", v: [false, true, true] },\n      { label: \"AI replies\", v: [false, { addon: true, s: \"$4 / seat / mo\" }, true] },\n    ] },\n  ]}\n  billing={billing}\n  onBillingChange={setBilling}\n  loadingPlan={checkingOut}\n  onSelectPlan={(id, billing) => startCheckout(id, billing)}\n/>",
+  "controls": [
+    {
+      "group": "Pricing",
+      "key": "defaultBilling",
+      "label": "Billing (start)",
+      "type": "select",
+      "options": [
+        "annual",
+        "monthly"
+      ],
+      "default": "annual"
+    },
+    {
+      "group": "Pricing",
+      "key": "currency",
+      "label": "Currency",
+      "type": "select",
+      "options": [
+        "USD",
+        "EUR",
+        "GBP"
+      ],
+      "default": "USD"
+    },
+    {
+      "group": "Pricing",
+      "key": "recommended",
+      "label": "Recommended plan",
+      "type": "select",
+      "options": [
+        "free",
+        "plus",
+        "business",
+        "enterprise",
+        "none"
+      ],
+      "default": "none"
+    },
+    {
+      "group": "Table",
+      "key": "defaultDifferencesOnly",
+      "label": "Differences only (start)",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Table",
+      "key": "stickyHeader",
+      "label": "Sticky plan header",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Look",
+      "key": "title",
+      "label": "Title",
+      "type": "text",
+      "default": "Compare every plan"
+    },
+    {
+      "group": "Motion",
+      "key": "bandStiffness",
+      "label": "Band stiffness",
+      "type": "range",
+      "min": 120,
+      "max": 800,
+      "step": 10,
+      "default": 420
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Just the differences": {
+      "defaultDifferencesOnly": true
+    },
+    "Monthly in euros": {
+      "currency": "EUR",
+      "defaultBilling": "monthly"
+    },
+    "Enterprise push": {
+      "recommended": "enterprise",
+      "currency": "GBP"
+    },
+    "Static header": {
+      "stickyHeader": false,
+      "recommended": "none"
+    }
+  },
+  "demoProps": {
+    "demo": true,
+    "recommended": "business"
+  }
+}

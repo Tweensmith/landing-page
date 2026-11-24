@@ -1,0 +1,303 @@
+{
+  "name": "Footer",
+  "slug": "footer",
+  "export": "Footer",
+  "order": 105,
+  "kind": "bands",
+  "category": "closers",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Scroll to the end: the page lifts away to reveal the footer beneath, and the wordmark rises into focus.",
+  "description": "A site footer built as a reveal. In the curtain layout the footer waits beneath the page and the page lifts away to show it, with the page's rounded bottom edge casting a shadow onto it, while a giant wordmark below the link columns rises letter by letter and comes into focus as you reach the bottom. It uses position: sticky inside a clipping box, so it stays smooth with touch scrolling and never takes over the scroll. A footer taller than its scroller pins its first screenful and then scrolls on. A scroller under 360px, or reduced motion, gets a plain footer. The static layout animates the wordmark in once on view. It takes your link columns (up to five shown, by priority) with one soft highlight that travels between them, a brand statement, a newsletter styled as a letter you address (real validation, a domain-typo catcher, a sending state and a postmark on success), a system status pill that pulses briefly only when something is wrong, an optional language select, a light, dark or system switch, drawn social links, and a legal line with back to top. Phones get an accordion. It finds its own scroll container and lifts the page off any link that receives keyboard focus. Everything shown is yours; with no content it renders nothing, and `demo` shows a sample company (Northwind) at the end of a sample page.",
+  "intents": [
+    "site footer with link columns, newsletter signup and legal line",
+    "footer that reveals beneath the page like a curtain as you scroll",
+    "footer with a giant wordmark that animates in",
+    "marketing site footer with system status, language and theme switch",
+    "mobile footer with collapsible link sections"
+  ],
+  "tags": [
+    "footer",
+    "site footer",
+    "curtain",
+    "reveal",
+    "sticky footer",
+    "parallax",
+    "wordmark",
+    "newsletter",
+    "email signup",
+    "status",
+    "language select",
+    "theme switch",
+    "dark mode toggle",
+    "social links",
+    "legal",
+    "accordion",
+    "landing page",
+    "section"
+  ],
+  "usage": "Use once, as the last element of a marketing or docs page. Put your sitemap in `columns` (title, priority, links with optional badge and onClick; mark the legal group with `legal: true` so it folds into the legal line when `columnCount` hides it), your name, mark and positioning line in `brand` ({ name, href, statement } plus an optional mark node), and `legal` ({ owner, line, top }). For a newsletter pass `newsletter` copy and `onSubscribe(email)` returning a promise (resolve to show the postmark, reject with an Error to show its message), or own the state with `subscribing`, `subscribeError` and `subscribed`; without a handler it validates and stops, never claiming success. Pass the live system state as `status` with its copy in `statusInfo`. The language picker appears only when you pass `locales` (act on onLocaleChange); the light / dark / system switch only when you pass `appearance` or onAppearanceChange. The footer finds its scroll container (or pass `scroller`); for the curtain set `pageColor` to the background of the content above it, and keep ancestors between it and the scroller free of `overflow: hidden`, which stops the curtain.",
+  "previewState": "scrolled",
+  "states": [
+    "default",
+    "scrolled",
+    "success"
+  ],
+  "dataProps": [
+    {
+      "key": "brand",
+      "type": "object",
+      "description": "{ name, href, logo, statement }. logo is a node shown in the accent tile before the name (about 15px); omitted: no tile."
+    },
+    {
+      "key": "columns",
+      "type": "array",
+      "description": "Link columns: [{ id, title, priority, legal?, links: [{ label, href, badge?, onClick? }] }]. `priority` decides which survive a lower columnCount."
+    },
+    {
+      "key": "newsletter",
+      "type": "object",
+      "description": "{ name, tag, text, label, placeholder, cta, note, success, successDetail, sentDetail, failed, inputName }. Omitted: no newsletter. cta defaults to \"Subscribe\", success to \"Subscribed\"."
+    },
+    {
+      "key": "statusInfo",
+      "type": "object",
+      "description": "{ href, operational: { label, detail }, degraded: {…}, outage: {…} }. Omitted: no status pill. `status` picks the entry."
+    },
+    {
+      "key": "socials",
+      "type": "array",
+      "description": "[{ id, label, href, icon }] with icon one of rss, forum, play, mail, code. Omitted or []: no row."
+    },
+    {
+      "key": "locales",
+      "type": "array",
+      "description": "Languages for the picker: [{ value, label }]. Omitted: no picker (only the demo page shows a sample list)."
+    },
+    {
+      "key": "locale",
+      "type": "string",
+      "description": "The selected language when you control it (with onLocaleChange)."
+    },
+    {
+      "key": "defaultLocale",
+      "type": "string",
+      "description": "Selected language on first render when uncontrolled.",
+      "default": "en-US"
+    },
+    {
+      "key": "onLocaleChange",
+      "type": "function",
+      "description": "(value) => void when a language is picked."
+    },
+    {
+      "key": "legal",
+      "type": "object",
+      "description": "{ owner, line, top }: the copyright owner and line (\"© year owner line\"), and the back-to-top label (default \"Back to top\"; \"\" removes it)."
+    },
+    {
+      "key": "wordmark",
+      "type": "string",
+      "description": "The giant word under the columns. Omitted: none."
+    },
+    {
+      "key": "appearance",
+      "type": "string",
+      "description": "light, dark or system, when you control the switch (with onAppearanceChange)."
+    },
+    {
+      "key": "defaultAppearance",
+      "type": "string",
+      "description": "light, dark or system on first render when uncontrolled.",
+      "default": "system"
+    },
+    {
+      "key": "onAppearanceChange",
+      "type": "function",
+      "description": "(value) => void for the light / dark / system switch."
+    },
+    {
+      "key": "onSubscribe",
+      "type": "function",
+      "description": "(email) => Promise. Resolve to show the postmark, reject with an Error to show its message."
+    },
+    {
+      "key": "email",
+      "type": "string",
+      "description": "The newsletter field's value, when you control it (with onEmailChange)."
+    },
+    {
+      "key": "defaultEmail",
+      "type": "string",
+      "description": "The newsletter field's starting value when uncontrolled."
+    },
+    {
+      "key": "onEmailChange",
+      "type": "function",
+      "description": "(value) => void on every edit of the newsletter field."
+    },
+    {
+      "key": "subscribing",
+      "type": "boolean",
+      "description": "Your busy state for the newsletter: the button spins and the form cannot submit again.",
+      "default": false
+    },
+    {
+      "key": "subscribeError",
+      "type": "string",
+      "description": "An error you already have, shown under the newsletter field."
+    },
+    {
+      "key": "subscribed",
+      "type": "boolean",
+      "description": "When set, you own success: true shows the postmark, false the field. Leave it out and a resolved onSubscribe shows the postmark."
+    },
+    {
+      "key": "onNavigate",
+      "type": "function",
+      "description": "(link, event) => void for every footer link (columns, brand, status, socials, legal). Call event.preventDefault() for client-side routing."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Makes every link and control inert and announced as disabled.",
+      "default": false
+    },
+    {
+      "key": "demoPage",
+      "type": "boolean",
+      "description": "true puts the footer at the end of a sample page with its own scroller. Defaults to the value of `demo`; set false to use demo content on a real page."
+    },
+    {
+      "key": "scroller",
+      "type": "element | ref",
+      "description": "The scroll container, when it should not be found automatically."
+    },
+    {
+      "key": "pageColor",
+      "type": "string",
+      "description": "Background of the content above the footer, for the curtain edge.",
+      "default": "var(--ts-bg)"
+    },
+    {
+      "key": "headingLevel",
+      "type": "number",
+      "description": "Heading level of the column titles.",
+      "default": 2
+    },
+    {
+      "key": "showAppearance",
+      "type": "boolean",
+      "description": "The light / dark / system switch. Defaults to shown only with demo or when you pass appearance or onAppearanceChange."
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Fills every blank with the sample company (Northwind): brand and mark, columns, newsletter, status, socials, legal, wordmark; and puts it on the sample page unless demoPage={false}. Your own props still win.",
+      "default": false
+    },
+    {
+      "key": "layout",
+      "type": "\"curtain\" | \"static\"",
+      "default": "curtain",
+      "description": "How the footer arrives: \"curtain\" waits beneath the page, which lifts away to reveal it while the wordmark rises, and \"static\" sits in the flow and animates the wordmark in once on view. Reduced motion always gets the static footer."
+    },
+    {
+      "key": "ref",
+      "type": "ref",
+      "description": "Forwarded to the <footer> element."
+    }
+  ],
+  "example": "<Footer\n  demoPage={false}\n  brand={{ name: \"Relay\", href: \"/\", statement: \"The shared inbox for support teams.\" }}\n  wordmark=\"Relay\"\n  columns={[\n    { id: \"product\", title: \"Product\", priority: 1, links: [{ label: \"Pricing\", href: \"/pricing\" }] },\n    { id: \"legal\", title: \"Legal\", priority: 2, legal: true, links: [{ label: \"Privacy\", href: \"/privacy\" }] },\n  ]}\n  columnCount={2}\n  socials={[]}\n  legal={{ owner: \"Relay, Inc.\", line: \"\", top: \"Back to top\" }}\n  locales={[{ value: \"en\", label: \"English\" }, { value: \"de\", label: \"Deutsch\" }]}\n  defaultLocale=\"en\"\n  onLocaleChange={setLocale}\n  onSubscribe={subscribe}\n/>",
+  "controls": [
+    {
+      "group": "Style",
+      "key": "layout",
+      "label": "Layout",
+      "type": "select",
+      "options": [
+        "curtain",
+        "static"
+      ],
+      "default": "curtain"
+    },
+    {
+      "group": "Content",
+      "key": "status",
+      "label": "System status",
+      "type": "select",
+      "options": [
+        "operational",
+        "degraded",
+        "outage"
+      ],
+      "default": "operational"
+    },
+    {
+      "group": "Content",
+      "key": "showNewsletter",
+      "label": "Newsletter",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Content",
+      "key": "showWordmark",
+      "label": "Wordmark",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Content",
+      "key": "columnCount",
+      "label": "Link columns",
+      "type": "range",
+      "min": 3,
+      "max": 5,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "group": "Demo",
+      "key": "frameHeight",
+      "label": "Page height",
+      "type": "range",
+      "min": 380,
+      "max": 980,
+      "step": 20,
+      "default": 900
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Static": {
+      "layout": "static"
+    },
+    "Degraded": {
+      "status": "degraded"
+    },
+    "Outage": {
+      "status": "outage"
+    },
+    "Compact": {
+      "columnCount": 3,
+      "showNewsletter": false
+    },
+    "No wordmark": {
+      "showWordmark": false
+    },
+    "Short page": {
+      "frameHeight": 380
+    }
+  },
+  "demoProps": {
+    "demo": true
+  }
+}

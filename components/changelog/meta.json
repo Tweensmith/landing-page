@@ -1,0 +1,323 @@
+{
+  "name": "Changelog",
+  "slug": "changelog",
+  "export": "Changelog",
+  "order": 103,
+  "kind": "bands",
+  "category": "features",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Scroll and watch the version rail follow. Pick the version you were on: older releases fold away and the new changes add up.",
+  "description": "A release-notes section you read by what changed for you. A sticky version rail of years, months and version ticks tracks scroll position with a playhead and highlights the release you are reading; it is a nav, and each tick scrolls to its release. Since mode asks which version you were on (or offers the one remembered from your last visit), folds every older release into one bar with FLIP, and rolls the new changes into a summary card whose type counts and area legend work as filters. Area and type chips re-flow the entries. Every release is an article with a permalink and a copy-link button, tagged items (New, Improved, Fixed, Deprecated, each with an icon and label) and drawn media: a looping hero for the major release, small CSS demos that play only on screen and pause on hover, focus or a pause button, code diffs with copy buttons, and deprecation notices with a countdown and an upgrade guide. Patch releases collapse to one line. It ends with an email subscribe strip and RSS and JSON feed links. Wide containers add a sticky filter panel, phones get a top bar with the current version that opens a version sheet, and reduced motion shows still frames with no FLIP.",
+  "intents": [
+    "changelog page with release notes",
+    "what's new since my last visit",
+    "release notes with version navigation",
+    "product updates timeline with filters by area",
+    "changelog with subscribe and rss feed"
+  ],
+  "tags": [
+    "changelog",
+    "release notes",
+    "what's new",
+    "product updates",
+    "versions",
+    "semver",
+    "since last visit",
+    "scroll spy",
+    "version rail",
+    "deprecation",
+    "code diff",
+    "rss",
+    "section",
+    "landing page"
+  ],
+  "usage": "Use as the changelog or what's-new page of a product site, or a section near the footer of a marketing page. It shows only what you pass: no `releases` and no `title` renders nothing, and `demo` fills the blanks with a made-up docs product called Quill. Pass `releases` newest first ({ version, date, title, body[], media, items[{ tag, area, text }] }) with `product`, `title` and `lede`; `tag` is new, improved, fixed or deprecated, and deprecated items can carry `sunset`, `detail` and a `guide` link. Media is your own React node, an image ({ kind: \"image\", src, alt }) or a code diff ({ kind: \"diff\", file, lines: [[\" \"|\"+\"|\"-\", code]] }). Pass `areas` in a fixed order so each keeps its colour. The reading state (mode, sinceVersion, area, tag, openReleases) works uncontrolled, or controlled with each value and its `on…Change`. The email strip shows when you pass `subscribe` or `onSubscribe(email)`: return a promise, or drive `subscribeLoading`, `subscribeError` and `subscribed` yourself; it never claims success on its own. Set `rememberKey` to offer \"what's new since your last visit\" from localStorage (off by default). Pass `scroller` when the page does not scroll the window, and `loading`, `error` with `onRetry`, or `emptyText` for the data states. Keep it to the last six months or so and link to an archive.",
+  "states": [
+    "default",
+    "selected",
+    "empty"
+  ],
+  "controls": [
+    {
+      "group": "Reading",
+      "key": "defaultMode",
+      "label": "Show (start)",
+      "type": "select",
+      "options": [
+        "all",
+        "since"
+      ],
+      "default": "all"
+    },
+    {
+      "group": "Reading",
+      "key": "defaultSinceVersion",
+      "label": "I was on (start)",
+      "type": "select",
+      "options": [
+        "4.0.0",
+        "3.9.2",
+        "3.9.0",
+        "3.8.0",
+        "3.7.1",
+        "3.7.0",
+        "3.6.0",
+        "3.5.0",
+        "3.4.0",
+        "3.3.0"
+      ],
+      "default": "3.6.0"
+    },
+    {
+      "group": "Reading",
+      "key": "defaultArea",
+      "label": "Area (start)",
+      "type": "select",
+      "options": [
+        "all",
+        "Editor",
+        "Comments",
+        "API",
+        "Mobile"
+      ],
+      "default": "all"
+    },
+    {
+      "group": "Content",
+      "key": "showMedia",
+      "label": "Media",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Content",
+      "key": "compactPatches",
+      "label": "Patches on one line",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Since 3.6": {
+      "defaultMode": "since"
+    },
+    "Since 3.5, API only": {
+      "defaultMode": "since",
+      "defaultSinceVersion": "3.5.0",
+      "defaultArea": "API"
+    },
+    "Text only": {
+      "showMedia": false
+    },
+    "Every patch in full": {
+      "compactPatches": false
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "releases",
+      "type": "array",
+      "description": "Newest first: [{ version, date (YYYY-MM-DD), title, body?: string[], major?, media?, items: [{ tag, area, text, sunset?, name?, detail?, guide?: { label, href } }] }]. tag is new, improved, fixed or deprecated; text may hold `code` in backticks. media: a React node, { kind: \"image\", src, alt, caption }, { kind: \"diff\", file, lines: [[\" \" | \"+\" | \"-\", code]] }, or one of the sample's drawn kinds. Empty by default.",
+      "default": []
+    },
+    {
+      "key": "areas",
+      "type": "string[]",
+      "description": "Product areas in a fixed order, so each keeps its colour. Default: the areas in the order they first appear in `releases`."
+    },
+    {
+      "key": "product",
+      "type": "string",
+      "description": "Product name, read before each version by screen readers and used in permalink ids. Empty by default."
+    },
+    {
+      "key": "eyebrow",
+      "type": "string",
+      "description": "Small line above the title. Empty by default."
+    },
+    {
+      "key": "logo",
+      "type": "node",
+      "description": "Mark before the eyebrow. None by default."
+    },
+    {
+      "key": "title",
+      "type": "string",
+      "description": "The section heading. Empty by default."
+    },
+    {
+      "key": "lede",
+      "type": "string",
+      "description": "Paragraph under the title. Empty by default."
+    },
+    {
+      "key": "headingLevel",
+      "type": "number",
+      "description": "Level of the title; release titles are one below.",
+      "default": 2
+    },
+    {
+      "key": "mode",
+      "type": "\"all\" | \"since\"",
+      "description": "Which releases show: all, or only those after `sinceVersion` (the rest fold into one bar). Controlled with `onModeChange`; alone it follows the prop."
+    },
+    {
+      "key": "onModeChange",
+      "type": "function",
+      "description": "(mode) => void when the reader switches between all releases and new since."
+    },
+    {
+      "key": "sinceVersion",
+      "type": "string",
+      "description": "The version the reader was on. Controlled with `onSinceVersionChange`. Default: `defaultSinceVersion` if it is in `releases`, else the second release."
+    },
+    {
+      "key": "onSinceVersionChange",
+      "type": "function",
+      "description": "(version) => void when the reader picks the version they were on."
+    },
+    {
+      "key": "area",
+      "type": "string",
+      "description": "Area filter, \"all\" or one of `areas`. Controlled with `onAreaChange`."
+    },
+    {
+      "key": "onAreaChange",
+      "type": "function",
+      "description": "(area) => void when the reader picks an area filter."
+    },
+    {
+      "key": "tag",
+      "type": "string | null",
+      "description": "Type filter: new, improved, fixed, deprecated, or null for every type. Controlled with `onTagChange`."
+    },
+    {
+      "key": "defaultTag",
+      "type": "string | null",
+      "description": "Uncontrolled starting type filter.",
+      "default": null
+    },
+    {
+      "key": "onTagChange",
+      "type": "function",
+      "description": "(tag | null) => void when the reader picks a type filter."
+    },
+    {
+      "key": "openReleases",
+      "type": "string[]",
+      "description": "Versions of the expanded one-line patch releases. Controlled with `onOpenReleasesChange`."
+    },
+    {
+      "key": "defaultOpenReleases",
+      "type": "string[]",
+      "description": "Uncontrolled starting set of expanded patch releases.",
+      "default": []
+    },
+    {
+      "key": "onOpenReleasesChange",
+      "type": "function",
+      "description": "(versions: string[]) => void when a patch release opens or closes."
+    },
+    {
+      "key": "onActiveReleaseChange",
+      "type": "function",
+      "description": "(version, release) => void when the release under the reading line changes (the one the version rail highlights)."
+    },
+    {
+      "key": "renderItem",
+      "type": "function",
+      "description": "(item, release) => node. Renders an item's text yourself; the tag pill, area and list semantics stay."
+    },
+    {
+      "key": "subscribe",
+      "type": "object",
+      "description": "The email strip: { title, text, hint, label, name, cta, success (string or (email) => string), failed, rss, json }. The strip shows when this or `onSubscribe` is given; rss / json add feed links. Off by default."
+    },
+    {
+      "key": "onSubscribe",
+      "type": "function",
+      "description": "(email) => void | Promise. A returned promise shows the busy state while pending, the success message when it resolves and its error message when it rejects. A plain handler leaves busy, error and success to `subscribeLoading`, `subscribeError` and `subscribed`."
+    },
+    {
+      "key": "subscribeLoading",
+      "type": "boolean",
+      "description": "The sign-up is running: the button shows a spinner and the form does not submit again.",
+      "default": false
+    },
+    {
+      "key": "subscribeError",
+      "type": "string",
+      "description": "An error you already have, shown under the email field.",
+      "default": ""
+    },
+    {
+      "key": "subscribed",
+      "type": "boolean",
+      "description": "true shows the success message; false keeps the form even after a resolved promise. Unset, the promise decides."
+    },
+    {
+      "key": "rememberKey",
+      "type": "string | null",
+      "description": "Key under which the latest version is kept in localStorage, so a return visit offers \"see what's new since\" your last visit. Off (null) unless set."
+    },
+    {
+      "key": "linkBase",
+      "type": "string",
+      "description": "Origin and path the copy-link buttons put before #release-id. Default: the current page.",
+      "default": ""
+    },
+    {
+      "key": "scroller",
+      "type": "element | ref",
+      "description": "The scrolling element when the page does not scroll the window. Default: the nearest scrolling ancestor."
+    },
+    {
+      "key": "loading",
+      "type": "boolean",
+      "description": "Shows two placeholder releases instead of the list.",
+      "default": false
+    },
+    {
+      "key": "error",
+      "type": "string",
+      "description": "A load error, shown instead of the list, with a Try again button when `onRetry` is given.",
+      "default": ""
+    },
+    {
+      "key": "onRetry",
+      "type": "function",
+      "description": "() => void from the error state's Try again button."
+    },
+    {
+      "key": "emptyText",
+      "type": "string | node",
+      "description": "Shown when `releases` is empty and the section has a title or eyebrow.",
+      "default": "No releases yet."
+    },
+    {
+      "key": "ref",
+      "type": "ref",
+      "description": "The root <section>."
+    }
+  ],
+  "example": "<Changelog\n  product=\"Relay\"\n  eyebrow=\"Changelog\"\n  title=\"What's new in Relay\"\n  lede=\"Every release, newest first.\"\n  areas={[\"Inbox\", \"API\"]}\n  releases={[\n    { version: \"2.1.0\", date: \"2026-11-12\", title: \"Shared drafts\", body: [\"Draft a reply together before it goes out.\"],\n      items: [{ tag: \"new\", area: \"Inbox\", text: \"Shared drafts with live cursors.\" }, { tag: \"fixed\", area: \"API\", text: \"`GET /threads` paginates past 10,000.\" }] },\n    { version: \"2.0.1\", date: \"2026-10-30\", title: \"Fixes\", items: [{ tag: \"fixed\", area: \"Inbox\", text: \"Snoozed threads return on time.\" }] },\n  ]}\n  area={area}\n  onAreaChange={setArea}\n  subscribe={{ title: \"Get releases by email\", rss: \"/changelog.xml\" }}\n  onSubscribe={(email) => api.subscribe(email)}\n  rememberKey=\"relay\"\n/>"
+}

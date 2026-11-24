@@ -1,0 +1,103 @@
+{
+  "name": "Mini → Full Player",
+  "slug": "now-playing",
+  "export": "NowPlaying",
+  "order": 72,
+  "kind": "components",
+  "category": "mobile",
+  "platform": "native",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Drag the mini player up slowly: the cover grows out of the bar, the title slides around it and the library steps back. Drag the player down to fold it away.",
+  "description": "A music app's mini player and full Now Playing screen for React Native, built as one shared element. Drag the mini player up (or tap it) and the 44pt cover grows into the big artwork, the title and artist travel around it to their full positions, the controls fade and scale in by stages, and the library behind scales back and darkens with rounded corners like an iOS card. The expansion tracks the finger both ways and projects the flick, with rubber-banding past both ends and a haptic as it lands. The open player is tinted from the artwork's palette with slow light blooms, the cover shrinks with a spring when paused and bounces back on play, the play/pause glyph morphs, previous and next slide the artwork across with a spring, and the time scrubber and volume slider grow under the finger and stretch like rubber past their ends. Playback runs on a UI-thread clock; Reduce Motion keeps the drag but lands without bounce and drops the card scaling and blooms.",
+  "intents": [
+    "mini player that expands into a full now playing screen",
+    "apple music style now playing transition",
+    "react native music player with shared element artwork",
+    "drag up mini player to open full screen player"
+  ],
+  "tags": [
+    "music",
+    "audio",
+    "player",
+    "now playing",
+    "mini player",
+    "shared element",
+    "card presentation",
+    "scrubber",
+    "elastic slider",
+    "play pause morph",
+    "artwork tint",
+    "haptics",
+    "gesture",
+    "react native",
+    "expo"
+  ],
+  "usage": "Use for media that keeps playing while people browse: music, podcasts, audiobooks. Keep the mini player above the tab bar on every screen, make the whole bar a tap target as well as a drag handle, and give the full player a visible way down (the grabber) besides the swipe.",
+  "states": [
+    "default",
+    "open"
+  ],
+  "controls": [
+    {
+      "group": "Content",
+      "key": "track",
+      "label": "Track",
+      "type": "select",
+      "options": [
+        { "label": "Total Eclipse", "value": "eclipse" },
+        { "label": "Night Bloom", "value": "night-bloom" },
+        { "label": "Tidal Static", "value": "tidal" },
+        { "label": "Golden Hour", "value": "citrine" },
+        { "label": "Glacier Hum", "value": "glacier" },
+        { "label": "Orchid Engine", "value": "orchid" }
+      ],
+      "default": "eclipse"
+    },
+    {
+      "group": "Behaviour",
+      "key": "startOpen",
+      "label": "Start open",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Behaviour",
+      "key": "playing",
+      "label": "Playing",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Look",
+      "key": "tintFromArtwork",
+      "label": "Tint from artwork",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Motion",
+      "key": "cardStack",
+      "label": "Card presentation",
+      "type": "toggle",
+      "default": true
+    }
+  ],
+  "presets": {
+    "Open": {
+      "startOpen": true
+    },
+    "Paused": {
+      "startOpen": true,
+      "playing": false
+    },
+    "Night Bloom": {
+      "startOpen": true,
+      "track": "night-bloom"
+    },
+    "Theme colours": {
+      "startOpen": true,
+      "tintFromArtwork": false
+    }
+  }
+}

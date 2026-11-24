@@ -1,0 +1,120 @@
+{
+  "name": "Haptic Button Set",
+  "slug": "haptic-buttons",
+  "export": "HapticButtons",
+  "order": 77,
+  "kind": "components",
+  "category": "mobile",
+  "platform": "native",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Press and hold the send button: feel a soft tick at each quarter and a heavy thud at the end. Then drag Slide to pay, tap Verify, and tap Cancel twice.",
+  "description": "A set of React Native buttons where each style has its own motion and its own haptic pattern, shown as a send-money review screen. Hold to send fills on a UI-thread clock while you hold it, with a soft tick at each quarter, a heavy thud at the end and a success pulse as it turns green and draws a check; let go early and it drains back on a spring. Plain buttons squash on press and spring back with a light tap. The segmented speed chips and the Split the bill and Repeat monthly toggles give a selection tick, with a fill that stretches between options. Slide to pay has a draggable thumb that rubber-bands past either end, ticks at each mark and pays at the end. The async Verify button folds into a spinner and lands on a drawn check, or shakes red on a decaying spring with an error haptic. Cancel transfer asks first: the first tap gives a warning haptic and stretches into Tap again to cancel transfer, and the second commits. Every hold and slide also works as a screen-reader action.",
+  "intents": [
+    "hold to confirm button with haptic feedback",
+    "slide to confirm payment button react native",
+    "button haptics for each button type",
+    "async loading button with success and error states"
+  ],
+  "tags": [
+    "async button",
+    "button",
+    "chips",
+    "confirm",
+    "expo",
+    "haptics",
+    "hold to confirm",
+    "loading button",
+    "payment",
+    "press and hold",
+    "react native",
+    "segmented control",
+    "send money",
+    "slide to confirm",
+    "slide to pay",
+    "toggle"
+  ],
+  "usage": "Match the haptic to what the button commits: a light tap for plain actions, a selection tick for choices, soft ticks building to a heavy thud for a hold, success or error only for real outcomes, and a warning before anything destructive. Save hold and slide for irreversible money moves, always keep a screen-reader action for them, and never fire a success haptic before the server confirms.",
+  "states": [
+    "default",
+    "loading",
+    "success",
+    "error",
+    "disabled"
+  ],
+  "controls": [
+    {
+      "group": "Transfer",
+      "key": "amount",
+      "label": "Amount",
+      "type": "text",
+      "default": "148.50"
+    },
+    {
+      "group": "Transfer",
+      "key": "recipient",
+      "label": "Recipient",
+      "type": "text",
+      "default": "Maya Okafor"
+    },
+    {
+      "group": "Behaviour",
+      "key": "holdMs",
+      "label": "Hold duration (ms)",
+      "type": "range",
+      "min": 600,
+      "max": 2500,
+      "step": 100,
+      "default": 1200
+    },
+    {
+      "group": "Behaviour",
+      "key": "verifyOutcome",
+      "label": "Verify result",
+      "type": "select",
+      "options": [
+        {
+          "label": "Succeeds",
+          "value": "success"
+        },
+        {
+          "label": "Fails",
+          "value": "error"
+        },
+        {
+          "label": "Fails once",
+          "value": "failOnce"
+        }
+      ],
+      "default": "success"
+    },
+    {
+      "group": "Behaviour",
+      "key": "showRequest",
+      "label": "Slide to pay request",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Behaviour",
+      "key": "haptics",
+      "label": "Haptics",
+      "type": "toggle",
+      "default": true
+    }
+  ],
+  "presets": {
+    "Bank declines": {
+      "verifyOutcome": "error"
+    },
+    "Fails once": {
+      "verifyOutcome": "failOnce"
+    },
+    "Deliberate hold": {
+      "holdMs": 2200
+    },
+    "Quick hold": {
+      "holdMs": 700
+    }
+  }
+}

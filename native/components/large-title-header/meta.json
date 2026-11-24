@@ -1,0 +1,93 @@
+{
+  "name": "Large-title Header",
+  "slug": "large-title-header",
+  "export": "LargeTitleHeader",
+  "order": 62,
+  "kind": "components",
+  "category": "mobile",
+  "platform": "native",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Scroll slowly: the big title flies off the artwork and docks in the bar. Pull down to stretch the art.",
+  "description": "The iOS large-title navigation bar for React Native, over hero artwork on a playlist screen. The large title doesn't fade and swap: it flies from the artwork into the nav bar, shrinking, sliding to the centre and turning from white to the bar's ink, and docks with a light haptic tick as the bar frosts in and gains its hairline. Pulling down stretches the artwork from its top edge; scrolling parallaxes it away and darkens it. Glass buttons over the art cross-fade into plain bar buttons with a back label, and the filter row sticks under the bar. A collapsing header scrubbed by scroll on the UI thread.",
+  "intents": [
+    "ios large title navigation bar",
+    "collapsing header on scroll in react native",
+    "big title that shrinks into the nav bar",
+    "stretchy hero header over album artwork"
+  ],
+  "tags": [
+    "collapsing",
+    "expo",
+    "header",
+    "hero",
+    "ios",
+    "large title",
+    "navigation bar",
+    "parallax",
+    "playlist",
+    "react native",
+    "scroll",
+    "sticky",
+    "stretchy header"
+  ],
+  "usage": "Use at the top level of a stack or on a detail screen with a strong image (album, place, profile). Deeper screens use the small title only. Keep titles to one or two words so the large title fits on one line; swap <Art> for your own image.",
+  "states": [
+    "default"
+  ],
+  "controls": [
+    {
+      "group": "Content",
+      "key": "title",
+      "label": "Title",
+      "type": "text",
+      "default": "Night Bloom"
+    },
+    {
+      "group": "Content",
+      "key": "backLabel",
+      "label": "Back label",
+      "type": "text",
+      "default": "Library"
+    },
+    {
+      "group": "Content",
+      "key": "artwork",
+      "label": "Artwork",
+      "type": "select",
+      "options": [
+        "night-bloom",
+        "eclipse",
+        "tidal",
+        "citrine",
+        "glacier",
+        "ember-silk"
+      ],
+      "default": "night-bloom"
+    },
+    {
+      "group": "Behaviour",
+      "key": "showFilters",
+      "label": "Sticky filter row",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Behaviour",
+      "key": "stretchOnPull",
+      "label": "Stretch art on pull",
+      "type": "toggle",
+      "default": true
+    }
+  ],
+  "presets": {
+    "Eclipse": {
+      "title": "Eclipse",
+      "artwork": "eclipse",
+      "backLabel": "Albums"
+    },
+    "No filters": {
+      "showFilters": false
+    }
+  }
+}

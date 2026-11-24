@@ -1,0 +1,305 @@
+{
+  "name": "Activity Feed",
+  "slug": "activity-feed",
+  "export": "ActivityFeed",
+  "order": 88,
+  "kind": "components",
+  "category": "display",
+  "subcategory": "lists",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Turn on Sample content and wait a few seconds: new events spring in at the top. Click the comment deck to fan it open.",
+  "description": "Who did what, newest first, from your `items`: each has an actor (name, avatar or initials), a verb and target or a ready title, a timestamp, an icon or tone, an optional body and action buttons, and an unread flag. Items are grouped by day under sticky headers, times read relatively in the Theme's locale (or through your `formatTime`), clicking an item reports it, and unread items can be marked read one by one or all at once. Load more is yours to drive, and so are loading (a skeleton in the feed's own shape), empty and error with Try again. New items that arrive at the top are announced politely; with a fixed height the reader's place is kept and a \"N new\" pill offers the way back up, and focus never moves. The Sample content switch shows the live Fieldnote workspace: comments with quoted layers, version uploads with a draggable before/after wipe, status pills that morph, deploys that build to Live, runs of comments that collapse into a deck of cards, filters, ticking timestamps and rolling reaction counts.",
+  "intents": [
+    "live activity feed for a team workspace",
+    "recent activity stream with comments and uploads",
+    "collapse similar notifications into a stack",
+    "audit log of status changes and deploys grouped by day",
+    "new items pill when scrolled away from the top"
+  ],
+  "tags": [
+    "activity feed",
+    "activity stream",
+    "feed",
+    "history",
+    "audit log",
+    "notifications",
+    "comments",
+    "live updates",
+    "sticky headers",
+    "grouped by day",
+    "stack",
+    "reactions",
+    "version diff",
+    "collaboration"
+  ],
+  "usage": "Use for the open-ended history of a shared object or workspace: who commented, uploaded, approved or paid, newest first. Pass `items` first (each with a stable `id`, an `actor`, a `verb` and `target` or a `title`, and a `timestamp`). Add `onItemClick` to open an item, `onMarkRead` when you track unread, and `onLoadMore` + `hasMore` + `loadingMore` for older items. Own the data states with `loading`, `error` + `onRetry` and `emptyMessage`. Prepend new items to `items` as they arrive; give the feed a `height` so a reader who has scrolled down keeps their place. For a fixed sequence of steps (order tracking, onboarding) use Timeline; for a single passing message use a toast.",
+  "states": [
+    "default",
+    "loading",
+    "empty",
+    "error",
+    "open",
+    "scrolled"
+  ],
+  "controls": [
+    {
+      "group": "Look",
+      "key": "title",
+      "label": "Title",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Layout",
+      "key": "grouping",
+      "label": "Grouping",
+      "type": "select",
+      "options": [
+        "day",
+        "none"
+      ],
+      "default": "day"
+    },
+    {
+      "group": "Layout",
+      "key": "height",
+      "label": "Height (0 = fit items)",
+      "type": "range",
+      "min": 0,
+      "max": 800,
+      "step": 20,
+      "default": 0
+    },
+    {
+      "group": "State",
+      "key": "loading",
+      "label": "Loading",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Sample",
+      "key": "live",
+      "label": "Live arrivals (sample)",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Sample",
+      "key": "interval",
+      "label": "Arrival interval (s)",
+      "type": "range",
+      "min": 2,
+      "max": 20,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "group": "Sample",
+      "key": "collapseRuns",
+      "label": "Collapse runs (sample)",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Sample",
+      "key": "filter",
+      "label": "Filter (sample)",
+      "type": "select",
+      "options": [
+        "all",
+        "comments",
+        "versions",
+        "status"
+      ],
+      "default": "all"
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Busy room": {
+      "interval": 2
+    },
+    "Quiet log": {
+      "live": false,
+      "collapseRuns": false
+    },
+    "Comments only": {
+      "filter": "comments"
+    },
+    "Flat list": {
+      "grouping": "none"
+    }
+  },
+  "demoProps": {
+    "demo": true,
+    "live": true
+  },
+  "dataProps": [
+    {
+      "key": "items",
+      "type": "Array<{ id, actor?: { name, avatar?: string | ReactNode, initials? }, verb?, target?, title?: ReactNode, timestamp: Date | string | number, icon?: string | ReactNode, tone?: 'neutral' | 'accent' | 'success' | 'warning' | 'danger', unread?: boolean, body?: ReactNode, actions?: Array<{ label, icon?, onClick(item, event), disabled?, busy?, variant? }> }>",
+      "description": "The activity, newest first, as plain objects with a stable id. `title` replaces the actor + verb + target headline; `icon` shows as a badge on the avatar (or alone without an actor); `busy` on an action shows a spinner and blocks repeat clicks.",
+      "default": []
+    },
+    {
+      "key": "title",
+      "type": "ReactNode",
+      "description": "Heading above the feed and its accessible name. Blank shows no header; then pass aria-label.",
+      "default": ""
+    },
+    {
+      "key": "headerActions",
+      "type": "ReactNode",
+      "description": "Your controls in the header (filters, settings)."
+    },
+    {
+      "key": "grouping",
+      "type": "'day' | 'none'",
+      "description": "Group items under a heading per day (Today, Yesterday, weekday, date).",
+      "default": "day"
+    },
+    {
+      "key": "formatTime",
+      "type": "(date, now) => string",
+      "description": "Formats each item's time. Default: relative in the Theme's locale (\"now\", \"5 min. ago\"), the clock time on earlier days when grouped."
+    },
+    {
+      "key": "formatDay",
+      "type": "(date, now) => string",
+      "description": "Formats the day headings. Default: Today, Yesterday, weekday, then the date, in the Theme's locale."
+    },
+    {
+      "key": "now",
+      "type": "Date",
+      "description": "Pins the clock used for relative times. Without it the labels refresh every 30 seconds."
+    },
+    {
+      "key": "onItemClick",
+      "type": "(item, event) => void",
+      "description": "Makes each item's headline a button; called with the item."
+    },
+    {
+      "key": "onMarkRead",
+      "type": "(ids, items) => void",
+      "description": "Called when unread items are read: opening one, its check button, or Mark all as read. Clear `unread` in your items."
+    },
+    {
+      "key": "renderItem",
+      "type": "(item, { time, now }) => ReactNode",
+      "description": "Draws an item's content yourself; the list, unread dot and announcements stay."
+    },
+    {
+      "key": "onLoadMore",
+      "type": "(event) => void",
+      "description": "Shows a Load more button under the list while `hasMore` is true."
+    },
+    {
+      "key": "hasMore",
+      "type": "boolean",
+      "description": "Whether older items exist.",
+      "default": false
+    },
+    {
+      "key": "loadingMore",
+      "type": "boolean",
+      "description": "Your request for older items is running: the button shows a spinner and does not fire again.",
+      "default": false
+    },
+    {
+      "key": "loading",
+      "type": "boolean",
+      "description": "Your items are loading: a skeleton in the feed's shape.",
+      "default": false
+    },
+    {
+      "key": "error",
+      "type": "ReactNode",
+      "description": "An error message you already have; replaces the list."
+    },
+    {
+      "key": "onRetry",
+      "type": "() => void",
+      "description": "Shows Try again with the error."
+    },
+    {
+      "key": "emptyMessage",
+      "type": "ReactNode",
+      "description": "Shown when there are no items. Default \"No activity yet.\""
+    },
+    {
+      "key": "labels",
+      "type": "object",
+      "description": "Overrides for the built-in words: empty, error, retry, loading, loadMore, markAllRead, markRead, unread, newItems(n, text), newPill(n), jumpToNew(n)."
+    },
+    {
+      "key": "height",
+      "type": "number",
+      "description": "Fixed height in px; the list scrolls inside and keeps the reader's place when items arrive. 0 grows with the items.",
+      "default": 0
+    },
+    {
+      "key": "maxWidth",
+      "type": "number",
+      "description": "Width cap in px; 0 fills the container.",
+      "default": 0
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Makes the feed inert: no clicks, mark-read or load more.",
+      "default": false
+    },
+    {
+      "key": "live",
+      "type": "boolean",
+      "description": "Sample content only: new sample events arrive on a timer.",
+      "default": false
+    },
+    {
+      "key": "interval",
+      "type": "number",
+      "description": "Sample content only: seconds between sample arrivals.",
+      "default": 6
+    },
+    {
+      "key": "collapseRuns",
+      "type": "boolean",
+      "description": "Sample content only: runs of comments on one file fold into a deck.",
+      "default": true
+    },
+    {
+      "key": "filter",
+      "type": "string",
+      "description": "Sample content only: the starting filter.",
+      "default": "all"
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Shows the sample Fieldnote workspace when no items are passed.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLElement>",
+      "description": "The root <section>."
+    }
+  ],
+  "example": "const [items, setItems] = useState([]);\n\n// newest first; prepend arrivals as they come in\nuseEffect(() => subscribe((ev) => setItems((xs) => [toItem(ev), ...xs])), []);\n\nconst toItem = (ev) => ({\n  id: ev.id,\n  actor: { name: ev.user.name, avatar: ev.user.photoUrl },\n  verb: \"commented on\",\n  target: ev.doc.title,\n  timestamp: ev.createdAt,\n  icon: \"message\",\n  unread: !ev.seen,\n  body: ev.text,\n});\n\n<ActivityFeed\n  title=\"Activity\"\n  items={items}\n  height={480}\n  loading={isLoading}\n  error={loadError?.message}\n  onRetry={refetch}\n  onItemClick={(item) => openDoc(item.id)}\n  onMarkRead={(ids) => markSeen(ids)}\n  hasMore={hasMore}\n  loadingMore={isFetchingMore}\n  onLoadMore={fetchOlder}\n/>"
+}

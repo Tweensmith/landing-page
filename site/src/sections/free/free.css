@@ -1,0 +1,33 @@
+/* The free set: a row of names to throw under a stage (sections/Catalogue.jsx, sections/free/Row.jsx). */
+
+.fr__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px 32px; margin-bottom: clamp(24px, 3.4vw, 40px); }
+.fr .section__title .muted { display: block; }
+.fr__pick { display: flex; flex-wrap: wrap; gap: 6px; }
+.fr__wait { min-height: 640px; }
+
+/* the stage every option shows a live component on: it holds its size, and what is in it is scaled to fit */
+.fstage { display: block; height: clamp(360px, 36vw, 460px); padding: 28px 20px; border-radius: 26px; overflow: hidden; background: var(--ts-bg); color: var(--ts-ink);
+  box-shadow: inset 0 0 0 1px var(--ts-line), inset 0 1px 2px rgb(20 20 24 / .06); transition: background-color .25s ease; }
+
+/* the row */
+.frow { display: grid; grid-template-columns: minmax(0, 1fr); justify-items: center; }
+.frow > [role="region"] { width: 100%; }
+.frow__mark { height: 26px; display: grid; place-items: end center; }
+.frow__mark i { width: 7px; height: 7px; border-radius: 99px; background: var(--site-rest); }
+.frow__view { width: calc(100% + var(--gutter) * 2); margin: 0 calc(var(--gutter) * -1); overflow: hidden; cursor: grab; touch-action: pan-y; outline: none; -webkit-user-select: none; user-select: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 16%, #000 84%, transparent); mask-image: linear-gradient(90deg, transparent, #000 16%, #000 84%, transparent); }
+.frow__view:active { cursor: grabbing; }
+.frow__view:focus-visible { outline: 2px solid var(--ts-focus, var(--ts-ink)); outline-offset: -2px; border-radius: 16px; }
+.frow__row { display: flex; align-items: baseline; width: max-content; gap: clamp(22px, 3vw, 44px); padding: 6px 0 12px; will-change: transform; }
+.frow__name { font-size: clamp(30px, 4.6vw, 62px); line-height: 1.1; letter-spacing: -.04em; font-weight: 650; white-space: nowrap; color: var(--ts-heading-muted, var(--ts-ink2)); opacity: .5; transition: color .2s ease, opacity .2s ease; }
+.frow__name[data-near] { opacity: .8; }
+.frow__name[aria-selected="true"] { color: var(--ts-ink); opacity: 1; }
+.frow__keys { display: flex; align-items: center; gap: 14px; margin-top: 14px; }
+.frow__keys .key:disabled { opacity: .4; cursor: default; }
+.frow__count { min-width: 62px; text-align: center; font-size: 12px; letter-spacing: .04em; color: var(--ts-ink2); }
+.frow__count b { font-weight: 600; color: var(--ts-ink); }
+
+@media (max-width: 640px) {
+  .fr__head { flex-direction: column; align-items: flex-start; }
+  .fstage { height: 360px; padding: 22px 12px; }
+}

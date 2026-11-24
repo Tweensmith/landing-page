@@ -1,0 +1,382 @@
+{
+  "name": "Chat Composer",
+  "slug": "chat-composer",
+  "export": "ChatComposer",
+  "order": 106,
+  "kind": "components",
+  "category": "ai",
+  "subcategory": "conversation",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Type a few lines, drop a file on it, press / or @, switch to Quick, then send and watch your text land in the thread.",
+  "description": "The message composer of an AI chat product (shown as Margin, a research assistant that reads the files you give it), under a short thread. It changes shape with the conversation: the field grows on a spring to fit what you write (up to a row limit or 40% of the panel, then scrolls), Enter sends, Shift+Enter adds a line and IME composition never sends. Files arrive by button, paste or drag-and-drop and fly into a tray as chips with a type glyph, upload progress and remove; errors are typed and stay on the chip (Over 20 MB, can't read .key files, a model that can't read files with a one-tap fix). A model menu lists each model with what it is good at and a capability mark, and changing it updates the hints: the attach button explains why it is off for a text-only model. The send button morphs in place through the AI SDK states: disabled while empty, Send, submitted, Stop while the reply streams, Retry with the reason above the field on error. On send the text lifts out of the field and settles into the thread as your bubble with a measured FLIP while the field springs back to one line. Slash commands and @-mentions of attached files open a listbox above the caret line. A quiet footer shows context used as a thin meter and the shortcuts. Phones get a bottom-docked composer that follows the keyboard through visualViewport, bottom sheets for the model and attach menus, and a snap rail for the tray. Reduced motion drops the flight: the bubble appears and the field resets.",
+  "intents": [
+    "chat input for an AI assistant with file attachments",
+    "prompt box with model picker and send / stop button",
+    "message composer that grows with text and supports slash commands",
+    "AI chat composer with drag and drop uploads and context meter",
+    "mobile chat input that follows the keyboard"
+  ],
+  "tags": [
+    "chat",
+    "composer",
+    "prompt input",
+    "message input",
+    "ai",
+    "llm",
+    "textarea autosize",
+    "attachments",
+    "file upload",
+    "drag and drop",
+    "model picker",
+    "slash commands",
+    "mentions",
+    "send button",
+    "stop generating",
+    "retry",
+    "context window",
+    "ai sdk",
+    "useChat"
+  ],
+  "usage": "A message composer with a thread above it. Handle `onSend({ text, attachments, model })` and drive the state from your stream (e.g. the AI SDK's useChat): `status` (ready, submitted, streaming, error) is the busy state you own, `messages` ({ id, role: user|assistant, text, files?, cites?, state?, model? }) is the thread, `onStop()` and `onRetry()` are the stop and retry buttons. The text is `value` / `defaultValue` / `onChange`. Attachments: uncontrolled, picked, pasted or dropped files are checked against `accept` and `maxSizeMB` (or your `validate`), rejected ones show your message on the chip and call `onReject(file, error)`, accepted ones call `onAttach(files)` and sit in the tray as { id, name, size, status: done, file } until sent; nothing is uploaded by the component. To own uploads pass `attachments` ([{ id, name, size, status: uploading|done|error, progress 0-1, error?: { code, message, detail?, fix?: { label } } }]) with `onRemoveAttachment(id)` and `onFixAttachment(id, code)`. Models: `models` ([{ id, name, note, caps?: [files|fast|cites], context? }]) with `model` / `defaultModel` / `onModelChange`; a model whose caps leave out files disables attaching and explains why. `commands` feeds the / menu (`onCommand(command)`), attached files feed the @ menu, `library` adds ready files to the attach menu. Inside a <form>, `name` puts the text in FormData, Enter or Send submits the form and reset clears it. `disabled` with `disabledText`, `error` for a field error; `aria-label` and `aria-describedby` go to the field, other unknown props to the root. `demo` fills everything left out with the sample research thread and plays its scripted send and simulated replies.",
+  "states": [
+    "default",
+    "focus",
+    "loading",
+    "error",
+    "disabled"
+  ],
+  "controls": [
+    {
+      "group": "Content",
+      "key": "placeholder",
+      "label": "Placeholder",
+      "type": "text",
+      "default": "Write a message"
+    },
+    {
+      "group": "Stream",
+      "key": "status",
+      "label": "Status",
+      "type": "select",
+      "options": [
+        "ready",
+        "submitted",
+        "streaming",
+        "error"
+      ],
+      "default": "ready"
+    },
+    {
+      "group": "Parts",
+      "key": "showModelPicker",
+      "label": "Model picker",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Parts",
+      "key": "showAttachments",
+      "label": "Attachments",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Parts",
+      "key": "showContextMeter",
+      "label": "Context meter",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Field",
+      "key": "maxRows",
+      "label": "Max rows",
+      "type": "range",
+      "min": 2,
+      "max": 14,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Streaming": {
+      "status": "streaming"
+    },
+    "Send failed": {
+      "status": "error"
+    },
+    "Plain prompt box": {
+      "showModelPicker": false,
+      "showAttachments": false,
+      "showContextMeter": false
+    },
+    "Short field": {
+      "maxRows": 3
+    }
+  },
+  "demoProps": {
+    "demo": true,
+    "placeholder": "Ask about your files, or type / for commands"
+  },
+  "dataProps": [
+    {
+      "key": "value",
+      "type": "string",
+      "description": "Controlled text. Pass it with onChange."
+    },
+    {
+      "key": "defaultValue",
+      "type": "string",
+      "description": "Initial text when uncontrolled.",
+      "default": ""
+    },
+    {
+      "key": "onChange",
+      "type": "function",
+      "description": "(text: string) => void, on every edit, command insert, send (\"\") and form reset."
+    },
+    {
+      "key": "placeholder",
+      "type": "string",
+      "description": "Placeholder of the field.",
+      "default": "Write a message"
+    },
+    {
+      "key": "onSend",
+      "type": "function",
+      "description": "({ text, attachments, model }) => void, on Enter or the Send button. attachments are the ready ones (uncontrolled: { id, name, size, status, file })."
+    },
+    {
+      "key": "status",
+      "type": "\"ready\" | \"submitted\" | \"streaming\" | \"error\"",
+      "description": "The reply state you own: submitted and streaming turn Send into Stop (and Send will not fire again), error shows errorText with Retry.",
+      "default": "ready"
+    },
+    {
+      "key": "onStop",
+      "type": "function",
+      "description": "() => void, for Stop (or Escape) while submitted or streaming."
+    },
+    {
+      "key": "onRetry",
+      "type": "function",
+      "description": "() => void, for Retry after an error."
+    },
+    {
+      "key": "messages",
+      "type": "Message[]",
+      "description": "The thread: [{ id, role: \"user\" | \"assistant\", text, files?: [{ name, size }], cites?: string[], state?: \"submitted\" | \"streaming\" | \"ready\", shown?: number, model?: string, stopped?: boolean }]. Uncontrolled, sent messages are appended locally when there is no onSend.",
+      "default": []
+    },
+    {
+      "key": "attachments",
+      "type": "Attachment[]",
+      "description": "Controlled attachments: [{ id, name, size, status: \"uploading\" | \"done\" | \"error\", progress?: 0-1, error?: { code, message, detail?, fix?: { label } } }]."
+    },
+    {
+      "key": "defaultAttachments",
+      "type": "Attachment[]",
+      "description": "Initial attachments when uncontrolled.",
+      "default": []
+    },
+    {
+      "key": "onAttach",
+      "type": "function",
+      "description": "(files: File[]) => void, with the files that passed accept / maxSizeMB / validate (button, paste, drop or a library item)."
+    },
+    {
+      "key": "onReject",
+      "type": "function",
+      "description": "(file, error: { code: \"unsupported\" | \"too-large\" | yours, message, detail? }) => void, for each file that failed the check. The chip shows error.message."
+    },
+    {
+      "key": "accept",
+      "type": "string[]",
+      "description": "Allowed extensions without the dot (\"pdf\", \"csv\"). Empty accepts anything; also sets the file chooser's filter.",
+      "default": []
+    },
+    {
+      "key": "maxSizeMB",
+      "type": "number",
+      "description": "Largest file in MB; 0 means no limit.",
+      "default": 0
+    },
+    {
+      "key": "validate",
+      "type": "function",
+      "description": "(file, { accept, maxSizeMB }) => null | { code, message, detail? }. Replaces the built-in check, so the messages are yours."
+    },
+    {
+      "key": "onRemoveAttachment",
+      "type": "function",
+      "description": "(id) => void, when a chip's remove button is pressed."
+    },
+    {
+      "key": "onFixAttachment",
+      "type": "function",
+      "description": "(id, code) => void, when a chip's fix link is pressed (error.fix)."
+    },
+    {
+      "key": "models",
+      "type": "Model[]",
+      "description": "The model menu: [{ id, name, note?, caps?: (\"files\" | \"fast\" | \"cites\")[], context?: number }]. Empty hides the picker.",
+      "default": []
+    },
+    {
+      "key": "model",
+      "type": "string",
+      "description": "Controlled model id. Pass it with onModelChange."
+    },
+    {
+      "key": "defaultModel",
+      "type": "string",
+      "description": "Initial model id when uncontrolled (default: the first model)."
+    },
+    {
+      "key": "onModelChange",
+      "type": "function",
+      "description": "(id) => void, when a model is picked (or a chip's \"Use …\" fix switches it)."
+    },
+    {
+      "key": "commands",
+      "type": "Command[]",
+      "description": "The / menu: [{ id, label: \"/name\", note? }]. Empty turns it off.",
+      "default": []
+    },
+    {
+      "key": "onCommand",
+      "type": "function",
+      "description": "(command) => void, when a / command is chosen (its label is inserted into the text)."
+    },
+    {
+      "key": "library",
+      "type": "{ name, size }[]",
+      "description": "Ready files listed in the attach menu; picking one adds it like a chosen file.",
+      "default": []
+    },
+    {
+      "key": "product",
+      "type": "string",
+      "description": "The assistant's name, used in the thread, the field's label and messages.",
+      "default": ""
+    },
+    {
+      "key": "title",
+      "type": "string",
+      "description": "Header title. Empty shows no header.",
+      "default": ""
+    },
+    {
+      "key": "mark",
+      "type": "ReactNode",
+      "description": "The assistant's avatar in the header and the thread (null hides it)."
+    },
+    {
+      "key": "errorText",
+      "type": "string",
+      "description": "Shown above the field when status is error.",
+      "default": "The reply failed. Retry sends it again."
+    },
+    {
+      "key": "disabledText",
+      "type": "string",
+      "description": "Shown above the field while disabled. Empty shows nothing.",
+      "default": ""
+    },
+    {
+      "key": "error",
+      "type": "string",
+      "description": "A field error you already have (too long, not allowed): shown above the field, marks it invalid and describes it."
+    },
+    {
+      "key": "contextUsed",
+      "type": "number",
+      "description": "Context used, 0 to 1, for the footer meter. Left out, the meter estimates it from the text and files against the model's context (and hides with no context)."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Field, buttons and chips are inert and announced as disabled.",
+      "default": false
+    },
+    {
+      "key": "name",
+      "type": "string",
+      "description": "Name of the textarea, so the text is in the form's FormData."
+    },
+    {
+      "key": "id",
+      "type": "string",
+      "description": "Id of the textarea (for a <label htmlFor>)."
+    },
+    {
+      "key": "required",
+      "type": "boolean",
+      "description": "Marks the textarea required for form validation."
+    },
+    {
+      "key": "autoFocus",
+      "type": "boolean",
+      "description": "Focus the field on mount."
+    },
+    {
+      "key": "labels",
+      "type": "object",
+      "description": "Replaces any word the composer shows: assistant, message, send, stop, retry, waiting, attach, attachments, attached, model, changeModel, fromDevice, photo, cancel, remove, dismiss, commands, attachedFiles, uploading, jump, reading, thinking, stopped, drop, hintSend, hintNewLine, hintCommands, hintFiles, disabledPlaceholder, caps: { files, fast, cites }."
+    },
+    {
+      "key": "replies",
+      "type": "string[]",
+      "description": "Demo only: the simulated replies played when demo is on and there is no onSend."
+    },
+    {
+      "key": "demoText",
+      "type": "string",
+      "description": "Demo only: the text the scripted demo types and sends."
+    },
+    {
+      "key": "height",
+      "type": "number | string",
+      "description": "Height (number = px; on phones a number becomes most of the screen), or any CSS length.",
+      "default": 600
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Fill everything left out with the sample thread, models, commands and files, type and send once, and simulate uploads and replies. Gallery only; leave off in real UI.",
+      "default": false
+    },
+    {
+      "key": "className",
+      "type": "string",
+      "description": "Added to the root."
+    },
+    {
+      "key": "style",
+      "type": "CSSProperties",
+      "description": "Merged into the root's style."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLTextAreaElement>",
+      "description": "The textarea, to focus it or read its selection."
+    }
+  ],
+  "example": "const { messages, status, sendMessage, stop, reload } = useChat();\nconst [text, setText] = useState(\"\");\n\n<ChatComposer\n  product=\"Helper\"\n  messages={messages.map((m) => ({ id: m.id, role: m.role, text: m.content }))}\n  status={status}\n  value={text}\n  onChange={setText}\n  onSend={({ text, attachments }) => sendMessage({ text, files: attachments.map((a) => a.file) })}\n  onStop={stop}\n  onRetry={reload}\n  accept={[\"pdf\", \"png\"]}\n  maxSizeMB={10}\n  onReject={(file, err) => toast(err.message)}\n  height={560}\n/>"
+}

@@ -1,0 +1,318 @@
+{
+  "name": "Accordion / FAQ",
+  "slug": "accordion",
+  "export": "Accordion",
+  "order": 93,
+  "kind": "components",
+  "category": "display",
+  "subcategory": "containers",
+  "platform": "web",
+  "level": "composite",
+  "tier": "free",
+  "hint": "Open a question, then type \"hotspot\" or \"refund\" in the search: answers filter, highlight and open themselves.",
+  "description": "A searchable FAQ accordion that takes your own questions (the sample content, behind `demo`, is the help centre of Tern, a travel eSIM app: 13 questions in four topics, with numbered steps, a data-use table and a heads-up note). Each answer measures its content and springs its height open, the content rising in just after the height starts, while the questions below glide down; the plus retracts its arm into a minus (a path morph). In single mode the clicked question stays under the pointer while the one above closes, by compensating scroll every frame. Live search filters with FLIP, highlights matched words in questions and answers, opens answers that matched only in their body, and notes matches on hidden synonyms; the empty state suggests popular searches, points to matches in other topics and offers a support chat. Topic chips with rolling counts and a sliding indicator filter with motion (a scroll-snap rail on phones, a vertical list in the two-column layout). Every answer has a deep link (#faq-id), a copy-link button and a Was this helpful? control whose picked pill morphs into a thank-you. WAI-ARIA accordion: buttons in headings, aria-expanded, aria-controls, labelled regions, Up/Down/Home/End between questions, Down from search, / to search, Esc to clear. Plain, cards and two-column layouts; Expand all / Collapse all cascades in multiple mode.",
+  "intents": [
+    "faq accordion with search",
+    "help centre questions and answers",
+    "expandable sections that open one at a time",
+    "collapsible faq with categories",
+    "support page frequently asked questions"
+  ],
+  "tags": [
+    "accordion",
+    "faq",
+    "collapse",
+    "collapsible",
+    "expand",
+    "disclosure",
+    "help centre",
+    "help center",
+    "support",
+    "questions",
+    "search",
+    "highlight",
+    "deep link",
+    "feedback",
+    "categories"
+  ],
+  "usage": "Pass your questions in `items` ({ id?, q or title, a or content, disabled? }, with the answer as plain text, blocks or a React node). With no props it renders an empty list: no header, chips or help card unless you pass them (or set `demo`). Own which answers are open with `value` (an array of ids) + `onChange(ids)`, or seed them with `defaultValue`; `mode` is single or multiple. Set `headingLevel` to fit your page's outline (questions are h4 by default). For a plain accordion turn off `showSearch` and `showCount`. If you want topic chips, pass `categories` plus a `cat` on each item. Set `eyebrow`, `title`, `subtitle` and `status`, and `help` + `onContact` for the \"Still stuck?\" card. Use for a help centre, pricing-page FAQ or any long list of questions where readers scan headings and open one or two answers. Keep single mode when answers are long, so only one is open at a time; use multiple with Expand all for checklists or policies people read in full. Turn search on beyond about eight questions and categories beyond about ten. Use the cards layout on a tinted page, plain inside an existing card, and columns on wide help-centre pages. Mark a question that can't be opened yet with disabled: true (or a short reason string, shown under it) on its item: it stays listed but is aria-disabled, skipped by Tab and the arrow keys, and never opens by click, keyboard, deep link or search; `disabled` on the component does this for every question.",
+  "states": [
+    "default",
+    "open",
+    "empty",
+    "disabled"
+  ],
+  "keyboard": [
+    {
+      "keys": "Tab",
+      "does": "Moves through the search field, the selected topic chip, then each question and the links and buttons of any open answer; a closed answer is skipped."
+    },
+    {
+      "keys": "Enter / Space",
+      "does": "Opens or closes the focused question; in single mode opening one closes the others."
+    },
+    {
+      "keys": "ArrowDown / ArrowUp",
+      "does": "Moves to the next or previous question, skipping disabled ones; ArrowUp on the first question goes back to the search field."
+    },
+    {
+      "keys": "Home / End",
+      "does": "Moves to the first or last question."
+    },
+    {
+      "keys": "ArrowDown",
+      "does": "Moves from the search field to the first question.",
+      "when": "in the search field"
+    },
+    {
+      "keys": "Escape",
+      "does": "Clears the search.",
+      "when": "in the search field with text"
+    },
+    {
+      "keys": "/",
+      "does": "Moves focus to the search field.",
+      "when": "focus is in the accordion, outside a text field"
+    },
+    {
+      "keys": "ArrowLeft / ArrowRight",
+      "does": "Moves to the previous or next topic chip and filters by it, wrapping at the ends.",
+      "when": "on a topic chip"
+    },
+    {
+      "keys": "Home / End",
+      "does": "Selects the first or last topic chip.",
+      "when": "on a topic chip"
+    },
+    {
+      "keys": "Enter / Space",
+      "does": "Opens every question, or closes them all once all are open.",
+      "when": "on Expand all, in multiple mode"
+    }
+  ],
+  "screenReader": "A section named by `ariaLabel` (else the eyebrow or title); each question is a button inside a heading at `headingLevel` that says whether it is expanded, and its answer is a region named by the question. Topics are a tablist named Topics, a disabled question is announced as unavailable, with its reason in its name, and a polite live region reads the result count after typing pauses, feedback thanks, copy-link and chat updates.",
+  "dataProps": [
+    {
+      "key": "items",
+      "type": "Array<{ q?: string | node; question?: string | node; title?: string | node; a?: string | node | Array<{ p: string } | { ul: Array<string> } | { ol: Array<string> } | { note: string; label?: string } | { table: { head?: Array<string>; rows: Array<Array<string | number | { v: string | number; s?: string | number }>>; num?: Array<number> } } | { node: node } | node>; answer?: string | node | Array<{ p: string } | { ul: Array<string> } | { ol: Array<string> } | { note: string; label?: string } | { table: { head?: Array<string>; rows: Array<Array<string | number | { v: string | number; s?: string | number }>>; num?: Array<number> } } | { node: node } | node>; content?: string | node | Array<{ p: string } | { ul: Array<string> } | { ol: Array<string> } | { note: string; label?: string } | { table: { head?: Array<string>; rows: Array<Array<string | number | { v: string | number; s?: string | number }>>; num?: Array<number> } } | { node: node } | node>; id?: string | number; cat?: string; kw?: string; disabled?: boolean | string }>",
+      "description": "Your questions: [{ q, a, id?, cat?, kw?, disabled? }] (title / content work as aliases for q / a). `a` is a string, a React node, or blocks: { p: text }, { ul: [text] }, { ol: [text] }, { note: text, label? }, { table: { head: [..], rows: [[..]], num?: [column indexes to right-align] } } where a cell is text, a number or { v, s } (value with a small line). Text takes **bold** and [label](href). A node answer or title is shown as is and is not searched (put search words in `kw`). `kw` holds hidden search words; `disabled` is true or a reason string. Empty by default.",
+      "default": []
+    },
+    {
+      "key": "value",
+      "type": "string | Array<string>",
+      "description": "Controlled: ids of the open answers (a single id string works too). Pass with onChange. Answers that search opens on its own are not part of it."
+    },
+    {
+      "key": "defaultValue",
+      "type": "string | Array<string>",
+      "description": "Uncontrolled: ids open on first render."
+    },
+    {
+      "key": "onChange",
+      "type": "(openIds: Array<string>) => void",
+      "description": "(openIds: string[]) => void whenever the user opens or closes answers (click, keyboard, Expand all, deep link)."
+    },
+    {
+      "key": "categories",
+      "type": "Array<{ id: string; name: string }>",
+      "description": "Topics for the chips and group headings: [{ id, name }], matched by each item's `cat`. [] gives one flat list with no chips.",
+      "default": []
+    },
+    {
+      "key": "eyebrow",
+      "type": "string",
+      "description": "Small line above the title. Empty by default.",
+      "default": ""
+    },
+    {
+      "key": "title",
+      "type": "string",
+      "description": "Heading. Empty by default.",
+      "default": ""
+    },
+    {
+      "key": "subtitle",
+      "type": "string",
+      "description": "Paragraph under the heading. Empty by default.",
+      "default": ""
+    },
+    {
+      "key": "status",
+      "type": "{ label: node; detail?: node } | string | null",
+      "description": "The pill beside the heading: { label, detail? } or a string. None by default.",
+      "default": null
+    },
+    {
+      "key": "suggestions",
+      "type": "Array<string>",
+      "description": "Search terms offered when nothing matches (the first also seeds the placeholder). None by default.",
+      "default": []
+    },
+    {
+      "key": "emptyHint",
+      "type": "string",
+      "description": "Line above the suggestions in the empty state.",
+      "default": "Try fewer or simpler words, or one of these:"
+    },
+    {
+      "key": "help",
+      "type": "{ title: node; text?: node; cta?: node; href?: string } | null",
+      "description": "The \"Still stuck?\" card: { title, text, cta, href? }. With an href the button is a link; otherwise it calls onContact. None by default.",
+      "default": null
+    },
+    {
+      "key": "onContact",
+      "type": "(event?: MouseEvent) => void",
+      "description": "() => void when someone asks for a person (help button, or \"Ask a person\" after a No)."
+    },
+    {
+      "key": "showFeedback",
+      "type": "boolean",
+      "description": "\"Was this helpful?\" under each answer.",
+      "default": true
+    },
+    {
+      "key": "onFeedback",
+      "type": "(itemId: string, value: \"yes\" | \"no\") => void",
+      "description": "(itemId, \"yes\" | \"no\") => void."
+    },
+    {
+      "key": "showCopyLink",
+      "type": "boolean",
+      "description": "Copy-link button under each answer (deep link #faq-<id>).",
+      "default": true
+    },
+    {
+      "key": "defaultOpen",
+      "type": "string",
+      "description": "\"none\", a 1-based position, or an item id. defaultValue wins when both are set.",
+      "default": "none"
+    },
+    {
+      "key": "ariaLabel",
+      "type": "string",
+      "description": "Accessible name of the section. Defaults to the eyebrow or title."
+    },
+    {
+      "key": "headingLevel",
+      "type": "number",
+      "description": "Heading level (1–6) wrapping each question's button.",
+      "default": 4
+    },
+    {
+      "key": "titleLevel",
+      "type": "number",
+      "description": "Heading level of `title`; topic group headings are one below it.",
+      "default": 2
+    },
+    {
+      "key": "showCount",
+      "type": "boolean",
+      "description": "The \"12 answers\" line above the list. In multiple mode the Expand all button stays.",
+      "default": true
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Every question listed but aria-disabled, skipped by the keyboard and never opened.",
+      "default": false
+    },
+    {
+      "key": "layout",
+      "type": "\"plain\" | \"cards\" | \"columns\"",
+      "default": "plain",
+      "description": "How the questions are arranged: \"plain\" is one list inside a bordered card, \"cards\" gives every question its own card on the page background, and \"columns\" puts the topics in a side column next to the list on containers 820px and wider."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLElement>",
+      "description": "The root <section>."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-*, data-*) goes to the root <section>. className and style are merged with the component's own."
+    }
+  ],
+  "example": "const [open, setOpen] = useState([\"seats\"]);\n\n<Accordion\n  showSearch={false}\n  showCount={false}\n  headingLevel={3}\n  value={open}\n  onChange={setOpen}\n  items={[\n    { id: \"plans\", title: \"Can I change plans later?\", content: \"Yes. Switching is prorated to the day.\" },\n    { id: \"seats\", title: \"What counts as a seat?\", content: <p>Anyone who can <b>reply</b> to a conversation.</p> },\n    { id: \"sso\", title: \"Do you support SSO?\", content: \"On the Business plan.\", disabled: \"Coming in March\" },\n  ]}\n/>",
+  "controls": [
+    {
+      "group": "Behaviour",
+      "key": "mode",
+      "label": "Open",
+      "type": "select",
+      "options": [
+        "single",
+        "multiple"
+      ],
+      "default": "single"
+    },
+    {
+      "group": "Behaviour",
+      "key": "defaultOpen",
+      "label": "Open on load",
+      "type": "select",
+      "options": [
+        "none",
+        "1",
+        "2",
+        "4",
+        "7",
+        "11"
+      ],
+      "default": "none"
+    },
+    {
+      "group": "Layout",
+      "key": "layout",
+      "label": "Layout",
+      "type": "select",
+      "options": [
+        "plain",
+        "cards",
+        "columns"
+      ],
+      "default": "plain"
+    },
+    {
+      "group": "Layout",
+      "key": "showSearch",
+      "label": "Search",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Layout",
+      "key": "showCategories",
+      "label": "Topic chips",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Help centre": {
+      "layout": "columns",
+      "mode": "multiple"
+    },
+    "Cards": {
+      "layout": "cards",
+      "defaultOpen": "4"
+    },
+    "Pricing page FAQ": {
+      "showSearch": false,
+      "showCategories": false,
+      "defaultOpen": "1"
+    }
+  },
+  "demoProps": {
+    "demo": true
+  }
+}

@@ -1,0 +1,213 @@
+{
+  "name": "Beam Button",
+  "slug": "beam-button",
+  "export": "BeamButton",
+  "order": 19,
+  "kind": "components",
+  "category": "actions",
+  "subcategory": "effect-buttons",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "pro",
+  "hint": "Watch the beam run a lap and park. Hover to spin it, Tab to it for one lap.",
+  "description": "A landing-page CTA with a light travelling around its border and a soft glow. The beam runs a lap when the button first comes into view, then parks and stays lit; it spins while hovered, takes one lap on keyboard focus and coasts back to rest when you leave, so nothing moves on its own for 5 seconds or more. The trailing arrow nudges on hover. Reduced motion or disabled keeps the beam parked.",
+  "intents": [
+    "animated border cta",
+    "glowing border button",
+    "landing page hero button",
+    "light travelling around a button"
+  ],
+  "tags": [
+    "button",
+    "beam",
+    "border",
+    "glow",
+    "cta",
+    "landing",
+    "hero",
+    "animated border",
+    "gradient"
+  ],
+  "usage": "Use for the single most important action in a hero or pricing section. One per page; it stops being special if repeated. Pass the text as `label` or `children` and the handler as `onClick(event)`; blank shows the neutral \"Get started\". If the click starts async work, set `loading` until it ends: a spinner replaces the arrow and clicks are ignored. It is a real <button> (`type`, `disabled`, `form`, aria-* and data-* go to it) and the ref is that button. The intro run is capped below 5 seconds; set laps to 0 to keep the beam parked until hover.",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "active",
+    "loading",
+    "disabled"
+  ],
+  "controls": [
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Style",
+      "key": "size",
+      "label": "Size",
+      "type": "select",
+      "options": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    {
+      "group": "Style",
+      "key": "arrow",
+      "label": "Arrow",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Beam",
+      "key": "speed",
+      "label": "Lap time",
+      "type": "range",
+      "min": 0.8,
+      "max": 8,
+      "step": 0.1,
+      "unit": "s",
+      "default": 3.2
+    },
+    {
+      "group": "Beam",
+      "key": "laps",
+      "label": "Laps on arrival",
+      "type": "range",
+      "min": 0,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "group": "Beam",
+      "key": "beamWidth",
+      "label": "Beam length",
+      "type": "range",
+      "min": 20,
+      "max": 200,
+      "step": 1,
+      "unit": "°",
+      "default": 80
+    },
+    {
+      "group": "Beam",
+      "key": "thickness",
+      "label": "Rim thickness",
+      "type": "range",
+      "min": 1,
+      "max": 4,
+      "step": 0.5,
+      "unit": "px",
+      "default": 1.5
+    },
+    {
+      "group": "Beam",
+      "key": "glow",
+      "label": "Glow",
+      "type": "range",
+      "min": 0,
+      "max": 1,
+      "step": 0.01,
+      "default": 0.5
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "loading",
+      "label": "Loading",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Fast": {
+      "speed": 1.4,
+      "beamWidth": 50
+    },
+    "Thick": {
+      "thickness": 3,
+      "glow": 0.8
+    },
+    "Quiet": {
+      "glow": 0,
+      "arrow": false,
+      "speed": 6,
+      "laps": 0
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "label",
+      "type": "string",
+      "description": "Button text. Blank shows the neutral \"Get started\" (the sample \"Start building\" with `demo`). `children` wins over it.",
+      "default": ""
+    },
+    {
+      "key": "children",
+      "type": "node",
+      "description": "Button content as a node, instead of `label`. It sits inline like text; wrap an icon and text in your own inline-flex span to space them."
+    },
+    {
+      "key": "onClick",
+      "type": "function",
+      "description": "(event) => void when pressed. Not called while `loading` or `disabled`."
+    },
+    {
+      "key": "type",
+      "type": "\"button\" | \"submit\" | \"reset\"",
+      "description": "The native button type. Use \"submit\" inside a <form>.",
+      "default": "button"
+    },
+    {
+      "key": "loading",
+      "type": "boolean",
+      "description": "You own it: set it while the action's async work runs. The arrow becomes a spinner (a spinner after the text when `arrow` is off), aria-busy is set and clicks are ignored; the width does not change.",
+      "default": false
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Native disabled: not focusable or clickable, dimmed, and the beam stays parked.",
+      "default": false
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Shows the sample label \"Start building\" when `label` is blank. For the gallery; off by default.",
+      "default": false
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Other attributes (id, name, value, form, aria-*, data-*, event handlers) go to the <button>; className and style go to the wrapper span."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLButtonElement>",
+      "description": "The <button>: focus it or measure it."
+    }
+  ]
+}

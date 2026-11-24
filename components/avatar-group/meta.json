@@ -1,0 +1,278 @@
+{
+  "name": "Avatar Group",
+  "slug": "avatar-group",
+  "export": "AvatarGroup",
+  "order": 89,
+  "kind": "components",
+  "category": "display",
+  "subcategory": "people",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "hint": "Hover the faces: the stack fans out and the nearest one lifts. Click +7 for everyone, click a face to follow.",
+  "description": "An overlapping avatar stack of your people with a \"+N\" overflow chip. Hover or keyboard focus fans the stack apart on a spring, the face under the pointer lifts, and a name tooltip appears; the chip's tooltip and accessible name list everyone it hides. Photos fall back to initials when missing or broken, each person keeps an identity colour, and an optional presence dot is always backed by text. One person (or max 1) renders a single avatar. `demo` shows it in the header of a shared launch brief with live presence, follow mode and a searchable people list.",
+  "intents": [
+    "avatar stack with +N overflow",
+    "show who is viewing this document",
+    "collaborators presence in a header",
+    "multiplayer avatars with follow mode",
+    "facepile with online status"
+  ],
+  "tags": [
+    "avatar group",
+    "avatar stack",
+    "facepile",
+    "avatars",
+    "overflow",
+    "presence",
+    "collaborators",
+    "multiplayer",
+    "online status",
+    "follow",
+    "people list",
+    "tooltip",
+    "spring"
+  ],
+  "usage": "Pass `people` as an array of { id, name, src, initials, color, presence, href or onClick }. Keep `max` at 3–6 so the stack reads at a glance; the rest go into the \"+N\" chip, whose label names them, and `onOverflowClick(hiddenPeople)` lets you open your own full list. `onSelect(person, index)` makes every face a button; a person's `href` makes it a link. For a single avatar pass one person (or max={1}). Use in a document, project or channel header to show who is here, next to Share. For a full member directory, use a table.",
+  "states": [
+    "default",
+    "hover",
+    "open"
+  ],
+  "keyboard": [
+    {
+      "keys": "Tab",
+      "does": "Moves through each face that is a link or button, then the \"+N\" chip, one stop each; the focused face shows its name tooltip.",
+      "when": "with `people`"
+    },
+    {
+      "keys": "Enter",
+      "does": "Opens a face's link, or calls `onSelect` for a face button.",
+      "when": "with `people`"
+    },
+    {
+      "keys": "Tab",
+      "does": "Moves focus into the stack once, onto the last face that had focus (the first face at the start), and fans the stack out; Tab again leaves the stack.",
+      "when": "the `demo` header"
+    },
+    {
+      "keys": "ArrowLeft / ArrowRight / ArrowUp / ArrowDown",
+      "does": "Moves focus to the previous or next face or the \"+N\" chip, and the tooltip follows it.",
+      "when": "focus is in the stack"
+    },
+    {
+      "keys": "Home / End",
+      "does": "Moves focus to the first face or to the \"+N\" chip.",
+      "when": "focus is in the stack"
+    },
+    {
+      "keys": "Enter / Space",
+      "does": "On a face, follows that person or stops following; on the chip, opens the people list with focus in its search field.",
+      "when": "focus is in the stack"
+    },
+    {
+      "keys": "Escape",
+      "does": "Stops following the person you follow.",
+      "when": "following someone, focus in the stack"
+    },
+    {
+      "keys": "Character",
+      "does": "Filters the people list by name or role.",
+      "when": "the people list is open"
+    },
+    {
+      "keys": "ArrowDown / ArrowUp",
+      "does": "Moves the highlight to the next or previous person who is here; offline people are skipped.",
+      "when": "the people list is open"
+    },
+    {
+      "keys": "Enter",
+      "does": "Follows the highlighted person (or the only match) and closes the list, returning focus to the chip.",
+      "when": "the people list is open"
+    },
+    {
+      "keys": "Escape",
+      "does": "Closes the people list and returns focus to the chip.",
+      "when": "the people list is open"
+    },
+    {
+      "keys": "Tab",
+      "does": "Cycles between the close button and the search field without leaving the sheet.",
+      "when": "the people list is open as a sheet on a phone"
+    }
+  ],
+  "screenReader": "With `people`, a group named by `label` (default: the names shown and the overflow count); each face is a button, link or image named by the person's `alt` or name plus presence in words, and the \"+N\" chip is named by the people it hides. The `demo` header is a toolbar whose faces say name, role, presence and what the person is doing, with follow as a pressed state; on touch the stack is a single button that opens the people list. The people list is a dialog with a search combobox over a listbox, a polite count of matches, and a polite live region for joins, leaves and follow changes.",
+  "controls": [
+    {
+      "group": "Layout",
+      "key": "size",
+      "label": "Size",
+      "type": "select",
+      "options": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    {
+      "group": "Layout",
+      "key": "max",
+      "label": "Max visible",
+      "type": "range",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "group": "Layout",
+      "key": "overlap",
+      "label": "Overlap %",
+      "type": "range",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "default": 30
+    },
+    {
+      "group": "Layout",
+      "key": "stackOrder",
+      "label": "Stack order",
+      "type": "select",
+      "options": [
+        "first-on-top",
+        "last-on-top"
+      ],
+      "default": "first-on-top"
+    },
+    {
+      "group": "Demo",
+      "key": "live",
+      "label": "Live presence",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Demo",
+      "key": "interval",
+      "label": "Live interval (ms)",
+      "type": "range",
+      "min": 1500,
+      "max": 6000,
+      "step": 500,
+      "default": 3000
+    },
+    {
+      "group": "Look",
+      "key": "showPresence",
+      "label": "Presence dots",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Motion",
+      "key": "lift",
+      "label": "Magnet lift (px)",
+      "type": "range",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "default": 10
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Compact toolbar": {
+      "size": "sm",
+      "max": 4,
+      "overlap": 35
+    },
+    "Roomy header": {
+      "size": "lg",
+      "max": 6,
+      "overlap": 20
+    },
+    "Right on top": {
+      "stackOrder": "last-on-top",
+      "overlap": 40
+    },
+    "Static roster": {
+      "live": false,
+      "showPresence": false,
+      "lift": 0
+    }
+  },
+  "dataProps": [
+    {
+      "key": "people",
+      "type": "Array<{ id?: string; name: string; src?: string; initials?: string; color?: string; presence?: \"active\" | \"idle\" | \"offline\"; description?: string; alt?: string; href?: string; target?: string; onClick?: (event: MouseEvent, person: { id?: string; name: string; src?: string; initials?: string; color?: string; presence?: \"active\" | \"idle\" | \"offline\"; description?: string; alt?: string; href?: string; target?: string; key: string }) => void }>",
+      "description": "Who to show, in order. name is required (it is the accessible name and the tooltip); src falls back to initials (given or taken from the name) when missing or broken; color is the identity colour behind initials; description is a second tooltip line."
+    },
+    {
+      "key": "max",
+      "type": "number",
+      "description": "How many faces show before the rest collapse into \"+N\". 1 shows a single avatar.",
+      "default": 5
+    },
+    {
+      "key": "size",
+      "type": "\"sm\" | \"md\" | \"lg\" | number",
+      "description": "Avatar diameter: sm 28, md 36, lg 44, or px.",
+      "default": "md"
+    },
+    {
+      "key": "onSelect",
+      "type": "(person: { id?: string; name: string; src?: string; initials?: string; color?: string; presence?: \"active\" | \"idle\" | \"offline\"; description?: string; alt?: string; href?: string; target?: string; key: string }, index: number, event: MouseEvent) => void",
+      "description": "Called when a face is clicked or activated, with the person you passed (plus the `key` the stack gave it), its index and the click event; makes every face a button."
+    },
+    {
+      "key": "onOverflowClick",
+      "type": "(hiddenPeople: Array<{ id?: string; name: string; src?: string; initials?: string; color?: string; presence?: \"active\" | \"idle\" | \"offline\"; description?: string; alt?: string; href?: string; target?: string; key: string }>, event: MouseEvent) => void",
+      "description": "Makes the \"+N\" chip a button and gets the people it hides (as passed, plus `key`) and the click event, so you can open your own list. Without it the chip is a focusable label that lists them in its tooltip."
+    },
+    {
+      "key": "label",
+      "type": "string",
+      "description": "Accessible name of the group. Defaults to the names shown and the overflow count (\"Ada, Lin and 3 more\")."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Faces and chip stop acting (links lose their href, buttons are disabled) and dim.",
+      "default": false
+    },
+    {
+      "key": "showPresence",
+      "type": "boolean",
+      "description": "Draw each person's presence dot (active, idle, offline); the word is added to their accessible name.",
+      "default": true
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Show the gallery's live collaboration header (sample team, presence script, follow mode, people list). Ignored when you pass people. Leave off in real UI; `live` and `interval` only apply to it.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLDivElement>",
+      "description": "The root element."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-*, data-*) goes to the root <div>. className and style are merged with the component's own."
+    }
+  ],
+  "example": "<AvatarGroup\n  max={4}\n  people={members.map((m) => ({ id: m.id, name: m.name, src: m.photoUrl, presence: m.online ? \"active\" : \"offline\", href: `/people/${m.id}` }))}\n  onOverflowClick={(hidden) => openMembers(hidden)}\n/>\n\n// a single avatar\n<AvatarGroup people={[{ name: user.name, src: user.photoUrl }]} size=\"lg\" />",
+  "demoProps": {
+    "demo": true
+  }
+}

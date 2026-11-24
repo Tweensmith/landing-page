@@ -1,0 +1,269 @@
+{
+  "name": "Result / Artifact Card",
+  "slug": "artifact-card",
+  "export": "ArtifactCard",
+  "order": 111,
+  "kind": "components",
+  "category": "ai",
+  "subcategory": "agent-work",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Open a card: its frame grows into the panel. Switch versions and watch only what changed move.",
+  "description": "The things an assistant makes for you (a document, code, a chart, a table) as objects with a life. In the thread each one is a compact card with a live miniature of its real content that fills in while the assistant writes. Opening it grows the card's own frame into a panel that docks beside the thread in wide layouts, covers a chat column, or rises as a draggable bottom sheet on phones; closing shrinks it back into the card. Revisions update the card in place with a version mark and change note, and the panel's version switcher morphs what changed: text crossfades by block, bars move, numbers roll.",
+  "intents": [
+    "show a document or code the AI generated in a side panel",
+    "artifact card in a chat thread that opens a canvas",
+    "AI result card with versions and a version history switcher",
+    "streaming generated content preview card",
+    "assistant output viewer with copy, download and run"
+  ],
+  "tags": [
+    "artifact",
+    "canvas",
+    "ai",
+    "chat",
+    "generated content",
+    "result card",
+    "versions",
+    "side panel",
+    "bottom sheet",
+    "streaming",
+    "document",
+    "code",
+    "chart",
+    "table"
+  ],
+  "usage": "Pass `artifacts` ([{ id, type: document|code|chart|table|yours, title, state, content, versions }]) or a single `artifact`; with no `thread` they show as cards in one assistant message, or pass a `thread` of messages ({ id, role: user|assistant, text, artifacts: [id], refs: [id] }) that place them. Drive it from a stream by updating the artifact: `state` follows the AI SDK (`input-available` → `input-streaming` → `output-available`, or `output-error` with `errorText`), `content` is whatever has arrived so far (blocks, code, points or rows; the renderers draw partial content), and each finished revision is appended to `versions` as { label, note, content }. Control the panel with `open` (an id, or null) / `defaultOpen` / `onOpenChange`, the shown version with `version` / `defaultVersion` / `onVersionChange`, and the presentation with `layout` (auto docks at 860px+, covers narrower containers, and uses a bottom sheet on phones). Add types through `renderers` ({ [type]: { label, glyph, panel, mini, count, text } }). Actions are yours: Download, Run, Stop and Retry appear only when you pass `onDownload`, `onRun`, `onStop` and `onRetry`, each called with the artifact; set `running` (an id) while your run works. Copy is built in and reports through `onCopy({ ok })`. `assistant` ({ name, title, workspace, mark }) adds the header. Nothing is fetched, run or downloaded by the component; the sample conversation sits behind `demo`.",
+  "states": [
+    "default",
+    "loading",
+    "open",
+    "error"
+  ],
+  "previewState": "open",
+  "controls": [
+    {
+      "group": "Content",
+      "key": "type",
+      "label": "Featured artifact",
+      "type": "select",
+      "options": [
+        "document",
+        "code",
+        "chart",
+        "table"
+      ],
+      "default": "document"
+    },
+    {
+      "group": "Layout",
+      "key": "layout",
+      "label": "Panel layout",
+      "type": "select",
+      "options": [
+        "auto",
+        "dock",
+        "cover",
+        "sheet"
+      ],
+      "default": "auto"
+    },
+    {
+      "group": "Display",
+      "key": "showVersions",
+      "label": "Version switcher",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Display",
+      "key": "showMiniature",
+      "label": "Live miniature",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Behaviour",
+      "key": "defaultOpen",
+      "label": "Open on mount",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Chart in a chat column": {
+      "type": "chart",
+      "layout": "cover"
+    },
+    "Code on a phone sheet": {
+      "type": "code",
+      "layout": "sheet"
+    },
+    "Table, docked": {
+      "type": "table",
+      "layout": "dock",
+      "defaultOpen": true
+    },
+    "Compact cards": {
+      "showMiniature": false
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "artifacts",
+      "type": "Artifact[]",
+      "description": "The artifacts: [{ id, type, title, state?, content?, versions?: [{ label?, note?, request?, reply?, content }], errorText?, stopped? }]. state is input-available | input-streaming | output-available (default) | output-error.",
+      "default": []
+    },
+    {
+      "key": "artifact",
+      "type": "Artifact",
+      "description": "A single artifact instead of `artifacts`."
+    },
+    {
+      "key": "thread",
+      "type": "Message[]",
+      "description": "Messages that place the cards: [{ id, role: \"user\" | \"assistant\", text, artifacts?: [id], refs?: [id] }]. Left out, one assistant message holds every artifact as a card."
+    },
+    {
+      "key": "assistant",
+      "type": "{ name?, title?, workspace?, mark? }",
+      "description": "Header and screen-reader name of the assistant. Left out, there is no header and the assistant is called labels.assistant. mark is a ReactNode (null hides it)."
+    },
+    {
+      "key": "type",
+      "type": "string",
+      "description": "Which artifact is featured: `open={true}` and `defaultOpen={true}` open it, and the demo script plays it.",
+      "default": "document"
+    },
+    {
+      "key": "open",
+      "type": "string | null | true",
+      "description": "Controlled open artifact id (null closes, true opens the featured one). Pass it with onOpenChange."
+    },
+    {
+      "key": "defaultOpen",
+      "type": "boolean | string",
+      "description": "Initial open state when uncontrolled: true opens the featured artifact, a string opens that id.",
+      "default": false
+    },
+    {
+      "key": "onOpenChange",
+      "type": "function",
+      "description": "(id: string | null) => void, when a card, a reference, close, Escape or a drag down wants to open or close the panel."
+    },
+    {
+      "key": "version",
+      "type": "number | \"latest\"",
+      "description": "Controlled version index (0-based) shown for the open artifact. Pass it with onVersionChange."
+    },
+    {
+      "key": "defaultVersion",
+      "type": "number | \"latest\" | { [id]: number }",
+      "description": "Initial version when uncontrolled, for every artifact or per id. Left out, each shows its newest."
+    },
+    {
+      "key": "onVersionChange",
+      "type": "function",
+      "description": "(index: number, id: string) => void, when the version switcher changes."
+    },
+    {
+      "key": "renderers",
+      "type": "object",
+      "description": "Extra or replacement types: { [type]: { label, glyph, panel(props), mini(props), count(content), text(content), partial?, action?: \"run\" | \"table\" | \"fullscreen\", ext? } }."
+    },
+    {
+      "key": "onCopy",
+      "type": "function",
+      "description": "({ artifact, content, text, ok, error }) => void, after the built-in copy to the clipboard succeeds (ok true) or fails (ok false)."
+    },
+    {
+      "key": "onDownload",
+      "type": "function",
+      "description": "({ artifact, content, text }) => void. The Download button shows only when you pass it; the component never saves a file itself."
+    },
+    {
+      "key": "onRun",
+      "type": "function",
+      "description": "({ artifact, content }) => void, for the Run button on code (shown only when you pass it). Put the output lines in content.run to show them under the code."
+    },
+    {
+      "key": "running",
+      "type": "string | boolean",
+      "description": "The id of the artifact your run is working on (or true for all): its Run button shows busy and will not fire again until you clear it."
+    },
+    {
+      "key": "onStop",
+      "type": "function",
+      "description": "(artifact) => void, for Stop while an artifact streams. The Stop button shows only when you pass it."
+    },
+    {
+      "key": "onRetry",
+      "type": "function",
+      "description": "(artifact) => void, for Retry on a failed artifact. The Retry button shows only when you pass it."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Cards, references and panel actions are inert and announced as disabled.",
+      "default": false
+    },
+    {
+      "key": "labels",
+      "type": "object",
+      "description": "Replaces any word the component shows: open, viewing, writing, soFar, starting, stopped, failed, at, firstDraft, revising, unchanged, stop, stopWriting, retry, close, copy, copied, copyFailed, download, run, ran, table, chart, fullScreen, exitFullScreen, version, pending, failedText, kept, runOutput, jump, messages, assistant, empty (shown when there is nothing; default blank)."
+    },
+    {
+      "key": "height",
+      "type": "number | string",
+      "description": "Height of the component (number = px, or any CSS length).",
+      "default": 620
+    },
+    {
+      "key": "layout",
+      "type": "\"auto\" | \"dock\" | \"cover\" | \"sheet\"",
+      "description": "Where the panel opens.",
+      "default": "auto"
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Fill everything left out with the sample conversation and play its scripted revision. Gallery only; leave off in real UI.",
+      "default": false
+    },
+    {
+      "key": "className",
+      "type": "string",
+      "description": "Added to the root."
+    },
+    {
+      "key": "style",
+      "type": "CSSProperties",
+      "description": "Merged into the root's style."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLDivElement>",
+      "description": "The root element, for measuring or scrolling to it."
+    }
+  ],
+  "example": "const [open, setOpen] = useState(null);\n\n<ArtifactCard\n  assistant={{ name: \"Helper\", title: \"Q3 planning\" }}\n  artifacts={[{ id: \"notes\", type: \"document\", title: \"Meeting notes\", state: status, content: { blocks } }]}\n  open={open}\n  onOpenChange={setOpen}\n  onStop={(a) => stopStream(a.id)}\n  onRetry={(a) => regenerate(a.id)}\n  onDownload={({ artifact, text }) => saveFile(artifact.title + \".md\", text)}\n  height={560}\n/>"
+}

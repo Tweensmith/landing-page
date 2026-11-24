@@ -1,0 +1,332 @@
+{
+  "name": "Donut Chart",
+  "slug": "donut-chart",
+  "export": "DonutChart",
+  "order": 83,
+  "kind": "components",
+  "category": "display",
+  "subcategory": "charts",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Click a segment: it sweeps round the whole ring and splits into its sub-categories. Hover to roll the centre.",
+  "description": "A part-to-whole donut you can open up: your slices, your formats. Hovering, focusing or selecting a slice lifts it and rolls the centre from the total to that slice's amount and share. A slice with parts drills down: the arc sweeps round to take the whole ring, then splits into its parts in shades of its own colour, and the breadcrumb folds it back into its slot. Anything past `maxSlices` folds into a neutral Other that opens too. A ranked legend re-orders itself when values change, 2px surface gaps, softened corners, arrow-key navigation, a table view and a stacked layout (legend under the ring) under 540px. The sample content (`demo`) is a personal-finance app's monthly spending with a month switcher.",
+  "intents": [
+    "monthly spending breakdown by category",
+    "donut chart with drill down into subcategories",
+    "budget categories pie chart",
+    "cloud cost breakdown by service",
+    "part to whole chart with legend and total"
+  ],
+  "tags": [
+    "donut",
+    "pie chart",
+    "drill down",
+    "spending",
+    "budget",
+    "breakdown",
+    "categories",
+    "part to whole",
+    "cost by service",
+    "chart",
+    "finance"
+  ],
+  "usage": "Use for a part-to-whole split of one total into at most seven named parts (the rest folds into Other). Pass `data` as [{ id, label, value, children? }] (or name your own fields with `idKey`, `labelKey`, `valueKey`, `childrenKey`) and format amounts with `formatValue`. Own the selected slice with `selected` + `onSelectedChange(id)`; `onSegmentClick(datum)` fires on every slice or legend-row click and on Enter. Put your own text in the hole with `centerLabel` (a node, or ({ total, item, selected }) => node). Own the data states with `loading`, `error` + `onRetry` and `emptyMessage`. Values below zero count as zero. When readers need to compare parts precisely or across periods, use Bar Chart. The sample's month switcher is the kit's shared `Segmented` control from components/_shared/chart.jsx, which has no slug of its own.",
+  "states": [
+    "default",
+    "hover",
+    "selected",
+    "loading",
+    "empty",
+    "error"
+  ],
+  "controls": [
+    {
+      "group": "Data",
+      "key": "maxCategories",
+      "label": "Slices before Other",
+      "type": "range",
+      "min": 3,
+      "max": 7,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "group": "Data",
+      "key": "dataset",
+      "label": "Sample dataset",
+      "type": "select",
+      "options": [
+        "personal",
+        "cloud"
+      ],
+      "default": "personal"
+    },
+    {
+      "group": "Data",
+      "key": "month",
+      "label": "Sample month",
+      "type": "select",
+      "options": [
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct"
+      ],
+      "default": "Oct"
+    },
+    {
+      "group": "Ring",
+      "key": "size",
+      "label": "Ring size",
+      "type": "select",
+      "options": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    {
+      "group": "Ring",
+      "key": "thickness",
+      "label": "Thickness",
+      "type": "range",
+      "min": 16,
+      "max": 44,
+      "step": 2,
+      "default": 30
+    },
+    {
+      "group": "Ring",
+      "key": "cornerRadius",
+      "label": "Corner radius",
+      "type": "range",
+      "min": 0,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "group": "Layout",
+      "key": "layout",
+      "label": "Layout",
+      "type": "select",
+      "options": [
+        "side",
+        "stacked"
+      ],
+      "default": "side"
+    },
+    {
+      "group": "Layout",
+      "key": "showStory",
+      "label": "Story line (sample)",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "State",
+      "key": "loading",
+      "label": "Loading",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Lisbon in August": {
+      "demo": true,
+      "month": "Aug"
+    },
+    "Cloud bill": {
+      "demo": true,
+      "dataset": "cloud",
+      "month": "Oct"
+    },
+    "Stacked": {
+      "demo": true,
+      "layout": "stacked",
+      "size": "sm"
+    },
+    "Thin ring, three categories": {
+      "demo": true,
+      "thickness": 18,
+      "cornerRadius": 2,
+      "maxCategories": 3
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "data",
+      "type": "array",
+      "description": "Slices as plain objects: [{ id, label, value, tone, children }]. `children` (same shape) makes a slice open into its parts; its value defaults to the children's sum. `tone` is a series slot 0–7 or a --ts-* token name."
+    },
+    {
+      "key": "idKey",
+      "type": "string",
+      "description": "Field holding a slice's stable id (falls back to the label).",
+      "default": "id"
+    },
+    {
+      "key": "labelKey",
+      "type": "string",
+      "description": "Field holding a slice's name.",
+      "default": "label"
+    },
+    {
+      "key": "valueKey",
+      "type": "string",
+      "description": "Field holding a slice's amount.",
+      "default": "value"
+    },
+    {
+      "key": "childrenKey",
+      "type": "string",
+      "description": "Field holding a slice's parts.",
+      "default": "children"
+    },
+    {
+      "key": "maxSlices",
+      "type": "number",
+      "description": "Largest slices kept (1–7); the rest fold into Other. Same as maxCategories, which it overrides."
+    },
+    {
+      "key": "selected",
+      "type": "string | null",
+      "description": "Controlled selected slice id (lifted, outlined, shown in the centre). Pass with onSelectedChange."
+    },
+    {
+      "key": "defaultSelected",
+      "type": "string | null",
+      "description": "Uncontrolled starting selection.",
+      "default": "null"
+    },
+    {
+      "key": "onSelectedChange",
+      "type": "function",
+      "description": "(id | null, datum) => void when a slice without parts is clicked or Entered (again to clear)."
+    },
+    {
+      "key": "onSegmentClick",
+      "type": "function",
+      "description": "({ id, label, value, share, other, item, parts }, event) => void on every slice or legend-row click and Enter. `item` is your object; for Other, `parts` lists what it holds."
+    },
+    {
+      "key": "title",
+      "type": "node",
+      "description": "Card title (also the accessible name when a string)."
+    },
+    {
+      "key": "subtitle",
+      "type": "node",
+      "description": "Line under the title."
+    },
+    {
+      "key": "centerLabel",
+      "type": "node | function",
+      "description": "Replaces the text in the hole: a node, or ({ total, item, selected, drilled }) => node, where item is the hovered / focused / selected slice."
+    },
+    {
+      "key": "totalLabel",
+      "type": "string",
+      "description": "Word for the whole, in the centre and in \"x% of total\".",
+      "default": "Total"
+    },
+    {
+      "key": "otherLabel",
+      "type": "string",
+      "description": "Name of the folded slice.",
+      "default": "Other"
+    },
+    {
+      "key": "categoryLabel",
+      "type": "string",
+      "description": "Header of the name column in the table view.",
+      "default": "Category"
+    },
+    {
+      "key": "formatValue",
+      "type": "function",
+      "description": "(value) => string for amounts in the centre, legend, labels and table. Default: Intl number, no unit."
+    },
+    {
+      "key": "summary",
+      "type": "string",
+      "description": "One-line text alternative for screen readers. Default: the total, the slice count and the three largest shares."
+    },
+    {
+      "key": "loading",
+      "type": "boolean",
+      "description": "You are fetching: a spinning placeholder arc and skeleton legend rows, aria-busy.",
+      "default": false
+    },
+    {
+      "key": "error",
+      "type": "string | node",
+      "description": "Shown beside an empty ring, with Try again when onRetry is given."
+    },
+    {
+      "key": "onRetry",
+      "type": "function",
+      "description": "() => void from the error form's button."
+    },
+    {
+      "key": "emptyMessage",
+      "type": "string | node",
+      "description": "Shown beside an empty ring when every value is zero or there is no data.",
+      "default": "No data to show"
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "The whole card inert: not focusable, dimmed, aria-disabled.",
+      "default": false
+    },
+    {
+      "key": "ariaLabel",
+      "type": "string",
+      "description": "Accessible name when there is no string title (the aria-label attribute works too)."
+    },
+    {
+      "key": "size",
+      "type": "\"sm\" | \"md\" | \"lg\" | number",
+      "description": "Diameter of the ring: sm 220px (a narrow dashboard card), md 248px, lg 300px (the page's lead chart). In the stacked layout it still shrinks to fit a narrow card. A number sets the diameter in px exactly.",
+      "default": "md"
+    },
+    {
+      "key": "layout",
+      "type": "\"side\" | \"stacked\"",
+      "description": "How the ring and the legend are arranged: \"side\" puts the legend beside the ring, \"stacked\" puts it under the ring in a narrower card (440px) and shrinks the ring to fit. Below 540px of width the chart stacks on its own whatever this says.",
+      "default": "side"
+    },
+    {
+      "key": "ref",
+      "type": "ref",
+      "description": "The root element around the card."
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Show the sample: monthly spending (or a cloud bill) with sub-categories, a month switcher and a story line. Your own props win over it.",
+      "default": false
+    }
+  ],
+  "example": "const [sel, setSel] = useState(null);\n\n<DonutChart\n  data={[{ id: \"rent\", label: \"Rent\", value: 1450 }, { id: \"food\", label: \"Food\", value: 610, children: [{ label: \"Groceries\", value: 420 }, { label: \"Eating out\", value: 190 }] }]}\n  title=\"Spending\"\n  formatValue={(v) => new Intl.NumberFormat(\"en-US\", { style: \"currency\", currency: \"GBP\" }).format(v)}\n  selected={sel}\n  onSelectedChange={setSel}\n  maxSlices={5}\n/>"
+}

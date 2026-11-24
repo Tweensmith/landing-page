@@ -1,0 +1,262 @@
+{
+  "name": "CTA Band",
+  "slug": "cta-band",
+  "export": "CtaBand",
+  "order": 104,
+  "kind": "bands",
+  "category": "closers",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Press Run it here: the band deploys a preview and hands you the URL. Switch Kind to form (type an email) or field (move toward the button).",
+  "description": "The closing call to action before the footer. Instead of a gradient box with two buttons, the CTA can do a small piece of the product in place. Terminal shows your copyable command and a Run it here button that replays your run: the steps tick off one by one (with a live progress bar on a build step) against a time budget line, then your preview URL arrives as a link card with a QR-like mark generated from the URL, and the primary button spins, draws a check and becomes your claim label. It can be skipped to the end and run again. Form is an email capture with real validation: it can assemble the team's address as you type, explains exactly what is wrong with an invalid address, shows a submitting state on the library button while your onSubmit runs, and on success morphs into your confirmation. Field is a calm headline-led band where a canvas field of short lines leans and drifts toward the primary button as the pointer approaches it, follows keyboard focus, gathers by scroll position on touch, settles at rest and stops off-screen. Headline left and interaction right on wide and stage widths; stacked with a full-width, thumb-reachable button on phones. Sized by its container, not the window. With no content it renders nothing; `demo` shows a sample product (Harbor, preview environments for frontend teams).",
+  "intents": [
+    "closing call to action section before the footer",
+    "cta band where visitors try the product inline before signing up",
+    "email capture signup band with validation and a success state",
+    "interactive terminal command demo with a copy button and a run replay",
+    "final conversion section for a landing page with a reassurance line"
+  ],
+  "tags": [
+    "cta",
+    "call to action",
+    "cta band",
+    "closing section",
+    "signup",
+    "conversion",
+    "email capture",
+    "newsletter alternative",
+    "terminal",
+    "command line",
+    "copy command",
+    "npx",
+    "demo",
+    "deploy",
+    "preview url",
+    "qr code",
+    "validation",
+    "field",
+    "canvas",
+    "pointer",
+    "landing page",
+    "section",
+    "reassurance"
+  ],
+  "usage": "Use once, as the last section before the footer, to close the argument the page made. Pass `headline` (a specific promise with a number in it: the first number and its unit get a tide line under it), `subline`, `primaryLabel` with `onPrimary` (set `loading` while it works) and `secondaryLabel` with `secondaryHref` or `onSecondary`; `eyebrow`, `logo` and `reassurance` are optional. Pick field for a quiet typographic close; terminal when the product starts with a command (pass `command`, `run` and `preview`); form when sign-up starts with an email (pass `form` copy and `onSubmit(email)` returning a promise: reject with an Error to show its message; or own the state with `loading`, `error` and `sent`). The form never claims success on its own: without onSubmit it validates and stops. Set `headingLevel` to match the page outline. Put nothing else loud in the same viewport.",
+  "states": [
+    "default",
+    "loading",
+    "success",
+    "error"
+  ],
+  "dataProps": [
+    {
+      "key": "eyebrow",
+      "type": "string",
+      "description": "Small line above the headline, after the logo. Omitted or \"\": none."
+    },
+    {
+      "key": "logo",
+      "type": "node | null",
+      "description": "The mark before the eyebrow, in the terminal's title bar and in the form's email preview (about 15px). Omitted or null: none."
+    },
+    {
+      "key": "reassurance",
+      "type": "array",
+      "description": "The row of reassurances: [{ icon, label }], icon one of the kit's icon names (default check). Shown while showReassurance is on."
+    },
+    {
+      "key": "command",
+      "type": "string",
+      "description": "Terminal kind: the copyable command. With neither command nor run the terminal panel is left out."
+    },
+    {
+      "key": "run",
+      "type": "array",
+      "description": "Terminal kind: the replayed steps, [{ active, label, detail, at, build? }] with `at` in simulated seconds (when the step finishes) and `build` an optional list of sub-steps shown with a progress bar."
+    },
+    {
+      "key": "preview",
+      "type": "object",
+      "description": "Terminal kind: { path, repo, branch, url, href, ready, budget, note, claim, placeholder, run, skip, again, readyLabel, failure: { label, detail, fix } }. Merged over neutral labels (run \"Run it here\", skip \"Skip to the end\", again \"Run again\", readyLabel \"Ready in\"); ready defaults to the last step's `at`, budget to the run's length."
+    },
+    {
+      "key": "form",
+      "type": "object",
+      "description": "Form kind copy: { label, placeholder, example, required, hint, steps, domain, addressLabel, addressPlaceholder, sentTitle, sentBody, sentNext, mailFrom, mailSubject, change, failed, callout, formLabel, name }. `example` feeds the validation messages; `domain` turns on the live address preview; sentBody may use {email} and {address}; mailFrom turns on the email preview. Merged over neutral copy (label \"Email\", sentTitle \"Thanks. Check your inbox.\")."
+    },
+    {
+      "key": "speed",
+      "type": "number",
+      "description": "Terminal kind: how many times faster than real time the run replays.",
+      "default": 8
+    },
+    {
+      "key": "headingLevel",
+      "type": "number",
+      "description": "Heading level of the headline.",
+      "default": 2
+    },
+    {
+      "key": "secondaryHref",
+      "type": "string",
+      "description": "Makes the secondary action a link."
+    },
+    {
+      "key": "onPrimary",
+      "type": "function",
+      "description": "Primary button handler. In the terminal kind it receives { url } once the run has finished, else {}. Not called while loading or disabled. Without it the terminal primary starts the run."
+    },
+    {
+      "key": "onSecondary",
+      "type": "function",
+      "description": "Secondary action handler."
+    },
+    {
+      "key": "onSubmit",
+      "type": "function",
+      "description": "Form kind: (email) => Promise. Reject with an Error to show its message."
+    },
+    {
+      "key": "onReady",
+      "type": "function",
+      "description": "Terminal kind: called when the replayed run reaches its preview URL."
+    },
+    {
+      "key": "loading",
+      "type": "boolean",
+      "description": "Your busy state: the primary button (form: the submit button) shows a spinner and cannot fire again. In the field kind the lines hold on the button.",
+      "default": false
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Makes the buttons, the email field, the copy button and the secondary link inert and announced as disabled.",
+      "default": false
+    },
+    {
+      "key": "email",
+      "type": "string",
+      "description": "Form kind: the email field's value, when you control it (with onEmailChange)."
+    },
+    {
+      "key": "defaultEmail",
+      "type": "string",
+      "description": "Form kind: the field's starting value when uncontrolled."
+    },
+    {
+      "key": "onEmailChange",
+      "type": "function",
+      "description": "Form kind: (value) => void on every edit."
+    },
+    {
+      "key": "error",
+      "type": "string",
+      "description": "Form kind: an error you already have (for example from your server), shown as the field's error."
+    },
+    {
+      "key": "sent",
+      "type": "boolean",
+      "description": "Form kind: when set, you own success: true shows the confirmation, false the field. Leave it out and a resolved onSubmit shows the confirmation."
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Fills every blank with the sample product (Harbor): copy, eyebrow, logo, reassurance, the command, run and preview, and the form copy; without onPrimary/onSubmit the demo plays its own button cycle. Your own props still win.",
+      "default": false
+    },
+    {
+      "key": "kind",
+      "type": "\"terminal\" | \"form\" | \"field\"",
+      "default": "terminal",
+      "description": "Which call to action it is: \"terminal\" is a copyable command whose run replays in place and ends in a preview card, \"form\" is an email capture with validation that morphs into your confirmation, and \"field\" is a calm band whose field of lines leans toward the primary button."
+    },
+    {
+      "key": "ref",
+      "type": "ref",
+      "description": "Forwarded to the root <section>."
+    }
+  ],
+  "example": "<CtaBand\n  kind=\"field\"\n  eyebrow=\"Relay\"\n  headline=\"Answer your first 100 conversations free.\"\n  subline=\"Set up a shared inbox in five minutes.\"\n  primaryLabel=\"Start free\"\n  onPrimary={() => startSignup()}\n  loading={signingUp}\n  secondaryLabel=\"Talk to sales\"\n  secondaryHref=\"/contact\"\n  reassurance={[{ icon: \"check\", label: \"No card required\" }]}\n/>",
+  "controls": [
+    {
+      "group": "Layout",
+      "key": "kind",
+      "label": "Kind",
+      "type": "select",
+      "options": [
+        "terminal",
+        "form",
+        "field"
+      ],
+      "default": "terminal"
+    },
+    {
+      "group": "Content",
+      "key": "headline",
+      "label": "Headline",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "subline",
+      "label": "Subline",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "primaryLabel",
+      "label": "Primary label",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "secondaryLabel",
+      "label": "Secondary label",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "showReassurance",
+      "label": "Reassurance line",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Email capture": {
+      "kind": "form"
+    },
+    "Field": {
+      "kind": "field"
+    },
+    "Field, no reassurance": {
+      "kind": "field",
+      "showReassurance": false,
+      "secondaryLabel": ""
+    },
+    "Short copy": {
+      "headline": "Ship the branch, not the screenshot.",
+      "subline": "One link per pull request.",
+      "primaryLabel": "Start free"
+    }
+  },
+  "demoProps": {
+    "demo": true,
+    "headline": "Your first preview URL in 90 seconds.",
+    "subline": "Point Harbor at one repo. Every pull request after that gets a live address of its own, and reviewers comment on the pixels they mean instead of on screenshots.",
+    "primaryLabel": "Get your preview URL",
+    "secondaryLabel": "Talk to an engineer"
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "name": "Image Viewer",
+  "slug": "image-viewer",
+  "export": "ImageViewer",
+  "order": 73,
+  "kind": "components",
+  "category": "mobile",
+  "platform": "native",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Tap a photo: it grows out of its square. Pinch or double-tap to zoom, swipe sideways through the album, pull down to put it back.",
+  "description": "A full-screen photo viewer for React Native, shown as a travel album with a mosaic grid of photos in mixed aspect ratios. The photo you tap lifts out of its exact grid square and opens from the cropped thumbnail to its full aspect ratio while the album fades to black. Pinch zooms around the point between your fingers, rubber-bands past the minimum and maximum and springs back on release; a zoomed photo pans with momentum (withDecay) and rubber-bands at its edges. Double-tap zooms to 2.5x on the spot you tapped and double-tap again resets; a single tap waits out the double tap and toggles the glass chrome (date and place on top, share, favourite, info and delete below, and a filmstrip you can scrub). Unzoomed, swipe sideways between photos with gaps between pages, or pull down: the photo follows your finger, shrinks and lets the album show through, then flies back into the square of whichever photo you ended on. Pinch in below 1x to close as well. Haptics on open, page change, the zoom limit, favourite and delete, and Reduce Motion cross-fades instead of morphing.",
+  "intents": [
+    "photo gallery full screen image viewer",
+    "pinch to zoom image with double tap zoom",
+    "swipe down to dismiss photo shared element transition",
+    "react native lightbox with filmstrip and paging"
+  ],
+  "tags": [
+    "image viewer",
+    "photo viewer",
+    "lightbox",
+    "gallery",
+    "photos",
+    "album",
+    "pinch to zoom",
+    "double tap to zoom",
+    "pan",
+    "swipe to dismiss",
+    "shared element",
+    "paging",
+    "filmstrip",
+    "rubber band",
+    "momentum",
+    "haptics",
+    "react native",
+    "expo"
+  ],
+  "usage": "Use when people open media from a grid or feed and want to look closely: photo libraries, listings, chat attachments, product shots. Open from and close to the thumbnail so place is never lost, keep a visible close button next to the swipe down, and offer zoom and paging as screen-reader actions.",
+  "states": [
+    "default",
+    "open"
+  ],
+  "controls": [
+    {
+      "group": "Zoom",
+      "key": "maxZoom",
+      "label": "Max zoom",
+      "type": "range",
+      "min": 2,
+      "max": 8,
+      "step": 0.5,
+      "default": 4
+    },
+    {
+      "group": "Zoom",
+      "key": "doubleTapZoom",
+      "label": "Double-tap zoom",
+      "type": "range",
+      "min": 1.5,
+      "max": 5,
+      "step": 0.5,
+      "default": 2.5
+    },
+    {
+      "group": "Look",
+      "key": "showFilmstrip",
+      "label": "Filmstrip",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Look",
+      "key": "backdrop",
+      "label": "Viewer backdrop",
+      "type": "select",
+      "options": [
+        { "label": "Black", "value": "black" },
+        { "label": "Follow theme", "value": "theme" }
+      ],
+      "default": "black"
+    },
+    {
+      "group": "Behaviour",
+      "key": "startOpen",
+      "label": "Start open",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Open": {
+      "startOpen": true
+    },
+    "Deep zoom": {
+      "maxZoom": 8,
+      "doubleTapZoom": 4
+    },
+    "No filmstrip": {
+      "showFilmstrip": false
+    },
+    "Theme backdrop": {
+      "backdrop": "theme",
+      "startOpen": true
+    }
+  }
+}

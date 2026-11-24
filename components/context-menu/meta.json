@@ -1,0 +1,190 @@
+{
+  "name": "Context Menu",
+  "slug": "context-menu",
+  "export": "ContextMenu",
+  "order": 45,
+  "kind": "components",
+  "category": "overlays",
+  "subcategory": "menus",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Right-click a file near the edge of the screen: it flips to stay visible.",
+  "description": "Right-click, long-press or Shift+F10 menu over any area you wrap: it opens exactly at the cursor and flips at screen edges. Takes the same items as Dropdown Menu (icons, shortcuts, separators, group labels, submenus, checkboxes) and reports what was pressed. Shares the dropdown's engine.",
+  "intents": [
+    "right click menu",
+    "context menu on files",
+    "long press menu on touch",
+    "actions for an item on right click"
+  ],
+  "tags": [
+    "context menu",
+    "right click",
+    "long press",
+    "menu",
+    "file actions",
+    "shift f10"
+  ],
+  "usage": "Wrap the area the menu belongs to as `children` and pass `items` in the Dropdown Menu shape: {id, label, icon, shortcut, disabled, danger, items (submenu), type:'checkbox'}, {separator:true} and {type:'label', label}. Handle `onSelect(id, item, { target })`; pass `items` as `({ target }) => [...]` to build the menu for the row that was pressed (read a data-id off `target.closest(...)`). Give the things inside a tab stop so Shift+F10 and the Menu key reach them. Always offer the same actions somewhere visible too (toolbar or a ... button): context menus are hidden by nature.",
+  "states": [
+    "default",
+    "open"
+  ],
+  "controls": [
+    {
+      "group": "Behaviour",
+      "key": "longPress",
+      "label": "Long-press (ms)",
+      "type": "range",
+      "min": 300,
+      "max": 900,
+      "step": 50,
+      "default": 500
+    },
+    {
+      "group": "Behaviour",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Content",
+      "key": "showHint",
+      "label": "Hint (demo)",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Debug",
+      "key": "showSafeArea",
+      "label": "Show safe triangle",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "No hint": {
+      "showHint": false
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "children",
+      "type": "node",
+      "description": "The area the menu applies to: any content. Right-click, long-press, or Menu key / Shift+F10 on a focused element inside it opens the menu."
+    },
+    {
+      "key": "items",
+      "type": "array | function",
+      "description": "[{ id, label, icon, shortcut, disabled, danger, items, type: 'checkbox', closeOnSelect }], plus { separator: true } and { type: 'label', label } for group headings; or ({ target }) => that array, built when the menu opens. With no items the browser's own menu shows."
+    },
+    {
+      "key": "onSelect",
+      "type": "function",
+      "description": "(id, item, { target }) => void when an item is chosen (not for checkbox items or submenu parents). target is the element that was pressed. id falls back to the label."
+    },
+    {
+      "key": "label",
+      "type": "string",
+      "description": "Accessible name of the menu.",
+      "default": "Actions"
+    },
+    {
+      "key": "open",
+      "type": "boolean",
+      "description": "Controlled open state. false closes it; true with no pending press opens it at the centre of the area."
+    },
+    {
+      "key": "defaultOpen",
+      "type": "boolean",
+      "description": "Open at the centre of the area on mount.",
+      "default": false
+    },
+    {
+      "key": "onOpenChange",
+      "type": "function",
+      "description": "(open, reason, { target }) => void. reason: \"contextmenu\", \"keyboard\", \"longpress\", \"select\", \"escape\" (Escape or Tab) or \"outside\"."
+    },
+    {
+      "key": "closeOnSelect",
+      "type": "boolean",
+      "description": "Close after an item is chosen. An item's own closeOnSelect wins.",
+      "default": true
+    },
+    {
+      "key": "closeOnEscape",
+      "type": "boolean",
+      "description": "Escape closes the menu (it still closes an open submenu).",
+      "default": true
+    },
+    {
+      "key": "closeOnOutside",
+      "type": "boolean",
+      "description": "A press outside closes the menu.",
+      "default": true
+    },
+    {
+      "key": "checked",
+      "type": "object",
+      "description": "Controlled checkbox state, { [id]: boolean }."
+    },
+    {
+      "key": "defaultChecked",
+      "type": "object",
+      "description": "Initial checkbox state when uncontrolled.",
+      "default": {}
+    },
+    {
+      "key": "onCheckedChange",
+      "type": "function",
+      "description": "(id, checked, all) => void when a checkbox item is toggled."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "No custom menu: right-click shows the browser's own, long-press and the keyboard do nothing.",
+      "default": false
+    },
+    {
+      "key": "longPress",
+      "type": "number",
+      "description": "How long a finger holds before the menu opens, in ms.",
+      "default": 500
+    },
+    {
+      "key": "showHint",
+      "type": "boolean",
+      "description": "The how-to line above the demo's file grid (demo only).",
+      "default": true
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Show the gallery's file grid and file menu when no children and no items are passed.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "ref",
+      "description": "The area's root element. className, style and other props go to it too."
+    },
+    {
+      "key": "portal",
+      "type": "boolean | Element | ref",
+      "description": "Where the menu renders. true: through a portal into document.body, carrying the theme tokens found at the area, so an ancestor with overflow:hidden, transform, filter or backdrop-filter can't clip or move it (it still opens above a Modal or Drawer it sits in, and stays part of it for focus and outside presses). false: in place inside the area, as before. An element or ref: portaled into that element instead.",
+      "default": true
+    }
+  ],
+  "example": "<ContextMenu\n  items={({ target }) => {\n    const row = target.closest(\"[data-id]\");\n    return [\n      { type: \"label\", label: row?.dataset.name ?? \"Message\" },\n      { id: \"reply\", label: \"Reply\", icon: \"message\", shortcut: \"R\" },\n      { id: \"move\", label: \"Move to\", icon: \"bookmark\", items: folders.map((f) => ({ id: \"move:\" + f.id, label: f.name })) },\n      { separator: true },\n      { id: \"delete\", label: \"Delete\", icon: \"trash\", danger: true },\n    ];\n  }}\n  onSelect={(id, item, { target }) => act(id, target.closest(\"[data-id]\").dataset.id)}\n>\n  {messages.map((m) => (\n    <div key={m.id} data-id={m.id} data-name={m.subject} tabIndex={0}>{m.subject}</div>\n  ))}\n</ContextMenu>"
+}

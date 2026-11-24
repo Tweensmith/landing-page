@@ -1,0 +1,252 @@
+{
+  "name": "OTP Input",
+  "slug": "otp-input",
+  "export": "OtpInput",
+  "order": 21,
+  "kind": "components",
+  "category": "forms",
+  "subcategory": "text-entry",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "hint": "Turn on Sample content, then type or paste 424242. Try a wrong code too.",
+  "description": "One-time code entry: auto-advance, Backspace steps back, paste fills every cell, arrows move, SMS autofill supported. You check the code in onComplete and show the result with error or success; with Sample content on, 424242 turns the cells green in sequence and a wrong code shakes and clears.",
+  "intents": [
+    "verification code input",
+    "enter the code we sent you",
+    "two factor authentication code",
+    "pin code entry"
+  ],
+  "tags": [
+    "otp",
+    "verification",
+    "code",
+    "2fa",
+    "pin",
+    "sms",
+    "one time password",
+    "input"
+  ],
+  "usage": "Use on verify-your-email/phone and 2FA screens. Check the code in `onComplete(code)`: set `busy` while you verify, then set `error` (a message) or `success`; clear the cells by setting `value` to \"\" (or with a form reset). Give it `name` to send the code with a <form> (a hidden input carries it) and keep autocomplete \"one-time-code\" so SMS codes autofill. The ref is the first cell. Keep a 'resend code' link nearby. There is no built-in right code: `expected` is for tests, and the sample 424242 only applies with `demo` on. After a wrong code, set `value=\"\"` (and `error`): if the person is still in the group, the caret moves to the first cell by itself, so the next code types from the start; a new `error` does the same when a cell is empty.",
+  "states": [
+    "default",
+    "focus",
+    "error",
+    "success",
+    "disabled"
+  ],
+  "keyboard": [
+    {
+      "keys": "Character",
+      "does": "A digit fills the cell and moves to the next one; letters and other characters are ignored."
+    },
+    {
+      "keys": "Backspace",
+      "does": "Clears the cell, or when it is already empty clears the one before and moves there."
+    },
+    {
+      "keys": "Delete",
+      "does": "Clears the cell and stays on it."
+    },
+    {
+      "keys": "ArrowLeft / ArrowRight",
+      "does": "Moves to the previous or next cell."
+    },
+    {
+      "keys": "Home / End",
+      "does": "Moves to the first or last cell."
+    },
+    {
+      "keys": "Tab",
+      "does": "Moves to the next cell; each cell is its own stop, like separate fields."
+    }
+  ],
+  "screenReader": "A group named by `label`; each cell is named \"Digit i of n\" (`messages.digit`) and described by the message line. The hint, error or success text is read in a live region (assertive for an error), every cell gets aria-invalid on an error, and the group sets aria-busy while `busy`.",
+  "controls": [
+    {
+      "group": "Code",
+      "key": "length",
+      "label": "Length",
+      "type": "range",
+      "min": 4,
+      "max": 8,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "group": "Code",
+      "key": "groupAfter",
+      "label": "Group after (0 = off)",
+      "type": "range",
+      "min": 0,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "group": "Code",
+      "key": "expected",
+      "label": "Expected code (tests)",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Code",
+      "key": "mask",
+      "label": "Mask digits",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Style",
+      "key": "cellSize",
+      "label": "Cell size",
+      "type": "range",
+      "min": 36,
+      "max": 68,
+      "step": 1,
+      "unit": "px",
+      "default": 52
+    },
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": "Verification code"
+    },
+    {
+      "group": "Content",
+      "key": "hint",
+      "label": "Hint",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "4-digit PIN": {
+      "length": 4,
+      "groupAfter": 0,
+      "mask": true,
+      "expected": "4242",
+      "label": "Enter your PIN",
+      "hint": "Try 4242."
+    },
+    "Compact": {
+      "cellSize": 40
+    }
+  },
+  "dataProps": [
+    {
+      "key": "value",
+      "type": "string",
+      "description": "Controlled code (digits). Pass it with onChange; \"\" clears the cells."
+    },
+    {
+      "key": "defaultValue",
+      "type": "string",
+      "description": "Initial code when uncontrolled. A <form> reset returns to it.",
+      "default": ""
+    },
+    {
+      "key": "onChange",
+      "type": "(code: string) => void",
+      "description": "(code: string) => void whenever a digit is typed, pasted, autofilled or removed."
+    },
+    {
+      "key": "onComplete",
+      "type": "(code: string) => void",
+      "description": "(code: string) => void once every cell is filled. Verify here, then set busy / error / success."
+    },
+    {
+      "key": "error",
+      "type": "string | boolean",
+      "description": "Show the code as wrong: red cells, a single shake, and this message (true uses messages.error). Clear it when the person edits the code."
+    },
+    {
+      "key": "success",
+      "type": "boolean | string",
+      "description": "Show the code as accepted: cells turn green in sequence, with this message (true uses messages.success, \"Verified\").",
+      "default": false
+    },
+    {
+      "key": "busy",
+      "type": "boolean",
+      "description": "You are checking the code: the cells are read-only and marked aria-busy, so onComplete cannot fire again.",
+      "default": false
+    },
+    {
+      "key": "messages",
+      "type": "{ error?: string; success?: string; digit?: (i: number, n: number) => string }",
+      "description": "Copy, merged over neutral defaults: { error: \"That code didn't match. Try again.\", success: \"Verified\", digit: (i, n) => `Digit ${i} of ${n}` }."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLInputElement>",
+      "description": "Forwarded to the first cell: focus() puts the caret there."
+    },
+    {
+      "key": "id",
+      "type": "string",
+      "description": "id of the first cell (so an external <label htmlFor> can point at it)."
+    },
+    {
+      "key": "name",
+      "type": "string",
+      "description": "Form field name. A hidden input carries the joined code in FormData."
+    },
+    {
+      "key": "autoComplete",
+      "type": "string",
+      "description": "autocomplete of the first cell. Keep \"one-time-code\" for SMS autofill.",
+      "default": "one-time-code"
+    },
+    {
+      "key": "autoFocus",
+      "type": "boolean",
+      "description": "Focus the first cell on mount.",
+      "default": false
+    },
+    {
+      "key": "required",
+      "type": "boolean",
+      "description": "Marks the cells aria-required.",
+      "default": false
+    },
+    {
+      "key": "expected",
+      "type": "string",
+      "description": "For tests and demos only: the right code. When set, the component checks it itself (green on a match, shake and clear on a miss). Leave empty in real use.",
+      "default": ""
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Sample content for the gallery: hint \"Sent to •••• 0193. Try 424242.\" and the built-in check against 424242. Off by default.",
+      "default": false
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-*, data-*) goes to the root <div>. className and style are merged with the component's own."
+    }
+  ],
+  "demoProps": {
+    "demo": true
+  },
+  "example": "<OtpInput\n  ref={codeRef}\n  name=\"code\"\n  label=\"Code from the email\"\n  hint=\"Paste it or type it.\"\n  value={code}\n  onChange={(c) => { setCode(c); setError(null); }}\n  onComplete={async (c) => {\n    setBusy(true);\n    const ok = await api.verify(c);\n    setBusy(false);\n    if (ok) setVerified(true); else { setError(\"That code didn't match\"); setCode(\"\"); }\n  }}\n  busy={busy}\n  error={error}\n  success={verified}\n/>"
+}

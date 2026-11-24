@@ -1,0 +1,298 @@
+{
+  "name": "Sidebar",
+  "slug": "sidebar",
+  "export": "Sidebar",
+  "order": 50,
+  "kind": "components",
+  "category": "navigation",
+  "subcategory": "app-navigation",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Collapse it with [ or the panel button, then hover the icons: labels slide out beside them.",
+  "description": "App sidebar that takes your navigation: groups, one nested level, badges, a header slot (workspace switcher) and a footer slot (account). It collapses to an icon rail where labels slide out as flyouts beside the hovered or focused icon; with peek on, resting on the rail opens the full sidebar over the content. The active marker glides between items, even while a group expands underneath it. On phones it becomes an off-canvas drawer you open and close.",
+  "intents": [
+    "app sidebar navigation",
+    "collapsible side navigation",
+    "dashboard left menu with icons",
+    "icon rail that expands",
+    "side nav with nested projects"
+  ],
+  "tags": [
+    "sidebar",
+    "side nav",
+    "navigation",
+    "rail",
+    "collapse",
+    "drawer",
+    "app shell",
+    "menu",
+    "dashboard"
+  ],
+  "usage": "Use for apps with five or more top-level destinations. Pass `items` (groups { id, label, items } of { id, label, icon, href, badge, children, disabled }), mark the current page with `currentHref` (your router's path) or `value` + `onChange`, and pass `renderLink` so your router's Link handles clicks. Put your workspace switcher in `header` and the account block in `footer`. Layout: it fills its parent's height, so put it first in a flex row with a set height (height:100dvh, the main area flex:1; min-width:0; overflow:auto), or give it position:sticky; top:0; height:100dvh when the window scrolls. Below `drawerBelow` px it takes no width and becomes a drawer: render your own menu button and own the drawer with `open` + `onOpenChange`. Remember `collapsed` per user with `onCollapsedChange`.",
+  "states": [
+    "default",
+    "collapsed"
+  ],
+  "controls": [
+    {
+      "group": "State",
+      "key": "defaultCollapsed",
+      "label": "Collapsed to rail",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "peek",
+      "label": "Peek on hover",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Size",
+      "key": "width",
+      "label": "Width",
+      "type": "range",
+      "min": 200,
+      "max": 300,
+      "step": 4,
+      "default": 248
+    },
+    {
+      "group": "Size",
+      "key": "railWidth",
+      "label": "Rail width",
+      "type": "range",
+      "min": 56,
+      "max": 80,
+      "step": 2,
+      "default": 64
+    },
+    {
+      "group": "Look",
+      "key": "showBadges",
+      "label": "Badges",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "frameHeight",
+      "label": "Window height",
+      "type": "range",
+      "min": 420,
+      "max": 720,
+      "step": 10,
+      "default": 540
+    }
+  ],
+  "presets": {
+    "Rail": {
+      "defaultCollapsed": true
+    },
+    "Rail with peek": {
+      "defaultCollapsed": true,
+      "peek": true
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "items",
+      "type": "array",
+      "description": "Navigation: groups { id, label, items } and/or items { id, label, icon (icon name or node), href, badge (number, string or node), badgeLabel, children (one nested level), disabled, onClick }. An item with children is a disclosure button; an item without href is a button."
+    },
+    {
+      "key": "footerItems",
+      "type": "array",
+      "description": "Items pinned above the footer (Settings, Help), same shape as items."
+    },
+    {
+      "key": "header",
+      "type": "node | function",
+      "description": "Top slot, e.g. your workspace switcher: a node, or ({ collapsed, drawer }) => node so it can shrink in the rail."
+    },
+    {
+      "key": "footer",
+      "type": "node | function",
+      "description": "Bottom slot, e.g. your account block: a node, or ({ collapsed, drawer }) => node."
+    },
+    {
+      "key": "value",
+      "type": "string",
+      "description": "Controlled id of the current item (aria-current=\"page\"). null marks none."
+    },
+    {
+      "key": "defaultValue",
+      "type": "string",
+      "description": "Uncontrolled starting current item."
+    },
+    {
+      "key": "onChange",
+      "type": "function",
+      "description": "(id, item, event) => void when a different item is chosen."
+    },
+    {
+      "key": "currentHref",
+      "type": "string",
+      "description": "Your router's current path: the item with that href (or the longest href it sits under) is current. Used when value is not set."
+    },
+    {
+      "key": "collapsed",
+      "type": "boolean",
+      "description": "Controlled rail state. Pass with onCollapsedChange."
+    },
+    {
+      "key": "defaultCollapsed",
+      "type": "boolean",
+      "description": "Uncontrolled starting rail state.",
+      "default": false
+    },
+    {
+      "key": "onCollapsedChange",
+      "type": "function",
+      "description": "(collapsed) => void from the toggle button, the rail's expand button or the shortcut key."
+    },
+    {
+      "key": "collapsible",
+      "type": "boolean",
+      "description": "Show the collapse toggle and allow the rail.",
+      "default": true
+    },
+    {
+      "key": "open",
+      "type": "boolean",
+      "description": "Controlled drawer state on phones (below drawerBelow). Render your own menu button that sets it."
+    },
+    {
+      "key": "defaultOpen",
+      "type": "boolean",
+      "description": "Uncontrolled starting drawer state.",
+      "default": false
+    },
+    {
+      "key": "onOpenChange",
+      "type": "function",
+      "description": "(open, reason) => void; reason is \"close\", \"escape\", \"outside\", \"swipe\", \"navigate\" or \"toggle\". Focus stays in the drawer while open and returns to what had it before."
+    },
+    {
+      "key": "drawerBelow",
+      "type": "number",
+      "description": "Viewport width in px below which the sidebar becomes a drawer. 0 never.",
+      "default": 640
+    },
+    {
+      "key": "expanded",
+      "type": "array",
+      "description": "Controlled ids of open parent items."
+    },
+    {
+      "key": "defaultExpanded",
+      "type": "array",
+      "description": "Uncontrolled starting open parents. Default: the parent of the current item."
+    },
+    {
+      "key": "onExpandedChange",
+      "type": "function",
+      "description": "(ids, toggledId) => void when a parent opens or closes."
+    },
+    {
+      "key": "renderLink",
+      "type": "function",
+      "description": "(props, item) => node to render each link with your router, e.g. (p) => <Link {...p} to={p.href} />. Spread props: they carry className, href, aria-current, handlers and data-sb-id."
+    },
+    {
+      "key": "onNavigate",
+      "type": "function",
+      "description": "(item, event) => void for every item click; call event.preventDefault() to handle navigation yourself."
+    },
+    {
+      "key": "peek",
+      "type": "boolean",
+      "description": "Resting on the rail opens the full sidebar over the content.",
+      "default": false
+    },
+    {
+      "key": "width",
+      "type": "number",
+      "description": "Expanded width in px (also the drawer's, capped to the viewport).",
+      "default": 248
+    },
+    {
+      "key": "railWidth",
+      "type": "number",
+      "description": "Rail width in px.",
+      "default": 64
+    },
+    {
+      "key": "showBadges",
+      "type": "boolean",
+      "description": "Show item badges (a dot in the rail).",
+      "default": true
+    },
+    {
+      "key": "shortcut",
+      "type": "string",
+      "description": "Key that toggles the rail while focus is in the sidebar. null turns it off.",
+      "default": "["
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Every item inert and announced as disabled.",
+      "default": false
+    },
+    {
+      "key": "ariaLabel",
+      "type": "string",
+      "description": "Accessible name of the nav landmark (and of the drawer dialog).",
+      "default": "Main"
+    },
+    {
+      "key": "labels",
+      "type": "object",
+      "description": "Text merged over { collapse: \"Collapse sidebar\", expand: \"Expand sidebar\", close: \"Close navigation\", open: \"Open navigation\", badge: (n) => `${n} new` }."
+    },
+    {
+      "key": "zIndex",
+      "type": "number",
+      "description": "Stacking level of the phone drawer (its scrim sits one below).",
+      "default": 40
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Render the sample app frame and navigation shown in the gallery. Content you pass wins.",
+      "default": false
+    },
+    {
+      "key": "frameHeight",
+      "type": "number",
+      "description": "Demo frame height in px (demo only).",
+      "default": 540
+    },
+    {
+      "key": "ref",
+      "type": "ref",
+      "description": "The sidebar's root element (the demo frame with demo on)."
+    }
+  ],
+  "example": "const [open, setOpen] = useState(false);\nconst [collapsed, setCollapsed] = useState(false);\n\n<div style={{ display: \"flex\", height: \"100dvh\" }}>\n  <Sidebar\n    items={[\n      { id: \"main\", label: \"Workspace\", items: [\n        { id: \"home\", label: \"Home\", icon: \"home\", href: \"/\" },\n        { id: \"inbox\", label: \"Inbox\", icon: \"inbox\", href: \"/inbox\", badge: unread },\n        { id: \"projects\", label: \"Projects\", icon: \"layers\", children: projects.map((p) => ({ id: p.id, label: p.name, href: `/projects/${p.id}` })) },\n      ] },\n    ]}\n    footerItems={[{ id: \"settings\", label: \"Settings\", icon: \"settings\", href: \"/settings\" }]}\n    header={({ collapsed }) => <WorkspaceSwitcher compact={collapsed} />}\n    footer={<AccountMenu user={user} />}\n    currentHref={location.pathname}\n    renderLink={(props) => <Link {...props} to={props.href} />}\n    collapsed={collapsed}\n    onCollapsedChange={setCollapsed}\n    open={open}\n    onOpenChange={setOpen}\n  />\n  <main style={{ flex: 1, minWidth: 0, overflow: \"auto\" }}>\n    <button className=\"menu-button\" onClick={() => setOpen(true)} aria-label=\"Open navigation\">☰</button>\n    {children}\n  </main>\n</div>"
+}

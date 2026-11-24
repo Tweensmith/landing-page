@@ -1,0 +1,231 @@
+{
+  "name": "Range Slider",
+  "slug": "range-slider",
+  "export": "RangeSlider",
+  "order": 27,
+  "kind": "components",
+  "category": "forms",
+  "subcategory": "pickers",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "hint": "Drag either thumb, or click the track.",
+  "description": "Dual-thumb range with a histogram behind the track that lights up inside the selected range, so people see how much their filter keeps. Two keyboard sliders, and hidden inputs that carry both ends in a form.",
+  "intents": [
+    "price range filter",
+    "pick a min and max",
+    "dual thumb slider",
+    "filter results by range"
+  ],
+  "tags": [
+    "range",
+    "slider",
+    "filter",
+    "price",
+    "histogram",
+    "min max",
+    "dual thumb"
+  ],
+  "usage": "Use in filter panels for numeric ranges (price, size, year). Set `min`, `max`, `step` and `label` (or `aria-label`), then `value` + `onChange` (controlled, [low, high]) or `defaultValue`. Use `onChangeEnd` to fetch results once a drag or key press is done instead of on every move. `formatValue` formats the numbers on screen and for screen readers (or use `prefix`). Pass real counts in `data` so the histogram tells the truth; with no `data` there is no histogram. Set `name` to submit both ends in a <form>.",
+  "states": [
+    "default",
+    "focus",
+    "dragging",
+    "disabled"
+  ],
+  "keyboard": [
+    { "keys": "Tab", "does": "Moves to the low thumb, then to the high thumb." },
+    { "keys": "ArrowRight / ArrowUp", "does": "Moves the focused thumb up one step." },
+    { "keys": "ArrowLeft / ArrowDown", "does": "Moves the focused thumb down one step." },
+    { "keys": "PageUp / PageDown", "does": "Moves the focused thumb ten steps up or down." },
+    { "keys": "Shift+ArrowRight / Shift+ArrowUp / Shift+ArrowLeft / Shift+ArrowDown", "does": "Moves the focused thumb ten steps." },
+    { "keys": "Home / End", "does": "Moves the focused thumb to the lowest or highest value it may take; the thumbs stay one step apart and never cross." }
+  ],
+  "screenReader": "A group named by `label` (or `aria-label`) holding two sliders named by `minLabel` and `maxLabel`. Each says its value through `formatValue` (or `prefix`), with a trailing + at the top when `openEnded`, and its range stops one step short of the other thumb; the readout of both ends is a polite live region, so a drag is announced too. With `error` both thumbs are marked invalid and the message is read as their description.",
+  "controls": [
+    {
+      "group": "Range",
+      "key": "min",
+      "label": "Min",
+      "type": "range",
+      "min": 0,
+      "max": 500,
+      "step": 10,
+      "default": 0
+    },
+    {
+      "group": "Range",
+      "key": "max",
+      "label": "Max",
+      "type": "range",
+      "min": 100,
+      "max": 5000,
+      "step": 10,
+      "default": 100
+    },
+    {
+      "group": "Range",
+      "key": "step",
+      "label": "Step",
+      "type": "range",
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "group": "Histogram",
+      "key": "bins",
+      "label": "Bins",
+      "type": "range",
+      "min": 8,
+      "max": 64,
+      "step": 1,
+      "default": 32
+    },
+    {
+      "group": "Histogram",
+      "key": "showHistogram",
+      "label": "Show histogram",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Content",
+      "key": "openEnded",
+      "label": "Open-ended max (+)",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Content",
+      "key": "prefix",
+      "label": "Prefix",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "No histogram": {
+      "showHistogram": false
+    },
+    "Fine": {
+      "bins": 60,
+      "step": 5
+    }
+  },
+  "dataProps": [
+    {
+      "key": "value",
+      "type": "[number, number]",
+      "description": "Controlled range [low, high]. Pass it with onChange and the thumbs show exactly this. Leave undefined to let the slider keep its own."
+    },
+    {
+      "key": "defaultValue",
+      "type": "[number, number]",
+      "description": "Starting range when uncontrolled; also what a form reset returns to. Defaults to [min, max]."
+    },
+    {
+      "key": "low",
+      "type": "number",
+      "description": "Older way to seed the low end when uncontrolled; defaultValue wins."
+    },
+    {
+      "key": "high",
+      "type": "number",
+      "description": "Older way to seed the high end when uncontrolled; defaultValue wins."
+    },
+    {
+      "key": "onChange",
+      "type": "(range: [number, number]) => void",
+      "description": "([low, high]) => void, on every move (drag, click, key)."
+    },
+    {
+      "key": "onChangeEnd",
+      "type": "(range: [number, number]) => void",
+      "description": "([low, high]) => void, once when a drag ends and after each key press: the committed range."
+    },
+    {
+      "key": "formatValue",
+      "type": "(value: number) => string",
+      "description": "(n: number) => string, used for the readout, the drag bubble, the end labels and aria-valuetext. Overrides `prefix`."
+    },
+    {
+      "key": "data",
+      "type": "number[]",
+      "description": "Counts per bin for the histogram, low to high across min-max; bars are scaled to the largest count."
+    },
+    {
+      "key": "minLabel",
+      "type": "string",
+      "description": "Accessible name of the low thumb.",
+      "default": "Minimum"
+    },
+    {
+      "key": "maxLabel",
+      "type": "string",
+      "description": "Accessible name of the high thumb.",
+      "default": "Maximum"
+    },
+    {
+      "key": "openEnded",
+      "type": "boolean",
+      "description": "Add \"+\" to the max end label (\"$1,000+\").",
+      "default": false
+    },
+    {
+      "key": "name",
+      "type": "string | [string, string]",
+      "description": "Form field name. One string submits both ends under that name (read with formData.getAll); a pair names them separately."
+    },
+    {
+      "key": "id",
+      "type": "string",
+      "description": "Id for the root group."
+    },
+    {
+      "key": "error",
+      "type": "string",
+      "description": "An error you already have, shown under the slider and announced."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLSpanElement>",
+      "description": "Goes to the low thumb (role=slider), for focus()."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-*, data-*) goes to the root <div>. className and style are merged with the component's own."
+    }
+  ],
+  "example": "<RangeSlider\n  label=\"Price\"\n  min={0}\n  max={500}\n  step={5}\n  name={[\"priceMin\", \"priceMax\"]}\n  value={price}\n  onChange={setPrice}\n  onChangeEnd={(range) => refetch({ price: range })}\n  formatValue={(n) => `$${n}`}\n  data={countsPerBin}\n/>",
+  "demoProps": {
+    "demo": true,
+    "max": 1000,
+    "step": 10,
+    "prefix": "$",
+    "openEnded": true
+  }
+}

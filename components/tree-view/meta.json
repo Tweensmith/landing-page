@@ -1,0 +1,297 @@
+{
+  "name": "Tree View",
+  "slug": "tree-view",
+  "export": "TreeView",
+  "order": 94,
+  "kind": "components",
+  "category": "display",
+  "subcategory": "lists",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Turn on Sample content, then drag “Hero / CTA” into Order summary: slide left or right to pick the depth, hover a closed frame to spring it open. Then try Alt+Arrows.",
+  "description": "A hierarchical WAI-ARIA tree for any nested data: you pass `nodes` (id, label, icon, children, a `hasChildren` flag for lazy branches) and own expansion, selection and checks, each controlled or uncontrolled. Expanding unfolds children on a height spring with a short stagger while their indentation guides draw down; the guide of the branch holding the focused row is highlighted. Lazy branches call `onLoadChildren(node)` and show skeleton rows while it runs. Pass `onMove` and rows drag to reorder and re-parent with pointer events (long-press on touch): a drop line shows before or after, its depth set by the pointer's horizontal position, closed folders spring open after 600ms of hover, drops into a node's own descendants are refused with a shake, and the moved node glides to its new place (FLIP); Alt+Arrows move by keyboard. Single or multiple selection (Shift and Cmd), a tri-state checkbox mode with animated mixed parents, a filter that keeps matches with their ancestors and restores the previous expansion when cleared, F2 / double-click rename with `onRename`. Full keyboard model: arrows, Home, End, type-ahead, * to expand siblings, one tab stop. The sample content is a design tool's layers panel and a SvelteKit repo's file tree.",
+  "intents": [
+    "layers panel with drag to reorder",
+    "file explorer tree with folders",
+    "hierarchical tree view with keyboard navigation",
+    "nested list drag and drop re-parent",
+    "tree with tri-state checkboxes"
+  ],
+  "tags": [
+    "tree",
+    "tree view",
+    "treeview",
+    "file tree",
+    "file explorer",
+    "layers panel",
+    "outline",
+    "hierarchy",
+    "nested list",
+    "folders",
+    "drag and drop",
+    "reorder",
+    "tri-state checkbox",
+    "aria tree",
+    "sidebar navigation"
+  ],
+  "usage": "Use for any hierarchy people browse: a file explorer, a docs or CMS outline, a category or permissions tree, a layers panel. Pass `nodes` (nested, with stable ids), own `expanded` + `onExpandedChange` and `selected` + `onSelect` (or start from `defaultExpanded` / `defaultSelected`), pick `selectionMode`, and use `onActivate` for opening a leaf. Give lazy branches `hasChildren: true` and load them in `onLoadChildren` (return a promise, or set `loading` on the node). Turn on `checkboxes` when the task is picking a subset, so parents show a mixed state; pass `onMove` / `onRename` only if people may rearrange. Keep the filter once a tree passes a few dozen nodes. For a flat list that only reorders, use a sortable list instead; for two levels of navigation, use a sidebar with sections.",
+  "states": [
+    "default",
+    "selected",
+    "dragging",
+    "empty"
+  ],
+  "controls": [
+    {
+      "group": "Data",
+      "key": "dataset",
+      "label": "Sample dataset",
+      "type": "select",
+      "options": [
+        "layers",
+        "files"
+      ],
+      "default": "layers"
+    },
+    {
+      "group": "Behaviour",
+      "key": "checkboxes",
+      "label": "Checkboxes",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Behaviour",
+      "key": "showFilter",
+      "label": "Filter field",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Look",
+      "key": "guides",
+      "label": "Indent guides",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Look",
+      "key": "density",
+      "label": "Density",
+      "type": "select",
+      "options": [
+        "comfortable",
+        "compact"
+      ],
+      "default": "comfortable"
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "File explorer": {
+      "dataset": "files"
+    },
+    "Review picker": {
+      "dataset": "files",
+      "checkboxes": true
+    },
+    "Export layers": {
+      "checkboxes": true,
+      "density": "compact"
+    },
+    "Minimal": {
+      "guides": false,
+      "showFilter": false
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "nodes",
+      "type": "array",
+      "description": "Nested nodes: [{ id, label, icon?, children?, hasChildren?, disabled?, loading?, textValue? }]. label is a string or node (give textValue for type-ahead and the filter when it is a node); icon is a kit icon name or a node; hasChildren: true with no children marks a lazy branch; loading: true shows its skeleton rows (caller-owned busy)."
+    },
+    {
+      "key": "expanded",
+      "type": "array",
+      "description": "Controlled ids of open branches. Pass with onExpandedChange."
+    },
+    {
+      "key": "defaultExpanded",
+      "type": "array",
+      "description": "Uncontrolled ids of branches open at first."
+    },
+    {
+      "key": "onExpandedChange",
+      "type": "function",
+      "description": "(ids, { node, expanded }) => void when a branch opens or closes (arrow keys, the chevron, Enter, *, a drop)."
+    },
+    {
+      "key": "selected",
+      "type": "string | array",
+      "description": "Controlled selection: an id (or null) in single mode, an array of ids in multiple mode. Pass with onSelect."
+    },
+    {
+      "key": "defaultSelected",
+      "type": "string | array",
+      "description": "Uncontrolled starting selection."
+    },
+    {
+      "key": "onSelect",
+      "type": "function",
+      "description": "(selection, node) => void: selection is an id or null (single) or an array of ids (multiple); node is the row that changed it."
+    },
+    {
+      "key": "selectionMode",
+      "type": "\"single\" | \"multiple\" | \"none\"",
+      "description": "Multiple adds Shift (range), Cmd/Ctrl (toggle) and Cmd+A. None drops aria-selected.",
+      "default": "single"
+    },
+    {
+      "key": "checked",
+      "type": "array",
+      "description": "Controlled ids of checked leaves (with checkboxes). Parents derive on / mixed / off. Pass with onCheckedChange."
+    },
+    {
+      "key": "defaultChecked",
+      "type": "array",
+      "description": "Uncontrolled checked leaf ids."
+    },
+    {
+      "key": "onCheckedChange",
+      "type": "function",
+      "description": "(leafIds, { node, checked }) => void when a box is toggled (Space or a click)."
+    },
+    {
+      "key": "onLoadChildren",
+      "type": "function",
+      "description": "(node) => void | Promise, called when a lazy branch (hasChildren, no children) opens. Return a promise to have the row show skeletons until it settles, or set loading on the node yourself; then pass the node with its children."
+    },
+    {
+      "key": "onActivate",
+      "type": "function",
+      "description": "(node, event) => void on Enter or a click on a leaf (Enter on a branch folds it)."
+    },
+    {
+      "key": "onMove",
+      "type": "function",
+      "description": "({ ids, parentId, index, nodes }) => void after a drag or Alt+Arrow move: put ids under parentId (null for the top level) starting at index in its children after the move. Dragging and Alt+Arrows are only on when this is passed; apply it to nodes yourself."
+    },
+    {
+      "key": "onRename",
+      "type": "function",
+      "description": "(node, label) => void from F2 or a double-click. Renaming is only on when this is passed."
+    },
+    {
+      "key": "renderLabel",
+      "type": "function",
+      "description": "(node, { selected, expanded, depth, filter, disabled }) => node drawn in place of the label. The row keeps its treeitem role, keyboard and name (from label / textValue)."
+    },
+    {
+      "key": "filter",
+      "type": "string",
+      "description": "Controlled filter text. Pass with onFilterChange."
+    },
+    {
+      "key": "defaultFilter",
+      "type": "string",
+      "description": "Uncontrolled starting filter text.",
+      "default": ""
+    },
+    {
+      "key": "onFilterChange",
+      "type": "function",
+      "description": "(text) => void as the filter field changes."
+    },
+    {
+      "key": "filterPlaceholder",
+      "type": "string",
+      "description": "Placeholder and accessible name of the filter field.",
+      "default": "Filter"
+    },
+    {
+      "key": "title",
+      "type": "string",
+      "description": "Heading above the tree; also the tree's accessible name (else aria-label, else \"Tree\").",
+      "default": ""
+    },
+    {
+      "key": "subtitle",
+      "type": "node",
+      "description": "A line under the title."
+    },
+    {
+      "key": "loading",
+      "type": "boolean",
+      "description": "You are loading the whole tree: skeleton rows in its shape, aria-busy.",
+      "default": false
+    },
+    {
+      "key": "error",
+      "type": "node",
+      "description": "A load error shown instead of the tree (true shows a neutral message)."
+    },
+    {
+      "key": "onRetry",
+      "type": "function",
+      "description": "Shows a Try again button with error."
+    },
+    {
+      "key": "emptyText",
+      "type": "node",
+      "description": "Shown when nodes is empty; null shows nothing.",
+      "default": "Nothing here yet"
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "The whole tree out of the tab order and inert, dimmed. Single nodes take disabled on the node (focusable, not selectable, not expandable).",
+      "default": false
+    },
+    {
+      "key": "maxWidth",
+      "type": "number",
+      "description": "Width cap in px; 0 for none (fills its container).",
+      "default": 440
+    },
+    {
+      "key": "maxHeight",
+      "type": "number",
+      "description": "Height of the scrolling area in px before it scrolls; 0 for none.",
+      "default": 500
+    },
+    {
+      "key": "showFooter",
+      "type": "boolean",
+      "description": "The footer with the focused path, status messages and key hints. Default: on for the sample content, off otherwise."
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Show the sample layers panel and file tree (only when no nodes are passed).",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "ref",
+      "description": "The root section."
+    }
+  ],
+  "example": "const [open, setOpen] = useState([\"src\"]);\nconst [sel, setSel] = useState(null);\n\n<TreeView\n  title=\"Files\"\n  nodes={[\n    { id: \"src\", label: \"src\", icon: \"folder\", children: [\n      { id: \"app\", label: \"App.jsx\", icon: \"doc\" },\n      { id: \"lib\", label: \"lib\", icon: \"folder\", hasChildren: true },\n    ] },\n    { id: \"readme\", label: \"README.md\", icon: \"doc\" },\n  ]}\n  expanded={open}\n  onExpandedChange={setOpen}\n  selected={sel}\n  onSelect={setSel}\n  onActivate={(node) => openFile(node.id)}\n  onLoadChildren={(node) => fetchChildren(node.id).then(addChildren)}\n/>"
+}

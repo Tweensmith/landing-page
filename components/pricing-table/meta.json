@@ -1,0 +1,278 @@
+{
+  "name": "Pricing Table",
+  "slug": "pricing-table",
+  "export": "PricingTable",
+  "order": 100,
+  "kind": "bands",
+  "category": "pricing",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Answer the strip above the cards. The plan that fits takes the lead and its badge travels to it.",
+  "description": "The plan cards section of a pricing page, set in Stint (time tracking and invoicing for freelancers and small studios): Starter, Pro, Studio and Enterprise, monthly or yearly, in three currencies. It helps you choose instead of just listing prices. A \"What do you need?\" strip (a team-size stepper plus invoices, client portal and SSO switches) picks the cheapest plan that fits, and that card takes the lead: one measured frame and its \"Recommended for you\" badge spring from the old card to the new one while the card lifts, its CTA turns primary and a notch under the strip slides across to point at it. Inside every card the lines you asked for light up, and what a plan can't do appears crossed out with where to find it (\"On Studio and up\", \"Your team is 12\"). Prices roll digit by digit on billing, currency and team-size changes, including the per-seat maths (\"$20 × 4 seats = $80 a month\"). The answers are optional; until one is given the default recommendation stands. Sized by its container: four cards in a row when wide, three with Enterprise as a slim row on the stage, and on a phone a snap rail with the lead centred, a plan index and a sticky summary of the card in the middle. Reduced motion keeps every highlight and swaps the travel for a fade.",
+  "intents": [
+    "pricing cards section that recommends a plan",
+    "plan tiers with a monthly and yearly toggle",
+    "recommend the right plan from a few questions",
+    "saas pricing table with recommended plan badge",
+    "pricing tiers with rolling prices and a currency switch"
+  ],
+  "tags": [
+    "pricing",
+    "pricing table",
+    "pricing cards",
+    "plans",
+    "tiers",
+    "plan picker",
+    "recommended plan",
+    "billing toggle",
+    "currency",
+    "saas",
+    "landing",
+    "section",
+    "rolling number"
+  ],
+  "usage": "Use as the pricing section of a marketing page, above Plan Comparison Table (point the Compare link at it). Three or four tiers in price order plus an optional custom plan (price: null) work best; tag each feature line that answers a chooser question with its `need` id so cards can highlight it or explain where it lives. Keep needs to two or three switches that actually separate the plans. For a single seat-slider card use Odometer Pricing instead; for every line item use Plan Comparison Table. The small line above the heading is `eyebrow` (text) with `logo` (a node) before it: pass your own mark, `logo={null}` for text only, or `eyebrow=\"\"` with `logo={null}` to drop the line. It shows only what you pass: no `plans` means no cards and no chooser, and `demo` fills the blanks with a made-up product called Stint. Pass your own `heading`, `plans`, `needs`, `currencies`, `lede`, `links`, `finePrint` and `recommended`. Pass `onSelect` to act on a plan button (it gets one object, `{ plan, billing, currency, seats, item }`: `plan` is the plan's id and `item` the plan object); the buttons do nothing else. Set `loadingPlan` to that plan's id while checkout starts and clear it after. Prices print through `formatPrice(amount, { currency, symbol })` when the currency symbol before the number is not right for you, and the fixed words through `labels`. `simulate` fakes a working-then-done cycle on them for demos (the gallery turns it on) and is off by default, so leave it off in real UI. A page that also shows Plan Comparison Table should hold one billing state: pass `billing` and `onBillingChange` to both (or give the comparison `showBilling={false}`), and `onCurrencyChange` here feeds the comparison's `currency`. Prices print the same way in both: whole amounts bare, anything else to the cent ($7.20). The badge text (`badgeDefault` / `badgeFit`) is reused in the phone summary bar, so one plan carries one label; match Plan Comparison's `recommendedLabel` to it.",
+  "states": [
+    "default",
+    "hover",
+    "selected"
+  ],
+  "dataProps": [
+    {
+      "key": "billing",
+      "type": "\"annual\" | \"monthly\"",
+      "description": "The billing period, controlled when passed with `onBillingChange`. Passed alone (the older use) it sets the switch and follows the prop when it changes, and the reader can still flip it."
+    },
+    {
+      "key": "currency",
+      "type": "string",
+      "description": "The currency code, controlled when passed with `onCurrencyChange`. Passed alone it sets the switch and follows the prop."
+    },
+    {
+      "key": "eyebrow",
+      "type": "string",
+      "description": "Text of the small line above the heading. Empty by default; `demo` shows the sample's."
+    },
+    {
+      "key": "logo",
+      "type": "node | null",
+      "description": "The mark before the eyebrow, about 13px, drawn in the accent chip. None by default (`demo` shows the sample mark); pass your own node."
+    },
+    {
+      "key": "plans",
+      "type": "array",
+      "description": "[{ id, name, blurb, price, priceUnit?, priceLabel?, note?, seats: { max?, label }, features: [text | { text, need }], cta }]. price: 0 = free, null = custom (shows priceLabel), or a per-seat price: { CODE: [monthly, yearly] }, [monthly, yearly], or one number for both. Empty by default: no plans, no cards and no chooser.",
+      "default": []
+    },
+    {
+      "key": "needs",
+      "type": "array",
+      "description": "Chooser switches: [{ id, label, noun, phrase, icon }]. Feature lines point at them with `need`. Empty by default.",
+      "default": []
+    },
+    {
+      "key": "currencies",
+      "type": "array",
+      "description": "[{ code, symbol }]. The symbol is printed before amounts unless you pass `formatPrice`. Two or more show a currency switch. Empty by default (amounts print bare).",
+      "default": []
+    },
+    {
+      "key": "links",
+      "type": "array",
+      "description": "Links under the cards: [{ label, href, icon?, onClick? }]. In-page #anchors scroll smoothly. Empty by default.",
+      "default": []
+    },
+    {
+      "key": "lede",
+      "type": "string",
+      "description": "Paragraph under the heading. Empty by default."
+    },
+    {
+      "key": "finePrint",
+      "type": "string",
+      "description": "Small print under the cards. Empty by default."
+    },
+    {
+      "key": "chooserTitle",
+      "type": "string",
+      "description": "Title of the chooser strip.",
+      "default": "What do you need?"
+    },
+    {
+      "key": "chooserHint",
+      "type": "string",
+      "description": "Hint under the chooser title."
+    },
+    {
+      "key": "badgeDefault",
+      "type": "string",
+      "description": "Badge on the `recommended` plan before any answer, and its tag in the phone summary bar.",
+      "default": "Recommended"
+    },
+    {
+      "key": "badgeFit",
+      "type": "string",
+      "description": "Badge once the chooser has picked a plan.",
+      "default": "Recommended for you"
+    },
+    {
+      "key": "teamSize",
+      "type": "number",
+      "description": "Starting team size.",
+      "default": 1
+    },
+    {
+      "key": "teamMax",
+      "type": "number",
+      "description": "Largest team the stepper allows.",
+      "default": 250
+    },
+    {
+      "key": "headingLevel",
+      "type": "number",
+      "description": "Heading level of the section title.",
+      "default": 2
+    },
+    {
+      "key": "onSelect",
+      "type": "function",
+      "description": "({ plan, billing, currency, seats, item }) => void when a plan button is pressed. `plan` is the plan id, `item` the plan object you passed, `billing` \"annual\" or \"monthly\", `currency` the code, and `seats` the team size once the reader has set one (otherwise undefined). Not called while `disabled` or while `loadingPlan` is set."
+    },
+    {
+      "key": "onBillingChange",
+      "type": "function",
+      "description": "(billing: \"annual\" | \"monthly\") => void when the reader flips the billing switch. With `billing` it makes the switch controlled: hold it in page state and pass the same value to Plan Comparison Table."
+    },
+    {
+      "key": "onCurrencyChange",
+      "type": "function",
+      "description": "(code) => void when the reader picks a currency. With `currency` it makes the switch controlled; pass the same value on as Plan Comparison Table's `currency`."
+    },
+    {
+      "key": "formatPrice",
+      "type": "function",
+      "description": "(amount: number, { currency, symbol }) => string. Prints every amount (card prices, the struck-out monthly price, the per-seat maths, screen-reader text). Default: the currency's symbol, then the number with whole amounts bare and others to the cent."
+    },
+    {
+      "key": "labels",
+      "type": "object",
+      "description": "Replaces the fixed words: { billingPeriod, monthly, annual, save: (n) => string, currency, unit (\"per seat / month\", used when a plan has no priceUnit), billedMonthly, teamSize, person, people, weNeed, clear, plans, more, custom }. Pass only the keys you change."
+    },
+    {
+      "key": "loadingPlan",
+      "type": "string | null",
+      "description": "Id of the plan whose checkout is running: its button shows a spinner and no plan button fires until you set it back to null.",
+      "default": null
+    },
+    {
+      "key": "ref",
+      "type": "ref",
+      "description": "The root <section>."
+    }
+  ],
+  "example": "<PricingTable\n  eyebrow=\"Relay pricing\"\n  logo={<RelayMark />}   // or logo={null}\n  heading=\"One price per person\"\n  lede=\"Start free, upgrade when the team grows.\"\n  recommended=\"team\"\n  plans={[\n    { id: \"free\", name: \"Free\", blurb: \"For trying it out.\", price: 0, priceUnit: \"forever\", seats: { max: 3, label: \"Up to 3 people\" }, features: [\"One shared inbox\"], cta: \"Start free\" },\n    { id: \"team\", name: \"Team\", blurb: \"For growing teams.\", price: { USD: [9, 7.2] }, seats: { max: 50, label: \"Up to 50 people\" }, features: [{ text: \"Automations\", need: \"automations\" }], cta: \"Start a trial\" },\n  ]}\n  needs={[{ id: \"automations\", label: \"Automations\", noun: \"Automations\", phrase: \"automations\", icon: \"zap\" }]}\n  currencies={[{ code: \"USD\", symbol: \"$\" }]}\n  links={[]}\n  finePrint=\"Prices exclude tax.\"\n  billing={billing}\n  onBillingChange={setBilling}\n  formatPrice={(n, { currency }) => new Intl.NumberFormat(\"en-US\", { style: \"currency\", currency, maximumFractionDigits: n % 1 ? 2 : 0 }).format(n)}\n  loadingPlan={checkingOut}\n  onSelect={({ plan, billing }) => startCheckout(plan, billing)}\n/>",
+  "controls": [
+    {
+      "group": "Pricing",
+      "key": "defaultBilling",
+      "label": "Billing (start)",
+      "type": "select",
+      "options": [
+        "annual",
+        "monthly"
+      ],
+      "default": "annual"
+    },
+    {
+      "group": "Pricing",
+      "key": "defaultCurrency",
+      "label": "Currency (start)",
+      "type": "select",
+      "options": [
+        "USD",
+        "EUR",
+        "GBP"
+      ],
+      "default": "USD"
+    },
+    {
+      "group": "Pricing",
+      "key": "recommended",
+      "label": "Recommended plan",
+      "type": "select",
+      "options": [
+        "starter",
+        "pro",
+        "studio",
+        "enterprise",
+        "none"
+      ],
+      "default": "none"
+    },
+    {
+      "group": "Chooser",
+      "key": "showChooser",
+      "label": "What do you need? strip",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Chooser",
+      "key": "highlightFeatures",
+      "label": "Highlight and cross out features",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Content",
+      "key": "heading",
+      "label": "Heading",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Demo",
+      "key": "simulate",
+      "label": "Demo: fake async on plan buttons",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Monthly in euros": {
+      "defaultBilling": "monthly",
+      "defaultCurrency": "EUR"
+    },
+    "Just the cards": {
+      "showChooser": false
+    },
+    "Pro first, in pounds": {
+      "recommended": "pro",
+      "defaultCurrency": "GBP"
+    },
+    "No default pick": {
+      "recommended": "none",
+      "highlightFeatures": false
+    }
+  },
+  "demoProps": {
+    "demo": true,
+    "simulate": true,
+    "recommended": "studio"
+  }
+}

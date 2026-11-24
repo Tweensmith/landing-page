@@ -1,0 +1,22 @@
+{
+  "name": "tweensmith-landing-page",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "The Tweensmith landing page, built from Tweensmith's own components.",
+  "scripts": {
+    "dev": "npm --prefix site run dev",
+    "build": "npm --prefix site run build",
+    "preview": "npm --prefix site run preview"
+  },
+  "dependencies": {
+    "@base-ui/react": "1.9.0",
+    "motion": "14.14.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "4.3.4",
+    "vite": "5.4.11"
+  }
+}

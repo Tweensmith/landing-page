@@ -1,0 +1,279 @@
+{
+  "name": "Progress",
+  "slug": "progress",
+  "export": "Progress",
+  "order": 36,
+  "kind": "components",
+  "category": "feedback",
+  "subcategory": "loading",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "hint": "Switch to indeterminate: it drifts calmly instead of racing.",
+  "description": "Linear bar, ring or segmented steps, determinate or indeterminate. Indeterminate states drift and breathe rather than race; values spring and the percentage rolls like an odometer, becoming a check at 100%.",
+  "intents": [
+    "upload progress bar",
+    "loading percentage",
+    "circular progress ring",
+    "show progress through steps"
+  ],
+  "tags": [
+    "progress",
+    "progress bar",
+    "ring",
+    "percent",
+    "upload",
+    "indeterminate",
+    "steps",
+    "loading"
+  ],
+  "usage": "Use determinate whenever you know the fraction: pass `value` (and `max` if it is not 100) with a `label` that says what is happening; `hint` adds a line under it. Use `indeterminate` only for unknown waits under ~10s. For a sequence pass `kind=\"steps\"` with `steps` (a count or an array of step labels) and `current` (0-based). `valueText` replaces the readout and what screen readers hear (\"3 of 5 done\"). For a usage meter (seats used, storage) pass `showComplete={false}` and `width=\"100%\"`. Nothing loops at rest; with no props it renders an empty bar.",
+  "states": [
+    "default",
+    "loading",
+    "success"
+  ],
+  "keyboard": [],
+  "screenReader": "A role=\"progressbar\" named by `label` (or an aria-label you pass), with aria-valuemin, aria-valuemax, aria-valuenow and an aria-valuetext of the percent, \"Step 2 of 5: <step>\", \"Complete\" or your `valueText`. Indeterminate drops aria-valuenow, sets aria-busy and reads \"Working\" (or `valueText`).",
+  "dataProps": [
+    {
+      "key": "kind",
+      "type": "\"linear\" | \"ring\" | \"steps\"",
+      "description": "Which progress: \"linear\" is a bar with a label and a readout, \"ring\" is a circle with the readout in its centre (sized by `size`), \"steps\" is a bar cut into segments (see `steps` and `current`).",
+      "default": "linear"
+    },
+    {
+      "key": "value",
+      "type": "number",
+      "description": "How far along, from 0 to `max`. Ignored when `indeterminate` is on or when steps get a `current`.",
+      "default": 0
+    },
+    {
+      "key": "max",
+      "type": "number",
+      "description": "The value that means complete.",
+      "default": 100
+    },
+    {
+      "key": "indeterminate",
+      "type": "boolean",
+      "description": "Unknown progress: a calm drifting band (ring: a breathing arc). The only state that moves on its own.",
+      "default": false
+    },
+    {
+      "key": "label",
+      "type": "string",
+      "description": "What is happening (\"Uploading 3 files\"). Names the progressbar for screen readers. Without it, pass `aria-label`.",
+      "default": ""
+    },
+    {
+      "key": "hint",
+      "type": "string",
+      "description": "Second line under the bar (\"12 of 19 files\").",
+      "default": ""
+    },
+    {
+      "key": "valueText",
+      "type": "string | ((info: { value: number; max: number; percent: number; step: number; steps: number; current: number; done: boolean; busy: boolean }) => string)",
+      "description": "Replaces the visible readout and the aria-valuetext. A function gets { value, max, percent, step, steps, current, done, busy }. Use it for checklists (\"3 of 5 done\") or units (\"18 of 20 seats\")."
+    },
+    {
+      "key": "steps",
+      "type": "number | Array<string | { label: string }>",
+      "description": "Steps kind: the number of segments, or the steps themselves (their labels go to the tooltip and to screen readers).",
+      "default": 5
+    },
+    {
+      "key": "current",
+      "type": "number",
+      "description": "Steps kind: the 0-based index of the step you are on. Setting it (or passing `steps` as an array) makes the bar step-by-step instead of value-driven; current = steps.length means all done."
+    },
+    {
+      "key": "showComplete",
+      "type": "boolean",
+      "description": "At 100% turn green, draw a check and swap in the done copy. Right for a task that finishes; set false for a meter (plan usage, storage) so 100% stays a number in its tone.",
+      "default": true
+    },
+    {
+      "key": "doneLabel",
+      "type": "string",
+      "description": "Label shown at 100% when showComplete is on. \"\" keeps your label.",
+      "default": "Done"
+    },
+    {
+      "key": "doneHint",
+      "type": "string",
+      "description": "Hint shown at 100% when showComplete is on. \"\" keeps your hint.",
+      "default": ""
+    },
+    {
+      "key": "width",
+      "type": "number | string",
+      "description": "Widest the bar grows: px as a number, or any CSS length. \"100%\" fills the container.",
+      "default": 380
+    },
+    {
+      "key": "size",
+      "type": "\"sm\" | \"md\" | \"lg\" | number",
+      "description": "Diameter of the ring (kind \"ring\"): sm 60px, md 72px, lg 96px. The centre readout is 20% of it. A number sets the diameter in px exactly.",
+      "default": "md"
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Fill empty label and hints with the gallery's sample upload copy. Leave off in real UI.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLDivElement>",
+      "description": "The root element, for measuring or scrolling to."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-*, data-*) goes to the root <div>. className and style are merged with the component's own."
+    }
+  ],
+  "example": "<Progress\n  label=\"Uploading 3 files\"\n  hint=\"About 20 seconds left\"\n  value={bytesSent}\n  max={bytesTotal}\n/>\n\n<Progress kind=\"steps\" steps={[\"Account\", \"Workspace\", \"Invite\"]} current={step} label=\"Setting up\" />\n\n<Progress label=\"Seats used\" value={18} max={20} valueText=\"18 of 20 seats\" tone=\"warning\" showComplete={false} width=\"100%\" />",
+  "controls": [
+    {
+      "group": "Type",
+      "key": "kind",
+      "label": "Kind",
+      "type": "select",
+      "options": [
+        "linear",
+        "ring",
+        "steps"
+      ],
+      "default": "linear"
+    },
+    {
+      "group": "Value",
+      "key": "value",
+      "label": "Value",
+      "type": "range",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "group": "Value",
+      "key": "indeterminate",
+      "label": "Indeterminate",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Value",
+      "key": "simulate",
+      "label": "Simulate progress",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Look",
+      "key": "tone",
+      "label": "Tone",
+      "type": "select",
+      "options": [
+        "accent",
+        "success",
+        "warning",
+        "danger"
+      ],
+      "default": "accent"
+    },
+    {
+      "group": "Look",
+      "key": "thickness",
+      "label": "Thickness",
+      "type": "range",
+      "min": 2,
+      "max": 14,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "group": "Look",
+      "key": "size",
+      "label": "Ring size",
+      "type": "select",
+      "options": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    {
+      "group": "Look",
+      "key": "steps",
+      "label": "Steps",
+      "type": "range",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "group": "Look",
+      "key": "width",
+      "label": "Width",
+      "type": "range",
+      "min": 200,
+      "max": 560,
+      "step": 10,
+      "default": 380
+    },
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "hint",
+      "label": "Hint",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "showValue",
+      "label": "Show value",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Ring": {
+      "kind": "ring"
+    },
+    "Steps": {
+      "kind": "steps",
+      "value": 50
+    },
+    "Indeterminate": {
+      "indeterminate": true
+    },
+    "Live": {
+      "simulate": true
+    }
+  },
+  "demoProps": {
+    "demo": true,
+    "value": 64
+  }
+}

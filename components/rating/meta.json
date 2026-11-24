@@ -1,0 +1,252 @@
+{
+  "name": "Rating",
+  "slug": "rating",
+  "export": "Rating",
+  "order": 26,
+  "kind": "components",
+  "category": "forms",
+  "subcategory": "choices",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "hint": "Hover across the stars, click to rate.",
+  "description": "Stars that fill to the pointer in half steps; click commits, leaving reverts. A slider for assistive tech, with a hidden input that carries the value in a form. The star under the pointer lifts; committing pops the filled stars in sequence.",
+  "intents": [
+    "star rating input",
+    "rate a product",
+    "leave a review score",
+    "show average rating stars"
+  ],
+  "tags": [
+    "rating",
+    "stars",
+    "review",
+    "score",
+    "feedback",
+    "slider"
+  ],
+  "usage": "Use for reviews and quick feedback. Give it `label` (or `aria-label`), then `value` + `onChange` (controlled) or `defaultValue`; set `name` to submit it in a <form> and `required` to block an empty rating. `clearable` lets people take a rating back to 0. For an average, pass `value` with `readOnly`. Pass `words` (one per whole star, index 0 unused) to show a word under the stars. Pair with a text box when the rating is low; that's when people have something to say.",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "disabled"
+  ],
+  "keyboard": [
+    { "keys": "Tab", "does": "Moves to the stars, one stop; read-only and disabled ratings are skipped." },
+    { "keys": "ArrowRight / ArrowUp", "does": "Raises the rating by half a star, or a whole star with allowHalf off." },
+    { "keys": "ArrowLeft / ArrowDown", "does": "Lowers the rating by the same step, down to the lowest rating." },
+    { "keys": "Home / End", "does": "Sets the lowest rating (one step, or 0 when clearable) or the highest." },
+    { "keys": "Backspace / Delete / 0", "does": "Clears the rating to 0.", "when": "clearable" }
+  ],
+  "screenReader": "A slider named by `label` (or `aria-label`). It says its value as \"3.5 out of 5 stars\" (`formatValue`), followed by the word from `words` for that star, and says the new value as it changes. Read-only and disabled are announced; with `error` it is marked invalid and the message is read as its description.",
+  "controls": [
+    {
+      "group": "Value",
+      "key": "defaultValue",
+      "label": "Initial value",
+      "type": "range",
+      "min": 0,
+      "max": 10,
+      "step": 0.5,
+      "default": 0
+    },
+    {
+      "group": "Value",
+      "key": "max",
+      "label": "Stars",
+      "type": "range",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "group": "Value",
+      "key": "allowHalf",
+      "label": "Half steps",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Value",
+      "key": "clearable",
+      "label": "Clearable",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Style",
+      "key": "size",
+      "label": "Star size",
+      "type": "select",
+      "options": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    {
+      "group": "Style",
+      "key": "gap",
+      "label": "Gap",
+      "type": "range",
+      "min": 0,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 6
+    },
+    {
+      "group": "Style",
+      "key": "tone",
+      "label": "Tone",
+      "type": "select",
+      "options": [
+        "accent",
+        "danger",
+        "success"
+      ],
+      "default": "accent"
+    },
+    {
+      "group": "Display",
+      "key": "showValue",
+      "label": "Show number",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Display",
+      "key": "showWords",
+      "label": "Show words",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "State",
+      "key": "readOnly",
+      "label": "Read only",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "required",
+      "label": "Required",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Average": {
+      "readOnly": true,
+      "defaultValue": 4.5,
+      "showWords": false,
+      "label": "4,218 reviews"
+    },
+    "Compact": {
+      "size": 18,
+      "gap": 2,
+      "showWords": false
+    }
+  },
+  "dataProps": [
+    {
+      "key": "value",
+      "type": "number",
+      "description": "Controlled rating, 0 to max. Pass it with onChange and the stars show exactly this. Leave undefined to let the component keep its own."
+    },
+    {
+      "key": "defaultValue",
+      "type": "number",
+      "description": "Starting rating when uncontrolled; also what a form reset returns to. 0 is no rating.",
+      "default": 0
+    },
+    {
+      "key": "onChange",
+      "type": "(value: number) => void",
+      "description": "(value: number) => void, when the committed rating changes (click, tap, keys, clear, form reset)."
+    },
+    {
+      "key": "words",
+      "type": "string[]",
+      "description": "A word per whole star, e.g. [\"\", \"Poor\", \"Fair\", \"Good\", \"Great\", \"Excellent\"]; shown under the stars and added to the announced value."
+    },
+    {
+      "key": "formatValue",
+      "type": "(value: number, max: number) => string",
+      "description": "(value, max) => string, the announced value. Default: \"3.5 out of 5 stars\"."
+    },
+    {
+      "key": "clearable",
+      "type": "boolean",
+      "description": "Clicking the current value, Backspace, Delete or 0 clears to 0.",
+      "default": false
+    },
+    {
+      "key": "name",
+      "type": "string",
+      "description": "Form field name; a hidden input submits the rating (empty when 0)."
+    },
+    {
+      "key": "id",
+      "type": "string",
+      "description": "Id for the slider element."
+    },
+    {
+      "key": "required",
+      "type": "boolean",
+      "description": "The form will not submit while the rating is 0 (native validation).",
+      "default": false
+    },
+    {
+      "key": "error",
+      "type": "string",
+      "description": "An error you already have, shown under the stars and announced."
+    },
+    {
+      "key": "size",
+      "type": "\"sm\" | \"md\" | \"lg\" | number",
+      "description": "Size of one star: sm 20px (a table row or review card), md 30px, lg 40px (the one question on a feedback screen). On a phone smaller stars grow to about 36px so a finger can scrub them. A number sets it in px exactly.",
+      "default": "md"
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLDivElement>",
+      "description": "Goes to the slider element (the row of stars), for focus()."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-*, data-*) goes to the root <div>. className and style are merged with the component's own."
+    }
+  ],
+  "example": "<Rating\n  label=\"How was your order?\"\n  name=\"rating\"\n  required\n  clearable\n  value={rating}\n  onChange={setRating}\n  words={[\"\", \"Poor\", \"Fair\", \"Good\", \"Great\", \"Excellent\"]}\n/>",
+  "demoProps": {
+    "demo": true,
+    "defaultValue": 3.5
+  }
+}

@@ -1,0 +1,306 @@
+{
+  "name": "Date Picker",
+  "slug": "date-picker",
+  "export": "DatePicker",
+  "order": 30,
+  "kind": "components",
+  "category": "forms",
+  "subcategory": "pickers",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Click a start day, hover to preview the span, click an end day.",
+  "description": "Single-date or range calendar with one or two months. Months slide in the direction you travel, the range band follows the pointer before you commit, and the header counts the days (or nights). Takes a value, works in a form, formats through Intl.",
+  "intents": [
+    "pick check in and check out dates",
+    "date range picker",
+    "choose a date",
+    "booking calendar",
+    "select travel dates"
+  ],
+  "tags": [
+    "date",
+    "calendar",
+    "range",
+    "booking",
+    "check-in",
+    "nights",
+    "schedule",
+    "day picker"
+  ],
+  "usage": "Use `mode=\"range\"` for stays, bookings and reporting periods, `single` for one day. Pass `value` + `onChange` (or `defaultValue`): range mode takes { start, end }, single mode a date; dates may be Date objects or \"YYYY-MM-DD\" strings, and onChange(next, iso) gives both. With no value nothing is selected. Bound what can be picked with `disablePast` (on by default), `min`, `max` and `isDateDisabled`. In a form give it `name` (range mode posts `${name}Start` and `${name}End`, as \"YYYY-MM-DD\") and `required`; show a server message with `error`. Dates and weekday names follow `locale` (the Theme's by default) or your `formatDate`; set `unit` (\"night\" for stays) or `formatCount` for the count, and any wording through `labels`. Give it `aria-label` when no heading names it. Arrow keys, PageUp/PageDown and Home/End move focus; Enter or Space picks. It is an inline calendar: to open it from a field, put it in a Popover.",
+  "states": [
+    "default",
+    "focus",
+    "disabled"
+  ],
+  "controls": [
+    {
+      "group": "Mode",
+      "key": "mode",
+      "label": "Mode",
+      "type": "select",
+      "options": [
+        "range",
+        "single"
+      ],
+      "default": "range"
+    },
+    {
+      "group": "Layout",
+      "key": "months",
+      "label": "Months shown",
+      "type": "range",
+      "min": 1,
+      "max": 2,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "group": "Layout",
+      "key": "weekStartsOn",
+      "label": "Week starts",
+      "type": "select",
+      "options": [
+        {
+          "label": "Sunday",
+          "value": 0
+        },
+        {
+          "label": "Monday",
+          "value": 1
+        }
+      ],
+      "default": 1
+    },
+    {
+      "group": "Layout",
+      "key": "cell",
+      "label": "Cell size",
+      "type": "range",
+      "min": 32,
+      "max": 52,
+      "step": 1,
+      "default": 40
+    },
+    {
+      "group": "Behaviour",
+      "key": "disablePast",
+      "label": "Disable past days",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Initial",
+      "key": "startOffset",
+      "label": "Start (days from today, −1 none)",
+      "type": "range",
+      "min": -1,
+      "max": 30,
+      "step": 1,
+      "default": -1
+    },
+    {
+      "group": "Initial",
+      "key": "length",
+      "label": "Length",
+      "type": "range",
+      "min": 0,
+      "max": 21,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "group": "Content",
+      "key": "unit",
+      "label": "Unit",
+      "type": "text",
+      "default": "day"
+    },
+    {
+      "group": "State",
+      "key": "required",
+      "label": "Required",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "readOnly",
+      "label": "Read only",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Single date": {
+      "mode": "single",
+      "months": 1
+    },
+    "Compact": {
+      "months": 1,
+      "cell": 34
+    },
+    "Empty": {
+      "startOffset": -1
+    }
+  },
+  "demoProps": {
+    "demo": true,
+    "startOffset": 3,
+    "unit": "night"
+  },
+  "dataProps": [
+    {
+      "key": "value",
+      "type": "{ start, end } | Date | string | null",
+      "description": "Controlled value. Range mode: { start, end } (end null while picking). Single mode: a date, or { start }. Dates are Date objects or \"YYYY-MM-DD\" strings. Pass it with onChange; leave undefined to let the picker keep its own."
+    },
+    {
+      "key": "defaultValue",
+      "type": "{ start, end } | Date | string",
+      "description": "Starting value when uncontrolled. A form reset returns to it. Leave it out for no selection."
+    },
+    {
+      "key": "onChange",
+      "type": "function",
+      "description": "(next: { start: Date | null, end: Date | null }, iso: { start: string | null, end: string | null }) => void, on every pick, Clear and form reset. iso holds the same days as \"YYYY-MM-DD\"."
+    },
+    {
+      "key": "month",
+      "type": "Date | string",
+      "description": "Controlled first month in view (any day of it). Pass with onMonthChange."
+    },
+    {
+      "key": "defaultMonth",
+      "type": "Date | string",
+      "description": "First month in view when uncontrolled. Defaults to the month of the value, else of today."
+    },
+    {
+      "key": "onMonthChange",
+      "type": "function",
+      "description": "(iso: string, { date }) => void with the first day of the new first month, when the arrows, a swipe or keyboard focus turns the page."
+    },
+    {
+      "key": "min",
+      "type": "Date | string",
+      "description": "Earliest day that can be picked."
+    },
+    {
+      "key": "max",
+      "type": "Date | string",
+      "description": "Latest day that can be picked; the next-month arrow stops there."
+    },
+    {
+      "key": "isDateDisabled",
+      "type": "function",
+      "description": "(date: Date, iso: string) => boolean: true blocks that day (struck through, skipped by Enter)."
+    },
+    {
+      "key": "disablePast",
+      "type": "boolean",
+      "description": "Block days before today.",
+      "default": true
+    },
+    {
+      "key": "today",
+      "type": "Date | string",
+      "description": "The day treated as today (dot, past days, \"Today\"). Defaults to the real date; set it for tests or another time zone."
+    },
+    {
+      "key": "locale",
+      "type": "string",
+      "description": "BCP 47 locale for month, day and weekday names (\"fr-FR\", \"ja-JP\"). Default: the locale of the nearest <Theme> (\"en-US\" when none sets one). English locales show two-letter weekdays."
+    },
+    {
+      "key": "formatDate",
+      "type": "function",
+      "description": "(date: Date, kind: \"short\" | \"long\" | \"month\" | \"weekday\" | \"weekdayLong\") => string, to replace any formatted date; return undefined to keep the Intl one."
+    },
+    {
+      "key": "unit",
+      "type": "string",
+      "description": "Word for the count under a range (\"night\" for stays); pluralised with s.",
+      "default": "day"
+    },
+    {
+      "key": "formatCount",
+      "type": "function",
+      "description": "(n: number) => string for the count under a range, replacing `${n} ${unit}s` (for other languages)."
+    },
+    {
+      "key": "labels",
+      "type": "object",
+      "description": "Words, merged over neutral defaults: { emptyRange: \"Add dates\", emptySingle: \"Pick a date\", pickStart: \"Pick a start date\", pickEnd: \"Pick an end date\", chooseOne, confirm, today, relative: (days) => string, clear: \"Clear\", previousMonth, nextMonth, startMark, endMark, selectedMark, todayMark, requiredRange, requiredSingle }."
+    },
+    {
+      "key": "name",
+      "type": "string",
+      "description": "Form field name. Single mode posts the day as \"YYYY-MM-DD\" under it; range mode posts `${name}Start` and `${name}End` (empty while unset)."
+    },
+    {
+      "key": "startName",
+      "type": "string",
+      "description": "Range mode: field name of the start day, instead of `${name}Start`."
+    },
+    {
+      "key": "endName",
+      "type": "string",
+      "description": "Range mode: field name of the end day, instead of `${name}End`."
+    },
+    {
+      "key": "id",
+      "type": "string",
+      "description": "id of the root group. The root is role=\"group\": name it with aria-label (or aria-labelledby) when no visible heading does; aria-describedby is kept and the error message's id is added to it while one shows."
+    },
+    {
+      "key": "required",
+      "type": "boolean",
+      "description": "A form will not submit until a day (range mode: both ends) is picked; the picker then shows labels.requiredSingle / requiredRange and takes focus.",
+      "default": false
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Not focusable, dimmed, left out of FormData, every button inert.",
+      "default": false
+    },
+    {
+      "key": "readOnly",
+      "type": "boolean",
+      "description": "The value shows and months can be browsed, but no day can be picked or cleared.",
+      "default": false
+    },
+    {
+      "key": "error",
+      "type": "string",
+      "description": "A message you already have (for example from the server), shown under the calendar with a red outline until you clear it."
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Gallery sample: booking wording (check-in, check-out). The gallery also sets startOffset 3 and unit \"night\". Leave off in real UI.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLDivElement>",
+      "description": "The root. ref.current.focus() moves focus to the day a keyboard user would land on (the selected or focused day, else the first open day shown)."
+    }
+  ],
+  "example": "const [stay, setStay] = useState({ start: null, end: null });\n\n<form onSubmit={book}>\n  <DatePicker\n    aria-label=\"Stay dates\"\n    value={stay}\n    onChange={(next) => setStay(next)}\n    unit=\"night\"\n    max=\"2027-12-31\"\n    isDateDisabled={(d, iso) => soldOut.has(iso)}\n    name=\"stay\"   /* posts stayStart and stayEnd */\n    required\n    error={serverError}\n  />\n</form>"
+}

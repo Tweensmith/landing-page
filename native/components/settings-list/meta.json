@@ -1,0 +1,126 @@
+{
+  "name": "Grouped Settings List",
+  "slug": "settings-list",
+  "export": "SettingsList",
+  "order": 74,
+  "kind": "components",
+  "category": "mobile",
+  "platform": "native",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Tap Notifications, then swipe from the left edge of the phone and hold mid-way: the whole push runs backwards under your finger. Press and hold a switch to see the knob stretch.",
+  "description": "An app's Settings screen for React Native in the iOS 26 inset grouped style: a large title that collapses into the bar, live search, a profile card and groups with coloured icon squares, switches, value rows, a storage bar and a destructive Sign Out. Tapping a disclosure row pushes its page the UIKit way: the new page slides in over a soft edge shadow while the old one drifts a third of the way left and dims, the titles cross-fade and the old title slides into a glass back button. Swiping from the left edge drives that transition backwards with your finger, un-highlighting the row you came from in step, and the release projects your flick to complete or cancel. Switches stretch while held, spring across and can be dragged; checkmarks draw in; time rows open an inline drum picker; search filters every row on every page and highlights the match.",
+  "intents": [
+    "ios settings screen with grouped list",
+    "react native settings page with toggles and disclosure rows",
+    "navigation push transition with swipe back gesture",
+    "inset grouped table view with switches and checkmarks"
+  ],
+  "tags": [
+    "disclosure",
+    "drum picker",
+    "expo",
+    "grouped list",
+    "haptics",
+    "inset grouped",
+    "ios",
+    "large title",
+    "navigation stack",
+    "preferences",
+    "push transition",
+    "react native",
+    "search",
+    "settings",
+    "swipe back"
+  ],
+  "usage": "Use for an app's own settings and preferences: a few short groups, one idea each, with the destructive action alone at the bottom. Put on/off choices on switches that apply at once, choices among options on checkmark pages, and anything with more than one control behind a disclosure row. Keep row titles short so search can find them, and always leave the back button alongside the swipe.",
+  "states": [
+    "default",
+    "scrolled",
+    "open"
+  ],
+  "controls": [
+    {
+      "group": "Content",
+      "key": "title",
+      "label": "Title",
+      "type": "text",
+      "default": "Settings"
+    },
+    {
+      "group": "Content",
+      "key": "showSearch",
+      "label": "Search field",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Content",
+      "key": "showProfile",
+      "label": "Profile card",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Style",
+      "key": "largeTitle",
+      "label": "Large title",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Style",
+      "key": "tintedIcons",
+      "label": "Coloured icons",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Navigation",
+      "key": "swipeBack",
+      "label": "Swipe back",
+      "type": "select",
+      "options": [
+        {
+          "label": "From the edge",
+          "value": "edge"
+        },
+        {
+          "label": "From anywhere (iOS 26)",
+          "value": "anywhere"
+        },
+        {
+          "label": "Off",
+          "value": "off"
+        }
+      ],
+      "default": "edge"
+    },
+    {
+      "group": "Navigation",
+      "key": "parallax",
+      "label": "Under-page shift",
+      "type": "range",
+      "min": 0,
+      "max": 0.5,
+      "step": 0.05,
+      "default": 0.3
+    }
+  ],
+  "presets": {
+    "Monochrome": {
+      "tintedIcons": false
+    },
+    "Swipe anywhere": {
+      "swipeBack": "anywhere"
+    },
+    "Minimal": {
+      "showSearch": false,
+      "showProfile": false,
+      "largeTitle": false
+    },
+    "Flat push": {
+      "parallax": 0
+    }
+  }
+}

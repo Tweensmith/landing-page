@@ -1,0 +1,294 @@
+{
+  "name": "Helix Carousel",
+  "slug": "helix-carousel",
+  "export": "HelixCarousel",
+  "order": 2,
+  "kind": "components",
+  "category": "showpieces",
+  "subcategory": "galleries",
+  "platform": "web",
+  "level": "hero",
+  "tier": "pro",
+  "hint": "Drag sideways, flick, click a card, or focus the coil and use the arrow keys.",
+  "description": "Cards wound around a 3D helix. Dragging rotates the spiral with velocity-aware spring snapping; cards ride a helical thread, sinking into fog, blur and shadow with distance and turning their backs on the far side of the coil.",
+  "intents": [
+    "browse an art collection",
+    "showcase a portfolio",
+    "explore a product drop",
+    "3d spinning gallery",
+    "feature tour carousel",
+    "album or artwork browser"
+  ],
+  "tags": [
+    "carousel",
+    "3d",
+    "helix",
+    "spiral",
+    "gallery",
+    "showcase",
+    "drag",
+    "portfolio",
+    "collection",
+    "slider"
+  ],
+  "usage": "Use for collections where browsing is the point: portfolios, drops, album/art galleries, feature tours. 6–14 items. Avoid for content that must be compared side by side. Pass `items` (array of { id, title, caption?, image?, node?, palette?, variant? }; a card shows `node`, else `image`, else procedural art from `palette`/`variant` or `art`, else a plain surface) and `cards={items.length}` (cards is capped at items.length so no item is on the coil twice; the default 9 also caps it). `label` names the region for screen readers. The front card is `value` / `defaultValue` / `onChange(index, item)`; `onSelect(item, index, event)` fires when the front card is clicked or Enter/Space is pressed on the coil (open a detail view from it). Keyboard: focus the coil, Left/Right turn one card, Home/End jump to the ends; the front card is announced politely once the coil settles. autoSpin pauses off screen, in a hidden tab, on hover, keyboard focus and drag, and shows a pause/play button. disabled makes it inert (no keys, drag, clicks, buttons or auto-spin), dims and desaturates the coil, and sets aria-disabled. Under prefers-reduced-motion card changes are an instant step with a short fade. Give it width, not height: it sizes its own height, and if the coil would spill past the sides of its box it is scaled down to fit. With no items it shows `emptyLabel`. `demo` winds the sample art collection (gallery only).",
+  "stage": {
+    "bg": "radial-gradient(100% 80% at 50% 25%, #2b2080 0%, #0e0b2e 62%, #070617 100%)",
+    "accent": "#a493ff",
+    "theme": "dark"
+  },
+  "controls": [
+    {
+      "group": "Coil",
+      "key": "cards",
+      "label": "Cards",
+      "type": "range",
+      "min": 5,
+      "max": 14,
+      "step": 1,
+      "default": 9
+    },
+    {
+      "group": "Coil",
+      "key": "radius",
+      "label": "Radius",
+      "type": "range",
+      "min": 200,
+      "max": 700,
+      "step": 5,
+      "unit": "px",
+      "default": 380
+    },
+    {
+      "group": "Coil",
+      "key": "step",
+      "label": "Angle step",
+      "type": "range",
+      "min": 12,
+      "max": 60,
+      "step": 0.5,
+      "unit": "°",
+      "default": 30
+    },
+    {
+      "group": "Coil",
+      "key": "rise",
+      "label": "Rise per card",
+      "type": "range",
+      "min": -90,
+      "max": 90,
+      "step": 1,
+      "unit": "px",
+      "default": 46
+    },
+    {
+      "group": "Camera",
+      "key": "perspective",
+      "label": "Perspective",
+      "type": "range",
+      "min": 600,
+      "max": 3000,
+      "step": 20,
+      "unit": "px",
+      "default": 1400
+    },
+    {
+      "group": "Camera",
+      "key": "tilt",
+      "label": "Camera tilt",
+      "type": "range",
+      "min": -30,
+      "max": 30,
+      "step": 1,
+      "unit": "°",
+      "default": -8
+    },
+    {
+      "group": "Cards",
+      "key": "cardWidth",
+      "label": "Card width",
+      "type": "range",
+      "min": 130,
+      "max": 280,
+      "step": 2,
+      "unit": "px",
+      "default": 190
+    },
+    {
+      "group": "Cards",
+      "key": "cardRadius",
+      "label": "Corner radius",
+      "type": "range",
+      "min": 0,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "group": "Cards",
+      "key": "frontScale",
+      "label": "Front scale",
+      "type": "range",
+      "min": 0,
+      "max": 0.5,
+      "step": 0.01,
+      "default": 0.14
+    },
+    {
+      "group": "Cards",
+      "key": "backFade",
+      "label": "Back fade",
+      "type": "range",
+      "min": 0,
+      "max": 1,
+      "step": 0.01,
+      "default": 0.7
+    },
+    {
+      "group": "Cards",
+      "key": "fog",
+      "label": "Depth fog",
+      "type": "range",
+      "min": 0,
+      "max": 1,
+      "step": 0.01,
+      "default": 0.6
+    },
+    {
+      "group": "Coil",
+      "key": "thread",
+      "label": "Helix thread",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Motion",
+      "key": "stiffness",
+      "label": "Snap stiffness",
+      "type": "range",
+      "min": 40,
+      "max": 400,
+      "step": 5,
+      "default": 110
+    },
+    {
+      "group": "Motion",
+      "key": "damping",
+      "label": "Snap damping",
+      "type": "range",
+      "min": 8,
+      "max": 50,
+      "step": 1,
+      "default": 20
+    },
+    {
+      "group": "Motion",
+      "key": "autoSpin",
+      "label": "Auto spin",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Motion",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Tight coil": {
+      "step": 44,
+      "rise": 60,
+      "radius": 300
+    },
+    "Flat ring": {
+      "rise": 0,
+      "step": 26,
+      "tilt": -14
+    },
+    "Descending": {
+      "rise": -52,
+      "tilt": 10
+    }
+  },
+  "states": [
+    "default",
+    "disabled"
+  ],
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "items",
+      "type": "Array<{ id, title, caption?, image?, alt?, node?, art?, palette?, variant? }>",
+      "description": "The cards, in order. id keeps each card stable; title and caption show under the coil and are announced; image (URL) or node (ReactNode) is the card face, else procedural art from palette/variant (or an art id in art), else a plain surface.",
+      "default": []
+    },
+    {
+      "key": "value",
+      "type": "number",
+      "description": "Controlled front card (index into items). Changing it turns the coil there; a turn you do not accept springs back once the coil rests."
+    },
+    {
+      "key": "defaultValue",
+      "type": "number",
+      "description": "Front card at mount when uncontrolled.",
+      "default": 0
+    },
+    {
+      "key": "onChange",
+      "type": "function",
+      "description": "(index, item) => void, each time a turn by the user (drag, keys, buttons, a click on a card) or auto-spin brings a new card to the front. Not called for the entrance or for turns made to follow `value`."
+    },
+    {
+      "key": "onSelect",
+      "type": "function",
+      "description": "(item, index, event) => void, when the front card is chosen: clicked, or Enter/Space pressed on the focused coil. Use it to open the piece."
+    },
+    {
+      "key": "label",
+      "type": "string",
+      "description": "Accessible name of the carousel region.",
+      "default": "Carousel"
+    },
+    {
+      "key": "emptyLabel",
+      "type": "ReactNode",
+      "description": "Shown when there are no items. Empty string shows nothing.",
+      "default": "Nothing to show yet."
+    },
+    {
+      "key": "labels",
+      "type": "{ previous?, next?, pause?, play?, hint?, choose?, unavailable? }",
+      "description": "Screen-reader text for the buttons and the coil's key hint, for translation. Defaults: \"Previous card\", \"Next card\", \"Pause rotation\", \"Start rotation\", the arrow-key hint, \"Enter chooses the front card.\", \"Unavailable.\""
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Inert: no keys, drag, clicks, buttons or auto-spin; dimmed and aria-disabled.",
+      "default": false
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "With no items, wind the sample art collection and name the region \"Art collection\". Gallery only; leave off in real UI.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLElement>",
+      "description": "The root <section>, for measuring or scrolling to the carousel. className, style and other props (data-*, aria-*) land on it too."
+    }
+  ],
+  "example": "const [front, setFront] = useState(0);\n\n<HelixCarousel\n  items={pieces.map((p) => ({ id: p.id, title: p.title, caption: p.year, image: p.thumb }))}\n  cards={pieces.length}\n  label=\"Pinned pieces\"\n  value={front}\n  onChange={(i) => setFront(i)}\n  onSelect={(item) => openPiece(item.id)}\n/>"
+}

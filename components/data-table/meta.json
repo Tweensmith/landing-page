@@ -1,0 +1,591 @@
+{
+  "name": "Data Table",
+  "slug": "data-table",
+  "export": "DataTable",
+  "order": 87,
+  "kind": "components",
+  "category": "display",
+  "subcategory": "tables-and-boards",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Turn on Sample content for the invoices ledger: click a column header and watch the rows slide; shift-click adds a second sort.",
+  "description": "A real HTML table for your records. You pass `columns` (header, alignment, width, a `render(row)` cell, a `value(row)` to sort and search by, `hideBelow` to drop a column on narrow widths) and `rows` (plain objects with an `id`). Sorting, single or multiple selection with a tri-state header checkbox, search, pages or \"load more\", and expandable rows each work on their own or under your control, and every change is reported. Loading draws placeholder rows in the table's own columns; empty and error (with Try again) are yours to set. Headers carry scope and aria-sort; one row is a Tab stop and the arrow keys move between rows. Wider than its box, it scrolls sideways inside its own frame with edge cues instead of pushing the page, or below `stackBelow` each row becomes a card. Rows you remove collapse and the rows below close the gap; rows you add open. One row can be the open row of a list and pane (`activeRow`), and the header row can be hidden for a plain list (`showHeader`). Row actions can be your own components (`renderRowActions`). The Sample content switch shows the invoices ledger: sorting slides every row to its new place on a staggered spring, status chips with rolling counts, a sticky header, resizable columns, expandable rows with a payment timeline, a floating bulk-action bar, and stacked invoice cards on a phone.",
+  "intents": [
+    "sortable filterable data table",
+    "invoices table with status and amounts",
+    "table with expandable rows and bulk actions",
+    "resizable columns sticky header table",
+    "admin ledger with row selection and totals",
+    "queue of open issues with an action button per row that collapses when resolved"
+  ],
+  "tags": [
+    "data table",
+    "table",
+    "data grid",
+    "sort",
+    "multi-sort",
+    "filter",
+    "search",
+    "sticky header",
+    "expandable rows",
+    "column resize",
+    "row selection",
+    "bulk actions",
+    "invoices",
+    "ledger",
+    "treegrid",
+    "flip",
+    "stacked cards on phones",
+    "list and pane open row",
+    "row actions with buttons"
+  ],
+  "usage": "Use for records people scan, sort and act on: orders, customers, queues, invoices. Pass `columns` and `rows` first; give each row an `id` (or `getRowId`). Add `sortable` to the columns people sort, `selectable` when there are bulk actions, `searchable` for a search field, and `pageSize` (or `onLoadMore` + `hasMore`) for long lists: there is no virtualisation, so every row of the current page is in the DOM. Own the data states: `loading` while fetching (placeholders hold the rows' height in both forms; give a column that renders several lines of its own a `skeleton` line count, or pass `loadingRowHeight`), `error` + `onRetry` when it fails, `emptyMessage` when there is nothing. Use `onRowClick(row)` to open a record, `renderRowActions(row, info)` to put your own Buttons in each row (or `rowActions` for small built-in ones), and `activeRow` + `onActiveRowChange` for a list beside a detail pane. On phones set `stackBelow` (say 640) so rows become cards, and place columns in the card with each column's `stack`. Remove a row from `rows` and it collapses in place; add it back and it opens (`animateRows`; pass { exit: \"collapse\" } plus `concealedRows` to run your own flight from and back to a row, reading its place with `apiRef`). For a mail-style queue on phones, `swipeActions` + `onSwipe` let a row be swiped to act on it; a swipe is only a shortcut, so every swipe action also needs a visible button or a key. `rowProps` puts your attributes (data-*, aria-label, className) on each row, and `tabbableControls={false}` keeps one Tab stop for the whole list. `showHeader={false}` makes a plain list with no visible header row. Set `height` to fix the height so the header sticks while the body scrolls.",
+  "states": [
+    "default",
+    "loading",
+    "empty",
+    "error",
+    "selected",
+    "open",
+    "scrolled"
+  ],
+  "controls": [
+    {
+      "group": "Content",
+      "key": "title",
+      "label": "Title",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Layout",
+      "key": "density",
+      "label": "Density",
+      "type": "select",
+      "options": [
+        "comfortable",
+        "compact"
+      ],
+      "default": "comfortable"
+    },
+    {
+      "group": "Layout",
+      "key": "height",
+      "label": "Height (0 = fit rows)",
+      "type": "range",
+      "min": 0,
+      "max": 760,
+      "step": 20,
+      "default": 0
+    },
+    {
+      "group": "Layout",
+      "key": "stackBelow",
+      "label": "Cards below (px, 0 = never)",
+      "type": "range",
+      "min": 0,
+      "max": 900,
+      "step": 20,
+      "default": 0
+    },
+    {
+      "group": "Look",
+      "key": "striped",
+      "label": "Striped rows",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Look",
+      "key": "showHeader",
+      "label": "Header row",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Behaviour",
+      "key": "selectable",
+      "label": "Selectable",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Behaviour",
+      "key": "searchable",
+      "label": "Search field",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Behaviour",
+      "key": "showTotals",
+      "label": "Footer totals (sample)",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "State",
+      "key": "loading",
+      "label": "Loading",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Motion",
+      "key": "animateRows",
+      "label": "Animate added and removed rows",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Motion",
+      "key": "sortStiffness",
+      "label": "Sort spring stiffness",
+      "type": "range",
+      "min": 160,
+      "max": 700,
+      "step": 20,
+      "default": 380
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Compact ledger": {
+      "density": "compact",
+      "striped": true
+    },
+    "Read-only report": {
+      "selectable": false,
+      "striped": true
+    },
+    "Tall, no totals": {
+      "height": 760,
+      "showTotals": false
+    }
+  },
+  "demoProps": {
+    "demo": true,
+    "selectable": true,
+    "height": 600
+  },
+  "dataProps": [
+    {
+      "key": "columns",
+      "type": "Array<{ key, header, align?, width?, minWidth?, sortable?, defaultDir?, render?(row, ctx), value?(row), accessor?, format?(value, row), compare?(a, b), searchable?, hideBelow?, wrap?, sticky?, rowHeader?, numeric?, className?, stack?, skeleton? }>",
+      "description": "The columns. `render(row, { value, index, selected, expanded, active, stacked })` draws a cell; `value(row)` (or `accessor`, a field name or function) is what sorting and search use; `format(value, row)` formats a plain value; `hideBelow` hides the column when the table is narrower than that many px; `wrap` lets text wrap; `sticky` pins the first column; `rowHeader` makes that cell the row's <th scope=row>. `stack` says where the column sits in a card when the table is stacked (see `stackBelow`): \"title\" (its own line, larger), \"line\" (its own line, value only), \"label\" (its own line with the header as a small label on the left and the value on the right), \"end\" (right-aligned on the same line as the column before it), \"hidden\" (not shown in the card, still read by screen readers). Pass { as: kind, order: n } to also move it within the card, e.g. { as: \"end\", order: 0.5 } puts it on the first line. Default: the first column is the title, the rest are label lines. `skeleton` says what the column's loading placeholder is, for cells the table cannot guess: a number of lines (each one line of the cell's text, with a bar in it), { lines, width } (width as a CSS length or px number; a last line is drawn at 60%), a node you draw (or a function (index) => node), or null for an empty cell. Default: one line, two for a `wrap` column. Give a cell that renders two lines of its own (a name over a detail) the number of lines it really shows, e.g. `skeleton: 3` for a name over a two-line detail.",
+      "default": []
+    },
+    {
+      "key": "rows",
+      "type": "object[]",
+      "description": "The records, plain objects. Each needs a stable `id` (or `key`), or pass `getRowId`.",
+      "default": []
+    },
+    {
+      "key": "getRowId",
+      "type": "(row, index) => string | number",
+      "description": "Returns a row's stable id. Default: row.id, then row.key, then the index."
+    },
+    {
+      "key": "rowLabel",
+      "type": "(row) => string",
+      "description": "How a row is named to screen readers (\"Select …\", \"Show details for …\"). Default: the rowHeader column's text, else the first column's."
+    },
+    {
+      "key": "title",
+      "type": "ReactNode",
+      "description": "Heading shown above the table and used as its accessible name. Blank shows none; then pass aria-label (it goes to the <table>).",
+      "default": ""
+    },
+    {
+      "key": "description",
+      "type": "ReactNode",
+      "description": "A line under the title. A node flows as ordinary inline content, so text, figures and icons passed loose read as one sentence (no wrapper needed)."
+    },
+    {
+      "key": "caption",
+      "type": "ReactNode",
+      "description": "A visually hidden <caption> for screen readers."
+    },
+    {
+      "key": "toolbar",
+      "type": "ReactNode",
+      "description": "Your controls (filters, buttons), placed in the header row beside the title."
+    },
+    {
+      "key": "footer",
+      "type": "ReactNode",
+      "description": "Your content in the footer bar (totals, links)."
+    },
+    {
+      "key": "sort",
+      "type": "{ key, dir: 'asc' | 'desc' } | null",
+      "description": "Controlled sort. Clicking a sortable header toggles asc / desc."
+    },
+    {
+      "key": "defaultSort",
+      "type": "{ key, dir } | null",
+      "description": "Starting sort when uncontrolled."
+    },
+    {
+      "key": "onSortChange",
+      "type": "(sort) => void",
+      "description": "Called with the new { key, dir } when a header is clicked."
+    },
+    {
+      "key": "manualSort",
+      "type": "boolean",
+      "description": "You sort the rows yourself (for example on the server); the table only reports the sort.",
+      "default": false
+    },
+    {
+      "key": "selectable",
+      "type": "boolean",
+      "description": "Shorthand for selectionMode=\"multiple\".",
+      "default": false
+    },
+    {
+      "key": "selectionMode",
+      "type": "'none' | 'single' | 'multiple'",
+      "description": "Row selection. Multiple adds a tri-state header checkbox for the rows on this page."
+    },
+    {
+      "key": "selected",
+      "type": "Array<id>",
+      "description": "Controlled selection: the selected row ids."
+    },
+    {
+      "key": "defaultSelected",
+      "type": "Array<id>",
+      "description": "Starting selection when uncontrolled.",
+      "default": []
+    },
+    {
+      "key": "onSelectedChange",
+      "type": "(ids, rows) => void",
+      "description": "Called with the selected ids and their rows."
+    },
+    {
+      "key": "searchable",
+      "type": "boolean",
+      "description": "Shows a search field in the header.",
+      "default": false
+    },
+    {
+      "key": "search",
+      "type": "string",
+      "description": "Controlled search text."
+    },
+    {
+      "key": "defaultSearch",
+      "type": "string",
+      "description": "Starting search text when uncontrolled.",
+      "default": ""
+    },
+    {
+      "key": "onSearchChange",
+      "type": "(text) => void",
+      "description": "Called as the search text changes."
+    },
+    {
+      "key": "filterRow",
+      "type": "(row, text) => boolean",
+      "description": "Your match test. Default: any searchable column's value contains the text, ignoring case."
+    },
+    {
+      "key": "manualFilter",
+      "type": "boolean",
+      "description": "You filter the rows yourself; the table only reports the search text.",
+      "default": false
+    },
+    {
+      "key": "pageSize",
+      "type": "number",
+      "description": "Rows per page; 0 shows every row. Adds a pager to the footer.",
+      "default": 0
+    },
+    {
+      "key": "page",
+      "type": "number",
+      "description": "Controlled page (1-based)."
+    },
+    {
+      "key": "defaultPage",
+      "type": "number",
+      "description": "Starting page when uncontrolled.",
+      "default": 1
+    },
+    {
+      "key": "onPageChange",
+      "type": "(page) => void",
+      "description": "Called with the new page. Sorting or searching goes back to page 1."
+    },
+    {
+      "key": "totalRows",
+      "type": "number",
+      "description": "Total row count when you page or filter on the server (with manualPagination / manualFilter)."
+    },
+    {
+      "key": "manualPagination",
+      "type": "boolean",
+      "description": "`rows` is already the current page; the table only draws the pager.",
+      "default": false
+    },
+    {
+      "key": "onLoadMore",
+      "type": "(event) => void",
+      "description": "Shows a Load more button in the footer (instead of pages) while `hasMore` is true."
+    },
+    {
+      "key": "hasMore",
+      "type": "boolean",
+      "description": "Whether there are more rows to load.",
+      "default": false
+    },
+    {
+      "key": "loadingMore",
+      "type": "boolean",
+      "description": "Your request for more rows is running: the button shows a spinner and does not fire again.",
+      "default": false
+    },
+    {
+      "key": "renderExpanded",
+      "type": "(row) => ReactNode",
+      "description": "Adds an expand button per row; the node is shown in a full-width row underneath."
+    },
+    {
+      "key": "expanded",
+      "type": "Array<id>",
+      "description": "Controlled expanded rows."
+    },
+    {
+      "key": "defaultExpanded",
+      "type": "Array<id>",
+      "description": "Starting expanded rows when uncontrolled.",
+      "default": []
+    },
+    {
+      "key": "onExpandedChange",
+      "type": "(ids) => void",
+      "description": "Called with the expanded row ids."
+    },
+    {
+      "key": "onRowClick",
+      "type": "(row, event) => void",
+      "description": "Called when a row is clicked or Enter is pressed on it. Clicks on controls inside the row (buttons, links, the checkbox, your row actions) do not count."
+    },
+    {
+      "key": "rowActions",
+      "type": "Array<{ label, icon?, iconOnly?, onClick(row, event), disabled?(row), hidden?(row), busy?(row) }> | (row) => Array",
+      "description": "The table's own small buttons at the end of each row; each handler gets the row. `busy(row)` shows a spinner and blocks repeat clicks. For your own components use `renderRowActions`."
+    },
+    {
+      "key": "renderRowActions",
+      "type": "(row, { index, selected, expanded, active, stacked, tabIndex }) => ReactNode",
+      "description": "Your own per-row actions (for example the kit's Button), drawn in the last cell, right-aligned. Wins over `rowActions` for a row where it returns anything other than undefined. Clicks in that cell never trigger `onRowClick`. In the stacked form the actions sit at the bottom of the card and can span it: pass `fullWidth={info.stacked}` to a Button. `info.tabIndex` is 0 on the row that holds the keyboard stop and -1 on the others, if you want one Tab stop per table."
+    },
+    {
+      "key": "activeRow",
+      "type": "id | null",
+      "description": "Controlled open row, for a list beside a detail pane. Marked with aria-current=\"true\", a raised tint and an accent bar. Independent of `selected`. When the open row leaves `rows`, `onActiveRowChange` is called once with the nearest remaining row (the next shown, else the previous, else null); the value stays yours."
+    },
+    {
+      "key": "defaultActiveRow",
+      "type": "id | null",
+      "description": "Starting open row when uncontrolled. When it leaves `rows`, the nearest remaining row opens."
+    },
+    {
+      "key": "onActiveRowChange",
+      "type": "(id, row) => void",
+      "description": "Called when the open row changes: a click on a row, Up / Down / Home / End / Page keys on a focused row, or the open row being removed. Checking a row's box does not change it. Passing this (or activeRow) turns the open row on; then a row click opens instead of selecting."
+    },
+    {
+      "key": "stackBelow",
+      "type": "number",
+      "description": "Container width in px below which each row becomes a card (the header row is hidden, the table stays a table to screen readers). Place columns in the card with each column's `stack`. Sorting stays reachable from a Sort by menu and an order button above the cards, and Select all sits beside it. 0 never stacks.",
+      "default": 0
+    },
+    {
+      "key": "showHeader",
+      "type": "boolean",
+      "description": "Draws the column header row. false hides it from sight but keeps the column names for screen readers; the header's sort buttons and Select all are not shown then, so drive `sort` / `selected` yourself if you need them.",
+      "default": true
+    },
+    {
+      "key": "animateRows",
+      "type": "boolean | { enter?, exit? } | (row, phase) => string",
+      "description": "Rows removed from `rows` collapse in place while the rows below close the gap; rows added open. Only additions and removals animate: sorting, paging, searching, loading and the first load do not (with manualFilter / manualPagination / manualSort, data arriving within 1.5 s of a search, sort or page change does not animate either, and a change that replaces every row is not animated). With reduced motion rows fade instead, with no movement. Focus inside a removed row moves to its neighbour. To run your own animation (for example a chip that flies from the row to where it went), pass an object: `exit` is \"fade\" (default: the content fades out while the gap closes), \"collapse\" (the content goes at once and only the gap closes, so your flight can stand in for the row; under reduced motion the row simply goes) or \"none\" (no animation); `enter` is \"fade\" (default: the gap opens and the content fades in) or \"none\". Each can also be a function (row) => word, or pass one function (row, phase) => word, phase being \"enter\" or \"exit\". Read where the row was with `apiRef.current.getRowRect(id)` before you remove it. A row that leaves right after a committed swipe always leaves from off the edge, whatever `exit` says. To keep an added row invisible until your flight lands on it, see `concealedRows`.",
+      "default": true
+    },
+    {
+      "key": "concealedRows",
+      "type": "Array<id>",
+      "description": "Ids of rows drawn invisible while they keep their place (opacity 0; still focusable and announced). An added row in this list opens its gap as usual but stays invisible; take its id out and it fades in over 200 ms. Use it to land your own flight on a restored row before it shows. Hiding is instant, showing fades."
+    },
+    {
+      "key": "swipeActions",
+      "type": "{ start?, end? } | (row) => ({ start?, end? }) | null",
+      "description": "Lets a touch (or pen) drag a row sideways to act on it. `start` is revealed when the row is dragged toward the end (rightward in a left-to-right page), `end` when it is dragged toward the start. Each action is { id, label, icon?, tone? }: `icon` a kit icon name or a node, `tone` a CSS colour (default var(--ts-accent)). Behind the row the action's colour, icon and label fade in with the drag; once releasing will commit, the colour deepens and the icon fills. Past `swipeDistance` (or a flick faster than `swipeVelocity`) the row carries on off the edge and `onSwipe` is called; short of it the row springs back. A vertical drag still scrolls the page, the gesture never selects text, and the click that ends it is not a row click. One swipe at a time. Works in the table and the stacked form. Under reduced motion the row does not slide (the backing is laid over it instead) and the action still happens. A swipe is a shortcut, never the only way: every swipe action needs a visible button or a key that does the same (for example `renderRowActions`, or buttons in a detail pane). A function returning null, or a side left out, offers no action that way (the row gives a few px and springs back)."
+    },
+    {
+      "key": "onSwipe",
+      "type": "(row, action, { index, side }) => void | Promise",
+      "description": "Called when a swipe commits, with the row, the action ({ id, label, … }) and { index, side: \"start\" | \"end\" }. Remove the row from `rows` and its gap closes from where the swipe left it (no flash back). Keep it (the action failed, or was undone) and it slides back. If you return a promise, the row waits off the edge until it settles, then comes back if it is still in `rows`."
+    },
+    {
+      "key": "swipeDistance",
+      "type": "number",
+      "description": "How far in px a row must be dragged for a swipe to commit on release. 96 is a quarter of a phone-width row: far enough that a loose drag does not decide anything, near enough for a thumb.",
+      "default": 96
+    },
+    {
+      "key": "swipeVelocity",
+      "type": "number",
+      "description": "A release faster than this (px per second, over the last 100 ms) also commits, in the direction of the drag, once the row has moved at least 24 px (or a quarter of swipeDistance if that is less). 600 px/s is a deliberate flick; a slow drag that stops short springs back.",
+      "default": 600
+    },
+    {
+      "key": "swipeWithMouse",
+      "type": "boolean",
+      "description": "Lets a mouse drag rows too. Off by default: with a mouse, a drag across a row is usually text selection, and the row's buttons are right there.",
+      "default": false
+    },
+    {
+      "key": "rowProps",
+      "type": "object | (row, { index, selected, active, stacked }) => object",
+      "description": "Attributes for a row's <tr>: `className`, `style`, `title`, `id`, and any `data-*` or `aria-*` (other keys are ignored). Use it to mark a caller state your own cell content styles from (data-unread, with `.my-cell` rules inside your own render), to give a row an accessible name of its own (aria-label, e.g. one that starts with \"Unread.\"), or a test hook. A leaving row keeps its class, style and data-* but not its aria-*."
+    },
+    {
+      "key": "tabbableControls",
+      "type": "boolean",
+      "description": "Whether the checkbox, expand button and row actions in the focused row are Tab stops of their own (true, as before). false leaves one Tab stop for the whole table body, the row: the checkbox is then reached with Space on the row, details with the arrow keys, and pointer clicks still work; info.tabIndex given to renderRowActions is -1. Only applies when rows take focus (selectable, onRowClick, activeRow or renderExpanded). Set it false only when every control in a row has a key or another visible way to reach it.",
+      "default": true
+    },
+    {
+      "key": "apiRef",
+      "type": "Ref<{ getRowElement(id), getRowRect(id), focusRow(id, options?) }>",
+      "description": "A handle for reaching a row by id from outside, so you never query the table's DOM. getRowRect(id) is the row's DOMRect on screen (null when the row is not shown, for example when the table is display:none); getRowElement(id) the <tr> (null for a row that is not in `rows`); focusRow(id, { preventScroll }) moves focus to the row, makes it the row Tab returns to, and returns whether it took focus. The handle is ready in your layout effects. `ref` still gives the root element."
+    },
+    {
+      "key": "loading",
+      "type": "boolean",
+      "description": "Your data is loading. With no rows, placeholder rows are drawn in the table's own columns, each holding the box a real row takes: one bar per line of each column (see a column's `skeleton`); in the stacked form each placeholder is a card laid out by the same `stack` rules, with the header labels, and a full-width bar where the row actions go (the height a size sm Button has there: 34px, 44px on touch or narrow screens; 30px / 44px on touch for the built-in `rowActions`). With rows, the current rows are dimmed. Placeholders are hidden from assistive technology and inert; a hidden \"Loading\" status is announced and the table is aria-busy. They shimmer, and stay still with reduced motion. Reloads: if real rows were on screen just before (in the same form and at the same width), each placeholder takes the measured height of the real row in its place, exactly (rows past the measured ones take their average), so nothing moves either way; otherwise the placeholder's own lines set its height, at least `loadingRowHeight`.",
+      "default": false
+    },
+    {
+      "key": "loadingRows",
+      "type": "number",
+      "description": "How many placeholder rows to draw. Default: pageSize, else 5."
+    },
+    {
+      "key": "loadingRowHeight",
+      "type": "number",
+      "description": "A minimum height in px for each placeholder row, in both forms, for when you know the row height exactly (for example 167 for a phone card). Used whenever no measured height from earlier real rows applies (see `loading`). 0 leaves it to the placeholder's lines.",
+      "default": 0
+    },
+    {
+      "key": "error",
+      "type": "ReactNode",
+      "description": "An error message you already have; replaces the rows."
+    },
+    {
+      "key": "onRetry",
+      "type": "() => void",
+      "description": "Shows Try again with the error."
+    },
+    {
+      "key": "emptyMessage",
+      "type": "ReactNode",
+      "description": "Shown when there are no rows. Default \"Nothing to show yet.\""
+    },
+    {
+      "key": "emptyIcon",
+      "type": "ReactNode | string | null",
+      "description": "The icon above `emptyMessage`. A string is a kit icon name drawn in the same tile; any other node is drawn as is in place of the tile; null draws none. Default: the table's inbox icon. The \"no rows match\" form of a search keeps its search icon."
+    },
+    {
+      "key": "errorIcon",
+      "type": "ReactNode | string | null",
+      "description": "The icon above `error`, treated like `emptyIcon`. Default: the table's alert icon."
+    },
+    {
+      "key": "showRowCount",
+      "type": "boolean",
+      "description": "Prints the table's own row count (or the page range) at the start of the footer. false hides it when your `footer` says it better; the selected count still shows when rows are selected, and with `searchable` the count is still announced to screen readers.",
+      "default": true
+    },
+    {
+      "key": "labels",
+      "type": "object",
+      "description": "Overrides for the built-in words (search, clearSearch, empty, noMatch(q), error, retry, loading, loadMore, selectAll, deselectAll, selectAllShort, selectRow(label), expand(label), collapse(label), rows(n), range(from, to, total), selected(n), sorted(label, dir), sortBy, unsorted, sortOrder(dir), …)."
+    },
+    {
+      "key": "density",
+      "type": "'comfortable' | 'compact'",
+      "description": "Row height.",
+      "default": "comfortable"
+    },
+    {
+      "key": "striped",
+      "type": "boolean",
+      "description": "Alternate row shading.",
+      "default": false
+    },
+    {
+      "key": "height",
+      "type": "number",
+      "description": "Fixed height in px; the header sticks while the body scrolls. 0 grows with the rows.",
+      "default": 0
+    },
+    {
+      "key": "maxWidth",
+      "type": "number",
+      "description": "Width cap in px; 0 fills the container.",
+      "default": 0
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Makes the whole table inert: no sorting, selection, search, paging or row actions.",
+      "default": false
+    },
+    {
+      "key": "sortStiffness",
+      "type": "number",
+      "description": "Sample content: spring stiffness of rows sliding to their new place after a sort. In your own table a sort reorders rows in place without sliding.",
+      "default": 380
+    },
+    {
+      "key": "showTotals",
+      "type": "boolean",
+      "description": "Sample content only: the ledger's footer totals.",
+      "default": true
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Shows the sample invoices ledger when no columns or rows are passed.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLElement>",
+      "description": "The root <section>."
+    }
+  ],
+  "example": "const columns = [\n  { key: \"kind\", header: \"Issue\", stack: \"line\", render: (row) => <KindLabel kind={row.kind} /> },\n  { key: \"store\", header: \"Store\", rowHeader: true, wrap: true, stack: \"line\", skeleton: 3,   // name over a two-line detail\n    render: (row) => <StoreCell row={row} /> },\n  { key: \"amount\", header: \"At stake\", align: \"right\", numeric: true, stack: \"end\",\n    format: (v) => new Intl.NumberFormat(\"en-US\", { style: \"currency\", currency: \"USD\" }).format(v) },\n  { key: \"age\", header: \"Raised\", stack: { as: \"end\", order: 0.5 } },\n];\n\n<DataTable\n  title=\"Needs you\"\n  description={`${issues.length} open`}\n  columns={columns}\n  rows={issues}                       // remove a resolved issue and its row collapses\n  stackBelow={640}                    // cards on phones\n  loading={isLoading}\n  error={loadError?.message}\n  onRetry={refetch}\n  emptyMessage=\"Nothing needs you right now.\"\n  renderRowActions={(row, info) => (\n    <Button label={row.action} variant=\"secondary\" size=\"sm\" fullWidth={info.stacked}\n      loading={working === row.id} onClick={() => resolve(row)} />\n  )}\n/>\n\n// a list beside a detail pane\n<DataTable columns={requestColumns} rows={requests} selectable selected={checked} onSelectedChange={setChecked}\n  activeRow={openId} onActiveRowChange={(id) => setOpenId(id)} />\n\n// a queue you swipe on a phone (the same actions are buttons in the pane)\nconst api = useRef(null);\n<DataTable columns={requestColumns} rows={requests} apiRef={api} showHeader={false}\n  swipeActions={{ start: { id: \"approve\", label: \"Approve\", icon: \"check\", tone: \"var(--ts-success)\" },\n                  end: { id: \"snooze\", label: \"Snooze\", icon: \"clock\", tone: \"var(--ts-warning)\" } }}\n  onSwipe={(row, action) => decide(row.id, action.id)}       // remove it from requests: its gap closes\n  animateRows={{ exit: \"collapse\" }}                        // your own chip flies from api.current.getRowRect(id)\n  concealedRows={landing}                                    // a restored row stays invisible until its chip lands\n  rowProps={(row) => ({ \"aria-label\": `${row.unread ? \"Unread. \" : \"\"}${row.title}` })} />"
+}

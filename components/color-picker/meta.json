@@ -1,0 +1,230 @@
+{
+  "name": "Colour Picker",
+  "slug": "color-picker",
+  "export": "ColorPicker",
+  "order": 31,
+  "kind": "components",
+  "category": "forms",
+  "subcategory": "pickers",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Drag the square or hue strip. The dashed line marks AA contrast.",
+  "description": "Saturation/brightness square, hue strip, hex entry, swatches and a live WCAG contrast check. A dashed AA line on the square shows where the colour stops being readable against your background.",
+  "intents": [
+    "pick a colour",
+    "choose a brand colour",
+    "hex colour input",
+    "check colour contrast",
+    "color picker"
+  ],
+  "tags": [
+    "colour",
+    "color",
+    "picker",
+    "hex",
+    "hue",
+    "swatch",
+    "contrast",
+    "wcag",
+    "palette"
+  ],
+  "usage": "Use where someone picks one colour (a brand colour, a label colour). Pass `value` + `onChange` (or `defaultValue`), a `label`, and set `contrastWith` to the background the colour will sit on, so the AA line and badges tell the truth. `onChange` receives a lowercase #rrggbb hex. In a <form> give it a `name` and the hex is submitted; a reset returns to `defaultValue`. It is `width` px wide (280) and never wider than its container; on phones it grows to 360px, and its swatches and hue strip have 44px-tall touch boxes.",
+  "states": [
+    "default",
+    "focus",
+    "dragging",
+    "error",
+    "disabled"
+  ],
+  "controls": [
+    {
+      "group": "Colour",
+      "key": "defaultValue",
+      "label": "Initial colour",
+      "type": "color",
+      "default": "#7c5cff",
+      "options": [
+        "#7c5cff",
+        "#ff5c8a",
+        "#ff8a3d",
+        "#2bb673",
+        "#1aa3ff",
+        "#c8ff3d"
+      ]
+    },
+    {
+      "group": "Colour",
+      "key": "contrastWith",
+      "label": "Contrast against",
+      "type": "color",
+      "default": "#ffffff",
+      "options": [
+        "#ffffff",
+        "#f6f5f1",
+        "#0a0a0c",
+        "#14141a"
+      ]
+    },
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": "Colour"
+    },
+    {
+      "group": "Layout",
+      "key": "width",
+      "label": "Width",
+      "type": "range",
+      "min": 220,
+      "max": 360,
+      "step": 4,
+      "default": 280
+    },
+    {
+      "group": "Layout",
+      "key": "showGuide",
+      "label": "AA guide line",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Layout",
+      "key": "showContrast",
+      "label": "Contrast check",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Layout",
+      "key": "showSwatches",
+      "label": "Swatches",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "On dark": {
+      "contrastWith": "#0a0a0c",
+      "defaultValue": "#c8ff3d"
+    },
+    "Bare": {
+      "showContrast": false,
+      "showSwatches": false,
+      "showGuide": false
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "value",
+      "type": "string",
+      "description": "Controlled colour, a hex (#rrggbb or #rgb). Pass it with onChange; leave it undefined to let the picker keep its own."
+    },
+    {
+      "key": "defaultValue",
+      "type": "string",
+      "description": "Colour on first render when uncontrolled, and what a form reset returns to.",
+      "default": "#7c5cff"
+    },
+    {
+      "key": "onChange",
+      "type": "function",
+      "description": "(hex: string) => void with a lowercase #rrggbb, on every change (drag, keys, hex entry, swatch). Fires often while dragging."
+    },
+    {
+      "key": "contrastWith",
+      "type": "string",
+      "description": "Hex of the background the colour will be used on; drives the AA guide line, the ratio and the AA / AAA badges.",
+      "default": "#ffffff"
+    },
+    {
+      "key": "label",
+      "type": "string",
+      "description": "Visible label that names the group. Blank hides it; then pass aria-label.",
+      "default": "Colour"
+    },
+    {
+      "key": "swatches",
+      "type": "array",
+      "description": "Preset colours: hex strings, or { value, label } objects (label is the swatch's accessible name). Default: eight sample hues; [] hides the row.",
+      "default": [
+        "#7c5cff",
+        "#ff5c8a",
+        "#ff8a3d",
+        "#f5c400",
+        "#2bb673",
+        "#1aa3ff",
+        "#14141a",
+        "#f2f2f5"
+      ]
+    },
+    {
+      "key": "width",
+      "type": "number | string",
+      "description": "Width in px (or a CSS length). Never wider than the container; at most 360px on phones.",
+      "default": 280
+    },
+    {
+      "key": "name",
+      "type": "string",
+      "description": "Name of a hidden input carrying the hex, so a <form> submits it."
+    },
+    {
+      "key": "id",
+      "type": "string",
+      "description": "id of the hex text input, for a <label htmlFor> of your own."
+    },
+    {
+      "key": "error",
+      "type": "string",
+      "description": "An error you already have, shown under the picker and announced; the hex field turns red."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Nothing can be changed or focused; dimmed.",
+      "default": false
+    },
+    {
+      "key": "labels",
+      "type": "object",
+      "description": "Override the built-in words: { area, hue, hex, copy, copied, swatches, great, good, large, poor, passes, fails }."
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Gallery only: labels the picker \"Brand colour\" while label is left at its default.",
+      "default": false
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Other attributes (aria-label, aria-describedby, data-*) go to the root group; className and style too."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLDivElement>",
+      "description": "The root group, for measuring or scrolling to it."
+    }
+  ],
+  "example": "const [brand, setBrand] = useState(\"#2bb673\");\n\n<ColorPicker\n  label=\"Brand colour\"\n  name=\"brand\"\n  value={brand}\n  onChange={setBrand}\n  contrastWith={theme.surface}\n  width={320}\n/>"
+}

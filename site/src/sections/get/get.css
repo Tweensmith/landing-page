@@ -1,0 +1,32 @@
+/* Get it: the install command, set large, and the other places as words (sections/GetIt.jsx, sections/get/Line.jsx). */
+
+.gt__head { margin-bottom: clamp(24px, 3.4vw, 40px); }
+.gt .section__title .muted { display: block; }
+.gt__wait { min-height: 420px; }
+/* what stands where a destination will be until it is live */
+.gt__not { display: inline-flex; align-items: center; min-height: 26px; padding: 0 10px; border-radius: 999px; font-size: 11.5px; font-weight: 500; letter-spacing: .01em; white-space: nowrap;
+  color: var(--ts-ink2); box-shadow: inset 0 0 0 1px var(--ts-line); }
+
+/* the line */
+.gline { display: flex; align-items: center; justify-content: space-between; gap: 16px 28px; min-height: clamp(120px, 15vw, 196px); padding: clamp(22px, 3.2vw, 44px) clamp(20px, 3.4vw, 48px);
+  border-radius: 26px; background: var(--ts-bg); color: var(--ts-ink); box-shadow: inset 0 0 0 1px var(--ts-line); }
+.gline__cmd { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0; margin: 0; min-width: 0; font-size: clamp(21px, 3.3vw, 46px); line-height: 1.25; font-weight: 500; letter-spacing: -.03em; }
+.gline__pre { color: var(--ts-ink2); white-space: pre; }
+.gline__slot { appearance: none; position: relative; display: inline-flex; margin: 0 -.3ch; padding: .06em .3ch; border: 0; border-radius: .3em; background: none; font: inherit; letter-spacing: inherit; color: var(--ts-ink);
+  cursor: pointer; overflow: hidden; -webkit-tap-highlight-color: transparent; transition: background-color .16s ease; }
+.gline__slot:hover { background: color-mix(in srgb, var(--ts-ink) 10%, transparent); }
+.gline__slot:focus-visible { outline: 2px solid var(--ts-focus, var(--ts-ink)); outline-offset: 2px; }
+.gline__name { display: inline-block; white-space: nowrap; }
+.gline__copy { flex: none; zoom: 1.3; }
+.gline .gt__not { font-size: 13px; min-height: 32px; padding: 0 14px; }
+.gline__others { display: flex; flex-wrap: wrap; gap: 6px clamp(22px, 3.4vw, 52px); margin: clamp(22px, 2.8vw, 36px) 0 0; padding: 0; list-style: none; }
+.gline__other { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; font-size: clamp(21px, 2.5vw, 34px); line-height: 1.1; font-weight: 650; letter-spacing: -.034em; color: var(--ts-ink); text-decoration: none; }
+.gline__other svg { transition: translate .2s cubic-bezier(.2, .8, .2, 1); }
+a.gline__other:hover svg { translate: 5px 0; }
+a.gline__other:focus-visible { outline: 2px solid var(--ts-focus, var(--ts-ink)); outline-offset: 6px; border-radius: 8px; }
+.gline__other[data-off] { color: var(--ts-heading-muted, var(--ts-ink2)); }
+
+@media (max-width: 640px) {
+  .gline { flex-direction: column; align-items: flex-start; }
+  .gline__others { flex-direction: column; gap: 0; }
+}

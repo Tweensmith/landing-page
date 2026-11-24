@@ -1,0 +1,365 @@
+{
+  "name": "Number Ticker",
+  "slug": "number-ticker",
+  "export": "NumberTicker",
+  "order": 86,
+  "kind": "components",
+  "category": "display",
+  "subcategory": "numbers",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "hint": "Press + Pledge or Studio order: the wheels carry right to left and blur with speed.",
+  "description": "Animated number whose digits are physical wheels: pass `value` and each column springs on an endless 0–9 reel keyed by place value. In carry mode it travels the true distance like a mechanical counter (9 → 0 carries the next wheel), or it takes the shortest path. Columns start from the right like a carry, smear with a vertical motion blur proportional to their speed, new thousands separators and digits grow in, and compact units roll (999.9K → 1.0M). Up and down changes flash an arrow and a tint (inverted or neutral when up is bad). Formats via Intl, inherits any font size, announces the settled value once, cuts straight to the value under reduced motion. `demo` shows it on a live crowdfunding launch page.",
+  "intents": [
+    "animated number counter",
+    "odometer rolling digits",
+    "live fundraising total that ticks up",
+    "count up stat on scroll into view",
+    "stock price ticker with up down flash"
+  ],
+  "tags": [
+    "number ticker",
+    "odometer",
+    "counter",
+    "rolling number",
+    "count up",
+    "animated number",
+    "slot digits",
+    "kpi",
+    "stat",
+    "live total",
+    "currency",
+    "compact number",
+    "flip counter"
+  ],
+  "usage": "<NumberTicker value={n} format=\"currency\" label=\"Raised so far\" /> for any figure that changes in place: totals, prices, counts, KPIs. It inherits font size and weight, so the same component sits in a 13px table cell or a 96px hero. Format with `format` (integer, decimal, currency, compact, compact-currency, percent), `decimals`, `currency`, `locale`, or raw Intl.NumberFormat `options`; add units with `prefix` / `suffix`. Use carry mode for totals that only grow, `direction=\"shortest\"` for values that wander (prices, rates); set `cueTone=\"inverted\"` where up is bad (a cost) or `\"neutral\"`, or `cue={false}`. Give it a `label`; set `announce` on the one figure a screen reader should hear change (it speaks the settled value once). `Ticker` is the same component under its older name.",
+  "states": [
+    "default",
+    "loading",
+    "empty"
+  ],
+  "keyboard": [
+    {
+      "keys": "Tab",
+      "does": "Moves through + Pledge, + Studio order, Refund and Pause (or Resume); the number itself is not a stop.",
+      "when": "the `demo` board"
+    },
+    {
+      "keys": "Enter / Space",
+      "does": "Adds a pledge, adds a studio order, refunds one pledge, or pauses and resumes the live stream; the totals roll to their new values.",
+      "when": "the `demo` board"
+    }
+  ],
+  "screenReader": "The rolling digits are hidden from screen readers; a visually hidden copy reads `label` then the formatted value (with string `prefix` and `suffix`), or \"loading\". With `announce` that copy is a polite, atomic status region that speaks the settled value once, about 0.9s after it stops changing, never the frames in between; `announceEvery` spaces announcements further apart. The up/down cue is decoration and is not read.",
+  "controls": [
+    {
+      "group": "Value",
+      "key": "value",
+      "label": "Value",
+      "type": "range",
+      "min": 0,
+      "max": 2500000,
+      "step": 0.01,
+      "unit": "$",
+      "default": 0
+    },
+    {
+      "group": "Value",
+      "key": "format",
+      "label": "Format",
+      "type": "select",
+      "options": [
+        "integer",
+        "decimal",
+        "currency",
+        "compact-currency",
+        "compact",
+        "percent"
+      ],
+      "default": "integer"
+    },
+    {
+      "group": "Wheels",
+      "key": "direction",
+      "label": "Direction",
+      "type": "select",
+      "options": [
+        "carry",
+        "shortest",
+        "direct"
+      ],
+      "default": "carry"
+    },
+    {
+      "group": "Wheels",
+      "key": "blur",
+      "label": "Motion blur",
+      "type": "range",
+      "min": 0,
+      "max": 2,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "group": "Wheels",
+      "key": "stiffness",
+      "label": "Stiffness",
+      "type": "range",
+      "min": 60,
+      "max": 600,
+      "step": 10,
+      "default": 170
+    },
+    {
+      "group": "Wheels",
+      "key": "damping",
+      "label": "Damping",
+      "type": "range",
+      "min": 8,
+      "max": 60,
+      "step": 1,
+      "default": 22
+    },
+    {
+      "group": "Wheels",
+      "key": "stagger",
+      "label": "Carry stagger",
+      "type": "range",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "unit": "ms",
+      "default": 45
+    },
+    {
+      "group": "Behaviour",
+      "key": "cue",
+      "label": "Up / down cue",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Behaviour",
+      "key": "cueTone",
+      "label": "Cue colours",
+      "type": "select",
+      "options": [
+        "default",
+        "inverted",
+        "neutral"
+      ],
+      "default": "default"
+    },
+    {
+      "group": "Behaviour",
+      "key": "countUp",
+      "label": "Count up on view",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "live",
+      "label": "Live pledges",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Demo",
+      "key": "interval",
+      "label": "Pledge interval",
+      "type": "range",
+      "min": 600,
+      "max": 4000,
+      "step": 100,
+      "unit": "ms",
+      "default": 1600
+    },
+    {
+      "group": "Demo",
+      "key": "size",
+      "label": "Demo hero size",
+      "type": "select",
+      "options": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Mechanical counter": {
+      "direction": "carry",
+      "blur": 1.6,
+      "stiffness": 120,
+      "damping": 20,
+      "stagger": 75
+    },
+    "Snappy, shortest path": {
+      "direction": "shortest",
+      "blur": 0.4,
+      "stiffness": 420,
+      "damping": 34,
+      "stagger": 15
+    },
+    "Million moment": {
+      "value": 999640,
+      "format": "compact-currency",
+      "interval": 1100
+    },
+    "Count up on view": {
+      "countUp": true,
+      "live": false
+    },
+    "Percent of goal": {
+      "format": "percent"
+    },
+    "Quiet": {
+      "cue": false,
+      "blur": 0,
+      "size": "sm",
+      "interval": 2600
+    }
+  },
+  "dataProps": [
+    {
+      "key": "value",
+      "type": "number | null",
+      "description": "The number to show. Changing it rolls the wheels to the new value. null shows the loading placeholder.",
+      "default": 0
+    },
+    {
+      "key": "format",
+      "type": "\"integer\" | \"decimal\" | \"currency\" | \"compact\" | \"compact-currency\" | \"percent\"",
+      "description": "How the number is formatted (percent expects a fraction: 0.42 → 42%).",
+      "default": "integer"
+    },
+    {
+      "key": "decimals",
+      "type": "number",
+      "description": "Fraction digits. Defaults per format (decimal and currency 2, percent 1, compact 1 above 1,000). With the default \"integer\" format a value that has a fraction keeps up to two places; pass 0 to round."
+    },
+    {
+      "key": "currency",
+      "type": "string",
+      "description": "ISO currency code for currency formats.",
+      "default": "USD"
+    },
+    {
+      "key": "locale",
+      "type": "string",
+      "description": "BCP 47 locale for separators and symbols (digits stay Latin). Default: the locale of the nearest <Theme> (\"en-US\" when none sets one)."
+    },
+    {
+      "key": "options",
+      "type": "Intl.NumberFormatOptions",
+      "description": "Raw Intl options merged over the format's own, e.g. { style: \"unit\", unit: \"kilometer\" } or { signDisplay: \"always\" }."
+    },
+    {
+      "key": "prefix",
+      "type": "string | ReactNode",
+      "description": "Text before the number (\"~\", \"Up to \"). Strings are included in what screen readers hear."
+    },
+    {
+      "key": "suffix",
+      "type": "string | ReactNode",
+      "description": "Text after the number (\" /mo\", \" users\"). Sits right after the digits; the up/down arrow goes after it."
+    },
+    {
+      "key": "cue",
+      "type": "boolean",
+      "description": "Flash an up / down arrow and tint beside the number when the value changes. Space for the arrow is kept at all times (about half a character), so nothing shifts; turn it off for a number set inside a sentence.",
+      "default": true
+    },
+    {
+      "key": "direction",
+      "type": "\"carry\" | \"shortest\" | \"direct\"",
+      "description": "Which way the digits roll: carry, shortest, direct.",
+      "default": "carry"
+    },
+    {
+      "key": "cueTone",
+      "type": "\"default\" | \"inverted\" | \"neutral\"",
+      "description": "Colour of the up/down flash: default paints up green and down red; inverted paints up red (a cost, a latency); neutral uses the accent for both.",
+      "default": "default"
+    },
+    {
+      "key": "cuePosition",
+      "type": "\"end\" | \"start\"",
+      "description": "Which side the arrow sits on (start for right-aligned table cells).",
+      "default": "end"
+    },
+    {
+      "key": "from",
+      "type": "number",
+      "description": "With countUp, the number it counts up from when it scrolls into view.",
+      "default": 0
+    },
+    {
+      "key": "label",
+      "type": "string",
+      "description": "What the number is (\"Raised so far\"). Read before the value by screen readers."
+    },
+    {
+      "key": "announce",
+      "type": "boolean",
+      "description": "Speak changes in a polite live region: the settled value once (about 0.9s after it stops changing), never the frames in between.",
+      "default": false
+    },
+    {
+      "key": "announceEvery",
+      "type": "number",
+      "description": "Minimum ms between announcements, for values that change all the time (a live total).",
+      "default": 0
+    },
+    {
+      "key": "loading",
+      "type": "boolean",
+      "description": "Show a placeholder bar instead of the number.",
+      "default": false
+    },
+    {
+      "key": "placeholder",
+      "type": "number",
+      "description": "Width of the loading placeholder in em.",
+      "default": 3.2
+    },
+    {
+      "key": "size",
+      "type": "\"sm\" | \"md\" | \"lg\" | number",
+      "description": "Only with `demo`: font size of the board's hero total, sm 56px, md 84px, lg 104px; it still shrinks to fit a narrow board. A number sets it in px exactly. The ticker itself inherits its font size from its parent.",
+      "default": "md"
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Show the launch-day board (live pledges, reward table) instead of a single number. Leave off in real UI. `live`, `interval` and `size` only apply to it.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLSpanElement>",
+      "description": "The number's root span."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-*, data-*) goes to the root <span>. className and style are merged with the component's own."
+    }
+  ],
+  "example": "<h2 style={{ fontSize: 48 }}>\n  <NumberTicker value={raised} format=\"currency\" currency=\"EUR\" locale=\"de-DE\" label=\"Raised so far\" announce />\n</h2>\n\n<NumberTicker value={monthlyCost} format=\"currency\" decimals={0} suffix=\" /mo\" direction=\"shortest\" cueTone=\"inverted\" label=\"Monthly cost\" />\n\n<NumberTicker value={distance} options={{ style: \"unit\", unit: \"kilometer\", maximumFractionDigits: 1 }} />",
+  "demoProps": {
+    "demo": true,
+    "value": 1284512.4,
+    "format": "currency"
+  }
+}

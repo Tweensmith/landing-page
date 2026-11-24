@@ -1,0 +1,18 @@
+/* The questions: a heading beside the kit's Accordion (sections/Questions.jsx, sections/questions/List.jsx). */
+
+.qs .section__title .muted { display: block; }
+.qs__wait { min-height: 560px; }
+
+.qslist { display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1fr); gap: 28px clamp(32px, 5vw, 80px); align-items: start; }
+.qslist > .section__title { position: sticky; top: 96px; }
+/* the kit's Accordion as the page wears it: the full width of its column and a 26px corner like the page's
+   other panels */
+.qslist .ts-faq { width: 100%; max-width: none; }
+.qslist .ts-faq[data-layout=plain] { border-radius: 26px; }
+/* the last question closes the panel, so it carries no rule under it */
+.qslist .ts-faq-item:last-child::after { display: none; }
+
+@media (max-width: 900px) {
+  .qslist { grid-template-columns: minmax(0, 1fr); }
+  .qslist > .section__title { position: static; }
+}

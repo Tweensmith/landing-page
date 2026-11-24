@@ -1,0 +1,216 @@
+{
+  "name": "Multi-step Form",
+  "slug": "multi-step-form",
+  "export": "MultiStepForm",
+  "order": 33,
+  "kind": "components",
+  "category": "forms",
+  "subcategory": "labels-and-validation",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Press Continue with empty fields to see validation. Finished steps are clickable.",
+  "description": "A flow of steps built from TextField, ChoiceCards and Button: a progress rail you can jump back along, direction-aware step slides, per-step validation that shakes what needs attention, and an optional review step. Steps, fields, values and the submit are yours.",
+  "intents": [
+    "multi step signup form",
+    "onboarding wizard",
+    "checkout steps",
+    "form with progress steps",
+    "create account flow"
+  ],
+  "tags": [
+    "wizard",
+    "stepper",
+    "form",
+    "onboarding",
+    "signup",
+    "steps",
+    "progress",
+    "validation",
+    "review"
+  ],
+  "usage": "Use for a flow that is too long for one screen (signup, onboarding, checkout details), one decision per step. Pass `steps`: each { id, name, title, description, fields, content, validate, optional, review }. A field is { name, label, type (\"text\", \"email\", \"url\", \"tel\", \"password\", \"number\" or \"choice\" with `options`), required, validate (\"required\" | \"email\" | \"url\" | \"none\" | (value, values) => message), hint, icon, autoComplete, inputMode, defaultValue }. For anything else put your own markup in `content` and check it in the step's `validate(values)` (return a message or { field: message }). Continue checks the step; a failing step shakes its fields and focuses the first. Hold the values with `values` / `onValuesChange` (that is also your draft hook) or seed `defaultValues`; drive the step with `step` / `onStepChange`. A step with `review: true` lists every earlier field with Edit links. On the last step `onSubmit(values, event)` fires; set `loading` while you send, `submitError` if it failed, and `complete` once it worked (title and text from `completeTitle` / `completeDescription`). Nothing is sent and no success is shown on its own. `optional: true` adds a Skip button to that step.",
+  "states": [
+    "default",
+    "error",
+    "success",
+    "disabled"
+  ],
+  "controls": [
+    {
+      "group": "Flow",
+      "key": "startStep",
+      "label": "Start at step",
+      "type": "range",
+      "min": 0,
+      "max": 3,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "group": "Flow",
+      "key": "allowSkipAhead",
+      "label": "Allow skip ahead",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Layout",
+      "key": "showStepNames",
+      "label": "Step names",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Layout",
+      "key": "showCount",
+      "label": "Percent",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Content",
+      "key": "submitLabel",
+      "label": "Submit label",
+      "type": "text",
+      "default": "Submit"
+    },
+    {
+      "group": "State",
+      "key": "loading",
+      "label": "Submitting",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Review step": {
+      "startStep": 3
+    },
+    "Plan step": {
+      "startStep": 1
+    }
+  },
+  "demoProps": {
+    "demo": true,
+    "submitLabel": "Create workspace"
+  },
+  "dataProps": [
+    {
+      "key": "steps",
+      "type": "array",
+      "description": "The steps, in order: { id, name (rail label), title, description?, fields?, content?, validate?(values), optional?, review?, reviewRows?(values) }. fields: { name, label, type, required?, validate?, hint?, icon?, placeholder?, autoComplete?, inputMode?, maxLength?, defaultValue?, options? (choice), columns?, multiple?, reviewLabel?, format?(value, values), review? }. content: a node, or ({ values, setValue, errors, reveal, step, goTo }) => node. No steps renders nothing.",
+      "default": []
+    },
+    {
+      "key": "values",
+      "type": "object",
+      "description": "Controlled values, keyed by field name. Pass with onValuesChange."
+    },
+    {
+      "key": "defaultValues",
+      "type": "object",
+      "description": "Starting values when uncontrolled (merged over each field's defaultValue)."
+    },
+    {
+      "key": "onValuesChange",
+      "type": "function",
+      "description": "(values, { name, value }) => void on every edit: keep a draft, preview, or control the form."
+    },
+    {
+      "key": "step",
+      "type": "number",
+      "description": "Controlled current step (0-based). Pass with onStepChange."
+    },
+    {
+      "key": "defaultStep",
+      "type": "number",
+      "description": "Starting step when uncontrolled (startStep is the older name and still works)."
+    },
+    {
+      "key": "onStepChange",
+      "type": "function",
+      "description": "(index, { id, from, via }) => void when Continue, Back, Skip, the rail, an Edit link or a failed submit wants another step; via is \"next\" | \"back\" | \"skip\" | \"rail\" | \"edit\" | \"submit\" | \"content\"."
+    },
+    {
+      "key": "onSubmit",
+      "type": "function",
+      "description": "(values, event) => void when the last step's button is pressed (or Enter there) and every step passes its checks. Send the values yourself; the form submits nothing on its own."
+    },
+    {
+      "key": "loading",
+      "type": "boolean",
+      "description": "You are sending: the submit button shows its spinner and the form will not submit, go back or skip until you clear it.",
+      "default": false
+    },
+    {
+      "key": "submitError",
+      "type": "ReactNode",
+      "description": "Why the submit failed (from your server), shown above the buttons on the last step until you clear it."
+    },
+    {
+      "key": "complete",
+      "type": "boolean",
+      "description": "Set true once your submit worked: the form is replaced by the finish panel. Leave undefined and it never shows on its own."
+    },
+    {
+      "key": "completeTitle",
+      "type": "ReactNode | function",
+      "description": "Finish panel heading, or (values) => node.",
+      "default": "Done"
+    },
+    {
+      "key": "completeDescription",
+      "type": "ReactNode | function",
+      "description": "Finish panel text, or (values) => node. Empty shows none."
+    },
+    {
+      "key": "submitLabel",
+      "type": "string",
+      "description": "Text of the last step's button.",
+      "default": "Submit"
+    },
+    {
+      "key": "messages",
+      "type": "object",
+      "description": "Field error copy, merged over TextField's neutral defaults: { required, emailRequired, email, urlRequired, url }."
+    },
+    {
+      "key": "labels",
+      "type": "object",
+      "description": "Words, merged over neutral defaults: { back: \"Back\", next: \"Continue\", skip: \"Skip\", edit: \"Edit\", editAria: (label) => string, notSet: \"Not set\", progress: \"Progress\", kicker: (i, n) => string, stepAria: (i, name, state) => string, completeTitle: \"Done\" }."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Every field and button inert, the rail included.",
+      "default": false
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Show the gallery's workspace signup (four steps, its own fake finish) when you pass no steps. Leave off in real UI.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLFormElement>",
+      "description": "The <form> (reset it, measure it, scroll to it). className, style and other props (aria-*, data-*) go on it too."
+    }
+  ],
+  "example": "const steps = [\n  { id: \"you\", name: \"You\", title: \"About you\", fields: [\n    { name: \"name\", label: \"Full name\", validate: \"required\", autoComplete: \"name\" },\n    { name: \"email\", label: \"Email\", type: \"email\", validate: \"email\" },\n  ] },\n  { id: \"plan\", name: \"Plan\", title: \"Pick a plan\", fields: [\n    { name: \"plan\", label: \"Plan\", type: \"choice\", required: true, options: plans.map((p) => ({ value: p.id, title: p.name, meta: p.price })) },\n  ] },\n  { id: \"review\", name: \"Review\", title: \"Check everything\", review: true },\n];\nconst [busy, setBusy] = useState(false);\nconst [error, setError] = useState(\"\");\nconst [done, setDone] = useState(false);\n\n<MultiStepForm\n  steps={steps}\n  submitLabel=\"Create account\"\n  loading={busy}\n  submitError={error}\n  complete={done}\n  completeTitle={(v) => `Welcome, ${v.name}`}\n  onSubmit={async (values) => {\n    setBusy(true); setError(\"\");\n    try { await api.signup(values); setDone(true); } catch (e) { setError(e.message); } finally { setBusy(false); }\n  }}\n/>"
+}

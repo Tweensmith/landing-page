@@ -1,0 +1,293 @@
+{
+  "name": "Password Field",
+  "slug": "password-field",
+  "export": "PasswordField",
+  "order": 22,
+  "kind": "components",
+  "category": "forms",
+  "subcategory": "text-entry",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "hint": "Type a password and watch the rules tick.",
+  "description": "Password input with a show/hide toggle, a segmented strength meter that fills as rules are met, and a live rule checklist.",
+  "intents": [
+    "create a password",
+    "password strength meter",
+    "sign up password with rules",
+    "show hide password toggle"
+  ],
+  "tags": [
+    "password",
+    "strength",
+    "security",
+    "sign up",
+    "input",
+    "form",
+    "show hide"
+  ],
+  "usage": "Use wherever someone types a password. To create or change one, keep the meter and rules (autocomplete is \"new-password\"). To sign in, set showRules and showStrength to false: the field becomes a plain password box with autocomplete=\"current-password\". Give it `name`, and `value` + `onChange` if you own the state; show a wrong-password or server error with `error`. The ref is the <input>; unknown props (aria-*, data-*) go to it. A <form> reset clears it back to `defaultValue`. Replace the checklist with your own policy through `rules` ([{ label, test }]); all copy can be changed through `messages`. The label sits above the box by default; in a form with Text Field (which floats its label by default), Textarea or Tag Input, give every field the same `labelPlacement` so the form reads as one design, and `icon=\"none\"` when the other fields have no icon. Bump `revealErrors` on every submit so a repeated error still shakes.",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "disabled",
+    "error",
+    "success"
+  ],
+  "keyboard": [
+    {
+      "keys": "Tab",
+      "does": "Moves from the input to the show/hide button."
+    },
+    {
+      "keys": "Character",
+      "does": "Types into the input; the strength line and the checklist update as you type."
+    },
+    {
+      "keys": "Enter / Space",
+      "does": "Shows the password, or hides it again.",
+      "when": "on the show/hide button"
+    }
+  ],
+  "screenReader": "A password input named by `label`. The strength level, \"Strong password\" or `error` is linked with aria-describedby and read in a live region, and an error sets aria-invalid. The show/hide button keeps the name `messages.show` and says whether the password is shown with aria-pressed; the checklist is a list named `messages.rulesLabel` whose items each say met or not met, and the bar meter is hidden from screen readers.",
+  "controls": [
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": "Create a password"
+    },
+    {
+      "group": "Style",
+      "key": "labelPlacement",
+      "label": "Label placement",
+      "type": "select",
+      "options": [
+        "above",
+        "float"
+      ],
+      "default": "above"
+    },
+    {
+      "group": "Rules",
+      "key": "minLength",
+      "label": "Minimum length",
+      "type": "range",
+      "min": 6,
+      "max": 20,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "group": "Rules",
+      "key": "showRules",
+      "label": "Show rules",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Meter",
+      "key": "showStrength",
+      "label": "Strength meter",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Meter",
+      "key": "segments",
+      "label": "Segments",
+      "type": "range",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Sign in": {
+      "label": "Password",
+      "showRules": false,
+      "showStrength": false
+    },
+    "Strict": {
+      "minLength": 14,
+      "segments": 6
+    }
+  },
+  "dataProps": [
+    {
+      "key": "label",
+      "type": "string",
+      "description": "Visible label. \"\" for none (then pass aria-label).",
+      "default": "Create a password"
+    },
+    {
+      "key": "labelPlacement",
+      "type": "\"above\" | \"float\"",
+      "description": "\"above\": a static label over a 48px box (52px on phones and touch). \"float\": the label sits inside a 56px box and floats up on focus or once there is a value, as Text Field draws it by default. Give every field in a form the same value so the labels read as one design.",
+      "default": "above"
+    },
+    {
+      "key": "icon",
+      "type": "string",
+      "description": "Leading icon (18px, --ts-ink2): any name from the kit's icon set, or \"none\" to match fields that have no icon.",
+      "default": "lock"
+    },
+    {
+      "key": "value",
+      "type": "string",
+      "description": "Controlled value: pass it with onChange. Leave undefined to let the field keep its own (seeded by defaultValue)."
+    },
+    {
+      "key": "defaultValue",
+      "type": "string",
+      "description": "Initial value when uncontrolled. A <form> reset returns to it.",
+      "default": ""
+    },
+    {
+      "key": "onChange",
+      "type": "(value: string) => void",
+      "description": "(value: string) => void, on every keystroke (and on form reset)."
+    },
+    {
+      "key": "onBlur",
+      "type": "(event: FocusEvent) => void",
+      "description": "(event) => void."
+    },
+    {
+      "key": "onFocus",
+      "type": "(event: FocusEvent) => void",
+      "description": "(event) => void."
+    },
+    {
+      "key": "onStrengthChange",
+      "type": "(strength: { score: number; max: number; level: string; strong: boolean }) => void",
+      "description": "({ score, max, level, strong }) => void when the number of rules met changes."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLInputElement>",
+      "description": "Forwarded to the <input>: focus(), select()."
+    },
+    {
+      "key": "error",
+      "type": "string",
+      "description": "An error you already have (wrong password, breached password, server error). Shown under the field in the error style; the box shakes once when it appears. Bump revealErrors on each submit to shake again for the same message."
+    },
+    {
+      "key": "hint",
+      "type": "string",
+      "description": "Replaces the line under the field (normally the strength once something is typed; before that \"At least N characters.\" when the checklist is hidden, and nothing when the checklist shows, since it already says the length). Pass \"\" for none."
+    },
+    {
+      "key": "showStrength",
+      "type": "boolean",
+      "description": "Show the strength meter and the strength line. Turn off for sign-in.",
+      "default": true
+    },
+    {
+      "key": "showRules",
+      "type": "boolean",
+      "description": "Show the rule checklist under the meter. Turn off for sign-in.",
+      "default": true
+    },
+    {
+      "key": "minLength",
+      "type": "number",
+      "description": "Length the built-in length rule asks for.",
+      "default": 8
+    },
+    {
+      "key": "segments",
+      "type": "number",
+      "description": "Number of meter segments.",
+      "default": 4
+    },
+    {
+      "key": "rules",
+      "type": "Array<{ label: string; test: (value: string) => boolean }>",
+      "description": "Your password policy as [{ label: string, test: (value) => boolean }]. Replaces the built-in four (length, number, upper & lower case, symbol). The meter fills by the share of rules met."
+    },
+    {
+      "key": "messages",
+      "type": "{ hint?: string | ((min: number) => string); strength?: (level: string) => string; strong?: string; levels?: string[]; show?: string; hide?: string; rulesLabel?: string; met?: string; notMet?: string; invalid?: string }",
+      "description": "Copy, merged over neutral defaults: { hint: (min) => `At least ${min} characters.` (shown before typing when showRules is off; a hint you pass here shows even with the checklist), strength: (level) => `Strength: ${level}`, strong: \"Strong password\", levels: [\"Too weak\", \"Weak\", \"Fair\", \"Good\", \"Strong\"], show: \"Show password\" (the show/hide button's name; aria-pressed says whether the password is shown), hide: \"Hide password\" (no longer read; kept so existing overrides still work), rulesLabel: \"Password requirements\", met: \", met\", notMet: \", not met\", invalid: \"Check your password\" (shown only in the gallery's forced error state) }."
+    },
+    {
+      "key": "id",
+      "type": "string",
+      "description": "id of the <input>. Generated when omitted."
+    },
+    {
+      "key": "name",
+      "type": "string",
+      "description": "Form field name; the <input> carries the value in FormData."
+    },
+    {
+      "key": "autoComplete",
+      "type": "string",
+      "description": "autocomplete token. Defaults to \"new-password\" while the meter or rules show, otherwise \"current-password\"."
+    },
+    {
+      "key": "autoFocus",
+      "type": "boolean",
+      "description": "Focus the input on mount.",
+      "default": false
+    },
+    {
+      "key": "placeholder",
+      "type": "string",
+      "description": "Placeholder inside the box."
+    },
+    {
+      "key": "required",
+      "type": "boolean",
+      "description": "Marks the input required (native constraint and aria) and adds * to the label.",
+      "default": false
+    },
+    {
+      "key": "readOnly",
+      "type": "boolean",
+      "description": "Value can be selected but not edited.",
+      "default": false
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Not focusable (input and show/hide button), dimmed, left out of FormData.",
+      "default": false
+    },
+    {
+      "key": "revealErrors",
+      "type": "number",
+      "description": "Bump on every submit (0 → 1 → 2…): shakes the box again while an `error` shows, even when the message is the same as last time (\"Enter your password\" twice). Same prop as on Text Field and Textarea.",
+      "default": 0
+    },
+    {
+      "key": "maxWidth",
+      "type": "number",
+      "description": "Widest the field grows, in px. 0 lets it fill its container.",
+      "default": 380
+    },
+    {
+      "key": "className",
+      "type": "string",
+      "description": "Added to the root (the element that holds label, box, meter, message and checklist)."
+    },
+    {
+      "key": "style",
+      "type": "React.CSSProperties",
+      "description": "Inline style on the root."
+    }
+  ],
+  "example": "// sign-in\n<PasswordField\n  ref={pwRef}\n  label=\"Password\"\n  name=\"password\"\n  showRules={false}\n  showStrength={false}\n  value={password}\n  onChange={setPassword}\n  error={wrongPassword ? \"That password doesn't match\" : undefined}\n  maxWidth={0}\n/>\n\n// sign-up\n<PasswordField label=\"Create a password\" name=\"new-password\" minLength={10} onChange={setNext} />"
+}

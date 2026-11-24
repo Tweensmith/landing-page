@@ -1,0 +1,112 @@
+{
+  "name": "PIN / Biometric Pad",
+  "slug": "pin-pad",
+  "export": "PinPad",
+  "order": 69,
+  "kind": "components",
+  "category": "mobile",
+  "platform": "native",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Type a wrong code to see the dots shake, then the demo code 2580 to unlock. Or tap the Face ID button.",
+  "description": "Passcode and Face ID lock screen for React Native, shown as a finance app locked over generative wallpaper. Glass keypad keys with phone letters light up on press-in and ease back on release, with a tap haptic per key, and each entered dot fills with a small pop. A wrong code sets the dot row wobbling on a released spring that decays like a real shake while the dots flash red and the title reads Wrong passcode; the right code lights the dots in sequence, folds them into a check, swings the app icon's shackle open and lifts the lock screen away to the unlocked app. The Face ID button plays a scan with closing corner brackets, a sweeping ring and a face that looks side to side, and can be set to fail once and fall back to the keypad. 4 or 6 digits, digits and Backspace on a hardware keyboard, screen-reader labels and live progress.",
+  "intents": [
+    "passcode lock screen with face id",
+    "pin entry keypad with shake on wrong code",
+    "react native app lock pin pad",
+    "biometric unlock screen for a banking app"
+  ],
+  "tags": [
+    "app lock",
+    "biometric",
+    "expo",
+    "face id",
+    "haptics",
+    "keypad",
+    "lock screen",
+    "numpad",
+    "passcode",
+    "pin",
+    "pin pad",
+    "react native",
+    "security",
+    "shake",
+    "unlock"
+  ],
+  "usage": "Use to re-lock an app that holds private data (money, health, a journal) after it has been in the background. Offer biometrics first where the device has them, keep the passcode as the fallback, and always give a recovery path. Never show the real code: the demo hint is for the gallery only.",
+  "states": [
+    "default",
+    "error",
+    "success"
+  ],
+  "controls": [
+    {
+      "group": "Passcode",
+      "key": "codeLength",
+      "label": "Code length",
+      "type": "select",
+      "options": [
+        {
+          "label": "4 digits",
+          "value": "4"
+        },
+        {
+          "label": "6 digits",
+          "value": "6"
+        }
+      ],
+      "default": "4"
+    },
+    {
+      "group": "Passcode",
+      "key": "demoCode",
+      "label": "Demo code",
+      "type": "text",
+      "default": "2580"
+    },
+    {
+      "group": "Passcode",
+      "key": "showLetters",
+      "label": "Letters on keys",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Biometrics",
+      "key": "biometric",
+      "label": "Face ID button",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Biometrics",
+      "key": "biometricOutcome",
+      "label": "Face ID result",
+      "type": "select",
+      "options": [
+        {
+          "label": "Succeeds",
+          "value": "succeed"
+        },
+        {
+          "label": "Fails once",
+          "value": "failFirst"
+        }
+      ],
+      "default": "succeed"
+    }
+  ],
+  "presets": {
+    "Six digits": {
+      "codeLength": "6",
+      "demoCode": "258046"
+    },
+    "Face ID fails once": {
+      "biometricOutcome": "failFirst"
+    },
+    "Passcode only": {
+      "biometric": false,
+      "showLetters": false
+    }
+  }
+}

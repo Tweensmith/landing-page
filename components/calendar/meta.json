@@ -1,0 +1,313 @@
+{
+  "name": "Calendar",
+  "slug": "calendar",
+  "export": "Calendar",
+  "order": 91,
+  "kind": "components",
+  "category": "display",
+  "subcategory": "tables-and-boards",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Turn on Sample content, then switch to Week: the selected row zooms out of the month and its chips grow into time blocks. Drag empty time to add a session, drag a block to move it.",
+  "description": "An events calendar with month and week views. You pass `events` (id, title, date, an optional end date, start and end times, a calendar id) and optional `calendars` for colour and a toggleable legend; the selected day (`value`) and the visible month (`month`) work controlled or uncontrolled, with `min`, `max` and `isDateDisabled` for days that cannot be picked, `renderDay` for a mark in each cell, and `locale` and `weekStartsOn` for the names and the first column. Month and Week are one surface: switching zooms the selected week's row out of the month grid, its day cells becoming the time-grid columns, the dates flying into the column heads, chips growing into time blocks and multi-day bars landing in the all-day lane, while the other rows fall away; going back reverses it. Prev/next slides the grid in the direction of travel. Month shows chips, spanning bars with 2px gaps and a '+n more' day popover; Week shows a live now line, overlapping events side by side, and with `onCreate` / `onEventChange` drag-to-create snapping to 15 minutes, drag to move and drag the bottom edge to resize, all on springs. Full grid keyboard model (arrows, Home/End for the week, PageUp/Down for months, Enter, T for today, M/W for views); every day cell is named with its full date and today is marked with a filled pill and aria-current. On a phone it re-composes: a compact month of dots and bars over an agenda for the selected day, a swipeable 3-day time grid and bottom-sheet details. The sample content is the class and booking schedule of a bouldering gym.",
+  "intents": [
+    "events calendar with month and week views",
+    "month calendar with events per day",
+    "week time grid with drag to create events",
+    "calendar with colour coded calendars and legend",
+    "scheduling calendar with event popover",
+    "class booking schedule calendar"
+  ],
+  "tags": [
+    "calendar",
+    "events calendar",
+    "schedule",
+    "month view",
+    "week view",
+    "time grid",
+    "agenda",
+    "booking",
+    "drag to create",
+    "drag and drop",
+    "resize event",
+    "now line",
+    "shared layout",
+    "morph"
+  ],
+  "usage": "Use for a schedule people browse and edit: team events, classes and bookings, room or studio time, deadlines on a month. Pass `events` (dates as ISO \"YYYY-MM-DD\" strings or Dates, times as \"HH:MM\"), own the chosen day with `value` + `onChange` and the shown month with `month` + `onMonthChange` (both report ISO strings), and handle `onEventClick` to open your own detail (without it a small detail popover shows). Pass `onCreate` to let people drag out new events and `onEventChange` to let them move and resize; apply both to `events` yourself. Give each calendar a fixed identity colour in a stable order with `calendars`, and keep startHour/endHour to the working hours so the week grid fits without scrolling. For picking a single date in a form, use Date Picker instead.",
+  "states": [
+    "default",
+    "open",
+    "empty"
+  ],
+  "controls": [
+    {
+      "group": "View",
+      "key": "view",
+      "label": "View",
+      "type": "select",
+      "options": [
+        "month",
+        "week"
+      ],
+      "default": "month"
+    },
+    {
+      "group": "View",
+      "key": "weekStartsOn",
+      "label": "Week starts on",
+      "type": "select",
+      "options": [
+        "monday",
+        "sunday"
+      ],
+      "default": "monday"
+    },
+    {
+      "group": "View",
+      "key": "showWeekends",
+      "label": "Show weekends",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Week grid",
+      "key": "startHour",
+      "label": "Day starts",
+      "type": "range",
+      "min": 5,
+      "max": 12,
+      "step": 1,
+      "default": 7
+    },
+    {
+      "group": "Week grid",
+      "key": "endHour",
+      "label": "Day ends",
+      "type": "range",
+      "min": 16,
+      "max": 24,
+      "step": 1,
+      "default": 22
+    },
+    {
+      "group": "Week grid",
+      "key": "nowLine",
+      "label": "Now line",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Look",
+      "key": "title",
+      "label": "Title",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "State",
+      "key": "loading",
+      "label": "Loading",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Week planner": {
+      "view": "week"
+    },
+    "Weekdays only": {
+      "view": "week",
+      "showWeekends": false
+    },
+    "Early sessions": {
+      "view": "week",
+      "startHour": 6,
+      "endHour": 16
+    },
+    "Sunday start": {
+      "weekStartsOn": "sunday"
+    }
+  },
+  "demoProps": {
+    "demo": true,
+    "title": "Overhang · Hackney Wick"
+  },
+  "dataProps": [
+    {
+      "key": "events",
+      "type": "array",
+      "description": "[{ id, title, date, endDate?, start?, end?, allDay?, calendar?, tone?, location?, description? }]. date / endDate: ISO \"YYYY-MM-DD\" or a Date; start / end: \"HH:MM\", an ISO date-time or a Date (no start makes it all-day; endDate makes an all-day event span days); calendar is a calendars id, tone a series index when there are no calendars."
+    },
+    {
+      "key": "calendars",
+      "type": "array",
+      "description": "[{ id, label }] in a stable order: each gets a series colour and a legend toggle that hides its events."
+    },
+    {
+      "key": "value",
+      "type": "string | Date",
+      "description": "Controlled selected day. Pass with onChange; null for none."
+    },
+    {
+      "key": "defaultValue",
+      "type": "string | Date",
+      "description": "Uncontrolled starting selected day."
+    },
+    {
+      "key": "onChange",
+      "type": "function",
+      "description": "(iso, { date }) => void when a day is picked (click, Enter or Space). Arrow keys move focus only. Unavailable days never fire."
+    },
+    {
+      "key": "month",
+      "type": "string | Date",
+      "description": "Controlled visible month (any day in it). Pass with onMonthChange; in month view the grid only moves when you change it."
+    },
+    {
+      "key": "defaultMonth",
+      "type": "string | Date",
+      "description": "Uncontrolled starting month. Default: the month of value, else today."
+    },
+    {
+      "key": "onMonthChange",
+      "type": "function",
+      "description": "(isoFirstOfMonth, { date }) => void when prev / next, PageUp / PageDown, Today or an arrow key asks for another month."
+    },
+    {
+      "key": "min",
+      "type": "string | Date",
+      "description": "First day that can be picked; earlier days are struck through and prev stops there."
+    },
+    {
+      "key": "max",
+      "type": "string | Date",
+      "description": "Last day that can be picked; next stops there."
+    },
+    {
+      "key": "isDateDisabled",
+      "type": "function",
+      "description": "(iso, date) => boolean for days that cannot be picked (focusable, announced as unavailable, struck through)."
+    },
+    {
+      "key": "renderDay",
+      "type": "function",
+      "description": "(iso, { date, events, selected, today, disabled, outside }) => node drawn in the top-right of each month cell (under the number on a phone, in place of the dots). Keep it small: a count, a dot, a price."
+    },
+    {
+      "key": "onEventClick",
+      "type": "function",
+      "description": "(event, { date }) => void when an event chip, block or agenda row is chosen. Without it a small read-only detail popover opens."
+    },
+    {
+      "key": "onCreate",
+      "type": "function",
+      "description": "({ date, start, end, title, calendar }) => void from dragging out time in the week grid or the New event form. Creating is only offered when this is passed; add the event to events yourself."
+    },
+    {
+      "key": "onEventChange",
+      "type": "function",
+      "description": "(event, { date, start, end } | { date, endDate }) => void after a drag-move, a resize or the reschedule steppers. Only offered when this is passed; apply it to events yourself."
+    },
+    {
+      "key": "onViewChange",
+      "type": "function",
+      "description": "(\"month\" | \"week\") => void when the view switches (the segmented control, M / W, double-click a day)."
+    },
+    {
+      "key": "hiddenCalendars",
+      "type": "array",
+      "description": "Controlled ids of calendars switched off in the legend. Pass with onHiddenCalendarsChange."
+    },
+    {
+      "key": "defaultHiddenCalendars",
+      "type": "array",
+      "description": "Uncontrolled ids of calendars that start switched off."
+    },
+    {
+      "key": "onHiddenCalendarsChange",
+      "type": "function",
+      "description": "(ids) => void when a legend toggle changes."
+    },
+    {
+      "key": "today",
+      "type": "string | Date",
+      "description": "The day marked as today (a filled pill and aria-current=\"date\"). Default: the real current date."
+    },
+    {
+      "key": "locale",
+      "type": "string",
+      "description": "BCP 47 locale for month, weekday, date and time names. Default: the locale of the nearest <Theme> (\"en-US\" when none sets one); the sample keeps its English names unless you set it."
+    },
+    {
+      "key": "formatTime",
+      "type": "function",
+      "description": "(\"HH:MM\") => string for every time shown. Default: the locale's short time."
+    },
+    {
+      "key": "labels",
+      "type": "object",
+      "description": "UI words merged over { today: \"Today\", month: \"Month\", week: \"Week\", threeDays: \"3 days\", allDay: \"All day\", view: \"View\", more: (n) => `+${n} more`, previous: (unit) => `Previous ${unit}`, next: (unit) => `Next ${unit}` } (unit is \"month\", \"week\" or \"day\")."
+    },
+    {
+      "key": "loading",
+      "type": "boolean",
+      "description": "You are loading events: skeleton bars in the cells, aria-busy, events hidden.",
+      "default": false
+    },
+    {
+      "key": "error",
+      "type": "node",
+      "description": "A load error shown over the grid (true shows a neutral message)."
+    },
+    {
+      "key": "onRetry",
+      "type": "function",
+      "description": "Shows a Try again button with error."
+    },
+    {
+      "key": "emptyText",
+      "type": "node",
+      "description": "Shown over the grid when the visible period has no events, and in an empty phone agenda. Default: nothing over the grid, \"Nothing scheduled\" in the agenda."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "The whole calendar inert and dimmed.",
+      "default": false
+    },
+    {
+      "key": "title",
+      "type": "string",
+      "description": "A small heading above the month name; also the accessible name of the calendar group.",
+      "default": ""
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Show the sample gym timetable (only when no events are passed).",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "ref",
+      "description": "The root element."
+    }
+  ],
+  "example": "const [day, setDay] = useState(\"2026-11-19\");\n\n<Calendar\n  title=\"Team\"\n  calendars={[{ id: \"work\", label: \"Work\" }, { id: \"leave\", label: \"Leave\" }]}\n  events={[\n    { id: \"e1\", title: \"Planning\", date: \"2026-11-19\", start: \"10:00\", end: \"11:00\", calendar: \"work\" },\n    { id: \"e2\", title: \"Ama off\", date: \"2026-11-23\", endDate: \"2026-11-25\", calendar: \"leave\" },\n  ]}\n  value={day}\n  onChange={setDay}\n  onEventClick={(e) => openEvent(e.id)}\n  locale=\"en-GB\"\n  weekStartsOn=\"monday\"\n/>"
+}

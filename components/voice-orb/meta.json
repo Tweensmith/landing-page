@@ -1,0 +1,284 @@
+{
+  "name": "Voice Orb",
+  "slug": "voice-orb",
+  "export": "VoiceOrb",
+  "order": 109,
+  "kind": "components",
+  "category": "ai",
+  "subcategory": "conversation",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Watch the conversation, then tap the orb while Sous speaks to interrupt. Space mutes, Esc ends.",
+  "description": "The voice mode of an assistant, built around an orb you can read: its form says who is talking and how loudly, and each state holds up in a still frame. Ready is a disc that breathes twice and stops. Connecting is a hollow ring with a travelling arc. Listening opens into a ring whose rim and aperture follow the microphone. Thinking gathers into a small core inside a contracting orbit. Speaking pushes out three bands driven by the voice's low, mid and high energy. Muted is flat and struck through; error is a still broken ring with the reason and Retry. Forms morph on springs integrated against elapsed time, so the orb looks the same at 60 and 120 Hz. It is driven by real audio (a levels function or ref, or a Web Audio AnalyserNode), shows live captions whose words settle in, and carries mute, interrupt and end controls. Reduced motion swaps the morphing for a still form with a stepped level meter.",
+  "intents": [
+    "voice assistant orb that reacts to audio",
+    "voice mode screen for an AI assistant with captions",
+    "audio-reactive speaking indicator for a voice chat",
+    "listening and speaking states for a voice call UI",
+    "microphone level visualizer with mute and end controls"
+  ],
+  "tags": [
+    "voice",
+    "orb",
+    "voice mode",
+    "audio visualizer",
+    "speaking indicator",
+    "listening",
+    "microphone",
+    "analyser",
+    "web audio",
+    "captions",
+    "transcript",
+    "interrupt",
+    "mute",
+    "ai",
+    "assistant",
+    "realtime"
+  ],
+  "usage": "Use it for the voice mode of an assistant. It never opens the microphone: drive it from your own realtime session. Pass `state` (idle, connecting, listening, thinking, speaking, muted, error) from the session events, and the level from audio you already have: `analyser` (an AnalyserNode you created, on the mic while listening and on the playback while speaking) or `levels` (a function or ref returning { low, mid, high, volume } in 0..1); `attack` / `release` smooth it in milliseconds. Pass `captions` as [{ who: \"user\" | \"assistant\", text, final, interrupted }] from your transcription; words settle in as `text` grows. Wire `onMute(next)`, `onEnd`, `onInterrupt` (tapping the orb while it speaks, or the Interrupt button), `onStart` (tapping the orb when idle) and `onRetry`; control mute with `muted` (or start it with `defaultMuted`). Name the assistant with `assistantName`, add `context` and `elapsed` (seconds) for the lg header, `error` for the reason shown in the error state, and `labels` to reword any state. Space toggles mute and Esc ends while focus is inside. `size` sm is a 40px pill for a composer, md a card, lg a full voice screen. Reduced motion holds a still form per state with a stepped level meter. Without `demo` it shows only what you pass: no captions, no timer, no script. With `demo` the recorded kitchen conversation plays and a \"Use my microphone\" button can ask for the mic; that is the only path that ever calls getUserMedia.",
+  "states": [
+    "default",
+    "loading",
+    "active",
+    "disabled",
+    "error"
+  ],
+  "previewState": "active",
+  "controls": [
+    {
+      "group": "State",
+      "key": "state",
+      "label": "State",
+      "type": "select",
+      "options": [
+        "auto",
+        "idle",
+        "connecting",
+        "listening",
+        "thinking",
+        "speaking",
+        "muted",
+        "error"
+      ],
+      "default": "auto"
+    },
+    {
+      "group": "Layout",
+      "key": "size",
+      "label": "Size",
+      "type": "select",
+      "options": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "lg"
+    },
+    {
+      "group": "Layout",
+      "key": "showCaptions",
+      "label": "Captions",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Layout",
+      "key": "showControls",
+      "label": "Controls",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Audio",
+      "key": "sensitivity",
+      "label": "Sensitivity",
+      "type": "range",
+      "min": 0.4,
+      "max": 2,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Composer pill": {
+      "size": "sm"
+    },
+    "Card": {
+      "size": "md"
+    },
+    "Orb only": {
+      "showCaptions": false,
+      "showControls": false
+    },
+    "Thinking": {
+      "state": "thinking"
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "state",
+      "type": "\"auto\" | \"idle\" | \"connecting\" | \"listening\" | \"thinking\" | \"speaking\" | \"muted\" | \"error\"",
+      "description": "The session state, owned by the caller. auto is idle outside the demo.",
+      "default": "auto"
+    },
+    {
+      "key": "analyser",
+      "type": "AnalyserNode",
+      "description": "A Web Audio AnalyserNode the caller created; low, mid, high bands and volume are read from it every frame."
+    },
+    {
+      "key": "levels",
+      "type": "() => Levels | Ref | number",
+      "description": "Alternative to analyser: returns { low, mid, high, volume } in 0..1 (or a single number)."
+    },
+    {
+      "key": "captions",
+      "type": "Array<{ who: \"user\" | \"assistant\", text, final?, interrupted? }>",
+      "description": "Live captions; the last three are shown. final:false shows a user's partial in a lighter ink; interrupted adds a tag and a dash."
+    },
+    {
+      "key": "muted",
+      "type": "boolean",
+      "description": "Controlled mute. Pass it with onMute; leave it out to let the component hold mute itself."
+    },
+    {
+      "key": "defaultMuted",
+      "type": "boolean",
+      "description": "Starting mute state when uncontrolled.",
+      "default": false
+    },
+    {
+      "key": "onMute",
+      "type": "function",
+      "description": "(next: boolean) => void, from the Mute button or Space."
+    },
+    {
+      "key": "onEnd",
+      "type": "function",
+      "description": "() => void, from the End button or Esc."
+    },
+    {
+      "key": "onInterrupt",
+      "type": "function",
+      "description": "() => void, from tapping the orb or Interrupt while speaking."
+    },
+    {
+      "key": "onStart",
+      "type": "function",
+      "description": "() => void, from tapping the orb while idle. Open your session (and the mic) here."
+    },
+    {
+      "key": "onRetry",
+      "type": "function",
+      "description": "() => void, from Retry or tapping the orb in the error state."
+    },
+    {
+      "key": "assistantName",
+      "type": "string",
+      "description": "The assistant's name in the header, labels and captions.",
+      "default": "\"Assistant\""
+    },
+    {
+      "key": "userName",
+      "type": "string",
+      "description": "The user's name on their captions.",
+      "default": "You"
+    },
+    {
+      "key": "context",
+      "type": "string",
+      "description": "A line under the name in the lg header. Empty shows none.",
+      "default": ""
+    },
+    {
+      "key": "icon",
+      "type": "ReactNode",
+      "description": "The 34px mark in the lg header; null hides it."
+    },
+    {
+      "key": "elapsed",
+      "type": "number",
+      "description": "Call time in seconds for the lg header chip. Without it (and without demo) the chip is hidden."
+    },
+    {
+      "key": "error",
+      "type": "string",
+      "description": "The reason shown under the error state.",
+      "default": "The connection dropped."
+    },
+    {
+      "key": "emptyText",
+      "type": "string",
+      "description": "Shown in the caption area before any caption arrives. Empty shows nothing.",
+      "default": ""
+    },
+    {
+      "key": "labels",
+      "type": "object",
+      "description": "Rewords the fixed words: per state { label, hint } (idle, connecting, listening, thinking, speaking, muted, error), and mute, unmute, interrupt, end, retry."
+    },
+    {
+      "key": "attack",
+      "type": "number",
+      "description": "Level rise time constant in ms.",
+      "default": 40
+    },
+    {
+      "key": "release",
+      "type": "number",
+      "description": "Level fall time constant in ms.",
+      "default": 220
+    },
+    {
+      "key": "script",
+      "type": "Array<{ state, dur, env?, say?, cut? }>",
+      "description": "The recorded conversation the demo plays. Only used with demo."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "The orb and every control are disabled; Space and Esc do nothing.",
+      "default": false
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Plays the recorded kitchen conversation with its captions, call timer and demo bar when no state, captions or audio source are passed.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLElement>",
+      "description": "The root <section>."
+    },
+    {
+      "key": "className",
+      "type": "string",
+      "description": "Added to the root."
+    },
+    {
+      "key": "style",
+      "type": "CSSProperties",
+      "description": "Merged into the root style."
+    }
+  ],
+  "example": "const [state, setState] = useState(\"idle\");\nconst [captions, setCaptions] = useState([]);\nconst analyser = useRef(null); // made from your own mic or playback stream\n<VoiceOrb\n  state={state}\n  analyser={analyser.current}\n  captions={captions}\n  assistantName=\"Helper\"\n  onStart={() => session.connect()}\n  onInterrupt={() => session.cancelResponse()}\n  onMute={(next) => session.setMuted(next)}\n  onEnd={() => session.close()}\n  onRetry={() => session.connect()}\n/>"
+}

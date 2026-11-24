@@ -1,0 +1,246 @@
+{
+  "name": "Diff View",
+  "slug": "diff-view",
+  "export": "DiffView",
+  "order": 112,
+  "kind": "components",
+  "category": "ai",
+  "subcategory": "agent-work",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Watch each edit play as it scrolls in, scrub it with the slider, then accept or reject.",
+  "description": "The review screen for an AI edit, drawn from the caller's before and after text (or precomputed hunks). It computes the diff itself (LCS over lines, then over tokens or words inside edited lines) and shows it three ways. Unified and Split re-flow the same line elements to their new columns with FLIP. Morph is the signature: each hunk plays the edit once as it scrolls into view, removed words collapse to a thin mark, inserted words open and settle, renamed words slide through, and unchanged text holds still; a per-hunk slider scrubs from before to after and a button replays it. Every hunk has Accept and Reject (plus Accept all, Reject all and Undo): accepting lets the hunk settle into plain text, rejecting plays the edit backwards and restores the old lines. A stats bar rolls the line counts and review progress, and a mini-map marks each hunk as pending, accepted (filled), rejected (hatched) or current (ringed). While the agent streams, hunks arrive one at a time, the current one growing line by line, with Stop; review controls unlock as each hunk completes. Unchanged regions fold to a count and expand on a measured spring. Every added line carries +, every removed line −, and a screen-reader label; tints mix success and danger into the surface with ink text. Phones get Unified and Morph, wrapped lines with a hanging indent, full-width hunk actions and swipe right to accept, left to reject. Nothing runs on its own: the caller passes the text and the status; the gallery's scripted stream plays only with `demo`.",
+  "intents": [
+    "review an AI code edit and accept or reject each change",
+    "diff viewer with unified and split views",
+    "animated before and after text diff",
+    "word level diff of an edited paragraph or contract",
+    "streaming code changes from a coding agent"
+  ],
+  "tags": [
+    "diff",
+    "code review",
+    "accept reject",
+    "ai edit",
+    "coding agent",
+    "unified diff",
+    "split diff",
+    "side by side",
+    "word diff",
+    "track changes",
+    "redline",
+    "hunk",
+    "patch",
+    "morph",
+    "streaming",
+    "ai"
+  ],
+  "usage": "Pass `before` and `after` (the diff is computed in the component) or precomputed `hunks` ([{ id, note, oldStart, newStart, lines: [[\" \" | \"+\" | \"-\", text]] }]). `kind` is code (token diff, mono) or prose (word diff, wrapped). The layout is `view` + `onViewChange` (unified, split, morph; controlled when both are passed) or starts from `defaultView`. The review is `decisions` ({ [hunkId]: \"accepted\" | \"rejected\" }) + `onDecide(nextDecisions, change)`, or starts from `defaultDecisions`; change is { id, decision, hunk } for one hunk (decision null when reopened), { ids, decision, hunks } for Accept all / Reject all, or { undo: true }, and each hunk is { id, index, note, oldStart, newStart, removed, added } with the lines as text. Computed hunks are id'd h0, h1 … in file order, and `notes` gives each hunk the agent's one-line reason. To drive it from a real stream, set `status` to streaming and pass `after` as it grows: trailing old lines count as not reached yet, the last hunk stays locked until the next one starts or `status` turns ready, and `onStop` backs the Stop button. `status` error (or an `error` message) shows the error bar with Retry when `onRetry` is passed. `filename`, `language`, `agent` and `icon` label the header; `labels` renames the buttons; `emptyMessage` replaces the no-changes line. `disabled` makes the review inert (reading, folding and switching views still work). Long lines scroll inside the component. The ref is the root element. With no text nothing is invented: the empty state shows. `demo` plays the built-in sample edit and its scripted stream, only when no `after` or `hunks` are passed.",
+  "states": [
+    "default",
+    "loading",
+    "selected",
+    "success",
+    "empty"
+  ],
+  "controls": [
+    {
+      "group": "Content",
+      "key": "kind",
+      "label": "Content",
+      "type": "select",
+      "options": [
+        "code",
+        "prose"
+      ],
+      "default": "code"
+    },
+    {
+      "group": "Layout",
+      "key": "view",
+      "label": "View",
+      "type": "select",
+      "options": [
+        "unified",
+        "split",
+        "morph"
+      ],
+      "default": "morph"
+    },
+    {
+      "group": "Layout",
+      "key": "showLineNumbers",
+      "label": "Line numbers",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Layout",
+      "key": "foldUnchanged",
+      "label": "Fold unchanged lines",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Layout",
+      "key": "wrap",
+      "label": "Wrap long lines",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Review",
+      "key": "reviewable",
+      "label": "Accept and reject",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Contract redline": {
+      "kind": "prose"
+    },
+    "Side by side": {
+      "view": "split"
+    },
+    "Classic unified": {
+      "view": "unified"
+    },
+    "Read only": {
+      "reviewable": false,
+      "view": "unified"
+    },
+    "Whole file": {
+      "foldUnchanged": false,
+      "view": "unified"
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "before",
+      "type": "string",
+      "description": "The original text, lines split on \\n. Left out: empty (an `after` alone shows every line as added)."
+    },
+    {
+      "key": "after",
+      "type": "string",
+      "description": "The edited text. While `status` is streaming, pass it as it grows. Left out (and not streaming): same as before, so no changes."
+    },
+    {
+      "key": "hunks",
+      "type": "Hunk[]",
+      "description": "Precomputed hunks instead of before/after: [{ id, note, oldStart, newStart (1-based), lines: [[' ' | '+' | '-', text]] or [{ t, text }] }]. Gaps between hunks show as 'N unchanged lines not loaded'."
+    },
+    {
+      "key": "defaultView",
+      "type": "'unified' | 'split' | 'morph'",
+      "description": "Starting layout when uncontrolled (the person can switch it). Phones show unified for split."
+    },
+    {
+      "key": "onViewChange",
+      "type": "(view) => void",
+      "description": "The person picked a layout. Passed with `view` (and no defaultView), the layout is controlled."
+    },
+    {
+      "key": "decisions",
+      "type": "{ [hunkId]: 'accepted' | 'rejected' }",
+      "description": "The review, controlled (pass with onDecide). Hunks not in it are pending."
+    },
+    {
+      "key": "defaultDecisions",
+      "type": "{ [hunkId]: 'accepted' | 'rejected' }",
+      "description": "Starting review when uncontrolled."
+    },
+    {
+      "key": "onDecide",
+      "type": "(nextDecisions, change) => void",
+      "description": "Every review change with the whole next map. change = { id, decision, hunk } for one hunk (decision null when reopened), { ids, decision, hunks } for Accept all / Reject all, { undo: true } for Undo. hunk = { id, index, note, oldStart, newStart, removed: string[], added: string[] }."
+    },
+    {
+      "key": "status",
+      "type": "'ready' | 'streaming' | 'submitted' | 'error'",
+      "description": "ready: review. streaming / submitted: the agent is still writing (Stop shows, the last hunk stays locked). error: the error bar shows (with Retry when onRetry is passed).",
+      "default": "ready"
+    },
+    {
+      "key": "filename",
+      "type": "ReactNode",
+      "description": "File or document name in the header chip. Left out: no chip."
+    },
+    {
+      "key": "language",
+      "type": "string",
+      "description": "Small caps label beside the file name (e.g. TypeScript). Left out: none."
+    },
+    {
+      "key": "agent",
+      "type": "string",
+      "description": "Who made the edit: 'agent proposes 3 edits'. Left out: '3 edits to review'."
+    },
+    {
+      "key": "icon",
+      "type": "ReactNode",
+      "description": "The header mark. Left out: a neutral edit glyph; null hides it."
+    },
+    {
+      "key": "notes",
+      "type": "string[]",
+      "description": "One-line reason per computed hunk, in order (hunk titles). Precomputed hunks use their own `note`."
+    },
+    {
+      "key": "labels",
+      "type": "object",
+      "description": "Rename the buttons: accept, reject, acceptAll, rejectAll, undo, stop, retry, and emptyTitle ('No changes')."
+    },
+    {
+      "key": "emptyMessage",
+      "type": "ReactNode",
+      "description": "The line under 'No changes' when nothing differs. null hides it."
+    },
+    {
+      "key": "error",
+      "type": "ReactNode",
+      "description": "An error the caller already has, shown in the error bar (also shown without status error). Left out with status error: a neutral 'stopped after N changes' line."
+    },
+    {
+      "key": "onStop",
+      "type": "() => void",
+      "description": "Stop pressed while status is streaming."
+    },
+    {
+      "key": "onRetry",
+      "type": "() => void",
+      "description": "Retry pressed in the error bar. Without it the bar has no Retry."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLDivElement>",
+      "description": "The root element: scrollIntoView() or measure it. The diff body inside is a focusable region (j / k move between hunks, a accept, r reject, u undo)."
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Shows the built-in sample edit (a code file, or a contract with kind prose) with its notes, file name and agent, and plays the scripted stream in the loading state. Only when no `after` or `hunks` are passed. For the gallery; leave off in real use.",
+      "default": false
+    }
+  ],
+  "example": "const [view, setView] = useState(\"unified\");\nconst [decisions, setDecisions] = useState({});\n\n<DiffView\n  before={original}\n  after={proposal}\n  kind=\"code\"\n  filename=\"src/api/limits.ts\"\n  language=\"TypeScript\"\n  agent=\"Review bot\"\n  notes={reasons}\n  view={view}\n  onViewChange={setView}\n  decisions={decisions}\n  onDecide={(next, change) => {\n    setDecisions(next);\n    if (change.hunk) log(change.decision, change.hunk.oldStart, change.hunk.added);\n  }}\n  status={streaming ? \"streaming\" : \"ready\"}\n  onStop={() => stream.abort()}\n/>"
+}

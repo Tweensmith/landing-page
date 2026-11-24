@@ -1,0 +1,358 @@
+{
+  "name": "Alert Banner",
+  "slug": "alert-banner",
+  "export": "AlertBanner",
+  "order": 35,
+  "kind": "components",
+  "category": "feedback",
+  "subcategory": "status",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "hint": "Dismiss it: the space folds closed instead of jumping.",
+  "description": "Inline message with a tone, an action pair and dismiss. Dismissing folds the height away so content below closes the gap smoothly; non-urgent banners can count down and dismiss themselves.",
+  "intents": [
+    "inline warning message",
+    "show an error banner on the page",
+    "announcement bar with an action",
+    "storage almost full notice"
+  ],
+  "tags": [
+    "alert",
+    "banner",
+    "callout",
+    "warning",
+    "error",
+    "notice",
+    "inline message",
+    "announcement"
+  ],
+  "usage": "Use for page-level state that persists until handled (billing, quota, outages, a failed load). Pass `tone`, `title`, `description` and, if the user can act, `actionLabel` with `onAction`; set `loading` while that action runs. Keep it mounted and drive `open`/`onOpenChange`, or mount it conditionally (it animates in). Closed, it leaves no box in the layout (the root is hidden once the fold ends), so it never takes a slot in a parent's `gap`. Spacing: in a flex column with `gap`, just place it; the banner folds that gap with itself. In normal block flow, give it `gapAfter` (or `gapBefore`) instead of a margin or a wrapper: that space folds with it. In a grid with a row gap the gap appears and goes at once at the ends of the animation; put the banner in a flex column instead if that matters. Use toasts for passing events.",
+  "states": [
+    "default",
+    "empty"
+  ],
+  "keyboard": [
+    {
+      "keys": "Enter / Space",
+      "does": "Runs the focused action button.",
+      "when": "an action is focused"
+    },
+    {
+      "keys": "Enter / Space",
+      "does": "Dismisses the banner; focus moves to the restore link when it is shown.",
+      "when": "the × is focused"
+    },
+    {
+      "keys": "Enter / Space",
+      "does": "Brings the banner back and moves focus to its ×.",
+      "when": "the restore link is focused"
+    }
+  ],
+  "screenReader": "Warning and danger banners are role=\"alert\" and info and success banners role=\"status\" (`role` overrides it), so the title and description are read when the banner appears. The × is a button named by `dismissLabel` (\"Dismiss\"); a busy action has aria-busy.",
+  "controls": [
+    {
+      "group": "Tone",
+      "key": "tone",
+      "label": "Tone",
+      "type": "select",
+      "options": [
+        "info",
+        "success",
+        "warning",
+        "danger"
+      ],
+      "default": "warning"
+    },
+    {
+      "group": "Tone",
+      "key": "surface",
+      "label": "Surface",
+      "type": "select",
+      "options": [
+        "soft",
+        "outline",
+        "solid"
+      ],
+      "default": "soft"
+    },
+    {
+      "group": "Content",
+      "key": "title",
+      "label": "Title",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "description",
+      "label": "Description",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "actionLabel",
+      "label": "Action",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "secondaryLabel",
+      "label": "Secondary action",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Behaviour",
+      "key": "dismissible",
+      "label": "Dismissible",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Behaviour",
+      "key": "autoDismiss",
+      "label": "Auto-dismiss (s, info/success)",
+      "type": "range",
+      "min": 0,
+      "max": 15,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "group": "Layout",
+      "key": "showIcon",
+      "label": "Icon",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Layout",
+      "key": "fullWidth",
+      "label": "Full width",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Layout",
+      "key": "maxWidth",
+      "label": "Max width",
+      "type": "range",
+      "min": 280,
+      "max": 960,
+      "step": 10,
+      "default": 560
+    },
+    {
+      "group": "State",
+      "key": "loading",
+      "label": "Action busy",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Behaviour",
+      "key": "showRestore",
+      "label": "Restore link",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Payment failed": {
+      "tone": "danger",
+      "actionLabel": "Update card",
+      "secondaryLabel": ""
+    },
+    "Update ready": {
+      "tone": "info",
+      "surface": "outline",
+      "actionLabel": "Reload",
+      "secondaryLabel": "Later"
+    },
+    "Solid success": {
+      "tone": "success",
+      "surface": "solid",
+      "actionLabel": "",
+      "secondaryLabel": "",
+      "autoDismiss": 6
+    }
+  },
+  "demoProps": {
+    "demo": true,
+    "showRestore": true,
+    "actionLabel": "Upgrade plan",
+    "secondaryLabel": "Manage files"
+  },
+  "dataProps": [
+    {
+      "key": "title",
+      "type": "ReactNode",
+      "description": "One-line heading. Blank shows no title.",
+      "default": ""
+    },
+    {
+      "key": "description",
+      "type": "ReactNode",
+      "description": "Body text, a string or markup (links, bold). Blank shows none.",
+      "default": ""
+    },
+    {
+      "key": "children",
+      "type": "ReactNode",
+      "description": "Extra content under the description (a list, a code, a link row)."
+    },
+    {
+      "key": "actionLabel",
+      "type": "string",
+      "description": "Primary button text. Empty renders no button.",
+      "default": ""
+    },
+    {
+      "key": "secondaryLabel",
+      "type": "string",
+      "description": "Secondary (outlined) button text. Empty renders no button.",
+      "default": ""
+    },
+    {
+      "key": "onAction",
+      "type": "(which: \"primary\" | \"secondary\", event: MouseEvent) => void",
+      "description": "Called for either action button, with which one was pressed."
+    },
+    {
+      "key": "onSecondary",
+      "type": "(event: MouseEvent) => void",
+      "description": "(event) => void, for the secondary button only (onAction is also called with \"secondary\")."
+    },
+    {
+      "key": "onDismiss",
+      "type": "() => void",
+      "description": "() => void, when the close button (or auto-dismiss) closes the banner."
+    },
+    {
+      "key": "open",
+      "type": "boolean",
+      "description": "Controlled open state. Pass it with onOpenChange; leave it out to let the banner keep its own."
+    },
+    {
+      "key": "defaultOpen",
+      "type": "boolean",
+      "description": "Initial open state when uncontrolled.",
+      "default": true
+    },
+    {
+      "key": "onOpenChange",
+      "type": "(open: boolean) => void",
+      "description": "(open: boolean) => void, when dismiss, auto-dismiss or the restore link wants to change it."
+    },
+    {
+      "key": "icon",
+      "type": "ReactNode",
+      "description": "Replaces the tone's icon (16px works best). Hide the icon with showIcon={false}."
+    },
+    {
+      "key": "loading",
+      "type": "boolean",
+      "description": "The primary action is running: shows a spinner and the button will not fire again until you clear it.",
+      "default": false
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Disables both action buttons and the close button.",
+      "default": false
+    },
+    {
+      "key": "fullWidth",
+      "type": "boolean",
+      "description": "Fill the container instead of capping at maxWidth.",
+      "default": false
+    },
+    {
+      "key": "maxWidth",
+      "type": "number | string",
+      "description": "Width cap when not fullWidth (number = px, or any CSS length).",
+      "default": 560
+    },
+    {
+      "key": "appear",
+      "type": "boolean",
+      "description": "Animate in when first mounted. Set false if the banner is on screen at page load.",
+      "default": true
+    },
+    {
+      "key": "role",
+      "type": "string",
+      "description": "Overrides the live-region role. Default: \"alert\" for warning and danger, \"status\" for info and success."
+    },
+    {
+      "key": "restoreLabel",
+      "type": "string",
+      "description": "Text of the link shown after dismissing when showRestore is on.",
+      "default": "Show the banner again"
+    },
+    {
+      "key": "dismissLabel",
+      "type": "string",
+      "description": "Accessible name of the close button.",
+      "default": "Dismiss"
+    },
+    {
+      "key": "gapBefore",
+      "type": "number | string",
+      "description": "Space the banner owns above itself (number = px, or a CSS length). It opens and folds with the banner's height on the same spring, so nothing jumps; reduced motion: instant. Use it instead of a margin or wrapper of your own.",
+      "default": 0
+    },
+    {
+      "key": "gapAfter",
+      "type": "number | string",
+      "description": "Space the banner owns below itself, folding with it the same way (e.g. 20 between the banner and the next section in normal block flow).",
+      "default": 0
+    },
+    {
+      "key": "foldParentGap",
+      "type": "boolean",
+      "description": "In a flex column with a row `gap`, also fold that one gap with the banner (a negative bottom margin on the same spring), so opening and closing slide instead of jumping by the gap. Closed, the root is hidden either way and takes no slot in the gap. No effect in other layouts.",
+      "default": true
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Fill a blank title and description with sample copy per tone. Gallery only; leave off in real UI.",
+      "default": false
+    },
+    {
+      "key": "surface",
+      "type": "\"soft\" | \"outline\" | \"solid\"",
+      "default": "soft",
+      "description": "How the banner is drawn: \"soft\" is a light wash of the tone with a tinted border, \"outline\" is the plain surface with a hairline and a bar of the tone down the left edge, and \"solid\" fills the banner with the tone."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLDivElement>",
+      "description": "The root wrapper, for measuring or scrolling to the banner."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-*, data-*) goes to the root <div>. className and style are merged with the component's own."
+    }
+  ],
+  "example": "const [error, setError] = useState(null);\nconst [busy, setBusy] = useState(false);\n\n{error && (\n  <AlertBanner\n    tone=\"danger\"\n    title=\"We couldn't load your figures\"\n    description={error.message}\n    actionLabel=\"Try again\"\n    loading={busy}\n    onAction={async () => { setBusy(true); await reload(); setBusy(false); }}\n    onDismiss={() => setError(null)}\n    fullWidth\n  />\n)}"
+}

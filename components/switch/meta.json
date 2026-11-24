@@ -1,0 +1,203 @@
+{
+  "name": "Switch",
+  "slug": "switch",
+  "export": "Switch",
+  "order": 23,
+  "kind": "components",
+  "category": "forms",
+  "subcategory": "choices",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "hint": "Toggle it. Click anywhere on the row.",
+  "description": "On/off setting with label and description. Under the `porcelain` preset the on track is green with a white thumb. The thumb stretches as it travels and settles with a squash; the whole row is clickable. role=switch, with a hidden checkbox that carries the value in a form.",
+  "intents": [
+    "toggle a setting on or off",
+    "notification preferences",
+    "settings row with a switch",
+    "enable dark mode toggle"
+  ],
+  "tags": [
+    "switch",
+    "toggle",
+    "setting",
+    "preference",
+    "on off",
+    "settings",
+    "boolean"
+  ],
+  "usage": "Use for a setting that takes effect as soon as it flips (notifications, dark mode). Give it `label` (and `description` if it needs one), then either `checked` + `onChange` (controlled) or `defaultChecked` (it keeps its own state). Inside a <form>, set `name` and the value is submitted like a checkbox. Pass `bordered={false}` for plain rows in a list, `showRow={false}` with `aria-label` (or `label`, which then becomes the accessible name) for a bare switch, and `error` for a message you already have. If the choice only applies after a Save button, a switch reads wrong: say so in the label or description, or use a Checkbox, the kit's control for a choice that applies when a form is saved. The on track uses the preset's on-state colour (green in `porcelain`; presets without one use their accent). The thumb takes the surface colour in every preset. Porcelain's green is under 3:1 against its light canvas by choice: the thumb's position carries the state.",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "selected",
+    "disabled"
+  ],
+  "keyboard": [
+    { "keys": "Space / Enter", "does": "Turns the switch on or off." }
+  ],
+  "screenReader": "A switch named by `label` (or `aria-label` when there is no row), with `description` read after it; it says on or off as it changes. With `error` it is marked invalid and the message is read as its description.",
+  "dataProps": [
+    {
+      "key": "checked",
+      "type": "boolean",
+      "description": "Controlled state. Pass it with onChange and the switch shows exactly this. Leave undefined to let the switch keep its own state."
+    },
+    {
+      "key": "defaultChecked",
+      "type": "boolean",
+      "description": "Starting state when uncontrolled; also what a form reset returns to.",
+      "default": false
+    },
+    {
+      "key": "onChange",
+      "type": "(checked: boolean, event?: MouseEvent) => void",
+      "description": "(checked: boolean, event) => void, on every toggle (and on form reset if the state changes)."
+    },
+    {
+      "key": "name",
+      "type": "string",
+      "description": "Form field name. The hidden checkbox submits `value` under this name when on, nothing when off."
+    },
+    {
+      "key": "value",
+      "type": "string",
+      "description": "Value submitted when on.",
+      "default": "on"
+    },
+    {
+      "key": "id",
+      "type": "string",
+      "description": "Id for the switch button (and the base for its label and description ids)."
+    },
+    {
+      "key": "required",
+      "type": "boolean",
+      "description": "The form will not submit while the switch is off (native validation).",
+      "default": false
+    },
+    {
+      "key": "error",
+      "type": "string",
+      "description": "An error you already have, shown under the label and announced."
+    },
+    {
+      "key": "bordered",
+      "type": "boolean",
+      "description": "Draw the labelled row as a bordered card. false gives a plain row for lists of settings.",
+      "default": true
+    },
+    {
+      "key": "maxWidth",
+      "type": "number",
+      "description": "Widest the labelled row grows, in px. 0 lets it fill its container.",
+      "default": 400
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLButtonElement>",
+      "description": "Goes to the switch <button>, for focus()."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-*, data-*) goes to the root <div>. className and style are merged with the component's own."
+    }
+  ],
+  "controls": [
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "description",
+      "label": "Description",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "State",
+      "key": "defaultChecked",
+      "label": "On initially",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Style",
+      "key": "size",
+      "label": "Size",
+      "type": "select",
+      "options": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    {
+      "group": "Style",
+      "key": "showIcons",
+      "label": "Icons in thumb",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Style",
+      "key": "showRow",
+      "label": "Show as settings row",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Style",
+      "key": "bordered",
+      "label": "Bordered row",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "required",
+      "label": "Required",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Bare switch": {
+      "showRow": false
+    },
+    "Dark mode": {
+      "label": "Dark mode",
+      "description": "Follows your system by default.",
+      "defaultChecked": true
+    },
+    "Plain row": {
+      "bordered": false
+    }
+  },
+  "example": "<Switch\n  label=\"Weekly digest\"\n  description=\"Mentions, replies and what shipped.\"\n  name=\"digest\"\n  checked={digest}\n  onChange={setDigest}\n  bordered={false}\n  maxWidth={0}\n/>",
+  "demoProps": {
+    "demo": true,
+    "showIcons": true
+  }
+}

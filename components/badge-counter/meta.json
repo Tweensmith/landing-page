@@ -1,0 +1,265 @@
+{
+  "name": "Badge Counter",
+  "slug": "badge-counter",
+  "export": "BadgeCounter",
+  "order": 40,
+  "kind": "components",
+  "category": "feedback",
+  "subcategory": "status",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "hint": "Press 98, then +1 twice: the count rolls over into 99+.",
+  "description": "A count bubble (or a dot) on your own element: wrap an icon, avatar or tab and it sits on its corner. Digits roll like an odometer, the count rolls over into 99+ past the cap, only increases send out a ring, and changes are announced politely.",
+  "intents": [
+    "notification count badge",
+    "unread messages counter",
+    "badge on an icon",
+    "show number of new items"
+  ],
+  "tags": [
+    "badge",
+    "counter",
+    "notification",
+    "unread",
+    "count",
+    "dot",
+    "99+"
+  ],
+  "usage": "Wrap the element the count belongs to: <BadgeCounter count={unread} label=\"Notifications\"><IconButton … /></BadgeCounter>. Also put the count in that element's own aria-label (\"Notifications, 3 unread\"); the badge adds a polite announcement when the count changes. It hides at 0 unless `showZero`; `max` caps the number (\"99+\"); use `kind=\"dot\"` when the exact number doesn't matter, and `overlap=\"circle\"` on round hosts such as avatars. With no children it renders the bubble inline (a count in a nav row). Also exported: Badge, the bubble alone for any position:relative element.",
+  "states": [
+    "default",
+    "empty"
+  ],
+  "keyboard": [
+    {
+      "keys": "Tab",
+      "does": "Skips the bubble, which takes no focus; focus lands on the element it wraps, whose own name should include the count."
+    }
+  ],
+  "screenReader": "The bubble is hidden from assistive technology; the host element you wrap carries its own name, and a polite live region says each change after mount (\"`label`: 3\", \"more than 99\", or \"new\" for a dot). With no host, a hidden text says the current count; `announce={false}` turns the live region off.",
+  "controls": [
+    {
+      "group": "Count",
+      "key": "count",
+      "label": "Count",
+      "type": "range",
+      "min": 0,
+      "max": 150,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "group": "Count",
+      "key": "max",
+      "label": "Cap",
+      "type": "range",
+      "min": 9,
+      "max": 999,
+      "step": 1,
+      "default": 99
+    },
+    {
+      "group": "Count",
+      "key": "showZero",
+      "label": "Show at zero",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Count",
+      "key": "simulate",
+      "label": "Simulate incoming",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Look",
+      "key": "kind",
+      "label": "Kind",
+      "type": "select",
+      "options": [
+        "count",
+        "dot"
+      ],
+      "default": "count"
+    },
+    {
+      "group": "Look",
+      "key": "overlap",
+      "label": "Host shape",
+      "type": "select",
+      "options": [
+        "rect",
+        "circle"
+      ],
+      "default": "rect"
+    },
+    {
+      "group": "Look",
+      "key": "placement",
+      "label": "Corner",
+      "type": "select",
+      "options": [
+        "top-right",
+        "top-left",
+        "bottom-right",
+        "bottom-left"
+      ],
+      "default": "top-right"
+    },
+    {
+      "group": "Look",
+      "key": "tone",
+      "label": "Tone",
+      "type": "select",
+      "options": [
+        "danger",
+        "accent",
+        "ink",
+        "success"
+      ],
+      "default": "danger"
+    },
+    {
+      "group": "Look",
+      "key": "size",
+      "label": "Badge size",
+      "type": "select",
+      "options": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    {
+      "group": "Look",
+      "key": "hostSize",
+      "label": "Host size",
+      "type": "range",
+      "min": 32,
+      "max": 72,
+      "step": 2,
+      "default": 48
+    },
+    {
+      "group": "Look",
+      "key": "pulse",
+      "label": "Ring on increase",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Demo",
+      "key": "showControls",
+      "label": "Demo buttons",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Overflow": {
+      "count": 120
+    },
+    "Dot": {
+      "kind": "dot"
+    },
+    "Cap at 9": {
+      "max": 9,
+      "count": 12
+    },
+    "Live": {
+      "simulate": true
+    }
+  },
+  "dataProps": [
+    {
+      "key": "count",
+      "type": "number",
+      "description": "The number to show. The badge follows it; hidden at 0 unless showZero.",
+      "default": 0
+    },
+    {
+      "key": "max",
+      "type": "number",
+      "description": "Cap: above it the badge reads \"max+\" (99+).",
+      "default": 99
+    },
+    {
+      "key": "children",
+      "type": "ReactNode",
+      "description": "The element the badge sits on (an icon button, avatar, tab). Omit to render the bubble inline."
+    },
+    {
+      "key": "showZero",
+      "type": "boolean",
+      "description": "Keep the badge visible at 0.",
+      "default": false
+    },
+    {
+      "key": "kind",
+      "type": "\"count\" | \"dot\"",
+      "description": "A number, or a plain dot when only \"something new\" matters.",
+      "default": "count"
+    },
+    {
+      "key": "placement",
+      "type": "\"top-right\" | \"top-left\" | \"bottom-right\" | \"bottom-left\"",
+      "description": "Which corner of the child the badge sits on.",
+      "default": "top-right"
+    },
+    {
+      "key": "overlap",
+      "type": "\"rect\" | \"circle\"",
+      "description": "Shape of the child: \"circle\" pulls the badge in so it sits on a round avatar's edge.",
+      "default": "rect"
+    },
+    {
+      "key": "size",
+      "type": "\"sm\" | \"md\" | \"lg\" | number",
+      "description": "Height of the badge: sm 16px (on a small avatar or a tab), md 20px, lg 24px (on a large tile). The digits are 60% of it. A number sets the height in px exactly.",
+      "default": "md"
+    },
+    {
+      "key": "label",
+      "type": "string",
+      "description": "What is being counted, used in the announcement (\"Notifications: 3\"). Without it only the number is announced.",
+      "default": ""
+    },
+    {
+      "key": "announce",
+      "type": "boolean",
+      "description": "Announce count changes in a polite live region (never on mount). Turn off when the host's own label already updates and is announced.",
+      "default": true
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Show the gallery's three sample hosts (bell, messages, avatar) with buttons to change the count. Leave off in real UI.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLSpanElement>",
+      "description": "The wrapper element around your child and the badge."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-*, data-*) goes to the root <span>. className and style are merged with the component's own."
+    }
+  ],
+  "example": "<BadgeCounter count={unread} max={99} label=\"Notifications\">\n  <button type=\"button\" aria-label={`Notifications, ${unread} unread`} className=\"icon-btn\">\n    <BellIcon />\n  </button>\n</BadgeCounter>\n\n<BadgeCounter kind=\"dot\" count={hasNew ? 1 : 0} overlap=\"circle\" placement=\"bottom-right\">\n  <img src={user.photo} alt={user.name} width={40} height={40} style={{ borderRadius: \"50%\" }} />\n</BadgeCounter>",
+  "demoProps": {
+    "demo": true,
+    "count": 7
+  }
+}

@@ -1,0 +1,245 @@
+{
+  "name": "Celebration",
+  "slug": "celebration",
+  "export": "Celebration",
+  "order": 39,
+  "kind": "components",
+  "category": "feedback",
+  "subcategory": "messages",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Press it once. The confetti uses the current theme's colours.",
+  "description": "Confetti for a real milestone, used once. Coloured from the live theme, it bursts from the button that earned it and the paper flutters as it falls; reduced motion swaps it for a calm halo.",
+  "intents": [
+    "confetti when a goal is reached",
+    "celebrate first publish",
+    "success moment after upgrade",
+    "party effect on completion"
+  ],
+  "tags": [
+    "confetti",
+    "celebration",
+    "success",
+    "milestone",
+    "party",
+    "delight",
+    "burst"
+  ],
+  "usage": "Reserve for genuine firsts (first publish, first sale, plan upgraded). Never on routine saves. Pass `label`, `doneLabel`, `message`, `detail` and `onCelebrate`; blank labels show \"Continue\" / \"Done\" and no message. If `onCelebrate` returns a promise (the publish itself), the button shows a spinner and cannot be pressed again; it celebrates when the promise resolves and returns to rest with no confetti if it rejects. If your work is tracked elsewhere, set `busy`. The done state is uncontrolled (`defaultDone`) or controlled (`done` + `onDoneChange`); setting `done` yourself settles the button without confetti, and setting it back to false makes it pressable again. Also exported: burst(el, { x, y, count, spread, power, gravity, shapes, ignoreReducedMotion }) to fire from anywhere without mounting the component: `el` is any element inside your Theme (the colours are read from it), x and y are viewport pixels, count defaults to 140. It draws on its own fixed canvas and removes it when the pieces have fallen, and returns a function that stops it early. Under prefers-reduced-motion it draws nothing unless ignoreReducedMotion is true.",
+  "states": [
+    "default",
+    "loading",
+    "disabled",
+    "success"
+  ],
+  "controls": [
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "doneLabel",
+      "label": "Done label",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "message",
+      "label": "Message",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "detail",
+      "label": "Detail",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Confetti",
+      "key": "count",
+      "label": "Pieces",
+      "type": "range",
+      "min": 30,
+      "max": 400,
+      "step": 10,
+      "default": 140
+    },
+    {
+      "group": "Confetti",
+      "key": "spread",
+      "label": "Spread (°)",
+      "type": "range",
+      "min": 20,
+      "max": 180,
+      "step": 5,
+      "default": 70
+    },
+    {
+      "group": "Confetti",
+      "key": "power",
+      "label": "Power",
+      "type": "range",
+      "min": 0.5,
+      "max": 2,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "group": "Confetti",
+      "key": "gravity",
+      "label": "Gravity",
+      "type": "range",
+      "min": 0.3,
+      "max": 2,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "group": "Confetti",
+      "key": "shapes",
+      "label": "Shapes",
+      "type": "select",
+      "options": [
+        "mixed",
+        "ribbons",
+        "dots"
+      ],
+      "default": "mixed"
+    },
+    {
+      "group": "Behaviour",
+      "key": "once",
+      "label": "Only once",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Behaviour",
+      "key": "busy",
+      "label": "Busy",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Behaviour",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Big": {
+      "count": 320,
+      "spread": 110,
+      "power": 1.4
+    },
+    "Gentle": {
+      "count": 60,
+      "power": 0.7,
+      "gravity": 0.6
+    },
+    "Ribbons": {
+      "shapes": "ribbons"
+    }
+  },
+  "exports": [
+    {
+      "export": "burst",
+      "description": "burst(el, { x, y, count, spread, power, gravity, shapes, ignoreReducedMotion }): fire confetti from a point without mounting the component. Returns a stop function. Draws nothing under prefers-reduced-motion unless ignoreReducedMotion is true."
+    }
+  ],
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "onCelebrate",
+      "type": "function",
+      "description": "() => void | Promise. Called when the button is pressed (not while busy, disabled, or done with `once`). Return a promise to celebrate only when it resolves; a rejection returns the button to rest with no confetti (show your own error)."
+    },
+    {
+      "key": "label",
+      "type": "string",
+      "description": "Button text before celebrating. Blank shows \"Continue\" (the sample \"Publish site\" with `demo`).",
+      "default": ""
+    },
+    {
+      "key": "doneLabel",
+      "type": "string",
+      "description": "Button text after celebrating. Blank shows \"Done\" (the sample \"Published\" with `demo`).",
+      "default": ""
+    },
+    {
+      "key": "message",
+      "type": "string",
+      "description": "Bold line under the button once done, announced politely. Blank shows nothing.",
+      "default": ""
+    },
+    {
+      "key": "detail",
+      "type": "string",
+      "description": "Smaller line under the message once done. Blank shows nothing.",
+      "default": ""
+    },
+    {
+      "key": "done",
+      "type": "boolean",
+      "description": "Controlled done state. Pair with onDoneChange. Setting it does not fire confetti."
+    },
+    {
+      "key": "defaultDone",
+      "type": "boolean",
+      "description": "Done state on mount when uncontrolled (a milestone already celebrated).",
+      "default": false
+    },
+    {
+      "key": "onDoneChange",
+      "type": "function",
+      "description": "(done) => void when the button celebrates (true) or the demo reset link is used (false)."
+    },
+    {
+      "key": "busy",
+      "type": "boolean",
+      "description": "Caller-owned busy state: a spinner replaces the sparkle, aria-busy is set and presses are ignored.",
+      "default": false
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Native disabled on the button: not focusable or pressable, dimmed.",
+      "default": false
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Sample copy (\"Publish site\", \"Published\", \"You're live\", a detail line) where yours is blank, plus a \"Reset demo\" link once done. For the gallery; off by default.",
+      "default": false
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Other attributes (id, aria-*, data-*, event handlers) go to the button; className and style go to the root."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLButtonElement>",
+      "description": "The button: focus it, or measure it (burst() can fire from it)."
+    }
+  ]
+}

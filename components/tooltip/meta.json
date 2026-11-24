@@ -1,0 +1,283 @@
+{
+  "name": "Tooltip",
+  "slug": "tooltip",
+  "export": "Tooltip",
+  "order": 46.5,
+  "kind": "components",
+  "category": "overlays",
+  "subcategory": "popovers",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "added": "2026-11-21",
+  "hint": "Hover one icon, then slide along the row: one bubble glides.",
+  "description": "A short hover or focus hint for an icon button, a truncated label or a keyboard shortcut, drawn as a small ink bubble with an arrow and optional keycaps. Inside a TooltipGroup every tooltip shares one bubble: after the first waits its delay, moving to a neighbour slides the same bubble there on a spring, morphs its width to the new label and swaps the text in the direction of travel. Opens at once on keyboard focus; Escape, a press of the trigger or scrolling the trigger away closes it. It flips and shifts to stay 8px inside the viewport with the arrow on the trigger, and renders through the kit's layer so it keeps its trigger's theme and no overflow clips it. The trigger gets the text as its accessible name or description. Built on the @base-ui/react tooltip.",
+  "intents": [
+    "tooltip on a single control",
+    "hover hint for a button",
+    "show the keyboard shortcut on hover",
+    "name a control that has no visible text",
+    "full text of a truncated label on hover"
+  ],
+  "tags": [
+    "tooltip",
+    "hint",
+    "hover",
+    "hover label",
+    "keyboard shortcut",
+    "kbd",
+    "overlay",
+    "title"
+  ],
+  "usage": "Use for a short name or hint on a control that has no room for visible text: an icon button, a truncated file name, a keyboard shortcut. Wrap exactly one element that forwards its ref and spreads props (a native element or a kit component such as Button or Copy Button) and pass `label`; add `shortcut` (\"⌘K\" or [\"⌘\", \"K\"]) to draw keycaps and set aria-keyshortcuts. Wrap a toolbar or a row of icon buttons in `TooltipGroup` so one bubble glides between them. The tooltip is never the only place information lives, never holds a link or a button (use Popover for that), and it does not open on a tap: on touch a long press of about half a second shows it without firing the control, so `label` must still name the control (it becomes the trigger's aria-label when the trigger has no name of its own, otherwise its description; force either with `describes`). A disabled native button gets no pointer events, so the tooltip wraps it in an inline span for you; keyboard users cannot reach a disabled button, so put anything they must know in visible text. For a message after an action use Toast Stack; for rich or interactive content use Popover.",
+  "states": [
+    "default",
+    "open"
+  ],
+  "keyboard": [
+    { "keys": "Tab", "does": "Focusing the trigger shows its tooltip at once; moving to the next trigger in a TooltipGroup slides the same bubble there." },
+    { "keys": "Escape", "does": "Hides the tooltip; focus stays on the trigger." },
+    { "keys": "Enter / Space", "does": "Presses the trigger as usual and hides the tooltip." }
+  ],
+  "screenReader": "When the trigger has no name of its own (an icon button), `label` becomes its aria-label; otherwise the label is tied to it with aria-describedby, as is `description`. A `shortcut` sets aria-keyshortcuts (or joins the description when it cannot be parsed), and the drawn keys are hidden. The bubble has role tooltip; on touch it opens on a long press, not on a tap.",
+  "previewState": "open",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "dataProps": [
+    {
+      "key": "children",
+      "type": "element",
+      "description": "Exactly one element that takes a ref and event handlers (a button, a link, a kit component that forwards its ref). Its own props, handlers, ref and aria attributes are kept."
+    },
+    {
+      "key": "label",
+      "type": "string | node",
+      "description": "The tooltip text. Empty: the child renders alone and nothing else happens.",
+      "default": ""
+    },
+    {
+      "key": "shortcut",
+      "type": "string | string[]",
+      "description": "Keys drawn as keycaps after the label (\"⌘⇧K\", \"Ctrl+S\" or [\"⌘\", \"K\"]); also set as aria-keyshortcuts when it can be parsed, else read as part of the description. Hidden on touch screens.",
+      "default": ""
+    },
+    {
+      "key": "description",
+      "type": "string | node",
+      "description": "An optional second line, for the rare tooltip that needs one. Keep the bubble narrow.",
+      "default": ""
+    },
+    {
+      "key": "delay",
+      "type": "number",
+      "description": "Milliseconds of hover before it opens. Inside a TooltipGroup the group's delay applies unless this is set.",
+      "default": 500
+    },
+    {
+      "key": "closeDelay",
+      "type": "number",
+      "description": "Milliseconds before it closes after the pointer leaves the trigger and the bubble.",
+      "default": 0
+    },
+    {
+      "key": "open",
+      "type": "boolean",
+      "description": "Controlled open state. Pass it with onOpenChange; leave undefined to let the tooltip keep its own."
+    },
+    {
+      "key": "defaultOpen",
+      "type": "boolean",
+      "description": "Open on first render when uncontrolled.",
+      "default": false
+    },
+    {
+      "key": "onOpenChange",
+      "type": "(open: boolean, reason: \"hover\" | \"focus\" | \"press\" | \"escape\" | \"outside\" | \"scroll\" | \"touch\" | \"move\" | \"disabled\" | \"imperative\" | \"none\", event?: Event) => void",
+      "description": "(open: boolean, reason, event) => void. reason: \"hover\", \"focus\", \"press\", \"escape\", \"outside\", \"scroll\", \"touch\", or \"move\" when a TooltipGroup's bubble leaves this trigger for a neighbour."
+    },
+    {
+      "key": "describes",
+      "type": "\"auto\" | \"label\" | \"description\"",
+      "description": "How the text reaches assistive technology. label: becomes the trigger's aria-label. description: linked with aria-describedby to a hidden copy that is always in the DOM. auto: label when the trigger has no name of its own (no text, aria-label or aria-labelledby), else description.",
+      "default": "auto"
+    },
+    {
+      "key": "id",
+      "type": "string",
+      "description": "Id of the hidden description element (the bubble gets `${id}-bubble`). Generated when omitted."
+    },
+    {
+      "key": "surface",
+      "type": "\"solid\" | \"soft\"",
+      "default": "solid",
+      "description": "How the bubble is drawn: \"solid\" is an ink bubble with light text, and \"soft\" is the page surface with ink text, a hairline ring and a ringed arrow."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLElement>",
+      "description": "Goes to the trigger element (merged with the child's own ref), for focus() or measuring."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, data-*) goes to the bubble, a <div>, and so do className and style, merged with the bubble's own."
+    }
+  ],
+  "exports": [
+    {
+      "export": "TooltipGroup",
+      "description": "Wrap a toolbar or a row of icon buttons: every Tooltip inside shares one bubble. Once one is open, moving to a neighbour (pointer or Tab) slides the same bubble there with no second delay; leaving every trigger for longer than `grace` makes the next one wait `delay` again. Renders no element of its own.",
+      "props": [
+        {
+          "key": "children",
+          "type": "node",
+          "description": "Anything containing Tooltip elements."
+        },
+        {
+          "key": "delay",
+          "type": "number",
+          "description": "Milliseconds of hover before the first tooltip opens.",
+          "default": 500
+        },
+        {
+          "key": "closeDelay",
+          "type": "number",
+          "description": "Milliseconds before the bubble closes after the pointer leaves.",
+          "default": 0
+        },
+        {
+          "key": "grace",
+          "type": "number",
+          "description": "Milliseconds the pointer may be outside every trigger before the delay applies again.",
+          "default": 400
+        },
+        {
+          "key": "disabled",
+          "type": "boolean",
+          "description": "No tooltip in the group opens.",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "controls": [
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "shortcut",
+      "label": "Shortcut",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "description",
+      "label": "Second line",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Placement",
+      "key": "placement",
+      "label": "Preferred side",
+      "type": "select",
+      "options": [
+        "top",
+        "bottom",
+        "left",
+        "right",
+        "top-start",
+        "top-end",
+        "bottom-start",
+        "bottom-end"
+      ],
+      "default": "top"
+    },
+    {
+      "group": "Placement",
+      "key": "offset",
+      "label": "Gap",
+      "type": "range",
+      "min": 4,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "group": "Style",
+      "key": "surface",
+      "label": "Surface",
+      "type": "select",
+      "options": [
+        "solid",
+        "soft"
+      ],
+      "default": "solid"
+    },
+    {
+      "group": "Style",
+      "key": "arrow",
+      "label": "Arrow",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Style",
+      "key": "maxWidth",
+      "label": "Max width",
+      "type": "range",
+      "min": 120,
+      "max": 360,
+      "step": 10,
+      "unit": "px",
+      "default": 240
+    },
+    {
+      "group": "Accessibility",
+      "key": "describes",
+      "label": "Text becomes",
+      "type": "select",
+      "options": [
+        "auto",
+        "label",
+        "description"
+      ],
+      "default": "auto"
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Soft bubble": {
+      "surface": "soft"
+    },
+    "Below, no arrow": {
+      "placement": "bottom",
+      "arrow": false
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "example": "<TooltipGroup>\n  <div role=\"group\" aria-label=\"Formatting\">\n    <Tooltip label=\"Bold\" shortcut=\"⌘B\">\n      <button type=\"button\" onClick={toggleBold}><BoldIcon /></button>\n    </Tooltip>\n    <Tooltip label=\"Add link\" shortcut={[\"⌘\", \"K\"]}>\n      <button type=\"button\" onClick={addLink}><LinkIcon /></button>\n    </Tooltip>\n  </div>\n</TooltipGroup>\n\n{/* a truncated name: the button keeps its own text, the tooltip becomes its description */}\n<Tooltip label={file.name} placement=\"bottom-start\">\n  <button type=\"button\" className=\"file-name\">{file.name}</button>\n</Tooltip>"
+}

@@ -1,0 +1,264 @@
+{
+  "name": "Command Palette",
+  "slug": "command-palette",
+  "export": "CommandPalette",
+  "order": 28,
+  "kind": "components",
+  "category": "overlays",
+  "subcategory": "menus",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Press ⌘K / Ctrl+K, or click the trigger. Type to filter.",
+  "description": "⌘K search-and-jump palette with fuzzy matching, highlighted letters, grouped results and keyboard-first navigation. Takes your commands as groups of items, a controlled open state and query, server results with a loading state, and a global shortcut you choose. The active row slides between results instead of jumping.",
+  "intents": [
+    "command palette",
+    "search and jump to pages",
+    "keyboard shortcut launcher",
+    "cmd k menu",
+    "quick switcher"
+  ],
+  "tags": [
+    "command",
+    "palette",
+    "cmdk",
+    "search",
+    "launcher",
+    "spotlight",
+    "shortcut",
+    "fuzzy",
+    "jump"
+  ],
+  "usage": "Mount once near the app root. Pass `groups` as [{ id, label, items: [{ id, label, icon, shortcut, keywords, disabled, onSelect }] }] and handle `onSelect(item, group)`; the palette closes on select unless `closeOnSelect` is false. It opens from its own search button and the global `shortcut` (\"mod+k\": ⌘K on a Mac, Ctrl+K elsewhere; pass another combo or false). Control it with `open` / `onOpenChange` and pass `trigger` for your own button (opened by state with no `trigger`, it shows no button). For server results, pass `query` / `onQueryChange`, `shouldFilter={false}` and `loading`. Keep labels short; the fuzzy match rewards word starts.",
+  "states": [
+    "default",
+    "open"
+  ],
+  "controls": [
+    {
+      "group": "Content",
+      "key": "placeholder",
+      "label": "Placeholder",
+      "type": "text",
+      "default": "Search or jump to…"
+    },
+    {
+      "group": "Behaviour",
+      "key": "shortcut",
+      "label": "⌘K shortcut",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Behaviour",
+      "key": "defaultOpen",
+      "label": "Open on mount",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Behaviour",
+      "key": "loading",
+      "label": "Loading",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Layout",
+      "key": "showFooter",
+      "label": "Footer hints",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Layout",
+      "key": "showTrigger",
+      "label": "Trigger button",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Open": {
+      "defaultOpen": true
+    },
+    "Minimal": {
+      "showFooter": false
+    }
+  },
+  "previewProps": {
+    "defaultOpen": true
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "groups",
+      "type": "array",
+      "description": "[{ id, label, items: [{ id, label, icon, shortcut, keywords, disabled, onSelect, closeOnSelect }] }]. label is a string; shortcut a string (\"G D\") or array of keys shown on the row; keywords extra words that match. `name` (group) and `hint` (item) still work. Empty by default."
+    },
+    {
+      "key": "onSelect",
+      "type": "function",
+      "description": "(item, group) => void when an item is chosen (Enter or click), after the item's own onSelect. Not called for disabled items."
+    },
+    {
+      "key": "closeOnSelect",
+      "type": "boolean",
+      "description": "Close after a choice. An item's own closeOnSelect wins.",
+      "default": true
+    },
+    {
+      "key": "open",
+      "type": "boolean",
+      "description": "Controlled open state. Leave undefined to let the palette manage itself."
+    },
+    {
+      "key": "defaultOpen",
+      "type": "boolean",
+      "description": "Open on mount when uncontrolled.",
+      "default": false
+    },
+    {
+      "key": "onOpenChange",
+      "type": "function",
+      "description": "(open: boolean, reason) => void. reason: \"trigger\", \"shortcut\", \"select\", \"escape\", \"outside\" or \"button\" (the phone Cancel button)."
+    },
+    {
+      "key": "shortcut",
+      "type": "boolean | string",
+      "description": "Global key that toggles the palette: true is \"mod+k\" (⌘ or Ctrl, shown as ⌘K on Apple keyboards and Ctrl K elsewhere), a string such as \"ctrl+shift+p\" or \"/\" (a bare key is ignored while typing in a field), or false for none.",
+      "default": true
+    },
+    {
+      "key": "query",
+      "type": "string",
+      "description": "Controlled search text. Use with onQueryChange to load results as the user types."
+    },
+    {
+      "key": "defaultQuery",
+      "type": "string",
+      "description": "Starting search text when uncontrolled (cleared each time the palette opens).",
+      "default": ""
+    },
+    {
+      "key": "onQueryChange",
+      "type": "function",
+      "description": "(query: string) => void on every keystroke."
+    },
+    {
+      "key": "filter",
+      "type": "function",
+      "description": "(item, query) => boolean | number. Replaces the built-in fuzzy match: false or 0 hides an item, true or a number keeps it, higher numbers first."
+    },
+    {
+      "key": "shouldFilter",
+      "type": "boolean",
+      "description": "false shows groups exactly as given (your server already filtered them); no highlighting.",
+      "default": true
+    },
+    {
+      "key": "loading",
+      "type": "boolean",
+      "description": "Your own loading flag while results load: placeholder rows when there are none yet, a spinner in the field when there are.",
+      "default": false
+    },
+    {
+      "key": "error",
+      "type": "string | node",
+      "description": "Your own error message when results failed to load; shown in place of the list (role=alert). Results you still pass are hidden while it is set."
+    },
+    {
+      "key": "onRetry",
+      "type": "function",
+      "description": "() => void. With error set, adds a Try again button; Enter in the field calls it too."
+    },
+    {
+      "key": "emptyMessage",
+      "type": "string | node | function",
+      "description": "Shown when nothing matches. A string, a node or (query) => node. Default: \"No results\" (with the query when there is one)."
+    },
+    {
+      "key": "renderItem",
+      "type": "function",
+      "description": "(item, { active, query }) => node. Replaces the row's content (icon, label, shortcut); the row keeps its option role, keyboard and click behaviour."
+    },
+    {
+      "key": "placeholder",
+      "type": "string",
+      "description": "Placeholder and accessible name of the search field; also the built-in trigger's text unless triggerLabel is set.",
+      "default": "Search or jump to…"
+    },
+    {
+      "key": "triggerLabel",
+      "type": "string",
+      "description": "Text of the built-in trigger button. Defaults to the placeholder."
+    },
+    {
+      "key": "label",
+      "type": "string",
+      "description": "Accessible name of the dialog.",
+      "default": "Command palette"
+    },
+    {
+      "key": "trigger",
+      "type": "node | function | null",
+      "description": "Your own trigger: an element (cloned with a ref, onClick and aria attributes) or (props) => node spreading { ref, onClick, aria-haspopup, aria-expanded, disabled }. Left out, the built-in search button shows unless you pass `open`. null renders none."
+    },
+    {
+      "key": "showTrigger",
+      "type": "boolean",
+      "description": "Show the built-in search button (when uncontrolled and no trigger is passed).",
+      "default": true
+    },
+    {
+      "key": "showFooter",
+      "type": "boolean",
+      "description": "The keyboard hints and result count under the list (hidden on phones).",
+      "default": true
+    },
+    {
+      "key": "closeOnEscape",
+      "type": "boolean",
+      "description": "Escape closes the palette.",
+      "default": true
+    },
+    {
+      "key": "closeOnOutside",
+      "type": "boolean",
+      "description": "A press on the backdrop closes the palette.",
+      "default": true
+    },
+    {
+      "key": "returnFocusTo",
+      "type": "ref | element | string | function | false",
+      "description": "Where focus goes on close: a ref, an element, a CSS selector or a function returning one. Default: the trigger, else what had focus before opening, else the control nearest to it. false leaves focus alone."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Disables the trigger and the shortcut.",
+      "default": false
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Fill the palette with the gallery's sample commands when no groups are passed.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "ref",
+      "description": "The dialog panel (null while closed). className, style and other props go to it too."
+    }
+  ],
+  "example": "<CommandPalette\n  groups={[\n    { id: \"go\", label: \"Go to\", items: [\n      { id: \"orders\", label: \"Orders\", icon: \"box\", shortcut: \"G O\", keywords: [\"sales\"] },\n      { id: \"settings\", label: \"Settings\", icon: \"settings\" },\n    ] },\n    { id: \"act\", label: \"Actions\", items: [\n      { id: \"new\", label: \"New invoice\", icon: \"plus\", onSelect: () => createInvoice() },\n    ] },\n  ]}\n  onSelect={(item) => navigate(item.id)}\n/>\n\n{/* opened by state, no built-in button, results from your server */}\n<CommandPalette\n  open={open}\n  onOpenChange={setOpen}\n  shortcut=\"mod+k\"\n  query={query}\n  onQueryChange={setQuery}\n  shouldFilter={false}\n  loading={searching}\n  groups={[{ id: \"people\", label: \"People\", items: people.map((p) => ({ id: p.id, label: p.name, icon: \"user\" })) }]}\n  emptyMessage={(q) => (q ? `Nobody called \"${q}\"` : \"Type a name\")}\n  onSelect={(item) => openProfile(item.id)}\n/>"
+}

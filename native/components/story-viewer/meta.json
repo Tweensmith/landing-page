@@ -1,0 +1,87 @@
+{
+  "name": "Story Viewer",
+  "slug": "story-viewer",
+  "export": "StoryViewer",
+  "order": 66,
+  "kind": "components",
+  "category": "mobile",
+  "platform": "native",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Tap a ring, then drag sideways: the cube turns under your finger. Hold to pause, swipe down to shrink it back into its ring.",
+  "description": "Stories for React Native, shown as a social feed with a tray of rings and a full-screen viewer. A tapped ring grows into the viewer from its exact position and size, and closing folds the story back into the ring of whoever you ended on. People sit on the faces of a 3D cube: drag sideways and it turns with your finger around the shared edge, then snaps with your flick. Segmented progress bars fill on the UI thread; tap the left third to go back and anywhere else to go on. Press and hold to pause while the bars, header and reply bar step aside. Swipe down and the card follows, shrinking and rounding as the feed shows through, then lets go into its ring or springs back. Rings go plain once every frame is seen, with haptics on each person change and on dismiss. Reduce Motion cross-fades between people and fades the viewer in and out.",
+  "intents": [
+    "instagram style stories viewer",
+    "3d cube transition between stories",
+    "story rings tray with progress bars",
+    "react native stories hold to pause swipe down to close"
+  ],
+  "tags": [
+    "stories",
+    "story viewer",
+    "cube",
+    "3d",
+    "progress bars",
+    "rings",
+    "avatars",
+    "social",
+    "shared element",
+    "swipe to dismiss",
+    "hold to pause",
+    "haptics",
+    "react native",
+    "expo"
+  ],
+  "usage": "Use for short-lived, full-screen sequences people tap through: stories, release notes, onboarding moments. Keep each frame readable in its duration, let a hold pause it, and always offer a visible close button alongside the swipe down.",
+  "states": [
+    "default",
+    "open"
+  ],
+  "controls": [
+    {
+      "group": "Timing",
+      "key": "frameDuration",
+      "label": "Frame duration (s)",
+      "type": "range",
+      "min": 2,
+      "max": 10,
+      "step": 0.5,
+      "default": 5
+    },
+    {
+      "group": "Motion",
+      "key": "cube",
+      "label": "Cube transition",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Look",
+      "key": "showReply",
+      "label": "Reply bar",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Behaviour",
+      "key": "startOpen",
+      "label": "Start open",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Open": {
+      "startOpen": true
+    },
+    "Quick frames": {
+      "frameDuration": 2.5
+    },
+    "Cross-fade": {
+      "cube": false
+    },
+    "No reply bar": {
+      "showReply": false
+    }
+  }
+}

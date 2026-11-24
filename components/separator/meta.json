@@ -1,0 +1,205 @@
+{
+  "name": "Separator",
+  "slug": "separator",
+  "export": "Separator",
+  "order": 0.7,
+  "kind": "components",
+  "category": "display",
+  "subcategory": "containers",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "added": "2026-11-22",
+  "hint": "Scroll it into view: each line draws itself once, and the \"or\" line draws outward from the word.",
+  "description": "A hairline rule between two groups of content, the same weight as the kit's card edges. It draws itself the first time it comes into view (outward from its label when it has one), once. It can carry a label in the line (\"or\" between sign-in options and a form), stand vertical between items in a toolbar or a row of actions, and be drawn solid, dashed or fading toward its ends.",
+  "intents": [
+    "divider line between sections",
+    "or divider between sign in options",
+    "horizontal rule with a label in the middle",
+    "vertical divider between toolbar buttons",
+    "separator between menu groups"
+  ],
+  "tags": [
+    "separator",
+    "divider",
+    "rule",
+    "hr",
+    "hairline",
+    "line",
+    "or divider",
+    "vertical divider"
+  ],
+  "usage": "Use between two groups that need a visible break: sections of a card or menu, sign-in options and a form (`label=\"or\"`), groups of buttons in a toolbar (`orientation=\"vertical\"`; it stretches to the row's height). Place it between the two groups; it brings its own space on the axis it separates (`spacing`, 16px by default, 0 for none) and `inset` shortens the line from both ends (px, or true for 16px). It draws itself once when it first comes into view; pass `draw={false}` where many separators appear at once (a long settings page) or the motion would distract. It is decorative by default and hidden from screen readers; pass `decorative={false}` when the break carries meaning a screen reader should hear (it becomes role=\"separator\" and a text label names it). Often space alone separates better than a line: try a larger gap first. The row lines of a list or table belong to that list or table (Data Table, Accordion), not to separators between rows.",
+  "states": [
+    "default"
+  ],
+  "keyboard": [],
+  "screenReader": "Decorative by default: role=\"none\" and hidden from assistive technology. With `decorative={false}` it is role=\"separator\" with aria-orientation, named by a text `label`.",
+  "dataProps": [
+    {
+      "key": "orientation",
+      "type": "\"horizontal\" | \"vertical\"",
+      "description": "Horizontal fills its container's width; vertical stretches to its flex parent's height (at least 16px) for toolbars and rows of actions.",
+      "default": "horizontal"
+    },
+    {
+      "key": "kind",
+      "type": "\"line\" | \"dashed\" | \"fade\"",
+      "description": "line: the kit's hairline. dashed: a dashed line. fade: the line fades out toward its ends (toward the outer ends when it has a label).",
+      "default": "line"
+    },
+    {
+      "key": "label",
+      "type": "ReactNode",
+      "description": "Text (or a node) that sits in the line, in the kit's small label type. Long text wraps; each line part keeps at least 24px.",
+      "default": ""
+    },
+    {
+      "key": "align",
+      "type": "\"center\" | \"start\" | \"end\"",
+      "description": "Where the label sits. start and end put it flush at that edge with the line running to the other.",
+      "default": "center"
+    },
+    {
+      "key": "inset",
+      "type": "number | boolean",
+      "description": "Shortens the line from both ends, in px; true insets it 16px.",
+      "default": 0
+    },
+    {
+      "key": "spacing",
+      "type": "number",
+      "description": "Margin on the axis it separates, in px (above and below a horizontal one, left and right of a vertical one). 0 for none.",
+      "default": 16
+    },
+    {
+      "key": "decorative",
+      "type": "boolean",
+      "description": "true: role=\"none\", hidden from assistive technology. false: role=\"separator\" with aria-orientation, named by a text label.",
+      "default": true
+    },
+    {
+      "key": "draw",
+      "type": "boolean",
+      "description": "Draw the line in (about 400ms) the first time it comes into view, once. Reduced motion: never drawn, just there.",
+      "default": true
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "With no label: show a sample sign-in panel using all three kinds of separator. Gallery only.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLDivElement>",
+      "description": "The root <div>."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-*, data-*) goes to the root <div>. className and style are merged with the component's own."
+    }
+  ],
+  "controls": [
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Layout",
+      "key": "orientation",
+      "label": "Orientation",
+      "type": "select",
+      "options": [
+        "horizontal",
+        "vertical"
+      ],
+      "default": "horizontal"
+    },
+    {
+      "group": "Layout",
+      "key": "align",
+      "label": "Label position",
+      "type": "select",
+      "options": [
+        "center",
+        "start",
+        "end"
+      ],
+      "default": "center"
+    },
+    {
+      "group": "Layout",
+      "key": "spacing",
+      "label": "Spacing (px)",
+      "type": "range",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "default": 16
+    },
+    {
+      "group": "Layout",
+      "key": "inset",
+      "label": "Inset (px)",
+      "type": "range",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "default": 0
+    },
+    {
+      "group": "Style",
+      "key": "kind",
+      "label": "Kind",
+      "type": "select",
+      "options": [
+        "line",
+        "dashed",
+        "fade"
+      ],
+      "default": "line"
+    },
+    {
+      "group": "Behaviour",
+      "key": "draw",
+      "label": "Draw on first view",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Behaviour",
+      "key": "decorative",
+      "label": "Decorative (hidden from screen readers)",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Or": {
+      "label": "or"
+    },
+    "Section heading": {
+      "label": "Billing",
+      "align": "start"
+    },
+    "Fading": {
+      "kind": "fade"
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "example": "<Button variant=\"primary\" fullWidth onClick={signInWithPasskey}>Continue with passkey</Button>\n<Separator label=\"or\" spacing={20} />\n<TextField label=\"Work email\" type=\"email\" value={email} onChange={setEmail} />\n\n<div role=\"toolbar\" aria-label=\"Formatting\" style={{ display: \"flex\", alignItems: \"center\" }}>\n  <button type=\"button\" aria-label=\"Bold\" onClick={toggleBold}>B</button>\n  <button type=\"button\" aria-label=\"Italic\" onClick={toggleItalic}>I</button>\n  <Separator orientation=\"vertical\" spacing={6} inset={6} />\n  <button type=\"button\" aria-label=\"Add link\" onClick={addLink}>Link</button>\n</div>"
+}

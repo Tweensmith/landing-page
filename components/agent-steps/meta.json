@@ -1,0 +1,220 @@
+{
+  "name": "Agent Step Timeline",
+  "slug": "agent-steps",
+  "export": "AgentSteps",
+  "order": 108,
+  "kind": "components",
+  "category": "ai",
+  "subcategory": "agent-work",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Watch the sample run: the rail draws to each step as it lands, then stops at a gate for the refund. Approve or reject it, or press Stop.",
+  "description": "A live agent run you can see and steer, drawn from the caller's steps. Each step has a kind (reasoning, tool call, approval, reply) and shows its AI SDK state (input-streaming, input-available, approval-requested, approval-responded, output-available, output-error) as an icon and a label. The rail draws from one step to the next as each settles; the running step carries a live elapsed timer (from the caller's own timestamps) and an arc that fills with real progress where the tool reports it. Reasoning streams open and folds to a one-line summary on a measured spring shortly after it finishes, unless you pin it. Tool calls open to formatted input and output with copy buttons, long output clamped behind Show all, and nested sub-steps with their own short rail. Anything with consequences stops the rail at a gate and states exactly what will happen, with Approve, Reject and an optional 'always allow' box; focus moves to it without stealing it from a field you are typing in, and it is announced once. Failed tools show the reason and Retry, Stop works at any time and marks where the run stopped, and a finished run folds into one summary line that opens again without re-mounting. Nothing runs on its own: the caller passes steps and status. The gallery's sample (an operations agent refunding an order) plays only with `demo`.",
+  "intents": [
+    "show an AI agent's steps and tool calls live",
+    "agent asks for approval before a risky action",
+    "tool call timeline with input and output",
+    "human in the loop approve or reject agent action",
+    "collapsible reasoning and chain of thought steps"
+  ],
+  "tags": [
+    "ai",
+    "agent",
+    "agent steps",
+    "tool calls",
+    "function calling",
+    "reasoning",
+    "chain of thought",
+    "approval",
+    "human in the loop",
+    "ai sdk",
+    "timeline",
+    "streaming",
+    "stop",
+    "retry",
+    "run log"
+  ],
+  "usage": "Use in an agent or copilot panel to show a run while it happens. Drive it from your stream by passing `steps` (newest last, each with a stable `id`) and, optionally, `status` (running, waiting, finished, stopped, error, idle; derived from the steps when left out). A step is { id, kind: \"reasoning\" | \"tool\" | \"approval\" | \"message\", title, state (AI SDK) or status (pending, streaming, running, waiting, done, error, stopped, approved, rejected), tool, input, output, summary, error, detail (a React node shown in the step's body), progress: { value, total, unit }, startedAt, endedAt, requestedAt, respondedAt (epoch ms), decision, always, children }. Map AI SDK tool parts straight across: part.state becomes `state`, part.input and part.output become `input` and `output`; reasoning parts are kind reasoning with the text so far in `output`. Approval steps take `approval: { action, details: [[label, value]], note, eyebrow, approveLabel, rejectLabel, alwaysLabel }`. Wire `onApprove(id, { always, step })`, `onReject(id, { step })`, `onRetry(id, { step })` and `onStop({ step, status })` to your agent, then update the step's state yourself; set `busy` while your call is in flight so nothing fires twice. Which steps are open is yours with `expanded` (step ids) + `onExpandedChange(ids, { id, open, step })`, or starts from `defaultExpanded`; otherwise steps open while they work and fold after. The summary-line collapse is `collapsed` + `onCollapsedChange` (or `defaultCollapsed`). `task`, `agent` ({ name, org, by }) and `mark` (a node) fill the header; `labels` replaces any word of the chrome. The ref is the root <section>. Nothing runs by itself: no steps shows the empty state. `demo` plays a scripted sample run (only when no `steps` are passed); `script` replaces its copy.",
+  "states": [
+    "default",
+    "loading",
+    "open",
+    "success",
+    "error"
+  ],
+  "previewState": "open",
+  "controls": [
+    {
+      "group": "Layout",
+      "key": "density",
+      "label": "Density",
+      "type": "select",
+      "options": [
+        "comfortable",
+        "compact"
+      ],
+      "default": "comfortable"
+    },
+    {
+      "group": "Behaviour",
+      "key": "autoCollapseReasoning",
+      "label": "Fold reasoning when done",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Behaviour",
+      "key": "showInputOutput",
+      "label": "Tool input and output",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Behaviour",
+      "key": "showTimers",
+      "label": "Step timers",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Behaviour",
+      "key": "collapsed",
+      "label": "Collapse to summary",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Compact panel": {
+      "density": "compact"
+    },
+    "Keep reasoning open": {
+      "autoCollapseReasoning": false
+    },
+    "Steps only": {
+      "showInputOutput": false,
+      "showTimers": false
+    },
+    "Summary line": {
+      "collapsed": true
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "steps",
+      "type": "Step[]",
+      "description": "The run, newest last. Each step: { id (stable), kind: 'reasoning' | 'tool' | 'approval' | 'message', title, state (AI SDK: input-streaming, input-available, approval-requested, approval-responded, output-available, output-error) or status in plain words (pending, streaming, running, waiting, done, error, stopped, approved, rejected), tool, input, output, summary (the folded one-liner), error, errorDetail, detail (ReactNode for the body), progress: { value, total, unit }, startedAt, endedAt, requestedAt, respondedAt (epoch ms; timers show only when startedAt is set), stopped, decision: 'approved' | 'rejected', always, approval, children (sub-steps of the same shape) }. Leave out for the empty state."
+    },
+    {
+      "key": "status",
+      "type": "'running' | 'waiting' | 'finished' | 'stopped' | 'error' | 'idle'",
+      "description": "The run's status in the header pill and summary line. Left out, it is derived from the steps (an approval-requested step means waiting, an error step error, all settled finished)."
+    },
+    {
+      "key": "task",
+      "type": "string",
+      "description": "The task the agent was given, as the header title. Blank shows no title."
+    },
+    {
+      "key": "agent",
+      "type": "{ name, org?, by? }",
+      "description": "Who is running: shown under the title ('name · org · asked by by') and used in announcements and the approval eyebrow ('name wants to'). Left out: no by-line, and 'Agent' / 'the agent' in sentences."
+    },
+    {
+      "key": "mark",
+      "type": "ReactNode",
+      "description": "A small logo or avatar at the start of the header. Left out: none."
+    },
+    {
+      "key": "expanded",
+      "type": "string[]",
+      "description": "Ids of the open steps, controlled (pass with onExpandedChange). Message steps are always open."
+    },
+    {
+      "key": "defaultExpanded",
+      "type": "string[]",
+      "description": "Ids of steps that start open when uncontrolled; the rest open while they work and fold after."
+    },
+    {
+      "key": "onExpandedChange",
+      "type": "(ids, { id, open, step }) => void",
+      "description": "A step was opened or closed: the whole next list of open ids, and which step changed."
+    },
+    {
+      "key": "defaultCollapsed",
+      "type": "boolean",
+      "description": "Starting collapse of the step list into the summary line, when uncontrolled."
+    },
+    {
+      "key": "onCollapsedChange",
+      "type": "(collapsed) => void",
+      "description": "The person pressed Show steps / Hide steps. With `collapsed` (and no defaultCollapsed) the collapse is controlled. A waiting approval always keeps the list open."
+    },
+    {
+      "key": "labels",
+      "type": "object",
+      "description": "Replace any word of the chrome: running, waiting, finished, stopped, error, idle (pill), stop, retry, replay, showSteps, hideSteps, emptyTitle, emptyBody, approve, reject (default button labels), approvedBy, rejectedBy, stoppedBy, input, output, reasoning, reply, and state: (step, text) => string to rewrite the state label under each title."
+    },
+    {
+      "key": "busy",
+      "type": "boolean",
+      "description": "The caller's call is in flight (after Approve, Reject, Retry or Stop): those controls are disabled so nothing fires twice, and the root is aria-busy. Set and clear it yourself.",
+      "default": false
+    },
+    {
+      "key": "onApprove",
+      "type": "(id, { always, step }) => void",
+      "description": "Approve pressed on a waiting approval step. `always` is the 'always allow' box. Then set that step's state to approval-responded (decision 'approved') and carry on."
+    },
+    {
+      "key": "onReject",
+      "type": "(id, { step }) => void",
+      "description": "Reject pressed on a waiting approval step."
+    },
+    {
+      "key": "onRetry",
+      "type": "(id, { step }) => void",
+      "description": "Retry pressed on a failed step (state output-error, not stopped)."
+    },
+    {
+      "key": "onStop",
+      "type": "({ step, status }) => void",
+      "description": "Stop pressed while the run is live; `step` is the running step (or the last one). Mark the stopped step with stopped: true and set status 'stopped'."
+    },
+    {
+      "key": "script",
+      "type": "object",
+      "description": "Copy of the scripted sample run that `demo` plays (see DEFAULT_SCRIPT in the source). Only used with demo."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLElement>",
+      "description": "The root <section> (role region, named by the task). ref.current.scrollIntoView() or measure it."
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Plays the scripted sample run (an operations agent refunding an order) with its task, agent and mark, when no `steps` are passed. For the gallery; leave off in real use.",
+      "default": false
+    }
+  ],
+  "example": "const [steps, setSteps] = useState([]);\nconst [busy, setBusy] = useState(false);\n\n// from your stream: one object per reasoning / tool / approval part, stable ids, newest last\n// { id: 'p1', kind: 'tool', title: 'Look up order 1042', tool: 'orders.lookup', state: 'input-available', input, startedAt: Date.now() }\n\n<AgentSteps\n  task=\"Refund order 1042\"\n  agent={{ name: 'Ops agent', by: user.name }}\n  steps={steps}\n  busy={busy}\n  onApprove={async (id, { always }) => { setBusy(true); await agent.approve(id, { always }); setBusy(false); }}\n  onReject={(id) => agent.reject(id)}\n  onRetry={(id) => agent.retry(id)}\n  onStop={() => agent.stop()}\n/>"
+}

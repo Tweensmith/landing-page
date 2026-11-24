@@ -1,0 +1,226 @@
+{
+  "name": "Reaction Button",
+  "slug": "reaction-button",
+  "export": "ReactionButton",
+  "order": 17,
+  "kind": "components",
+  "category": "actions",
+  "subcategory": "effect-buttons",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "pro",
+  "hint": "Like it. Unlike it.",
+  "description": "Like / favourite / upvote with a count. The icon pops, a ring and a burst of particles fly out in the tone colour, and the count rolls digit by digit. aria-pressed reflects the state.",
+  "intents": [
+    "like button with count",
+    "heart animation when liking a post",
+    "favourite or upvote button",
+    "social reaction counter"
+  ],
+  "tags": [
+    "like",
+    "heart",
+    "reaction",
+    "favourite",
+    "upvote",
+    "count",
+    "social",
+    "particles"
+  ],
+  "usage": "Use on posts, comments, products and saved items. Keep the count visible; the burst only plays when turning it on, not off. When the reacted state lives in your data, control it: pass `checked` and `count` and update both in `onChange(checked, count)` (the count it suggests is yours ± 1; send the request there and roll back if it fails). Otherwise seed it with `defaultChecked` and `defaultCount` and listen to `onChange`. Give it a `label` that names the thing (\"Like Dune\"), since that is its accessible name.",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "selected",
+    "disabled"
+  ],
+  "dataProps": [
+    {
+      "key": "checked",
+      "type": "boolean",
+      "description": "Controlled reacted state. Pass it with onChange; leave it undefined to let the button keep its own."
+    },
+    {
+      "key": "defaultChecked",
+      "type": "boolean",
+      "description": "Reacted state on first render when uncontrolled.",
+      "default": false
+    },
+    {
+      "key": "liked",
+      "type": "boolean",
+      "description": "Old name for defaultChecked (it only seeds the state). Still works; prefer checked or defaultChecked."
+    },
+    {
+      "key": "count",
+      "type": "number",
+      "description": "Controlled count. Pass it with onChange and update it there; leave it undefined to let the button count on its own from defaultCount."
+    },
+    {
+      "key": "defaultCount",
+      "type": "number",
+      "description": "Count on first render when uncontrolled; each toggle adds or removes one.",
+      "default": 0
+    },
+    {
+      "key": "onChange",
+      "type": "function",
+      "description": "(checked: boolean, count: number) => void, on each toggle. count is the current count plus or minus one (never below 0). Not called while disabled."
+    },
+    {
+      "key": "label",
+      "type": "string",
+      "description": "Accessible name, read with the count (\"Like, 12 reactions\"). Name the thing: \"Like Dune\".",
+      "default": "Like"
+    },
+    {
+      "key": "showCount",
+      "type": "boolean",
+      "description": "Show the rolling count. Off gives an icon-only toggle named by label.",
+      "default": true
+    },
+    {
+      "key": "formatCount",
+      "type": "function",
+      "description": "(n: number) => string for the shown and announced count. Default: the number in the Theme's locale."
+    },
+    {
+      "key": "icon",
+      "type": "string | ReactNode",
+      "description": "A built-in icon name (filled when on) or your own node.",
+      "default": "heart"
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Not focusable or pressable; the state still shows.",
+      "default": false
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Gallery only: shows a sample count (128) while defaultCount is left at 0. Leave off in real UI.",
+      "default": false
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Other attributes (aria-*, data-*, id, onClick) go to the <button>; className and style too. An onClick that calls preventDefault() stops the toggle."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLButtonElement>",
+      "description": "The <button>: focus it or measure it."
+    }
+  ],
+  "controls": [
+    {
+      "group": "Content",
+      "key": "defaultCount",
+      "label": "Count",
+      "type": "range",
+      "min": 0,
+      "max": 10000,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "group": "Content",
+      "key": "defaultChecked",
+      "label": "Reacted initially",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": "Like"
+    },
+    {
+      "group": "Content",
+      "key": "showCount",
+      "label": "Show count",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Style",
+      "key": "icon",
+      "label": "Icon",
+      "type": "select",
+      "options": [
+        "heart",
+        "bookmark",
+        "sparkle"
+      ],
+      "default": "heart"
+    },
+    {
+      "group": "Style",
+      "key": "tone",
+      "label": "Tone",
+      "type": "select",
+      "options": [
+        "danger",
+        "accent",
+        "success"
+      ],
+      "default": "danger"
+    },
+    {
+      "group": "Burst",
+      "key": "particles",
+      "label": "Particles",
+      "type": "range",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "default": 10
+    },
+    {
+      "group": "Burst",
+      "key": "burstRadius",
+      "label": "Burst radius",
+      "type": "range",
+      "min": 10,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 26
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Save": {
+      "icon": "bookmark",
+      "tone": "accent",
+      "label": "Save"
+    },
+    "Upvote": {
+      "icon": "sparkle",
+      "tone": "success",
+      "label": "Upvote",
+      "defaultCount": 4096
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "example": "const [liked, setLiked] = useState(post.likedByMe);\nconst [likes, setLikes] = useState(post.likes);\n\n<ReactionButton\n  label={`Like ${post.title}`}\n  checked={liked}\n  count={likes}\n  onChange={(next, n) => {\n    setLiked(next); setLikes(n);\n    api.like(post.id, next).catch(() => { setLiked(!next); setLikes(likes); });\n  }}\n/>"
+}

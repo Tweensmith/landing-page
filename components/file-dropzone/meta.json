@@ -1,0 +1,272 @@
+{
+  "name": "File Dropzone",
+  "slug": "file-dropzone",
+  "export": "FileDropzone",
+  "order": 32,
+  "kind": "components",
+  "category": "forms",
+  "subcategory": "pickers",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Drag a file anywhere into the window, or click to browse.",
+  "description": "Drop or browse for files with per-file progress rings, type and size checks, thumbnails, retry, replace and remove. The file list is the caller's (value / onChange), uploads go through the caller's upload function. The zone wakes as soon as a file enters the window, then commits harder when it's over the zone.",
+  "intents": [
+    "upload files",
+    "drag and drop upload",
+    "attach documents",
+    "image uploader",
+    "file upload with progress"
+  ],
+  "tags": [
+    "upload",
+    "dropzone",
+    "files",
+    "drag and drop",
+    "attachments",
+    "progress",
+    "dnd"
+  ],
+  "usage": "Use for attachments, imports, logos and avatars. Pass `upload(file, onProgress, { signal, item })` returning a promise: call onProgress(0..1) as bytes go, resolve with whatever you need later (a URL, an id; it lands on the item as `result`), reject with an Error whose message is shown on the row (the row then offers Retry). `signal` aborts when the person removes the file or it is replaced. Without `upload` nothing is sent: files are added as 'Added' and reach a <form> through `name`. Own the list with `value` + `onChange(items, detail)`; each item is { id, file, name, size, type, status: 'uploading' | 'done' | 'error', progress 0..1, error, reason: 'type' | 'size' | 'count' | 'upload', result, preview }. onChange fires on every change (add, progress, done, error, retry, remove, reset); set the list to [] to clear it, or to your own items (e.g. a stored logo with `preview` and no `file`). `multiple={false}` is single-file mode: a new file replaces the old one (a rejected one leaves the good file in place); add `hideZoneWhenFull` and the row itself offers Replace and Remove. The ref is the zone element (role=button): ref.current.focus() focuses it, ref.current.scrollIntoView() reaches it, ref.current.click() opens the file picker (call it from a click handler). `height` is the zone's height; under 150px the zone tightens its padding and icon so the text fits, and it grows only when the hint wraps onto extra lines on a narrow screen. The component is at most `maxWidth` (440px) wide; `fullWidth` or maxWidth={0} lets it fill its container. The hint prints `accept` like this: '.png' -> PNG, 'image/*' -> Images (video/* Videos, audio/* Audio, text/* Text), 'image/png' -> PNG (the subtype upper-cased, without x- or +xml), repeats dropped, joined with commas; replace it with messages.types or the whole line with messages.hint. Keep `accept` and `maxSizeMB` in sync with the server.",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "dragging",
+    "error",
+    "disabled"
+  ],
+  "controls": [
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": "Attachments"
+    },
+    {
+      "group": "Rules",
+      "key": "accept",
+      "label": "Accept",
+      "type": "text",
+      "default": "image/*,.pdf"
+    },
+    {
+      "group": "Rules",
+      "key": "maxSizeMB",
+      "label": "Max size (MB)",
+      "type": "range",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 10
+    },
+    {
+      "group": "Rules",
+      "key": "multiple",
+      "label": "Multiple files",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Rules",
+      "key": "maxFiles",
+      "label": "Max files",
+      "type": "range",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "group": "Layout",
+      "key": "height",
+      "label": "Zone height",
+      "type": "range",
+      "min": 120,
+      "max": 280,
+      "step": 4,
+      "default": 180
+    },
+    {
+      "group": "Layout",
+      "key": "maxWidth",
+      "label": "Max width (0 = fill)",
+      "type": "range",
+      "min": 0,
+      "max": 720,
+      "step": 20,
+      "default": 440
+    },
+    {
+      "group": "Layout",
+      "key": "hideZoneWhenFull",
+      "label": "Hide zone when full",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Empty": {
+      "demo": false
+    },
+    "Single image": {
+      "multiple": false,
+      "accept": "image/*",
+      "demo": false,
+      "hideZoneWhenFull": true
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "label",
+      "type": "ReactNode",
+      "description": "Visible label above the zone; it names the zone for screen readers. Blank shows none (then pass aria-label).",
+      "default": "Attachments"
+    },
+    {
+      "key": "accept",
+      "type": "string",
+      "description": "Comma-separated extensions and MIME types the picker offers and the zone checks ('.png,.jpg', 'image/*', 'application/pdf'). Blank allows any file. Printed in the hint as described in usage.",
+      "default": "image/*,.pdf"
+    },
+    {
+      "key": "maxSizeMB",
+      "type": "number",
+      "description": "Largest file in MB; bigger files become an error row ('Too large · max N MB'). 0 means no limit.",
+      "default": 10
+    },
+    {
+      "key": "multiple",
+      "type": "boolean",
+      "description": "Several files at once. false is single-file mode: the copy says 'a file', and a new file replaces the old one.",
+      "default": true
+    },
+    {
+      "key": "maxFiles",
+      "type": "number",
+      "description": "Most files the list keeps (error rows don't count). Extra files become an error row 'Up to N files'. 0 means no limit. Ignored when multiple is false.",
+      "default": 5
+    },
+    {
+      "key": "height",
+      "type": "number",
+      "description": "Height of the zone in px. Under 150 the zone uses tighter padding and a smaller icon so its text fits; it grows only if the hint wraps onto more lines on a narrow screen.",
+      "default": 180
+    },
+    {
+      "key": "maxWidth",
+      "type": "number",
+      "description": "Widest the component grows, in px. 0 lets it fill its container.",
+      "default": 440
+    },
+    {
+      "key": "fullWidth",
+      "type": "boolean",
+      "description": "Fill the container (same as maxWidth={0}).",
+      "default": false
+    },
+    {
+      "key": "hideZoneWhenFull",
+      "type": "boolean",
+      "description": "Hide the zone while the list is full (single-file mode: one file; otherwise maxFiles). In single-file mode the row then shows Replace (opens the picker) and Remove. Dragging a file into the window shows the zone again.",
+      "default": false
+    },
+    {
+      "key": "value",
+      "type": "FileItem[]",
+      "description": "The file list, controlled. Items: { id, file?, name, size?, type?, status: 'uploading' | 'done' | 'error', progress?: 0..1, error?, reason?: 'type' | 'size' | 'count' | 'upload', result?, preview? (image URL for the thumbnail) }. Pass [] to clear; pass your own items to show files that already exist."
+    },
+    {
+      "key": "defaultValue",
+      "type": "FileItem[]",
+      "description": "Starting list when uncontrolled. A form reset returns to it.",
+      "default": []
+    },
+    {
+      "key": "onChange",
+      "type": "(items, detail) => void",
+      "description": "Fires on every change with the whole next list. detail = { type: 'add' | 'progress' | 'done' | 'error' | 'retry' | 'remove' | 'reset', item? , items? }."
+    },
+    {
+      "key": "onAdd",
+      "type": "(files, items) => void",
+      "description": "Files that passed the checks were added: the File objects and their new items."
+    },
+    {
+      "key": "onRemove",
+      "type": "(item) => void",
+      "description": "The person removed a row (its upload is aborted first)."
+    },
+    {
+      "key": "onRetry",
+      "type": "(item) => void",
+      "description": "The person pressed Retry on a failed upload; the upload runs again on the same row."
+    },
+    {
+      "key": "upload",
+      "type": "(file, onProgress, { signal, item }) => Promise<result>",
+      "description": "Uploads one file. Call onProgress(0..1); resolve with anything you need later (stored on the item as `result`, the row says 'Uploaded'); reject with an Error and its message shows on the row with a Retry button. `signal` aborts when the row is removed or replaced. Without it nothing is uploaded and rows say 'Added'."
+    },
+    {
+      "key": "messages",
+      "type": "object",
+      "description": "Copy overrides, each optional: title, touchTitle, awakeTitle ('Drop it here'), overTitle ('Drop to upload'), hint (the whole line under the title; null hides it), types (just the file-type part), typeError, sizeError (string or (maxMB) => string), countError (string or (maxFiles) => string), uploadError, uploaded ('Uploaded'), added ('Added'), retry, replace, remove (aria prefix, 'Remove'), list (the list's label, 'Files'). Defaults follow `multiple` ('Drop files here or browse' / 'Drop a file here or browse')."
+    },
+    {
+      "key": "name",
+      "type": "string",
+      "description": "Form field name. A hidden file input carries the accepted files into the surrounding <form> (FormData gets them); a form reset empties the list."
+    },
+    {
+      "key": "id",
+      "type": "string",
+      "description": "id of the zone element (for a <label htmlFor> or a link)."
+    },
+    {
+      "key": "error",
+      "type": "string",
+      "description": "An error the caller already has (e.g. 'Add a receipt to continue'), shown under the zone and announced with it."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Inert: the zone can't be focused or opened, drops are ignored, row buttons are disabled.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLDivElement>",
+      "description": "The zone element (role=button). ref.current.focus() focuses it, ref.current.scrollIntoView() reaches it, ref.current.click() opens the file picker (from inside a user gesture). While hideZoneWhenFull hides it, click() still opens the picker."
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Shows two sample files, one still uploading (simulated). For the gallery; leave off in real use.",
+      "default": false
+    },
+    {
+      "key": "showSamples",
+      "type": "boolean",
+      "description": "Old name for demo, still honoured. Leave unset."
+    }
+  ],
+  "example": "const [files, setFiles] = useState([]);\nconst zoneRef = useRef(null);\n\nasync function upload(file, onProgress, { signal }) {\n  const { url } = await putToStorage(file, { onProgress, signal }); // reject with new Error(\"…\") to show it on the row\n  return url;                                                       // lands on the item as `result`\n}\n\n<button onClick={() => zoneRef.current.click()}>Choose a file</button>\n\n<FileDropzone\n  ref={zoneRef}\n  label=\"Receipt photo or PDF\"\n  accept=\".jpg,.jpeg,.png,.pdf\"\n  maxSizeMB={15}\n  maxFiles={10}\n  value={files}\n  onChange={setFiles}\n  onRemove={(item) => deleteFromStorage(item.result)}\n  upload={upload}\n  fullWidth\n/>\n\n// one file the row can replace or remove, starting from a stored logo\nconst [logoFiles, setLogoFiles] = useState(logo ? [{ id: \"logo\", name: logo.name, status: \"done\", preview: logo.url, result: logo.url }] : []);\n\n<FileDropzone\n  label=\"Logo\"\n  accept=\".png,.jpg,.svg\"\n  maxSizeMB={2}\n  multiple={false}\n  hideZoneWhenFull\n  height={132}\n  value={logoFiles}\n  onChange={(items) => {\n    setLogoFiles(items);\n    const done = items.find((i) => i.status === \"done\");\n    setLogo(done ? { name: done.name, url: done.result } : null);\n  }}\n  upload={uploadLogo}\n/>"
+}

@@ -1,0 +1,172 @@
+{
+  "name": "Loader",
+  "slug": "loader",
+  "export": "Loader",
+  "order": 41,
+  "kind": "components",
+  "category": "feedback",
+  "subcategory": "loading",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "hint": "Five loaders sharing one size, speed and tone.",
+  "description": "Five pure-CSS loaders with their own personalities: orbit for thinking, pulse for listening, bars for audio and data, dots for typing, ring for generic waits. Reduced motion falls back to a gentle fade.",
+  "intents": [
+    "loading spinner",
+    "typing indicator dots",
+    "thinking animation for an AI reply",
+    "small busy indicator"
+  ],
+  "tags": [
+    "loader",
+    "spinner",
+    "loading",
+    "busy",
+    "dots",
+    "typing",
+    "activity indicator"
+  ],
+  "usage": "Prefer Progress when you know the fraction, Skeleton when you know the layout. Use a loader for short unknown waits inside buttons, chat replies and small panels. Pick a `kind` (ring by default) and `size`, and set `label` to what is loading (\"Checking code\"); `showLabel` shows it beside the loader. If visible text next to it already says it, pass label=\"\" so it is not read twice.",
+  "states": [
+    "default"
+  ],
+  "keyboard": [],
+  "screenReader": "A role=\"status\" region named by `label` (\"Loading\"), read as visually hidden text unless `showLabel`; the drawing is hidden. With label=\"\" the whole loader is hidden, for when text beside it already says what is loading.",
+  "controls": [
+    {
+      "group": "Type",
+      "key": "kind",
+      "label": "Kind",
+      "type": "select",
+      "options": [
+        "all",
+        "orbit",
+        "pulse",
+        "bars",
+        "dots",
+        "ring"
+      ],
+      "default": "ring"
+    },
+    {
+      "group": "Look",
+      "key": "size",
+      "label": "Size",
+      "type": "select",
+      "options": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    {
+      "group": "Look",
+      "key": "speed",
+      "label": "Cycle (s)",
+      "type": "range",
+      "min": 0.5,
+      "max": 2.5,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "group": "Look",
+      "key": "tone",
+      "label": "Tone",
+      "type": "select",
+      "options": [
+        "accent",
+        "ink",
+        "muted",
+        "success",
+        "danger"
+      ],
+      "default": "accent"
+    },
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": "Loading"
+    },
+    {
+      "group": "Content",
+      "key": "showLabel",
+      "label": "Show label",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Content",
+      "key": "labelPosition",
+      "label": "Label position",
+      "type": "select",
+      "options": [
+        "end",
+        "below"
+      ],
+      "default": "end"
+    }
+  ],
+  "presets": {
+    "Typing": {
+      "kind": "dots",
+      "size": 28
+    },
+    "Large ring": {
+      "kind": "ring",
+      "size": 80
+    },
+    "Muted": {
+      "tone": "muted"
+    }
+  },
+  "demoProps": {
+    "kind": "all"
+  },
+  "dataProps": [
+    {
+      "key": "label",
+      "type": "string",
+      "description": "What is loading. Read by screen readers through a role=\"status\" region; \"\" hides the loader from assistive tech (use when nearby text says it).",
+      "default": "Loading"
+    },
+    {
+      "key": "showLabel",
+      "type": "boolean",
+      "description": "Show the label as text beside (or below) the loader instead of only to screen readers.",
+      "default": false
+    },
+    {
+      "key": "labelPosition",
+      "type": "\"end\" | \"below\"",
+      "description": "Where the visible label sits.",
+      "default": "end"
+    },
+    {
+      "key": "kind",
+      "type": "\"ring\" | \"orbit\" | \"pulse\" | \"bars\" | \"dots\" | \"all\"",
+      "description": "Which loader. \"all\" shows the five side by side (a sampler, not for real UI).",
+      "default": "ring"
+    },
+    {
+      "key": "size",
+      "type": "\"sm\" | \"md\" | \"lg\" | number",
+      "description": "Width and height: sm 20px (inside a button or beside a line of text), md 40px, lg 64px (a panel or an empty page). A number sets it in px exactly.",
+      "default": "md"
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLSpanElement>",
+      "description": "The root (the status region)."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-*, data-*) goes to the root <span>. className and style are merged with the component's own."
+    }
+  ],
+  "example": "<Loader kind=\"dots\" size={24} label=\"Ada is typing\" showLabel />\n\n// text beside it already says it\n<span><Loader size={16} label=\"\" /> Checking code…</span>"
+}

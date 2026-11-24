@@ -1,0 +1,23 @@
+/* The closing band, and under it the brand's outline logo leading into the footer (sections/CloseBand.jsx). */
+
+/* The section runs the full width of the page so the rings can reach its edges; the band keeps the wide column.
+   --zone is the clear space the logo stands in under the band; --below is the gap the footer leaves above itself
+   (.foot's margin-top in site.css), which the rings also cross. */
+.clr { position: relative; --top: clamp(64px, 9vw, 120px); --zone: clamp(250px, 31vw, 440px); --below: clamp(72px, 10vw, 120px); --edge: 26px; }
+.clr__in { position: relative; z-index: 4; max-width: 1400px; margin: 0 auto; padding: var(--top) var(--gutter) 0; }
+.clr__zone { height: var(--zone); }
+
+/* The outline: a ground behind the whole section, down to the footer's edge. Its size and place are set here, on
+   its box (the component reads --tsf-size, --tsf-x, --tsf-y): the logo stands midway between the band and the
+   footer. The rings fade out at the top of the box so they do not end on a hard line above the band.
+   At the bottom they run to the page's rounded edge, where the footer comes out from under it. That edge is the
+   kit Footer's own strip (`.ts-ft-edge`: 26px tall and rounded 26px, 20px on a phone, page-coloured, z-index 2),
+   so the rings' box reaches --edge further, is rounded the same and sits one step above the strip. If the
+   footer changes, --edge changes with it. */
+.clr .clr__rings { position: absolute; z-index: 3; inset: 0 0 calc(-1 * (var(--below) + var(--edge))) 0; width: auto; height: auto; color: var(--ts-ink); border-radius: 0 0 var(--edge) var(--edge);
+  --tsf-size: clamp(132px, 17.5vw, 240px); --tsf-x: 50%; --tsf-y: calc(100% - var(--edge) - (var(--zone) + var(--below)) * .5);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 72px); mask-image: linear-gradient(to bottom, transparent, #000 72px); }
+
+/* the footer's edge is smaller on a phone, and there is none where the footer does not lift (reduced motion) */
+@media (max-width: 640px) { .clr { --edge: 20px; } }
+@media (prefers-reduced-motion: reduce) { .clr { --edge: 0px; } }

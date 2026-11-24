@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Tweensmith: motion-first React and Expo components for AI agents</title>
+    <meta name="description" content="Motion-first React components, free and open source, that publish their presets, states and prop ranges as data your agent can read." />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#0b0b0e" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#efebe2" media="(prefers-color-scheme: light)" />
+    <!-- the tab icon is the brand's own file, written in here by vite.config.js (brandIcon) -->
+    <script>
+      // Pick the mode before first paint so the page never flashes the wrong background.
+      (function () {
+        var m = null;
+        try { m = localStorage.getItem("ts-site-mode"); } catch (e) {}
+        if (m !== "light" && m !== "dark") m = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+        document.documentElement.dataset.mode = m;
+      })();
+    </script>
+    <style>
+      html { background: #0b0b0e; color: #f2f2f5; }
+      html[data-mode="light"] { background: #efebe2; color: #121214; }
+      body { margin: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>Tweensmith is a library of motion-first React and Expo components. This page demonstrates them live and needs JavaScript.</noscript>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

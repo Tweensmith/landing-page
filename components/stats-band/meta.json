@@ -1,0 +1,241 @@
+{
+  "name": "Stats Band",
+  "slug": "stats-band",
+  "export": "StatsBand",
+  "order": 101,
+  "kind": "bands",
+  "category": "proof",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Hover, focus or tap a figure to read how it is counted. Switch the period: the numbers and their pictures morph in place.",
+  "description": "A landing page's \"by the numbers\" section where every figure carries its proof. One hero figure leads and the rest stay quiet. Each number counts up once on view, beside a small picture drawn to the chart rules: a sparkline with its spike annotated, a before/after bill bar with the saving hatched, a unit grid where one dot is 10,000 homes, a part-of-whole ring of network regions. Each has a footnoted source. Hovering, focusing or tapping a figure opens a frosted \"How we count this\" note with the method, the figure and the date range, fitted to the viewport. An optional live counter ticks at a per-second rate that follows the time of day, and only when you pass one. It holds on hover, focus, pause or when scrolled away, then catches up. The period switch (All time / This year) rolls the digits, morphs the line, re-lights the dots and ring and slides the bars rather than re-rendering. Layout follows the section's own width: hero column beside quiet rows when wide, a 2×2 grid at stage width, a single column of rows on phones. Reduced motion shows final values and still pictures. Figures are a <dl> whose accessible text is always the final value. Shows only what you pass: no stats means no figures. Numbers go through your `formatValue` or Intl in `locale`; no currency or unit is assumed. The gallery's sample (an invented energy company) appears only with `demo`.",
+  "intents": [
+    "by the numbers stats section for a landing page",
+    "impact metrics band with sources and methodology",
+    "animated count up statistics with mini charts",
+    "live counter of something happening right now on a marketing page",
+    "key figures section with footnotes and how we calculate it"
+  ],
+  "tags": [
+    "stats",
+    "statistics",
+    "by the numbers",
+    "metrics",
+    "impact",
+    "figures",
+    "count up",
+    "counter",
+    "live counter",
+    "sparkline",
+    "methodology",
+    "sources",
+    "footnotes",
+    "landing page",
+    "section",
+    "social proof"
+  ],
+  "usage": "Use once on a marketing page, after the product story, to back it with numbers. Keep it to one hero figure and three or four quiet ones, each with a real source and a one-sentence method; a number you can't explain doesn't belong here. Pass `heading`, `eyebrow`, `lede` and `stats`: each stat is { id, value, label, unit?, unitSpoken?, format? ('integer' | 'percent' | 'compact' | 'currency' with `currency`), decimals?, options? (Intl.NumberFormat options), formatValue?, hero?, visual?, source?, method?, range? }; any field can instead be an object keyed by period id. Pass `periods` ({ value, label, asOf }) for a period switch, controlled with `period` + `onPeriodChange` or seeded with `defaultPeriod`. Pass `liveCounter` ({ label, unit, rate, profile, rateLabel, formatValue, source, method, range }) only if you want a live counter; it never runs otherwise, holds on hover, focus, pause or off screen, and its number is not a live region. `formatValue(value, { stat, period, locale })` formats every figure when Intl options are not enough. Give it the full content width; it picks its composition from its own width. `demo` shows the invented sample (gallery only).",
+  "states": [
+    "default",
+    "hover"
+  ],
+  "controls": [
+    {
+      "group": "Content",
+      "key": "heading",
+      "label": "Heading",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "showSources",
+      "label": "Footnote sources",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Motion",
+      "key": "live",
+      "label": "Live counter",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Layout",
+      "key": "layout",
+      "label": "Layout",
+      "type": "select",
+      "options": [
+        "band",
+        "grid"
+      ],
+      "default": "band"
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Tiles": {
+      "layout": "grid"
+    },
+    "Static and clean": {
+      "live": false,
+      "showSources": false
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "heading",
+      "type": "ReactNode",
+      "description": "Section heading. Blank shows none.",
+      "default": ""
+    },
+    {
+      "key": "eyebrow",
+      "type": "ReactNode",
+      "description": "Small mono line above the heading. Blank shows none.",
+      "default": ""
+    },
+    {
+      "key": "eyebrowIcon",
+      "type": "ReactNode",
+      "description": "Icon before the eyebrow (decorative). None unless passed."
+    },
+    {
+      "key": "lede",
+      "type": "ReactNode",
+      "description": "Paragraph under the heading. Blank shows none.",
+      "default": ""
+    },
+    {
+      "key": "headingLevel",
+      "type": "1 | 2 | 3 | 4 | 5 | 6",
+      "description": "Heading level of the heading element.",
+      "default": 2
+    },
+    {
+      "key": "stats",
+      "type": "{ id: string, value: number | Record<period, number>, label: string | Record<period, string>, unit?, unitSpoken?, format?: 'integer' | 'percent' | 'compact' | 'currency', currency?: string, decimals?, options?: Intl.NumberFormatOptions, formatValue?: (value, ctx) => string, hero?: boolean, visual?: { type: 'spark' | 'bars' | 'dots' | 'ring', ... }, source?, method?, range? }[]",
+      "description": "The figures. The `hero` one (or the first) leads. A figure with `method`, `source` or `range` gets a 'How we count this' note. Visuals: spark { series, axis, spike, step, unit }, bars { values: [before, after], names, currency?, suffix, caption, lessLabel }, dots { total, periods: { lit, earlier }, caption, keys }, ring { total, periods, center, caption }; each may carry `description` for screen readers.",
+      "default": []
+    },
+    {
+      "key": "periods",
+      "type": "{ value: string, label: string, asOf?: string }[]",
+      "description": "Periods for the switch (shown when there are two or more). Stat fields keyed by these values follow the selection.",
+      "default": []
+    },
+    {
+      "key": "period",
+      "type": "string",
+      "description": "Controlled selected period. Pass it with onPeriodChange; leave it out to let the band keep its own."
+    },
+    {
+      "key": "defaultPeriod",
+      "type": "string",
+      "description": "Uncontrolled starting period (the first period when unset; a later change is followed too)."
+    },
+    {
+      "key": "onPeriodChange",
+      "type": "(period: string) => void",
+      "description": "Called with the period's value when the switch changes."
+    },
+    {
+      "key": "liveCounter",
+      "type": "{ label, unit?, unitSpoken?, rate: number, profile?: number[] | null, rateLabel?: ReactNode | (rate, { locale, now }) => ReactNode, formatValue?: (n) => string, source?, method?, range? }",
+      "description": "A counter that accumulates `rate` per second (shaped by `profile`, 24 hourly weights; null hides the day chart) since the page opened. None unless passed: it never runs on its own. Its number is not a live region, so it is not announced on every tick."
+    },
+    {
+      "key": "livePaused",
+      "type": "boolean",
+      "description": "Controlled pause of the live counter. Pass it with onLivePausedChange."
+    },
+    {
+      "key": "defaultLivePaused",
+      "type": "boolean",
+      "description": "Uncontrolled starting pause of the live counter.",
+      "default": false
+    },
+    {
+      "key": "onLivePausedChange",
+      "type": "(paused: boolean) => void",
+      "description": "Called when the counter's Pause / Resume button is pressed."
+    },
+    {
+      "key": "activeNote",
+      "type": "string | null",
+      "description": "Controlled open 'How we count this' note: a stat id, 'live', or null. Pass it with onActiveNoteChange."
+    },
+    {
+      "key": "defaultActiveNote",
+      "type": "string | null",
+      "description": "Note open at first (pinned), uncontrolled.",
+      "default": null
+    },
+    {
+      "key": "onActiveNoteChange",
+      "type": "(id: string | null) => void",
+      "description": "Called when a note opens (hover, focus, tap) or closes."
+    },
+    {
+      "key": "formatValue",
+      "type": "(value: number, { stat, period, locale }) => string",
+      "description": "Formats every figure (a stat's own formatValue wins). Formatted figures cross-fade instead of rolling."
+    },
+    {
+      "key": "locale",
+      "type": "string",
+      "description": "Locale for Intl number formatting. Default: the locale of the nearest <Theme> (\"en-US\" when none sets one)."
+    },
+    {
+      "key": "labels",
+      "type": "{ period, how, figure, range, source, sourcePrefix, live, paused, waiting, pause, resume, pauseLive, resumeLive }",
+      "description": "Words the band uses (the switch name, the note button and headings, the counter's status and buttons). Merged over the English defaults."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "The period switch, note buttons and counter button are disabled and no note opens.",
+      "default": false
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Fill blank heading, eyebrow, lede, stats, periods and liveCounter with the invented sample. Gallery only; leave off in real UI.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLElement>",
+      "description": "The root <section>."
+    },
+    {
+      "key": "className",
+      "type": "string",
+      "description": "Added to the root."
+    },
+    {
+      "key": "style",
+      "type": "CSSProperties",
+      "description": "Merged onto the root."
+    }
+  ],
+  "example": "const [period, setPeriod] = useState(\"year\");\n\n<StatsBand\n  heading=\"The year in numbers\"\n  periods={[{ value: \"year\", label: \"This year\" }, { value: \"all\", label: \"All time\" }]}\n  period={period}\n  onPeriodChange={setPeriod}\n  locale=\"de-DE\"\n  stats={[\n    { id: \"orders\", hero: true, value: { year: 18240, all: 96100 }, label: \"orders shipped\", source: \"Order database\", method: \"Orders marked delivered.\" },\n    { id: \"refunds\", value: { year: 0.021, all: 0.024 }, format: \"percent\", decimals: 1, label: \"refunded\" },\n    { id: \"revenue\", value: { year: 412000, all: 2100000 }, format: \"currency\", currency: \"EUR\", label: \"revenue\" },\n  ]}\n/>"
+}

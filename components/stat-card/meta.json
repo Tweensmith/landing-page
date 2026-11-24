@@ -1,0 +1,507 @@
+{
+  "name": "Stat Card",
+  "slug": "stat-card",
+  "export": "StatCard",
+  "order": 80,
+  "kind": "components",
+  "category": "display",
+  "subcategory": "numbers",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Turn on Sample content, then run the pointer along any sparkline: every tile scrubs to the same day.",
+  "description": "One stat tile for a dashboard: a label, a value (a number formatted by Intl options, or a ready string), its change against a named period with an arrow and good/bad colour set by goodWhen (a falling cost can read as good), an optional sparkline from a data array, an icon, and its own loading, empty and error forms. With href or onClick the whole tile is one link or button with the full reading as its name. Numbers roll to a new value and cut straight to it under reduced motion. StatGroup (a second export) puts several tiles in one card split by hairlines that wrap by the card's width; surface=\"plain\" drops the tile's own box, size sets the figure (sm / md / lg) and cue flashes up / down on change. The sample content is a creator-membership overview row whose sparklines scrub time for every tile at once.",
+  "intents": [
+    "kpi stat cards with sparklines",
+    "dashboard metric tiles row",
+    "revenue and members overview cards",
+    "scrub sparkline to compare a day",
+    "stat tile with trend delta"
+  ],
+  "tags": [
+    "stat card",
+    "kpi",
+    "stat tile",
+    "sparkline",
+    "metric",
+    "dashboard",
+    "delta",
+    "trend",
+    "scrub",
+    "analytics",
+    "overview",
+    "data viz"
+  ],
+  "usage": "Use for a headline number on a dashboard. Pass `label` and `value` first, then `delta` with `deltaFormat` (e.g. { style: \"percent\" } for a fraction), `comparison` (\"vs last week\") and `goodWhen=\"down\"` for costs, churn or latency. Format numbers with `format` / `decimals` / `currency` / `locale` / `options` or a `format` function, add `data` for a sparkline, `icon` for a glyph, and `href` or `onClick` to make the whole tile a link or button. Set `loading` while you fetch, leave `value` empty for the no-data form, or pass `error` (and `onRetry`). For a KPI strip in one card, wrap tiles in `StatGroup` (a second export of this file): equal cells divided by hairlines that wrap 4 → 2 × 2 → 1 by the card's own width (`columns`, `minCellWidth`), an optional `title` / `caption` / `actions` header, `hideComparisonBelow` + `comparisonCaption` for one shared comparison line on narrow cards, and `dividers` for a small mark on the line between two cells; give it `aria-label` or a `title`. Tiles inside it become `surface=\"plain\"`. Use `size=\"sm\"` in strips, `cue` for an up / down flash when a value changes, and `surface=\"plain\"` alone to place a tile on your own surface. For a row of separate cards, put tiles in your own CSS grid; each fills its cell. For a figure without a tile, use Number Ticker.",
+  "states": [
+    "default",
+    "hover",
+    "loading",
+    "empty",
+    "error"
+  ],
+  "controls": [
+    {
+      "group": "Tile",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Tile",
+      "key": "comparison",
+      "label": "Comparison",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Tile",
+      "key": "format",
+      "label": "Format",
+      "type": "select",
+      "options": [
+        "integer",
+        "decimal",
+        "currency",
+        "compact",
+        "compact-currency",
+        "percent"
+      ],
+      "default": "integer"
+    },
+    {
+      "group": "Tile",
+      "key": "goodWhen",
+      "label": "Good when",
+      "type": "select",
+      "options": [
+        "up",
+        "down",
+        "neutral"
+      ],
+      "default": "up"
+    },
+    {
+      "group": "Tile",
+      "key": "size",
+      "label": "Figure size",
+      "type": "select",
+      "options": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    {
+      "group": "Tile",
+      "key": "cue",
+      "label": "Up / down cue",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "loading",
+      "label": "Loading",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Data",
+      "key": "range",
+      "label": "Range (sample)",
+      "type": "select",
+      "options": [
+        "7D",
+        "30D",
+        "90D",
+        "12M"
+      ],
+      "default": "30D"
+    },
+    {
+      "group": "Data",
+      "key": "tiles",
+      "label": "Tiles (sample)",
+      "type": "range",
+      "min": 3,
+      "max": 4,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "group": "Data",
+      "key": "currency",
+      "label": "Currency",
+      "type": "select",
+      "options": [
+        "USD",
+        "EUR",
+        "GBP"
+      ],
+      "default": "USD"
+    },
+    {
+      "group": "Layout",
+      "key": "hero",
+      "label": "Hero first tile",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Layout",
+      "key": "density",
+      "label": "Density",
+      "type": "select",
+      "options": [
+        "comfortable",
+        "compact"
+      ],
+      "default": "comfortable"
+    },
+    {
+      "group": "Look",
+      "key": "area",
+      "label": "Area wash",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Look",
+      "key": "title",
+      "label": "Title (sample)",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Motion",
+      "key": "morphStiffness",
+      "label": "Morph stiffness",
+      "type": "range",
+      "min": 80,
+      "max": 400,
+      "step": 10,
+      "default": 170
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Compact strip": {
+      "density": "compact",
+      "hero": false
+    },
+    "Year in review": {
+      "range": "12M"
+    },
+    "Three up": {
+      "tiles": 3,
+      "hero": false,
+      "range": "7D"
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "label",
+      "type": "string",
+      "description": "What the number is (\"Revenue\"). Also the tile's accessible name.",
+      "default": ""
+    },
+    {
+      "key": "value",
+      "type": "number | string",
+      "description": "The figure. A number is formatted by format / Intl options; a string is shown as given. Empty (undefined, null, \"\") shows the no-data form."
+    },
+    {
+      "key": "format",
+      "type": "\"integer\" | \"decimal\" | \"currency\" | \"compact\" | \"compact-currency\" | \"percent\" | function",
+      "description": "Number format (percent expects a fraction), or (value) => string. A function turns off the rolling digits.",
+      "default": "integer"
+    },
+    {
+      "key": "decimals",
+      "type": "number",
+      "description": "Fraction digits for the format. With the default \"integer\" format a value that has a fraction keeps up to two places; pass 0 to round."
+    },
+    {
+      "key": "currency",
+      "type": "string",
+      "description": "ISO currency code for the currency formats.",
+      "default": "USD"
+    },
+    {
+      "key": "locale",
+      "type": "string",
+      "description": "BCP 47 locale for numbers. Default: the locale of the nearest <Theme> (\"en-US\" when none sets one)."
+    },
+    {
+      "key": "options",
+      "type": "object",
+      "description": "Raw Intl.NumberFormat options merged over the format's own."
+    },
+    {
+      "key": "prefix",
+      "type": "node",
+      "description": "Text before the value (\"~\")."
+    },
+    {
+      "key": "suffix",
+      "type": "node",
+      "description": "Text after the value (\" /mo\", \" of 12\")."
+    },
+    {
+      "key": "animate",
+      "type": "boolean",
+      "description": "Roll the digits when a numeric value changes (cut straight to it under reduced motion).",
+      "default": true
+    },
+    {
+      "key": "announce",
+      "type": "boolean",
+      "description": "Speak the settled value once in a polite live region when it changes (non-interactive tiles).",
+      "default": false
+    },
+    {
+      "key": "delta",
+      "type": "number | string",
+      "description": "The change. A number gets a sign and deltaFormat; a string is shown as given (pass direction with it)."
+    },
+    {
+      "key": "deltaFormat",
+      "type": "object | function",
+      "description": "Intl options for delta (e.g. { style: \"percent\" } for 0.042 → +4.2%, { style: \"unit\", unit: \"percent\" } for points), or (delta) => string. Default: a signed number, one decimal."
+    },
+    {
+      "key": "direction",
+      "type": "\"up\" | \"down\" | \"flat\"",
+      "description": "Which way it moved. Defaults to the sign of a numeric delta."
+    },
+    {
+      "key": "goodWhen",
+      "type": "\"up\" | \"down\" | \"neutral\"",
+      "description": "Which direction is good: down for costs, churn, latency. neutral paints no good/bad colour.",
+      "default": "up"
+    },
+    {
+      "key": "comparison",
+      "type": "node",
+      "description": "What the change is against (\"vs last week\"). A string is also read with the trend.",
+      "default": ""
+    },
+    {
+      "key": "trendLabel",
+      "type": "string | function",
+      "description": "Replaces the screen-reader reading of the change, or ({ direction, delta, text, good }) => string. Default: \"Up 4.2% vs last week, good\"."
+    },
+    {
+      "key": "data",
+      "type": "array",
+      "description": "Sparkline points: numbers, or objects read through dataKey (e.g. [{ id, value }]). Needs two or more finite points."
+    },
+    {
+      "key": "dataKey",
+      "type": "string",
+      "description": "Field read from each data object.",
+      "default": "value"
+    },
+    {
+      "key": "sparklineLabel",
+      "type": "string",
+      "description": "Text alternative for the sparkline. Default: points, first, last, low and high, formatted like the value."
+    },
+    {
+      "key": "icon",
+      "type": "node | string",
+      "description": "A glyph before the label: a React node, or a kit icon name."
+    },
+    {
+      "key": "href",
+      "type": "string",
+      "description": "Makes the whole tile one link; its accessible name is the full reading."
+    },
+    {
+      "key": "onClick",
+      "type": "function",
+      "description": "(event) => void. Makes the whole tile one button (when there is no href)."
+    },
+    {
+      "key": "target",
+      "type": "string",
+      "description": "Link target with href."
+    },
+    {
+      "key": "rel",
+      "type": "string",
+      "description": "Link rel with href (noopener noreferrer is added for _blank)."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "An interactive tile that cannot be used: inert, out of the tab order, dimmed.",
+      "default": false
+    },
+    {
+      "key": "loading",
+      "type": "boolean",
+      "description": "Placeholder bars in the tile's own shape (and the sparkline's, when data is passed).",
+      "default": false
+    },
+    {
+      "key": "emptyText",
+      "type": "node",
+      "description": "Shown under a dash when value is empty.",
+      "default": "No data"
+    },
+    {
+      "key": "error",
+      "type": "node | boolean",
+      "description": "Could not load: a dash and this message (true shows \"Could not load\")."
+    },
+    {
+      "key": "onRetry",
+      "type": "function",
+      "description": "Adds a retry button to the error form (non-interactive tiles only, a button cannot hold a button)."
+    },
+    {
+      "key": "retryLabel",
+      "type": "string",
+      "description": "Text of the retry button.",
+      "default": "Retry"
+    },
+    {
+      "key": "errorValue",
+      "type": "node",
+      "description": "What stands where the figure would be in the error form.",
+      "default": "–"
+    },
+    {
+      "key": "surface",
+      "type": "\"card\" | \"plain\"",
+      "description": "card draws the tile's own surface, ring, shadow, radius and padding; plain draws none of them (the caller's container owns the surface) and keeps the content, focus ring, link / button behaviour and the loading, empty and error forms. Inside a StatGroup the default is plain; pass \"card\" to keep the box.",
+      "default": "card"
+    },
+    {
+      "key": "size",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "description": "Figure size: sm 22px in a 28px line (strips and groups), md 30px (22px with density compact), lg 48px for a hero number.",
+      "default": "md"
+    },
+    {
+      "key": "cue",
+      "type": "boolean",
+      "description": "Flash the kit's up / down arrow and tint beside the figure when a numeric value changes. Green / red follows goodWhen (a fall reads good with goodWhen=\"down\"). Space for it is kept at all times, so it never moves the tile.",
+      "default": false
+    },
+    {
+      "key": "fit",
+      "type": "\"shrink\" | \"ellipsis\"",
+      "description": "What a figure too long for its tile does. shrink scales it down to fit its own line (to 40% at most; past that a string value wraps at its spaces), so a number is never cut. ellipsis keeps the full size and cuts it at the tile's edge: a string value ends in …, a rolling number is clipped.",
+      "default": "shrink"
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Show the sample membership-overview row (title, range, tiles, hero, density, area, currency, morphStiffness apply to it). Ignored once you pass label or value.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "ref",
+      "description": "The tile's root: the <a>, <button> or <div>."
+    }
+  ],
+  "example": "<div style={{ display: \"grid\", gridTemplateColumns: \"repeat(auto-fit, minmax(200px, 1fr))\", gap: 12 }}>\n  <StatCard label=\"Revenue\" value={48210} format=\"currency\" currency=\"EUR\" delta={0.084} deltaFormat={{ style: \"percent\" }}\n    comparison=\"vs last month\" data={revenueByDay} href=\"/reports/revenue\" />\n  <StatCard label=\"Refund cost\" value={1260} format=\"currency\" delta={-0.12} deltaFormat={{ style: \"percent\" }}\n    goodWhen=\"down\" comparison=\"vs last month\" />\n  <StatCard label=\"Active stores\" value={stores} suffix=\" of 40\" loading={isFetching} />\n  <StatCard label=\"Conversion\" value={null} emptyText=\"Shows after your first order\" />\n</div>\n\n// one card, four cells split by hairlines (import { StatCard, StatGroup })\n<StatGroup title=\"Sales, last 30 days\" dividers={{ 1: \"×\" }} hideComparisonBelow={560} comparisonCaption=\"Each compared with the previous 30 days\">\n  <StatCard label=\"Orders\" value={orders} size=\"sm\" cue delta={0.079} deltaFormat={{ style: \"percent\" }} comparison=\"vs previous 30 days\" />\n  <StatCard label=\"Average order\" value={aov} format=\"currency\" decimals={2} size=\"sm\" cue delta={0.052} deltaFormat={{ style: \"percent\" }} comparison=\"vs previous 30 days\" />\n  <StatCard label=\"Stores ordering\" value={206} suffix=\" of 214\" size=\"sm\" cue comparison=\"vs previous 30 days\" />\n  <StatCard label=\"Cases shipped in full\" value={0.968} format=\"percent\" decimals={1} size=\"sm\" cue comparison=\"vs previous 30 days\" />\n</StatGroup>",
+  "exports": [
+    {
+      "export": "StatGroup",
+      "description": "One card holding several StatCard tiles in equal cells divided by hairlines. Columns follow the card's own width (measured, not the viewport) and are balanced, so four tiles go 4, 2 × 2, then 1, never 3 + 1. A short last row (three tiles in two columns, five in three) stretches its cells across the card, so no cell is left empty. A line is drawn only between cells: none doubled, none on the outer edge. Tiles inside become surface=\"plain\" unless they pass surface themselves; each keeps its own loading, empty and error form. role=\"group\", named by aria-label, aria-labelledby or the title.",
+      "props": [
+        {
+          "key": "children",
+          "type": "node",
+          "description": "StatCard elements, one per cell."
+        },
+        {
+          "key": "columns",
+          "type": "number | \"auto\"",
+          "description": "Most columns. auto: one per tile. Cells still wrap when the card is narrower than columns × minCellWidth.",
+          "default": "auto"
+        },
+        {
+          "key": "minCellWidth",
+          "type": "number",
+          "description": "Narrowest a cell may get (px) before the row wraps. The default puts four tiles in 2 × 2 below about 704px and in one column below about 352px.",
+          "default": 176
+        },
+        {
+          "key": "title",
+          "type": "node",
+          "description": "Header title; also names the group when no aria-label is given."
+        },
+        {
+          "key": "titleAs",
+          "type": "string",
+          "description": "Element for the title (h2–h6, p, div).",
+          "default": "h3"
+        },
+        {
+          "key": "caption",
+          "type": "node",
+          "description": "A line under the title."
+        },
+        {
+          "key": "actions",
+          "type": "node",
+          "description": "Controls at the right of the header (a range picker, a link)."
+        },
+        {
+          "key": "hideComparisonBelow",
+          "type": "number",
+          "description": "Card width (px) under which every tile drops its comparison text; screen readers still hear it with the change. 0: never.",
+          "default": 0
+        },
+        {
+          "key": "comparisonCaption",
+          "type": "node",
+          "description": "Shown across the top while comparisons are hidden (\"Each compared with the previous 30 days\")."
+        },
+        {
+          "key": "dividers",
+          "type": "object | array",
+          "description": "A small node on the line before a cell, keyed by the cell's index ({ 1: \"×\" }). It sits on the vertical line, or on the top line when that cell starts a row. Decorative: hidden from screen readers, so say the relation in the label or caption."
+        },
+        {
+          "key": "aria-label",
+          "type": "string",
+          "description": "Accessible name of the group (or aria-labelledby, or title)."
+        },
+        {
+          "key": "className",
+          "type": "string",
+          "description": "Class on the card."
+        },
+        {
+          "key": "style",
+          "type": "object",
+          "description": "Style on the card; other props go to the root too."
+        },
+        {
+          "key": "ref",
+          "type": "ref",
+          "description": "The card's root <div>."
+        }
+      ],
+      "example": "<StatGroup aria-label=\"What makes up sales\" dividers={{ 1: \"×\" }}\n  hideComparisonBelow={560} comparisonCaption=\"Each compared with the previous 30 days\">\n  <StatCard label=\"Orders\" value={orders} size=\"sm\" cue delta={0.079} deltaFormat={{ style: \"percent\" }} comparison=\"vs previous 30 days\" href=\"/orders\" />\n  <StatCard label=\"Average order\" value={aov} format=\"currency\" decimals={2} size=\"sm\" cue delta={0.052} deltaFormat={{ style: \"percent\" }} comparison=\"vs previous 30 days\" loading={loadingAov} />\n  <StatCard label=\"Stores ordering\" value={206} suffix=\" of 214\" size=\"sm\" cue delta={0.04} deltaFormat={{ style: \"percent\" }} comparison=\"vs previous 30 days\" error={storesError} onRetry={reloadStores} />\n  <StatCard label=\"Cases shipped in full\" value={0.968} format=\"percent\" decimals={1} size=\"sm\" cue delta={1.2} deltaFormat={(d) => (d > 0 ? \"+\" : d < 0 ? \"−\" : \"\") + Math.abs(d).toFixed(1) + \" pts\"} comparison=\"vs previous 30 days\" />\n</StatGroup>"
+    }
+  ]
+}

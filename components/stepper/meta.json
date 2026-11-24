@@ -1,0 +1,223 @@
+{
+  "name": "Stepper",
+  "slug": "stepper",
+  "export": "Stepper",
+  "order": 25,
+  "kind": "components",
+  "category": "forms",
+  "subcategory": "pickers",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "hint": "Click, or press and hold + to accelerate.",
+  "description": "Increment/decrement with odometer digits. Press-and-hold repeats and accelerates; bounds disable the button. The value is a spinbutton (arrows, PageUp/PageDown, Home/End) with a hidden input that carries it in a form.",
+  "intents": [
+    "quantity selector",
+    "number of guests",
+    "increase or decrease a count",
+    "plus minus counter"
+  ],
+  "tags": [
+    "stepper",
+    "quantity",
+    "counter",
+    "number",
+    "spinbutton",
+    "plus",
+    "minus",
+    "increment"
+  ],
+  "usage": "Use for small bounded quantities (guests, seats, items in cart). Give it `label` (or `aria-label`, or `hideLabel` to keep the name but not show it), `min`/`max`/`step`, then `value` + `onChange` (controlled) or `defaultValue`. Set `name` to submit it in a <form>; `error` shows a message you already have. For large ranges or exact numbers people type, use a text field with inputMode=\"numeric\".",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "disabled"
+  ],
+  "keyboard": [
+    { "keys": "Tab", "does": "Moves to the value; the − and + buttons are skipped, because the arrow keys do their job." },
+    { "keys": "ArrowUp / ArrowRight", "does": "Adds one step." },
+    { "keys": "ArrowDown / ArrowLeft", "does": "Takes away one step." },
+    { "keys": "PageUp / PageDown", "does": "Adds or takes away ten steps, stopping at max or min." },
+    { "keys": "Home / End", "does": "Jumps to min or max." }
+  ],
+  "screenReader": "A spinbutton named by `label` (or `aria-label`; `hideLabel` keeps the name without showing it) that says its value, with `unit` after it, and the new value as it changes. The − and + buttons are named by `decrementLabel` and `incrementLabel` (\"Decrease …\" / \"Increase …\" by default); a press on one while focus is elsewhere is spoken through a polite status line. With `error` it is marked invalid and the message is read as its description.",
+  "controls": [
+    {
+      "group": "Value",
+      "key": "defaultValue",
+      "label": "Initial value",
+      "type": "range",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "group": "Value",
+      "key": "min",
+      "label": "Min",
+      "type": "range",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "group": "Value",
+      "key": "max",
+      "label": "Max",
+      "type": "range",
+      "min": 1,
+      "max": 999,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "group": "Value",
+      "key": "step",
+      "label": "Step",
+      "type": "range",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "hideLabel",
+      "label": "Hide label",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Content",
+      "key": "unit",
+      "label": "Unit",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Style",
+      "key": "size",
+      "label": "Size",
+      "type": "select",
+      "options": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "readOnly",
+      "label": "Read only",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Seats": {
+      "label": "Seats",
+      "defaultValue": 5,
+      "min": 1,
+      "max": 200,
+      "unit": "seats"
+    },
+    "Large": {
+      "size": "lg"
+    }
+  },
+  "dataProps": [
+    {
+      "key": "value",
+      "type": "number",
+      "description": "Controlled value. Pass it with onChange and the stepper shows exactly this (clamped to min–max). Leave undefined to let it keep its own."
+    },
+    {
+      "key": "defaultValue",
+      "type": "number",
+      "description": "Starting value when uncontrolled (clamped to min–max); also what a form reset returns to.",
+      "default": 0
+    },
+    {
+      "key": "onChange",
+      "type": "(value: number) => void",
+      "description": "(value: number) => void, on every step, key press, held repeat and form reset."
+    },
+    {
+      "key": "name",
+      "type": "string",
+      "description": "Form field name; a hidden input submits the current value."
+    },
+    {
+      "key": "id",
+      "type": "string",
+      "description": "Base id; the spinbutton gets `${id}v`, the label `${id}l`."
+    },
+    {
+      "key": "hideLabel",
+      "type": "boolean",
+      "description": "Keep `label` as the accessible name but hide it visually.",
+      "default": false
+    },
+    {
+      "key": "incrementLabel",
+      "type": "string",
+      "description": "Accessible name of the + button. Defaults to \"Increase <label>\"."
+    },
+    {
+      "key": "decrementLabel",
+      "type": "string",
+      "description": "Accessible name of the − button. Defaults to \"Decrease <label>\"."
+    },
+    {
+      "key": "readOnly",
+      "type": "boolean",
+      "description": "Shows the value, announced as read-only; buttons and keys do nothing.",
+      "default": false
+    },
+    {
+      "key": "error",
+      "type": "string",
+      "description": "An error you already have, shown under the control and announced."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLDivElement>",
+      "description": "Goes to the spinbutton element, for focus()."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-*, data-*) goes to the root <div>. className and style are merged with the component's own."
+    }
+  ],
+  "example": "<Stepper\n  label={`Quantity, ${item.name}`}\n  hideLabel\n  name=\"qty\"\n  min={1}\n  max={6}\n  size=\"sm\"\n  value={item.qty}\n  onChange={(qty) => setQty(item.id, qty)}\n/>",
+  "demoProps": {
+    "demo": true,
+    "defaultValue": 2
+  }
+}

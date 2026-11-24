@@ -1,0 +1,13 @@
+{
+  "name": "tweensmith-site",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "The Tweensmith landing page, built from the kit's own components. Uses ../node_modules.",
+  "scripts": {
+    "dev": "../node_modules/.bin/vite --port 5190 --strictPort",
+    "build": "../node_modules/.bin/vite build",
+    "preview": "../node_modules/.bin/vite preview --port 5191",
+    "capture:mcp": "node scripts/capture-mcp.mjs"
+  }
+}

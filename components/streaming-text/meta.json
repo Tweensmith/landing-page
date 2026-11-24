@@ -1,0 +1,243 @@
+{
+  "name": "Streaming Text",
+  "slug": "streaming-text",
+  "export": "StreamingText",
+  "order": 107,
+  "kind": "components",
+  "category": "ai",
+  "subcategory": "conversation",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Flip Raw / Smoothed to replay the same bursty stream both ways; scroll up mid-answer to release the auto-follow.",
+  "description": "The assistant's message body for chat and copilot products. Incoming chunks are buffered and released word by word at an even, time-based pace that speeds up when the buffer grows and eases off as it drains, never showing half a word. The newest words enter slightly tinted and low and settle to ink over 600ms, so the eye finds the write head without a blinking cursor. Markdown is recognised as it streams: paragraphs, lists, a table whose columns are reserved from its header, a code block that grows line by line and enables its copy button when it closes, inline code, links and citations. Half-arrived syntax never flashes. It auto-scrolls only while you are at the bottom, offers Jump to latest with a count of new lines, and carries Stop, Skip to end, Copy, Regenerate and Retry. The wait for the first token is its own designed state, and a screen reader hears whole sentences from one polite live region.",
+  "intents": [
+    "stream an AI assistant response token by token",
+    "render streaming markdown from an LLM without layout jumps",
+    "chat message body with stop, retry and regenerate",
+    "smooth out bursty streamed text from a model",
+    "AI answer with citations, tables and code blocks"
+  ],
+  "tags": [
+    "streaming",
+    "ai",
+    "llm",
+    "chat",
+    "assistant",
+    "message",
+    "markdown",
+    "typewriter",
+    "tokens",
+    "citations",
+    "code block",
+    "auto scroll",
+    "stop generating",
+    "copilot"
+  ],
+  "usage": "Use it as the assistant turn of a chat. Pass the message so far as `text` and your request state as `status` (submitted, streaming, ready, error: the AI SDK's `useChat` vocabulary); the component never changes `status` itself. Wire `onStop` to your stop(), `onRetry` and `onRegenerate` to your reload(); they only report, a new answer arrives when you pass new `text`. Or hand it `stream`: an async iterable of strings or a ReadableStream of text or bytes, and it tracks the state itself. Name the assistant with `assistant` ({ name, role, context, icon }); `question` shows the user's turn above it, `sources` ([{ id, title, detail }]) back the [^1] citations, `pending` ({ label, rows }) is the wait before the first token. Smoothing releases whole words at `speed` words per second; turn it off to render chunks as they land. Content is markdown: paragraphs, - and 1. lists, pipe tables, fenced code, `inline code`, [links](url) and [^1] citations. Set `height` for the built-in scrolling card, or `height={0}` to follow the nearest scrolling ancestor (or pass `scroller`). A screen reader hears whole sentences from one polite live region; under reduced motion text arrives a line at a time with no per-word effect. With no props it renders an empty root and nothing else. The sample finance answer and its Raw / Smoothed demo bar appear only with `demo`.",
+  "states": [
+    "default",
+    "loading",
+    "success",
+    "error"
+  ],
+  "controls": [
+    {
+      "group": "Motion",
+      "key": "effect",
+      "label": "Arrival effect",
+      "type": "select",
+      "options": [
+        "settle",
+        "fade",
+        "typewriter",
+        "none"
+      ],
+      "default": "settle"
+    },
+    {
+      "group": "Motion",
+      "key": "speed",
+      "label": "Speed (words/s)",
+      "type": "range",
+      "min": 4,
+      "max": 40,
+      "step": 1,
+      "default": 14
+    },
+    {
+      "group": "Motion",
+      "key": "smoothing",
+      "label": "Smooth bursts",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Display",
+      "key": "showCaret",
+      "label": "Caret at write head",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Display",
+      "key": "showActions",
+      "label": "Message actions",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Typewriter": {
+      "effect": "typewriter",
+      "showCaret": true
+    },
+    "Raw stream": {
+      "smoothing": false
+    },
+    "Quick reader": {
+      "speed": 28
+    },
+    "Plain": {
+      "effect": "none"
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "text",
+      "type": "string",
+      "description": "The assistant's message so far (markdown). Pass the whole text each time it grows; a text that does not start with the previous one restarts the message."
+    },
+    {
+      "key": "status",
+      "type": "\"submitted\" | \"streaming\" | \"ready\" | \"error\"",
+      "description": "Request state, owned by the caller. submitted shows the wait before the first token; error shows what arrived plus Retry. Can be passed without `text`."
+    },
+    {
+      "key": "stream",
+      "type": "AsyncIterable<string> | ReadableStream",
+      "description": "Alternative to text/status: a stream of text chunks (strings or bytes). The component reads it and tracks its own state; Stop cancels it."
+    },
+    {
+      "key": "assistant",
+      "type": "{ name, role?, context?, icon? }",
+      "description": "Who is answering. name defaults to \"Assistant\"; icon is a ReactNode for the 26px mark (null hides it).",
+      "default": "{ name: \"Assistant\" }"
+    },
+    {
+      "key": "question",
+      "type": "ReactNode",
+      "description": "The user's turn shown above the answer. Empty shows none.",
+      "default": ""
+    },
+    {
+      "key": "answer",
+      "type": "string",
+      "description": "A finished answer to show without streaming (static use). Ignored when text or stream is passed.",
+      "default": ""
+    },
+    {
+      "key": "sources",
+      "type": "Array<{ id, title, detail? }>",
+      "description": "Sources matched against [^id] citations in the text; cited ones are listed under the answer.",
+      "default": "[]"
+    },
+    {
+      "key": "pending",
+      "type": "{ label, rows? }",
+      "description": "The wait before the first token: a label (default \"Thinking\") and optional [name, figure] rows that are ticked off.",
+      "default": "{ label: \"Thinking\", rows: [] }"
+    },
+    {
+      "key": "labels",
+      "type": "object",
+      "description": "Override any fixed word: waiting, writing, answered, stopped, interrupted, starting, stop, skip, regenerate, retry."
+    },
+    {
+      "key": "height",
+      "type": "number",
+      "description": "Height of the built-in scrolling card in px; 0 drops the card and follows the nearest scrolling ancestor.",
+      "default": 560
+    },
+    {
+      "key": "scroller",
+      "type": "Element | Ref",
+      "description": "The scrolling element to follow while the answer grows, when it is not the nearest scrolling ancestor."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Disables Stop, Skip, Copy, Regenerate, Retry and the citation buttons.",
+      "default": false
+    },
+    {
+      "key": "onStop",
+      "type": "function",
+      "description": "() => void, when Stop is pressed. The message shows what arrived as stopped; cancel your request here."
+    },
+    {
+      "key": "onRetry",
+      "type": "function",
+      "description": "() => void, when Retry is pressed after an error or stop. Start the request again and pass the new text."
+    },
+    {
+      "key": "onRegenerate",
+      "type": "function",
+      "description": "() => void, when Regenerate is pressed on a finished answer."
+    },
+    {
+      "key": "onSkip",
+      "type": "function",
+      "description": "() => void, when Skip to end shows everything already received at once."
+    },
+    {
+      "key": "onComplete",
+      "type": "function",
+      "description": "(text) => void, once the last word has been revealed after the source finished."
+    },
+    {
+      "key": "onCite",
+      "type": "function",
+      "description": "(id, source | null) => void, when a citation is pressed (the matching source also flashes)."
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Shows the sample finance answer, its question, sources and the Raw / Smoothed demo bar when no text or stream is passed.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLElement>",
+      "description": "The root <section>."
+    },
+    {
+      "key": "className",
+      "type": "string",
+      "description": "Added to the root."
+    },
+    {
+      "key": "style",
+      "type": "CSSProperties",
+      "description": "Merged into the root style."
+    }
+  ],
+  "example": "const { messages, status, stop, reload } = useChat();\nconst last = messages.at(-1);\n<StreamingText\n  text={last?.role === \"assistant\" ? last.content : \"\"}\n  status={status}\n  question={messages.at(-2)?.content}\n  assistant={{ name: \"Helper\", role: \"Support\" }}\n  height={0}\n  onStop={stop}\n  onRetry={reload}\n  onRegenerate={reload}\n/>"
+}

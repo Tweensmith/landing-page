@@ -1,0 +1,200 @@
+{
+  "name": "Magnetic Button",
+  "slug": "magnetic-button",
+  "export": "MagneticButton",
+  "order": 11,
+  "kind": "components",
+  "category": "actions",
+  "subcategory": "effect-buttons",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "pro",
+  "hint": "Bring the cursor near it.",
+  "description": "A button that leans toward the pointer within a radius while its label travels further, giving a sense of depth. Springs back when the pointer leaves.",
+  "intents": [
+    "button that pulls toward the cursor",
+    "magnetic hover effect",
+    "playful hero button",
+    "make one button feel alive on hover"
+  ],
+  "tags": [
+    "button",
+    "magnetic",
+    "cursor",
+    "hover",
+    "attract",
+    "cta",
+    "playful",
+    "spring"
+  ],
+  "usage": "Use for one hero action on a marketing page or empty state. Not for forms, toolbars or dense UI, where moving targets hurt precision. Pass the text as `label` (default \"Get started\") or `children`, and `onClick(event)`. If the click starts async work, set `loading` until it ends: a spinner shows, the magnet lets go and clicks are ignored. It is a real <button> (`type`, `disabled`, `form`, aria-* and data-* go to it) and the ref is that button. Disabled automatically under reduced motion.",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "active",
+    "loading",
+    "disabled"
+  ],
+  "controls": [
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": "Get started"
+    },
+    {
+      "group": "Style",
+      "key": "variant",
+      "label": "Variant",
+      "type": "select",
+      "options": [
+        "primary",
+        "secondary",
+        "ghost",
+        "danger"
+      ],
+      "default": "primary"
+    },
+    {
+      "group": "Style",
+      "key": "size",
+      "label": "Size",
+      "type": "select",
+      "options": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    {
+      "group": "Magnet",
+      "key": "radius",
+      "label": "Radius",
+      "type": "range",
+      "min": 20,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 90
+    },
+    {
+      "group": "Magnet",
+      "key": "strength",
+      "label": "Strength",
+      "type": "range",
+      "min": 0,
+      "max": 0.8,
+      "step": 0.01,
+      "default": 0.35
+    },
+    {
+      "group": "Magnet",
+      "key": "labelDepth",
+      "label": "Label depth",
+      "type": "range",
+      "min": 0,
+      "max": 1.5,
+      "step": 0.05,
+      "default": 0.6
+    },
+    {
+      "group": "Motion",
+      "key": "stiffness",
+      "label": "Stiffness",
+      "type": "range",
+      "min": 60,
+      "max": 500,
+      "step": 10,
+      "default": 220
+    },
+    {
+      "group": "Motion",
+      "key": "damping",
+      "label": "Damping",
+      "type": "range",
+      "min": 5,
+      "max": 40,
+      "step": 1,
+      "default": 15
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "loading",
+      "label": "Loading",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Subtle": {
+      "strength": 0.18,
+      "labelDepth": 0.3,
+      "radius": 60
+    },
+    "Elastic": {
+      "strength": 0.55,
+      "damping": 8,
+      "stiffness": 160
+    },
+    "Ghost": {
+      "variant": "ghost",
+      "label": "See how it works"
+    }
+  },
+  "dataProps": [
+    {
+      "key": "label",
+      "type": "string",
+      "description": "Button text. `children` wins over it.",
+      "default": "Get started"
+    },
+    {
+      "key": "children",
+      "type": "node",
+      "description": "Button content as a node (an icon and text), instead of `label`. It travels with the label's depth. It sits inline like text; wrap an icon and text in your own inline-flex span to space them."
+    },
+    {
+      "key": "onClick",
+      "type": "function",
+      "description": "(event) => void when pressed. Not called while `loading` or `disabled`."
+    },
+    {
+      "key": "type",
+      "type": "\"button\" | \"submit\" | \"reset\"",
+      "description": "The native button type. Use \"submit\" inside a <form>.",
+      "default": "button"
+    },
+    {
+      "key": "loading",
+      "type": "boolean",
+      "description": "You own it: set it while the action's async work runs. A spinner shows before the label, aria-busy is set, the button stops following the pointer and clicks are ignored.",
+      "default": false
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Native disabled: not focusable or clickable, dimmed, and the magnet is off.",
+      "default": false
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Other attributes (id, name, value, form, aria-*, data-*, event handlers) go to the <button>; className and style go to the wrapper span."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLButtonElement>",
+      "description": "The <button>: focus it or measure it."
+    }
+  ]
+}

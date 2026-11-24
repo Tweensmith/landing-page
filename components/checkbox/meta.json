@@ -1,0 +1,177 @@
+{
+  "name": "Checkbox",
+  "slug": "checkbox",
+  "export": "Checkbox",
+  "order": 23.2,
+  "kind": "components",
+  "category": "forms",
+  "subcategory": "choices",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "added": "2026-11-21",
+  "hint": "Tick the parent box, then untick one option: the tick turns into a dash.",
+  "description": "Checkbox and CheckboxGroup on a real native checkbox: tick boxes for forms, terms agreement, multi-select filters and table row selection, with an indeterminate (mixed) state and a select-all parent. One mark, three shapes: the box fills from its centre on a spring, a single stroked path draws the tick a beat later with a small overshoot, and the same three points travel to the dash for the indeterminate state. Unchecking retracts the tick faster than it drew. The box squashes under the pointer.",
+  "intents": [
+    "agree to the terms checkbox",
+    "tick several boxes in a list",
+    "select all checkbox with indeterminate state",
+    "checkbox group in a form",
+    "select rows in a table with checkboxes",
+    "multi select filter checkboxes"
+  ],
+  "tags": [
+    "checkbox",
+    "check box",
+    "tick",
+    "checkbox group",
+    "indeterminate",
+    "select all",
+    "multi select",
+    "terms",
+    "form"
+  ],
+  "usage": "Use a Checkbox for a choice that applies when the form is saved: accept the terms, opt in to email, pick several filters, select rows in a table. For a setting that takes effect the moment it flips (dark mode, notifications on), use Switch instead; Switch's own usage points back here for form choices. For one choice out of a few, use Radio Group; for options that each need a card with an icon or price, use Choice Cards. Give a Checkbox `label` (and `description` if it needs one), then `checked` + `onChange(checked, event)` (controlled) or `defaultChecked` (it keeps its own state). Set `name` (and `value`, default \"on\") inside a <form>; `required` blocks the submit with the browser's own message and a form reset returns to `defaultChecked`. `indeterminate` shows the mixed dash and is announced as mixed; a click on it checks the box, and clearing `indeterminate` is the caller's job. `showRow={false}` with `aria-label` gives a bare box for a table's row selector. `readOnly` stays focusable and announced but does not change. `controlPlacement=\"end\"` puts the box on the trailing edge so it lines up under a Switch in a settings list; `bordered` draws the row as a card as Switch does. For a labelled set use the second export, CheckboxGroup: `options`, `value` / `defaultValue` (arrays), `onChange(values, { value, checked, option }, event)`, `label` (the legend), and `selectAll` for a parent box that is checked, cleared or indeterminate from its children. `min` / `max` limit how many may be chosen. The ref goes to the native input.",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "active",
+    "selected",
+    "disabled",
+    "error"
+  ],
+  "keyboard": [
+    { "keys": "Tab", "does": "Moves to the next box; in a CheckboxGroup every enabled box is its own stop." },
+    { "keys": "Space", "does": "Checks or unchecks the focused box; a mixed box becomes checked." },
+    { "keys": "Space", "does": "Checks every enabled option, or clears them all when all are already checked.", "when": "on the select-all box" }
+  ],
+  "screenReader": "A native checkbox named by `label` (or `aria-label` with showRow={false}), with `description` read after it; it says checked, not checked or mixed (`indeterminate`) as it changes. With `error` it is marked invalid and the message is read as its description. CheckboxGroup is a group named by its `label` legend; the boxes under `selectAll` sit in a nested group named by that label.",
+  "dataProps": [
+    {
+      "key": "label",
+      "type": "string | node",
+      "description": "Visible label beside the box; it names the input. Empty gives a bare box (pass aria-label then).",
+      "default": ""
+    },
+    {
+      "key": "description",
+      "type": "string | node",
+      "description": "Second line under the label, linked with aria-describedby.",
+      "default": ""
+    },
+    {
+      "key": "checked",
+      "type": "boolean",
+      "description": "Controlled state. Pass it with onChange and the box shows exactly this. Leave undefined to let it keep its own state."
+    },
+    {
+      "key": "defaultChecked",
+      "type": "boolean",
+      "description": "Starting state when uncontrolled; also what a form reset returns to.",
+      "default": false
+    },
+    {
+      "key": "indeterminate",
+      "type": "boolean",
+      "description": "Shows the mixed dash and sets input.indeterminate (announced as mixed). A click on it checks the box; clear it yourself.",
+      "default": false
+    },
+    {
+      "key": "onChange",
+      "type": "(checked: boolean, event: Event | null) => void",
+      "description": "(checked: boolean, event) => void, on every toggle, and with event null on a form reset that changes the state."
+    },
+    {
+      "key": "name",
+      "type": "string",
+      "description": "Form field name. The input submits `value` under this name when checked, nothing when not."
+    },
+    {
+      "key": "value",
+      "type": "string",
+      "description": "Value submitted when checked.",
+      "default": "on"
+    },
+    {
+      "key": "id",
+      "type": "string",
+      "description": "Id of the native input (for an outside <label htmlFor>)."
+    },
+    {
+      "key": "error",
+      "type": "string",
+      "description": "An error you already have, shown under the label in the danger colour and announced."
+    },
+    {
+      "key": "maxWidth",
+      "type": "number",
+      "description": "Widest the labelled row grows, in px. 0 lets it fill its container.",
+      "default": 400
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLInputElement>",
+      "description": "Goes to the native <input type=\"checkbox\">: ref.current.focus(), ref.current.checked."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (name, value, form, aria-*, data-*) goes to the native <input>. className and style go to the root <label> and are merged with the component's own."
+    }
+  ],
+  "exports": [
+    {
+      "export": "CheckboxGroup",
+      "description": "A labelled set of checkboxes in a <fieldset>, the label rendered as its <legend>. Each box submits name=value. With `selectAll`, a parent box above the options is checked when every enabled option is, unchecked when none is and indeterminate otherwise; clicking it checks all, or clears all when everything is already checked (this is where the tick turns into the dash). `required` or `min` asks for at least that many with the browser's own validation message; at `max` the unchecked boxes go inert and a hint, linked by aria-describedby, says why. A form reset returns to defaultValue. The ref goes to the <fieldset>; its focus() moves to the first enabled box.",
+      "props": [
+        { "key": "options", "type": "Array<{ value: string; label: node; description?: node; disabled?: boolean }>", "description": "The boxes, in order. A disabled option keeps its state and is left out of select-all." },
+        { "key": "value", "type": "string[]", "description": "Controlled list of checked values. Leave undefined to let the group keep its own." },
+        { "key": "defaultValue", "type": "string[]", "description": "Starting values when uncontrolled; also what a form reset returns to.", "default": [] },
+        { "key": "onChange", "type": "(values: string[], change: { value: string | null; checked: boolean; option: { value: string; label: node; description?: node; disabled?: boolean } | null; all?: boolean } | { reset: true }, event: Event | null) => void", "description": "(values, { value, checked, option, all? }, event) => void. From the parent box value and option are null and all is true." },
+        { "key": "label", "type": "string | node", "description": "The group's <legend>.", "default": "" },
+        { "key": "description", "type": "string | node", "description": "A line under the legend, linked to the fieldset.", "default": "" },
+        { "key": "selectAll", "type": "string | node", "description": "Label of a parent box above the options. Empty: no parent box.", "default": "" },
+        { "key": "orientation", "type": "\"vertical\" | \"horizontal\"", "description": "Options in a column, or in wrapping rows.", "default": "vertical" },
+        { "key": "size", "type": "\"sm\" | \"md\" | \"lg\"", "description": "Box size and row height, the same steps as Switch.", "default": "md" },
+        { "key": "bordered", "type": "boolean", "description": "All rows in one hairline card with dividers, like a settings list.", "default": false },
+        { "key": "controlPlacement", "type": "\"start\" | \"end\"", "description": "Box on the leading or trailing edge of each row.", "default": "start" },
+        { "key": "disabled", "type": "boolean", "description": "Disables the whole fieldset.", "default": false },
+        { "key": "readOnly", "type": "boolean", "description": "Every box stays focusable and announced but does not change.", "default": false },
+        { "key": "required", "type": "boolean", "description": "At least one box must be checked before the form submits.", "default": false },
+        { "key": "min", "type": "number", "description": "At least this many must be checked to submit (native validation). 0: no minimum.", "default": 0 },
+        { "key": "max", "type": "number", "description": "At most this many. At the limit unchecked boxes go inert and say why. 0: no limit.", "default": 0 },
+        { "key": "name", "type": "string", "description": "Form name for every box; generated when absent." },
+        { "key": "id", "type": "string", "description": "Id of the fieldset." },
+        { "key": "error", "type": "string", "description": "An error you already have, shown under the group and announced." },
+        { "key": "messages", "type": "{ required?: string; min?: (n: number) => string; max?: (n: number) => string; error?: string }", "description": "Replaces the neutral validation and limit copy." },
+        { "key": "maxWidth", "type": "number", "description": "Widest the group grows, in px. 0 fills the container.", "default": 400 },
+        { "key": "demo", "type": "boolean", "description": "Sample options with a select-all parent, for the gallery.", "default": false },
+        { "key": "ref", "type": "Ref<HTMLFieldSetElement>", "description": "Goes to the <fieldset>; focus() moves to the first enabled box." }
+      ]
+    }
+  ],
+  "controls": [
+    { "group": "Content", "key": "label", "label": "Label", "type": "text", "default": "" },
+    { "group": "Content", "key": "description", "label": "Description", "type": "text", "default": "" },
+    { "group": "State", "key": "defaultChecked", "label": "Checked initially", "type": "toggle", "default": false },
+    { "group": "State", "key": "indeterminate", "label": "Indeterminate", "type": "toggle", "default": false },
+    { "group": "Style", "key": "size", "label": "Size", "type": "select", "options": ["sm", "md", "lg"], "default": "md" },
+    { "group": "Style", "key": "showRow", "label": "Show label row", "type": "toggle", "default": true },
+    { "group": "Style", "key": "bordered", "label": "Bordered row", "type": "toggle", "default": false },
+    { "group": "Style", "key": "controlPlacement", "label": "Box placement", "type": "select", "options": ["start", "end"], "default": "start" },
+    { "group": "State", "key": "disabled", "label": "Disabled", "type": "toggle", "default": false },
+    { "group": "State", "key": "readOnly", "label": "Read-only", "type": "toggle", "default": false },
+    { "group": "State", "key": "required", "label": "Required", "type": "toggle", "default": false },
+    { "group": "Demo", "key": "demo", "label": "Sample content", "type": "toggle", "default": false }
+  ],
+  "presets": {
+    "Terms": { "label": "I agree to the terms of service", "required": true },
+    "Bordered row": { "label": "Keep me signed in", "description": "On this device for 30 days.", "bordered": true },
+    "Mixed": { "label": "Select all", "indeterminate": true }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "example": "<Checkbox\n  label=\"Send me the release notes\"\n  description=\"One email when a new version ships.\"\n  name=\"releaseNotes\"\n  checked={notes}\n  onChange={setNotes}\n/>\n\n<CheckboxGroup\n  label=\"Export\"\n  selectAll=\"All columns\"\n  name=\"columns\"\n  options={[\n    { value: \"date\", label: \"Date\" },\n    { value: \"amount\", label: \"Amount\" },\n    { value: \"payee\", label: \"Payee\", description: \"As written on the statement.\" },\n  ]}\n  value={columns}\n  onChange={(values) => setColumns(values)}\n/>"
+}

@@ -1,0 +1,99 @@
+{
+  "name": "Snackbar",
+  "slug": "snackbar",
+  "export": "Snackbar",
+  "order": 70,
+  "kind": "components",
+  "category": "mobile",
+  "platform": "native",
+  "level": "composite",
+  "tier": "free",
+  "hint": "Tap Delete: the snackbar rises out of the tab bar like a drop. Tap Undo before its ring runs out, or swipe it away.",
+  "description": "Snackbar for React Native with an action and a timeout, shown in a photo library with a floating tab bar. Each snackbar is a glass pill that grows out of the tab bar's top edge: it rises narrow, a liquid neck pinches off behind it, then it spreads and settles just above the bar, clear of the home indicator; when it times out it is drawn back into the bar. Delete shows Undo with a thin ring that depletes on the UI thread, and Undo really restores the photo into the grid with a layout animation. Swipe the snackbar down into the bar or flick it sideways (it rubber-bands upward and springs back on a short drag); a new snackbar pushes the old one behind it in a stack of two, and a finger resting on it pauses the clock. Neutral, success and error tones, with an error that offers Retry and a close button. Messages are announced through a polite live region; Reduce Motion swaps the emerge for a fade and short slide.",
+  "intents": [
+    "snackbar with undo action",
+    "toast notification above the tab bar",
+    "react native snackbar with swipe to dismiss",
+    "undo delete toast with countdown"
+  ],
+  "tags": [
+    "countdown",
+    "expo",
+    "feedback",
+    "glass",
+    "haptics",
+    "liquid",
+    "notification",
+    "photos",
+    "queue",
+    "react native",
+    "snackbar",
+    "swipe to dismiss",
+    "tab bar",
+    "toast",
+    "undo"
+  ],
+  "usage": "Use for brief, low-priority feedback about something that just happened, optionally with one action (Undo, Retry). Keep the message to a few words and never put the only path to an action in a snackbar: it disappears. For errors that block the person, use an alert or inline message instead.",
+  "states": [
+    "default",
+    "open",
+    "error"
+  ],
+  "controls": [
+    {
+      "group": "Timing",
+      "key": "duration",
+      "label": "Duration (s)",
+      "type": "range",
+      "min": 2,
+      "max": 10,
+      "step": 0.5,
+      "default": 5
+    },
+    {
+      "group": "Layout",
+      "key": "offset",
+      "label": "Gap above tab bar",
+      "type": "range",
+      "min": 4,
+      "max": 40,
+      "step": 2,
+      "default": 12
+    },
+    {
+      "group": "Timing",
+      "key": "showRing",
+      "label": "Countdown ring on Undo",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Behaviour",
+      "key": "stack",
+      "label": "Stack queued snackbars",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Motion",
+      "key": "emerge",
+      "label": "Emerge from tab bar",
+      "type": "toggle",
+      "default": true
+    }
+  ],
+  "presets": {
+    "Quick": {
+      "duration": 3
+    },
+    "Replace, no stack": {
+      "stack": false
+    },
+    "Simple fade": {
+      "emerge": false
+    },
+    "Roomy": {
+      "offset": 28
+    }
+  }
+}

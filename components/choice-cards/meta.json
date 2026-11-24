@@ -1,0 +1,215 @@
+{
+  "name": "Choice Cards",
+  "slug": "choice-cards",
+  "export": "ChoiceCards",
+  "order": 24,
+  "kind": "components",
+  "category": "forms",
+  "subcategory": "choices",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "hint": "Pick a card. Try arrow keys. Switch to multiple.",
+  "description": "Radio cards (pick one) or checkbox cards (pick many) on native inputs, so keyboard, screen readers and forms behave natively. Each group is one Tab stop; arrow keys move between cards. The chosen card lifts and its check draws in.",
+  "intents": [
+    "pick one of several options shown as cards",
+    "radio buttons as cards",
+    "select multiple interests",
+    "plan picker in onboarding"
+  ],
+  "tags": [
+    "radio",
+    "checkbox",
+    "cards",
+    "choice",
+    "select",
+    "options",
+    "onboarding",
+    "picker"
+  ],
+  "usage": "Use when options need a sentence of explanation (plans, roles, delivery methods). For short labels use a plain radio group or segmented control. 2–6 options. Pass `items`, a `legend` (or `aria-label`), and `value` + `onChange` (or `defaultValue`). In a <form> give it a `name` so the chosen value is submitted; `required` and `error` work like a text field's. Cards fill the width they are given (up to 640px; override with style={{ maxWidth }}), `columns` is the most per row and they wrap on narrow screens. With no items it renders nothing. To send focus back to the group (after a validation error), call `ref.current.focus()`: it lands on the checked card, else the first enabled one. `metaFont=\"text\"` sets the meta line in the body font.",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "selected",
+    "disabled"
+  ],
+  "keyboard": [
+    { "keys": "Tab", "does": "Moves to the checked card, or the first enabled one; the cards are one stop." },
+    { "keys": "ArrowRight / ArrowDown", "does": "Moves to the next enabled card and chooses it, wrapping from the last to the first.", "when": "single mode" },
+    { "keys": "ArrowLeft / ArrowUp", "does": "Moves to the previous enabled card and chooses it, wrapping from the first to the last.", "when": "single mode" },
+    { "keys": "Space", "does": "Chooses the focused card.", "when": "single mode" },
+    { "keys": "ArrowRight / ArrowDown / ArrowLeft / ArrowUp", "does": "Moves focus to the next or previous enabled card without changing it, wrapping at the ends.", "when": "multiple mode" },
+    { "keys": "Home / End", "does": "Moves focus to the first or last enabled card.", "when": "multiple mode" },
+    { "keys": "Space", "does": "Checks or unchecks the focused card.", "when": "multiple mode" }
+  ],
+  "screenReader": "A group named by `legend`. Each card is a radio (single mode) or a checkbox (multiple mode) named by its `title`, with its `description` and `meta` read after it, and says whether it is checked as it changes. With `error` every card is marked invalid and the message is read as the group's description.",
+  "dataProps": [
+    {
+      "key": "items",
+      "type": "Array<{ value: string; title: node; description?: node; meta?: node; icon?: string | node; disabled?: boolean }>",
+      "description": "The cards: [{ value, title, description?, meta?, icon?, disabled? }]. `icon` is a React node or a built-in icon name.",
+      "default": []
+    },
+    {
+      "key": "value",
+      "type": "string | string[]",
+      "description": "Controlled selection: a value, or an array of values in multiple mode. Leave undefined to let it keep its own."
+    },
+    {
+      "key": "defaultValue",
+      "type": "string | string[]",
+      "description": "Selected on first render when uncontrolled, and what a form reset returns to."
+    },
+    {
+      "key": "onChange",
+      "type": "(value: string | string[] | null, item: { value: string; title: node; description?: node; meta?: node; icon?: string | node; disabled?: boolean } | null) => void",
+      "description": "(value, item) => void; value is an array in multiple mode. On a form reset item is null."
+    },
+    {
+      "key": "name",
+      "type": "string",
+      "description": "Input name, so the selection is submitted with a <form> (one entry per ticked box in multiple mode)."
+    },
+    {
+      "key": "id",
+      "type": "string",
+      "description": "id of the <fieldset>."
+    },
+    {
+      "key": "required",
+      "type": "boolean",
+      "description": "The form will not submit until one card is chosen (at least one in multiple mode).",
+      "default": false
+    },
+    {
+      "key": "error",
+      "type": "string",
+      "description": "An error you already have, shown under the cards and announced; the inputs get aria-invalid."
+    },
+    {
+      "key": "legendHint",
+      "type": "string",
+      "description": "Dim text after the legend. Defaults to \"pick any\" in multiple mode and nothing in single mode; pass \"\" to hide it."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Other attributes (aria-label when there is no legend, aria-describedby, data-*) go to the <fieldset>; className and style too."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLFieldSetElement>",
+      "description": "Forwarded to the <fieldset> (measure it, scroll it into view). ref.current.focus() moves focus to the checked card (the first checked one in multiple mode), else the first enabled card; use it to send someone back to the group after a validation error. With every card disabled it does nothing."
+    },
+    {
+      "key": "showIcons",
+      "type": "boolean",
+      "description": "Show each item's icon. Only items that have an `icon` draw one, so with no icons in `items` this has nothing to hide.",
+      "default": true
+    },
+    {
+      "key": "showMeta",
+      "type": "boolean",
+      "description": "Show each item's `meta` line (a price, a duration).",
+      "default": true
+    },
+    {
+      "key": "metaFont",
+      "type": "\"mono\" | \"text\"",
+      "description": "Face of the meta line: \"mono\" (the default, for prices and figures) or \"text\" to set it in the body font.",
+      "default": "mono"
+    }
+  ],
+  "controls": [
+    {
+      "group": "Behaviour",
+      "key": "mode",
+      "label": "Mode",
+      "type": "select",
+      "options": [
+        "single",
+        "multiple"
+      ],
+      "default": "single"
+    },
+    {
+      "group": "Layout",
+      "key": "columns",
+      "label": "Columns",
+      "type": "range",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "group": "Content",
+      "key": "legend",
+      "label": "Legend",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Display",
+      "key": "showIcons",
+      "label": "Icons",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Display",
+      "key": "showMeta",
+      "label": "Meta line",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Display",
+      "key": "metaFont",
+      "label": "Meta face",
+      "type": "select",
+      "options": [
+        "mono",
+        "text"
+      ],
+      "default": "mono"
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "required",
+      "label": "Required",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Interests": {
+      "mode": "multiple",
+      "legend": "What will you use it for?",
+      "showMeta": false
+    },
+    "Stacked": {
+      "columns": 1
+    }
+  },
+  "example": "const [delivery, setDelivery] = useState(\"ground\");\n\n<ChoiceCards\n  legend=\"Delivery\"\n  name=\"delivery\"\n  items={[\n    { value: \"ground\", title: \"Ground\", description: \"3–5 business days\", meta: \"Free\" },\n    { value: \"express\", title: \"Express\", description: \"Next business day\", meta: \"$12\" },\n    { value: \"pickup\", title: \"Pick up\", description: \"From the studio\", disabled: !studioOpen },\n  ]}\n  value={delivery}\n  onChange={setDelivery}\n/>",
+  "demoProps": {
+    "demo": true
+  }
+}

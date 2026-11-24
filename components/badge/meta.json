@@ -1,0 +1,353 @@
+{
+  "name": "Badge",
+  "slug": "badge",
+  "export": "Badge",
+  "order": 40.5,
+  "kind": "components",
+  "category": "feedback",
+  "subcategory": "status",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "added": "2026-11-22",
+  "hint": "Watch order #1043: the status rolls to the next word and the badge's width springs to fit it.",
+  "description": "A short status label or tag on a row, a card or a heading: Paid, Draft, Beta, 3 new. When its text changes the old word rolls out, the new one rolls in, the colour cross-fades to the new tone and the width springs to the new word, so the row does not jump. Optional status dot that can pulse for something live. The same part is the kit's tag and filter chip: pressable (a button with a tick when selected) or removable (a real × button); BadgeGroup animates tags in and out of a wrapping row.",
+  "intents": [
+    "status badge on a table row",
+    "label a card as new or beta",
+    "order status pill paid pending shipped",
+    "removable filter tags above a list",
+    "filter chips you can toggle",
+    "live indicator with a pulsing dot"
+  ],
+  "tags": [
+    "badge",
+    "status",
+    "tag",
+    "label",
+    "pill",
+    "chip",
+    "filter chip",
+    "status pill",
+    "lozenge",
+    "removable"
+  ],
+  "usage": "Use for a short word or two that labels or classifies something (a status on a row, \"Beta\" on a heading, a category on a card), and for tags a person presses or removes (filter chips, labels on an issue). Pass the label as `children`, a `tone` for its meaning (neutral, accent, info, success, warning, danger) and `surface` for its weight (soft by default, solid for the one that must stand out, outline for the quietest). Keep a status badge mounted and change its children and tone: the change animates instead of swapping. `dot` adds a status dot, `pulse` makes it breathe for something live (Live, Recording). For a filter chip pass `onClick` and `selected` (true or false); it is announced as a toggle (aria-pressed). `onClick` alone is a plain button. For a link pass `href`. For a removable tag pass `onRemove(event)` and remove the item from your array there; put the badges in a BadgeGroup so the removal and the neighbours' slide animate and focus moves to the next tag. `maxWidth` truncates long text with an ellipsis and puts the full text in `title`. An icon-only badge (an `icon` and no children) needs an `aria-label`. Uppercase is your choice: pass the text as you want it shown. Do not use it for a count on the corner of an icon or avatar (use Badge Counter), for typing tags into a field (use Tag Input), or for a message with a title and actions (use Alert Banner). Note that Badge Counter's file also exports a function named `Badge`; import this one from components/badge.",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "active",
+    "selected",
+    "disabled"
+  ],
+  "keyboard": [
+    {
+      "keys": "Enter / Space",
+      "does": "Presses the badge; a toggle badge flips its selected state and its tick.",
+      "when": "the badge has onClick"
+    },
+    {
+      "keys": "Enter / Space",
+      "does": "Removes the badge; focus moves to the next badge, else the previous one, else the group.",
+      "when": "the × is focused"
+    },
+    {
+      "keys": "Delete / Backspace",
+      "does": "Removes the focused badge, as its × would.",
+      "when": "the badge has onRemove"
+    }
+  ],
+  "screenReader": "A plain badge is text; a pressable one is a button (aria-pressed when `selected` is passed) or a link (aria-current when selected), named by its text. The remove button is named \"`removeLabel` <text>\" (\"Remove Wholesale\"); the dot, icon and tick are hidden. An icon-only badge needs an aria-label.",
+  "dataProps": [
+    {
+      "key": "children",
+      "type": "ReactNode",
+      "description": "The label. A string or number rolls and springs its width when it changes; other nodes swap without the roll.",
+      "default": ""
+    },
+    {
+      "key": "tone",
+      "type": "\"neutral\" | \"accent\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
+      "description": "Colour role. info uses the accent colour, as Alert Banner does. A change cross-fades the colours.",
+      "default": "neutral"
+    },
+    {
+      "key": "surface",
+      "type": "\"soft\" | \"solid\" | \"outline\"",
+      "description": "How it is drawn: soft is a tint of the tone, solid fills it with the tone, outline is a hairline in the tone on a clear ground.",
+      "default": "soft"
+    },
+    {
+      "key": "size",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "description": "Height 18, 22 or 26px (labels, not controls). Pressable and removable badges still get a 44px touch target on a coarse pointer.",
+      "default": "md"
+    },
+    {
+      "key": "shape",
+      "type": "\"pill\" | \"rounded\"",
+      "description": "Fully round ends, or small corners for a squarer tag.",
+      "default": "pill"
+    },
+    {
+      "key": "icon",
+      "type": "string | ReactNode",
+      "description": "An icon before the label: a kit icon name (\"check\", \"clock\", \"alert\"...) or your own node. Alone, with no children, it makes an icon-only badge that needs an aria-label.",
+      "default": ""
+    },
+    {
+      "key": "dot",
+      "type": "boolean",
+      "description": "A status dot before the label in the tone's colour.",
+      "default": false
+    },
+    {
+      "key": "pulse",
+      "type": "boolean",
+      "description": "With dot: one soft ring leaves the dot, slowly and endlessly, for something live. Reduced motion: a still halo instead.",
+      "default": false
+    },
+    {
+      "key": "onRemove",
+      "type": "(event: MouseEvent | KeyboardEvent) => void",
+      "description": "(event) => void. Adds a × button named \"<removeLabel> <label>\"; Delete or Backspace on the focused badge calls it too. Remove the item from your data here."
+    },
+    {
+      "key": "removeLabel",
+      "type": "string",
+      "description": "First words of the × button's accessible name; the label text follows.",
+      "default": "Remove"
+    },
+    {
+      "key": "onClick",
+      "type": "(event: MouseEvent) => void",
+      "description": "(event) => void. Makes the badge a <button> that gives under the press. Pass `selected` (true or false) as well and it is announced as a toggle (aria-pressed); without it, a plain button."
+    },
+    {
+      "key": "href",
+      "type": "string",
+      "description": "Makes the badge a link (<a>). selected sets aria-current."
+    },
+    {
+      "key": "selected",
+      "type": "boolean",
+      "description": "The chosen state of a filter chip: accent fill with a tick that draws in. Passing it (true or false) with onClick makes the badge a toggle button."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Faded; a pressable badge and its × cannot be used and leave the tab order.",
+      "default": false
+    },
+    {
+      "key": "maxWidth",
+      "type": "number",
+      "description": "Widest it may get, in px; longer text ends in an ellipsis and the full text goes in title. 0: no cap.",
+      "default": 0
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "With no children, icon or dot: show a sample order list. Gallery only.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLElement>",
+      "description": "The root element: <span>, or the <button> / <a> of a pressable badge."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-*, data-*) goes to the badge's root: a <span>, an <a> with href, a <button> with onClick. className and style are merged with the component's own."
+    }
+  ],
+  "controls": [
+    {
+      "group": "Content",
+      "key": "children",
+      "label": "Label",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Content",
+      "key": "icon",
+      "label": "Icon",
+      "type": "select",
+      "options": [
+        "",
+        "check",
+        "clock",
+        "alert",
+        "star",
+        "zap",
+        "lock"
+      ],
+      "default": ""
+    },
+    {
+      "group": "Style",
+      "key": "tone",
+      "label": "Tone",
+      "type": "select",
+      "options": [
+        "neutral",
+        "accent",
+        "info",
+        "success",
+        "warning",
+        "danger"
+      ],
+      "default": "neutral"
+    },
+    {
+      "group": "Style",
+      "key": "surface",
+      "label": "Surface",
+      "type": "select",
+      "options": [
+        "soft",
+        "solid",
+        "outline"
+      ],
+      "default": "soft"
+    },
+    {
+      "group": "Style",
+      "key": "size",
+      "label": "Size",
+      "type": "select",
+      "options": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    {
+      "group": "Style",
+      "key": "shape",
+      "label": "Shape",
+      "type": "select",
+      "options": [
+        "pill",
+        "rounded"
+      ],
+      "default": "pill"
+    },
+    {
+      "group": "Style",
+      "key": "dot",
+      "label": "Status dot",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Style",
+      "key": "pulse",
+      "label": "Pulse the dot",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Layout",
+      "key": "maxWidth",
+      "label": "Max width (0 = none)",
+      "type": "range",
+      "min": 0,
+      "max": 320,
+      "step": 10,
+      "default": 0
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Paid": {
+      "children": "Paid",
+      "tone": "success"
+    },
+    "Live": {
+      "children": "Live",
+      "tone": "danger",
+      "dot": true,
+      "pulse": true
+    },
+    "Beta, solid": {
+      "children": "Beta",
+      "tone": "accent",
+      "surface": "solid",
+      "size": "sm"
+    },
+    "Square tag": {
+      "children": "design-system",
+      "surface": "outline",
+      "shape": "rounded"
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "example": "const STATUS = { draft: [\"Draft\", \"neutral\"], sent: [\"Sent\", \"info\"], paid: [\"Paid\", \"success\"], overdue: [\"Overdue\", \"danger\"] };\nconst [word, tone] = STATUS[invoice.status];\n\n<h2>Invoice {invoice.number} <Badge tone={tone}>{word}</Badge></h2>\n\n<BadgeGroup label=\"Filters\">\n  <Badge key=\"mine\" selected={onlyMine} onClick={() => setOnlyMine((v) => !v)}>Assigned to me</Badge>\n  {filters.map((f) => (\n    <Badge key={f.id} onRemove={() => setFilters((all) => all.filter((x) => x.id !== f.id))} removeLabel=\"Remove filter\">{f.label}</Badge>\n  ))}\n</BadgeGroup>",
+  "exports": [
+    {
+      "export": "BadgeGroup",
+      "description": "A wrapping row of badges with a gap that owns their motion: an added badge fades and scales in, a removed one fades out where it stood while its neighbours slide into the gap, across rows too. Map your array into Badge children with your own keys and remove the item in onRemove; the animation comes for free. When a focused badge is removed, focus moves to the next badge's button, else the previous one, else the group itself (it has tabIndex -1). With label it is a named group (role=\"group\"). Reduced motion: badges come and go at once.",
+      "props": [
+        {
+          "key": "children",
+          "type": "node",
+          "description": "Badge elements with stable keys (other elements work too)."
+        },
+        {
+          "key": "gap",
+          "type": "number | string",
+          "description": "Space between badges (number = px). At least 10px on a coarse pointer, so touch targets do not meet.",
+          "default": 6
+        },
+        {
+          "key": "wrap",
+          "type": "boolean",
+          "description": "Wrap onto more rows when the row is full. false keeps one line.",
+          "default": true
+        },
+        {
+          "key": "label",
+          "type": "string",
+          "description": "Accessible name; makes the row role=\"group\" (\"Filters\", \"Labels\").",
+          "default": ""
+        },
+        {
+          "key": "className",
+          "type": "string",
+          "description": "Class on the row."
+        },
+        {
+          "key": "style",
+          "type": "React.CSSProperties",
+          "description": "Style on the row; other props go to the root too."
+        },
+        {
+          "key": "ref",
+          "type": "Ref<HTMLDivElement>",
+          "description": "The row's <div>."
+        }
+      ],
+      "example": "<BadgeGroup label=\"Labels\">\n  {labels.map((l) => (\n    <Badge key={l.id} tone={l.tone} onRemove={() => removeLabel(l.id)}>{l.name}</Badge>\n  ))}\n</BadgeGroup>"
+    }
+  ]
+}

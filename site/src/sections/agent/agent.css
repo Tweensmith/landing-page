@@ -1,0 +1,29 @@
+/* What your agent receives: one component going through every state it publishes (sections/AgentData.jsx). */
+
+.ag__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px 32px; margin-bottom: clamp(24px, 3.4vw, 40px); }
+.ag .section__title .muted { display: block; }
+.ag__pick { display: flex; flex-wrap: wrap; gap: 6px; }
+.ag__wait { min-height: 620px; }
+
+.states { display: grid; gap: 18px; }
+/* the stage is as tall as its tallest component: every component is laid in the same cell, one showing */
+.states__well { display: grid; place-items: center; padding: clamp(40px, 5vw, 64px) 20px; border-radius: 26px; overflow: hidden; background: var(--ts-bg); color: var(--ts-ink);
+  box-shadow: inset 0 0 0 1px var(--ts-line), inset 0 1px 2px rgb(20 20 24 / .06); transition: background-color .25s ease; }
+.states__live { grid-area: 1 / 1; display: grid; place-items: center; min-width: 0; max-width: 100%; visibility: hidden; }
+.states__live[data-on] { visibility: visible; }
+.states__live > * { max-width: 100%; }
+.states__row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.states__words { display: flex; flex-wrap: wrap; gap: 2px; margin-left: -8px; min-width: 0; }
+.states__word { appearance: none; position: relative; margin: 0; padding: 9px 18px 10px; border: 0; border-radius: 999px; background: none; cursor: pointer;
+  font: 650 clamp(21px, 2.5vw, 34px)/1.1 var(--ts-font, inherit); letter-spacing: -.034em; color: var(--ts-heading-muted, var(--ts-ink2)); transition: color .18s ease; }
+.states__word > span:last-child { position: relative; }
+.states__word:hover, .states__word[aria-selected="true"] { color: var(--ts-ink); }
+.states__word:focus-visible { outline: 2px solid var(--ts-focus, var(--ts-ink)); outline-offset: 2px; }
+.states__pill { position: absolute; inset: 0; border-radius: 999px; background: var(--ts-surface); box-shadow: inset 0 0 0 1px var(--ts-line); }
+.states__play { flex: none; align-self: flex-start; }
+
+@media (max-width: 640px) {
+  .ag__head { flex-direction: column; align-items: flex-start; }
+  .states__word { padding: 8px 14px 9px; font-size: 21px; }
+  .states__well { padding: 36px 12px; }
+}

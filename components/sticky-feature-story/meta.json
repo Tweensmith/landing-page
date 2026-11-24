@@ -1,0 +1,209 @@
+{
+  "name": "Sticky Feature Story",
+  "slug": "sticky-feature-story",
+  "export": "StickyFeatureStory",
+  "order": 99,
+  "kind": "bands",
+  "category": "features",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Scroll: the pinned window turns a recording into notes, tasks, a recap and a search result.",
+  "description": "A \"how it works\" section: chapters scroll in one column while a pinned window beside them shows the active one, with a progress rail of chapter ticks. Pass `features` (label, title, body, an optional detail and a visual node each) and the window crossfades between their visuals as the reader scrolls; the rail and the chapter headings jump between chapters. With `demo` it shows a sample story where the window is a single live mock, not a set of images: waveform bars lie down into the words of the notes, sentences lift out as task rows, the rows fly into their owners' avatars and the page folds into a card that ends up as a search result. Scroll position drives it, holding on each chapter and settling on a spring when you stop, and it is fully reversible. It finds its own scroll container, never takes over scrolling, pins to the top of the screen on phones and can show one chapter at a time (`autoplay`) where there is no room to scroll.",
+  "intents": [
+    "how it works section with a sticky product visual that changes as you scroll",
+    "scrollytelling feature section for a landing page",
+    "pinned product demo with scrolling chapters and a progress rail",
+    "explain a product in steps with one animated mockup",
+    "sticky scroll feature walkthrough"
+  ],
+  "tags": [
+    "how it works",
+    "scrollytelling",
+    "sticky",
+    "pinned",
+    "scroll driven",
+    "feature story",
+    "product tour",
+    "chapters",
+    "progress rail",
+    "morph",
+    "landing page",
+    "section",
+    "autoplay"
+  ],
+  "usage": "Use once on a landing page, after the hero, to walk through how the product works in three to five steps. Pass `features`: each one a short `title`, a two-sentence `body`, a `label` for the rail and a `visual` (any node: an image, a video, a mock) that the pinned window shows while that chapter is active. Read or drive the active chapter with `active` / `defaultActive` / `onActiveChange` (setting `active` scrolls to that chapter). It drives itself from the nearest scrollable ancestor (or the window); pass `scroller` if yours is unusual and `topOffset` for a fixed header. Keep ancestors between it and the scroller free of `overflow: hidden`, which stops the pin. Turn on `autoplay` only where the section cannot scroll, such as a preview card; it advances on a timer only when you set `interval`. Under reduced motion your visuals change by fading, without sliding. With no `features` it shows nothing (or only the header you pass).",
+  "states": [
+    "default",
+    "scrolled"
+  ],
+  "controls": [
+    {
+      "group": "Layout",
+      "key": "side",
+      "label": "Window side",
+      "type": "select",
+      "options": [
+        "right",
+        "left"
+      ],
+      "default": "right"
+    },
+    {
+      "group": "Layout",
+      "key": "showRail",
+      "label": "Progress rail",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Story",
+      "key": "chapters",
+      "label": "Chapters",
+      "type": "range",
+      "min": 3,
+      "max": 5,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "group": "Story",
+      "key": "chapterHeight",
+      "label": "Chapter height (% of screen)",
+      "type": "range",
+      "min": 50,
+      "max": 110,
+      "step": 5,
+      "default": 70
+    },
+    {
+      "group": "Playback",
+      "key": "autoplay",
+      "label": "Autoplay (no scroll room)",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Window left": {
+      "side": "left"
+    },
+    "Three steps": {
+      "chapters": 3
+    },
+    "Slow read": {
+      "chapterHeight": 100
+    },
+    "No rail": {
+      "showRail": false
+    },
+    "Autoplay": {
+      "autoplay": true
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "features",
+      "type": "Array<{ id?: string, label?: ReactNode, title: ReactNode, body?: ReactNode, detail?: ReactNode, visual?: ReactNode, alt?: string }>",
+      "description": "The chapters, in order. `visual` is what the pinned window shows while that chapter is active; `alt` makes the visual one image with that text (leave it out if the visual has its own accessible content). `label` is the short name on the rail and above the title. Empty shows no story.",
+      "default": []
+    },
+    {
+      "key": "eyebrow",
+      "type": "ReactNode",
+      "description": "Small line above the heading. Blank shows none."
+    },
+    {
+      "key": "heading",
+      "type": "ReactNode",
+      "description": "The section heading (names the section for screen readers). Blank shows none."
+    },
+    {
+      "key": "intro",
+      "type": "ReactNode",
+      "description": "One or two sentences under the heading. Blank shows none."
+    },
+    {
+      "key": "active",
+      "type": "number",
+      "description": "Controlled index of the active chapter. Setting it scrolls that chapter to the focus line (or selects it in autoplay). Pass it with onActiveChange."
+    },
+    {
+      "key": "defaultActive",
+      "type": "number",
+      "description": "Starting chapter when uncontrolled. In scroll mode the reader's scroll position takes over as soon as it is measured.",
+      "default": 0
+    },
+    {
+      "key": "onActiveChange",
+      "type": "function",
+      "description": "(index: number, feature) => void, when scrolling, the rail, a heading or the autoplay controls make another chapter active. Not called for a change you made through `active`."
+    },
+    {
+      "key": "interval",
+      "type": "number",
+      "description": "Milliseconds per chapter in autoplay. Leave it out (or 0) and autoplay only moves with the Previous and Next buttons; nothing advances on its own. The sample story uses 4200."
+    },
+    {
+      "key": "topOffset",
+      "type": "number",
+      "description": "Pixels of fixed header above the section: the pinned window stays below it.",
+      "default": 0
+    },
+    {
+      "key": "headingLevel",
+      "type": "number",
+      "description": "Level of the section heading (1 to 5); chapter titles are one level below.",
+      "default": 2
+    },
+    {
+      "key": "scroller",
+      "type": "HTMLElement | RefObject<HTMLElement>",
+      "description": "The scroll container that drives the story. Leave it out to use the nearest scrollable ancestor, or the window."
+    },
+    {
+      "key": "railLabel",
+      "type": "string",
+      "description": "Accessible name of the chapter rail.",
+      "default": "Chapters"
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Rail ticks, chapter links and autoplay buttons stop responding and leave the tab order; autoplay holds. Scrolling still moves the story.",
+      "default": false
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Show the sample story (its own heading, five chapters and the morphing product window) when no features are passed. Gallery only; leave off in real UI.",
+      "default": false
+    },
+    {
+      "key": "className",
+      "type": "string",
+      "description": "Added to the root section."
+    },
+    {
+      "key": "style",
+      "type": "CSSProperties",
+      "description": "Merged into the root section's style."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLElement>",
+      "description": "The root section, for measuring or scrolling to the story."
+    }
+  ],
+  "example": "const steps = [\n  { id: \"connect\", label: \"Connect\", title: \"Connect your inbox.\", body: \"Two clicks, no forwarding rules.\", visual: <img src=\"/how/connect.png\" alt=\"\" />, alt: \"The connect screen\" },\n  { id: \"sort\", label: \"Sort\", title: \"Mail sorts itself.\", body: \"Rules learn from what you move.\", visual: <img src=\"/how/sort.png\" alt=\"\" />, alt: \"Messages grouped into folders\" },\n  { id: \"reply\", label: \"Reply\", title: \"Reply in one line.\", body: \"Drafts arrive already written.\", visual: <img src=\"/how/reply.png\" alt=\"\" />, alt: \"A drafted reply\" },\n];\nconst [step, setStep] = useState(0);\n\n<StickyFeatureStory\n  eyebrow=\"How it works\"\n  heading=\"Three steps to an empty inbox.\"\n  features={steps}\n  active={step}\n  onActiveChange={setStep}\n  topOffset={64}\n/>"
+}

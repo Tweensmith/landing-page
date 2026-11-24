@@ -1,0 +1,353 @@
+{
+  "name": "Text Field",
+  "slug": "text-field",
+  "export": "TextField",
+  "order": 20,
+  "kind": "components",
+  "category": "forms",
+  "subcategory": "text-entry",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "hint": "Type an email, then tab away.",
+  "description": "Text input with a floating label (or a static one above the box, to match the rest of a form), validation on blur (never while typing), a gentle shake on error, a check when valid, optional leading icon and character counter.",
+  "intents": [
+    "email input field",
+    "form text input with validation",
+    "floating label input",
+    "sign up form field"
+  ],
+  "tags": [
+    "input",
+    "text field",
+    "form",
+    "email",
+    "validation",
+    "floating label",
+    "textbox",
+    "label above"
+  ],
+  "usage": "Use for any single-line text entry: email, name, search, URL, phone, a password to sign in with. For several lines use Textarea. Give it `label` (or `aria-label` when there is no visible label), `name` and `autoComplete` so forms and autofill work, and `value` + `onChange` if you own the state. Pick the validate rule that matches the data (or pass your own function); validation runs on blur, then live once an error shows. Show a server-side error with `error`. The ref is the <input>, so `ref.current.focus()` works; unknown props (aria-*, data-*, onKeyDown) go to the <input>. A <form> reset puts it back to `defaultValue`. No success text unless you pass `successText`; `showSuccess={false}` also drops the check (useful when a valid email must not read as 'account exists'). To create a password use Password Field. The label floats inside the box by default; in a form that also has Password Field, Textarea or Tag Input, give every field the same `labelPlacement` (\"above\" matches their defaults) so the form reads as one design. Bump `revealErrors` on every submit so the field shakes again even when the error message has not changed.",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "disabled",
+    "error",
+    "success"
+  ],
+  "keyboard": [
+    {
+      "keys": "Tab",
+      "does": "Moves focus into the input; leaving it checks the value and shows any error."
+    },
+    {
+      "keys": "Character",
+      "does": "Types into the input; once an error shows, it clears or changes as you type."
+    }
+  ],
+  "screenReader": "A text input named by `label`. The hint, error or success line is linked with aria-describedby and read in a live region (assertive for an error), and an error sets aria-invalid. With `maxLength` the count is part of the description, read as \"n of max characters\" (`messages.count`) when the field takes focus.",
+  "dataProps": [
+    {
+      "key": "label",
+      "type": "string",
+      "description": "Visible label. \"\" for none (then pass aria-label).",
+      "default": "Email address"
+    },
+    {
+      "key": "labelPlacement",
+      "type": "\"float\" | \"above\"",
+      "description": "\"float\": the label sits inside a 56px box and floats up on focus or once there is a value. \"above\": a static label over a 48px box (52px on phones and touch), as Password Field, Textarea and Tag Input draw it by default. Give every field in a form the same value so the labels read as one design.",
+      "default": "float"
+    },
+    {
+      "key": "type",
+      "type": "string",
+      "description": "Input type: \"email\" | \"text\" | \"url\" | \"tel\" | \"password\" | \"search\" | \"number\" (any <input> type works).",
+      "default": "email"
+    },
+    {
+      "key": "hint",
+      "type": "string",
+      "description": "Help line under the box. An error or success message replaces it while it shows.",
+      "default": ""
+    },
+    {
+      "key": "icon",
+      "type": "string",
+      "description": "Leading icon (18px, --ts-ink2): any name from the kit's icon set, or \"none\". The gallery offers five; every name works: check, x, plus, minus, chevronRight, chevronDown, chevronLeft, chevronUp, arrowRight, arrowLeft, arrowDown, copy, heart, share, bookmark, message, more, trash, search, settings, bell, image, link, edit, sparkle, bold, italic, camera, doc, upload, user, users, calendar, lock, eye, eyeOff, star, mail, mailOpen, alert, sun, moon, home, folder, inbox, chart, grid, layers, globe, book, code, menu, panel, zap, box, help, logout, play, pause, skipForward, shuffle, music, radio, pin, phone, navigation, flag, archive, clock, refresh, coffee.",
+      "default": "mail"
+    },
+    {
+      "key": "maxLength",
+      "type": "number",
+      "description": "Character limit. Shows the n/max counter (unless showCount is false), turns it red when over and shows the tooLong error after blur. Never cuts the text. 0 = no limit.",
+      "default": 0
+    },
+    {
+      "key": "value",
+      "type": "string",
+      "description": "Controlled value: pass it with onChange and the field shows exactly this. Leave undefined to let the field keep its own (seeded by defaultValue)."
+    },
+    {
+      "key": "defaultValue",
+      "type": "string",
+      "description": "Initial value when uncontrolled. A <form> reset returns to it.",
+      "default": ""
+    },
+    {
+      "key": "onChange",
+      "type": "(value: string) => void",
+      "description": "(value: string) => void, on every keystroke (and on form reset)."
+    },
+    {
+      "key": "onBlur",
+      "type": "(event: FocusEvent) => void",
+      "description": "(event) => void, after the field marks itself touched and validates."
+    },
+    {
+      "key": "onFocus",
+      "type": "(event: FocusEvent) => void",
+      "description": "(event) => void."
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLInputElement>",
+      "description": "Forwarded to the <input>: focus(), select(), measure."
+    },
+    {
+      "key": "id",
+      "type": "string",
+      "description": "id of the <input>. Generated when omitted."
+    },
+    {
+      "key": "name",
+      "type": "string",
+      "description": "Form field name; the <input> carries the value in FormData."
+    },
+    {
+      "key": "autoComplete",
+      "type": "string",
+      "description": "autocomplete token (\"email\", \"name\", \"current-password\", \"one-time-code\"…). Defaults by type: email→email, tel→tel, url→url, password→current-password; otherwise unset."
+    },
+    {
+      "key": "inputMode",
+      "type": "string",
+      "description": "Virtual-keyboard hint (\"numeric\", \"decimal\", \"email\", \"tel\", \"search\", \"url\")."
+    },
+    {
+      "key": "autoFocus",
+      "type": "boolean",
+      "description": "Focus the input on mount.",
+      "default": false
+    },
+    {
+      "key": "placeholder",
+      "type": "string",
+      "description": "Shown inside the box once the label has floated (or always when there is no label)."
+    },
+    {
+      "key": "required",
+      "type": "boolean",
+      "description": "Marks the input required (native constraint and aria) and adds * to the label. With validate=\"none\" it also applies the required rule.",
+      "default": false
+    },
+    {
+      "key": "readOnly",
+      "type": "boolean",
+      "description": "Value can be read and selected but not edited.",
+      "default": false
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Not focusable, dimmed, left out of FormData.",
+      "default": false
+    },
+    {
+      "key": "error",
+      "type": "string",
+      "description": "An error you already have (for example from the server). Shown as the field's error until you clear it; the box shakes once when it appears (bump revealErrors to shake again for the same message)."
+    },
+    {
+      "key": "validate",
+      "type": "\"email\" | \"required\" | \"url\" | \"none\" | ((value: string, messages: { required?: string; emailRequired?: string; email?: string; urlRequired?: string; url?: string; tooLong?: string | ((max: number) => string); invalid?: string; count?: (n: number, max: number) => string }) => string | null)",
+      "description": "\"email\" | \"required\" | \"url\" | \"none\", or a function (value, messages) => string | null: return the error message, or null when the value is fine.",
+      "default": "email"
+    },
+    {
+      "key": "messages",
+      "type": "{ required?: string; emailRequired?: string; email?: string; urlRequired?: string; url?: string; tooLong?: string | ((max: number) => string); invalid?: string; count?: (n: number, max: number) => string }",
+      "description": "Copy, merged over neutral defaults: { required: \"This field is required\", emailRequired: \"Enter your email address\", email: \"Enter a valid email address\", urlRequired: \"Enter a URL\", url: \"Enter a valid URL\", tooLong: (max) => `Keep it under ${max} characters`, invalid: \"Check this field\", count: (n, max) => `${n} of ${max} characters` (the counter as screen readers hear it) }. Pass only the keys you want to change."
+    },
+    {
+      "key": "successText",
+      "type": "string",
+      "description": "Message under the field once it validates. Empty by default: only the check mark shows.",
+      "default": ""
+    },
+    {
+      "key": "showSuccess",
+      "type": "boolean",
+      "description": "Show the check mark and successText when the value passes validation. false keeps a valid field neutral.",
+      "default": true
+    },
+    {
+      "key": "showCount",
+      "type": "boolean",
+      "description": "With maxLength set, show the n/max counter on the message line (11px mono in --ts-ink2, which meets 4.5:1 in light and dark; --ts-danger when over). false keeps the length rule and the error without the counter.",
+      "default": true
+    },
+    {
+      "key": "revealErrors",
+      "type": "number",
+      "description": "Bump this on every submit (0 → 1 → 2…): marks the field touched and shakes it while anything is wrong, including an `error` you pass, so a second submit with the same message still shakes.",
+      "default": 0
+    },
+    {
+      "key": "maxWidth",
+      "type": "number",
+      "description": "Widest the field grows, in px. 0 lets it fill its container.",
+      "default": 380
+    },
+    {
+      "key": "className",
+      "type": "string",
+      "description": "Added to the root (the element that holds label, box and message line)."
+    },
+    {
+      "key": "style",
+      "type": "React.CSSProperties",
+      "description": "Inline style on the root."
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Sample content for the gallery: success text \"Looks good\". Off by default.",
+      "default": false
+    }
+  ],
+  "example": "<form onSubmit={save}>\n  <TextField\n    ref={emailRef}\n    label=\"Work email\"\n    name=\"email\"\n    autoComplete=\"email\"\n    required\n    value={email}\n    onChange={setEmail}\n    error={serverError}\n    messages={{ emailRequired: \"Add an email so we can reach you\" }}\n    showSuccess={false}\n    maxWidth={0}\n  />\n</form>",
+  "controls": [
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": "Email address"
+    },
+    {
+      "group": "Content",
+      "key": "hint",
+      "label": "Hint",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Style",
+      "key": "labelPlacement",
+      "label": "Label placement",
+      "type": "select",
+      "options": [
+        "float",
+        "above"
+      ],
+      "default": "float"
+    },
+    {
+      "group": "Behaviour",
+      "key": "type",
+      "label": "Input type",
+      "type": "select",
+      "options": [
+        "email",
+        "text",
+        "url",
+        "tel",
+        "password",
+        "search",
+        "number"
+      ],
+      "default": "email"
+    },
+    {
+      "group": "Behaviour",
+      "key": "validate",
+      "label": "Validate",
+      "type": "select",
+      "options": [
+        "email",
+        "required",
+        "url",
+        "none"
+      ],
+      "default": "email"
+    },
+    {
+      "group": "Style",
+      "key": "icon",
+      "label": "Leading icon",
+      "type": "select",
+      "options": [
+        "mail",
+        "user",
+        "link",
+        "search",
+        "none"
+      ],
+      "default": "mail"
+    },
+    {
+      "group": "Behaviour",
+      "key": "maxLength",
+      "label": "Max length (0 = off)",
+      "type": "range",
+      "min": 0,
+      "max": 200,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Full name": {
+      "label": "Full name",
+      "type": "text",
+      "validate": "required",
+      "icon": "user",
+      "hint": "As it appears on your ID."
+    },
+    "Website": {
+      "label": "Website",
+      "type": "url",
+      "validate": "url",
+      "icon": "link",
+      "hint": ""
+    },
+    "Bio": {
+      "label": "Short bio",
+      "type": "text",
+      "validate": "none",
+      "icon": "none",
+      "maxLength": 80,
+      "hint": "Shown on your profile."
+    }
+  },
+  "demoProps": {
+    "demo": true,
+    "hint": "We only use it for receipts."
+  }
+}

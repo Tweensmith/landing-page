@@ -1,0 +1,253 @@
+{
+  "name": "Kanban Board",
+  "slug": "kanban",
+  "export": "Kanban",
+  "order": 90,
+  "kind": "components",
+  "category": "display",
+  "subcategory": "tables-and-boards",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Turn on Sample content, then drag a candidate to another stage and watch the column part for it. Or focus a card and press Space, then the arrow keys.",
+  "description": "A drag-and-drop board of columns and cards. You pass `columns` (id, title, an optional WIP limit and tone) and `cards` (id, columnId, title, anything else) and draw each card with `renderCard`; moving a card reports `onMove({ cardId, fromColumnId, toColumnId, index })` and the board is controlled or uncontrolled. Lift a card and it scales up with a deeper shadow, hangs from its grab point and leans with horizontal velocity, springing upright when you stop; the cards of the column under it part on springs to open a placeholder exactly where it will land, and letting go flies it into that slot. Near the board edge it auto-scrolls, near a column's top or bottom the column scrolls. Column counts roll, WIP limits fill a row of pips and turn the header to a warning (icon and label) the moment a hover would exceed them. Reorder within a column, fold a column to a narrow strip with its count, quick-add a card inline. Full keyboard drag: Space lifts, arrows move the card between positions and columns, Space drops, Escape cancels, each step announced; every card also has a Move to… menu (M or Shift+F10). On a phone the board becomes a snap rail of columns with tabs above; long-press lifts a card and dragging to the screen edge pages to the next column. The sample content is a hiring pipeline for a Senior Product Designer.",
+  "intents": [
+    "drag and drop kanban board",
+    "task board with status columns",
+    "move cards between columns with keyboard",
+    "kanban with wip limits",
+    "reorder tasks across status columns",
+    "hiring pipeline board with candidate cards"
+  ],
+  "tags": [
+    "kanban",
+    "board",
+    "drag and drop",
+    "dnd",
+    "columns",
+    "pipeline",
+    "hiring",
+    "recruiting",
+    "ats",
+    "trello",
+    "wip limit",
+    "reorder",
+    "cards",
+    "swimlanes"
+  ],
+  "usage": "Use for work that moves through a fixed sequence of stages: a task board, a sales funnel, a hiring pipeline, a support queue. Pass `columns` and `cards`, own the cards with `cards` + `onMove` (apply the move and pass the new array) or start from `defaultCards`, and draw the card with `renderCard(card)` (keep it non-interactive: the card itself is the button; use `onCardClick` to open it). Keep it to three to seven columns, give the narrow stages a `limit` so bottlenecks show, pass `onAddCard` to show an add button per column, and set `loading` while the board loads. For a single ordered list without stages, use a sortable list instead.",
+  "states": [
+    "default",
+    "dragging",
+    "empty",
+    "collapsed"
+  ],
+  "controls": [
+    {
+      "group": "Board",
+      "key": "title",
+      "label": "Title",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Board",
+      "key": "wipLimits",
+      "label": "WIP limits",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Cards",
+      "key": "density",
+      "label": "Density",
+      "type": "select",
+      "options": [
+        "comfortable",
+        "compact"
+      ],
+      "default": "comfortable"
+    },
+    {
+      "group": "Cards",
+      "key": "showAvatars",
+      "label": "Avatars (sample cards)",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Motion",
+      "key": "tilt",
+      "label": "Drag tilt (deg)",
+      "type": "range",
+      "min": 0,
+      "max": 12,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "group": "State",
+      "key": "loading",
+      "label": "Loading",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Compact, no avatars": {
+      "density": "compact",
+      "showAvatars": false
+    },
+    "No WIP limits": {
+      "wipLimits": false
+    },
+    "Steady hand": {
+      "tilt": 0
+    },
+    "Big lean": {
+      "tilt": 12
+    }
+  },
+  "demoProps": {
+    "demo": true,
+    "title": "Senior Product Designer"
+  },
+  "dataProps": [
+    {
+      "key": "columns",
+      "type": "array",
+      "description": "[{ id, title, shortTitle?, limit?, tone?, emptyText?, icon?, canAdd? }] in board order. limit is a WIP limit; tone is 'accent' | 'success' | 'warning' | 'danger' | 'neutral' or a series index (a dot before the title); emptyText (string, node, or [title, text]) replaces the board's emptyText for that column."
+    },
+    {
+      "key": "cards",
+      "type": "array",
+      "description": "Controlled cards: [{ id, columnId, title, description?, disabled?, ...anything renderCard reads }] in board order (order within a column is array order). Pass with onMove or onCardsChange and apply the move yourself."
+    },
+    {
+      "key": "defaultCards",
+      "type": "array",
+      "description": "Uncontrolled starting cards, same shape as cards; the board then applies moves and quick-adds itself."
+    },
+    {
+      "key": "onMove",
+      "type": "function",
+      "description": "({ cardId, fromColumnId, toColumnId, fromIndex, index }) => void after a drop, a keyboard drop or a Move to… choice. index is the card's position in the target column after the move."
+    },
+    {
+      "key": "onCardsChange",
+      "type": "function",
+      "description": "(nextCards, move) => void with the whole card array after a move (move as in onMove) or an uncontrolled quick-add (move null)."
+    },
+    {
+      "key": "renderCard",
+      "type": "function",
+      "description": "(card, { columnId, index, dragging, ghost }) => node drawn inside the card. The card wrapper stays the focusable button with the drag and keyboard model, so render no buttons or links inside. Default: title and description."
+    },
+    {
+      "key": "getCardLabel",
+      "type": "function",
+      "description": "(card) => string, the card's accessible name before its column and position. Default: card.title."
+    },
+    {
+      "key": "onCardClick",
+      "type": "function",
+      "description": "(card, event) => void on a click that was not a drag, and on Enter (Space still lifts the card)."
+    },
+    {
+      "key": "onAddCard",
+      "type": "function",
+      "description": "(columnId, title, card) => void from the inline add field. Shows an add button on every column (hide one with column.canAdd: false). Uncontrolled boards also append card themselves; controlled boards leave it to you."
+    },
+    {
+      "key": "addLabel",
+      "type": "string",
+      "description": "Text of the per-column add button.",
+      "default": "Add card"
+    },
+    {
+      "key": "emptyText",
+      "type": "node",
+      "description": "Shown in an empty column (string, node, or [title, text]); null shows nothing.",
+      "default": "No cards"
+    },
+    {
+      "key": "collapsed",
+      "type": "array",
+      "description": "Controlled ids of folded columns. Pass with onCollapsedChange."
+    },
+    {
+      "key": "defaultCollapsed",
+      "type": "array",
+      "description": "Uncontrolled ids of columns that start folded."
+    },
+    {
+      "key": "onCollapsedChange",
+      "type": "function",
+      "description": "(ids) => void when a column is folded or unfolded."
+    },
+    {
+      "key": "loading",
+      "type": "boolean",
+      "description": "You are loading the board: skeleton cards in every column, aria-busy, no dragging or adding.",
+      "default": false
+    },
+    {
+      "key": "error",
+      "type": "node",
+      "description": "A load error to show instead of the board (true shows a neutral message)."
+    },
+    {
+      "key": "onRetry",
+      "type": "function",
+      "description": "Shows a Try again button with error."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "The whole board inert (out of the tab order, no drag, no menu), dimmed.",
+      "default": false
+    },
+    {
+      "key": "height",
+      "type": "number | string",
+      "description": "Board height (px number or CSS length). Default: 640px desktop, the viewport less the header on a phone."
+    },
+    {
+      "key": "title",
+      "type": "string",
+      "description": "Heading above the board; also the board's accessible name (pass aria-label instead when there is no visible title; default name \"Board\").",
+      "default": ""
+    },
+    {
+      "key": "description",
+      "type": "node",
+      "description": "A line under the title."
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Show the sample hiring pipeline (only when no columns or cards are passed).",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "ref",
+      "description": "The root element."
+    }
+  ],
+  "example": "const [cards, setCards] = useState(initialTasks);\n\n<Kanban\n  title=\"Sprint 14\"\n  columns={[\n    { id: \"todo\", title: \"To do\" },\n    { id: \"doing\", title: \"In progress\", limit: 3, tone: \"accent\" },\n    { id: \"done\", title: \"Done\", tone: \"success\" },\n  ]}\n  cards={cards}\n  onMove={({ cardId, toColumnId, index }) => setCards((cs) => moveCard(cs, cardId, toColumnId, index))}\n  renderCard={(t) => <><b>{t.title}</b><small>{t.owner}</small></>}\n  onCardClick={(t) => openTask(t.id)}\n  onAddCard={(columnId, title) => createTask({ columnId, title })}\n  loading={isLoading}\n/>"
+}

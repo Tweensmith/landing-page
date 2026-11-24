@@ -1,0 +1,228 @@
+{
+  "name": "Lens Grid",
+  "slug": "lens-grid",
+  "export": "LensGrid",
+  "order": 4,
+  "kind": "components",
+  "category": "showpieces",
+  "subcategory": "galleries",
+  "platform": "web",
+  "level": "hero",
+  "tier": "pro",
+  "hint": "Sweep the cursor across the grid.",
+  "description": "A tile grid with a fisheye lens under the cursor: tiles inside the lens magnify and push outward with a smooth falloff, then settle when the pointer leaves.",
+  "intents": [
+    "logo wall",
+    "moodboard of images",
+    "app icon dock",
+    "photo archive grid",
+    "team member grid",
+    "magnify on hover"
+  ],
+  "tags": [
+    "grid",
+    "gallery",
+    "fisheye",
+    "magnify",
+    "lens",
+    "moodboard",
+    "dock",
+    "hover",
+    "explore",
+    "logos",
+    "portfolio"
+  ],
+  "usage": "Use for dense visual sets people scan and pick from: moodboards, logo walls, app icon docks, photo archives, team grids. 30–120 tiles. Pass `items` [{ id, label, image?, node?, palette?, variant?, art?, disabled?, onSelect? }] (one tile each, `columns` wide; rows follow from the count, `rows` only shapes the demo) and `onSelect(item, index, event)` to open a detail view. Every tile is a button named by `label` (its alt text); a tile shows `node`, else `image`, else procedural art, else its label on a plain tile. `label` names the grid for screen readers; `disabled` dims it, stops the lens and disables every tile. Keyboard: one tab stop, arrows move between tiles and the lens follows the focused one, Home/End go to the ends of a row, Enter or Space chooses. It fills its parent up to `maxWidth` (0 = no cap). Under reduced motion the lens jumps instead of gliding. With no items it renders an empty root; `demo` fills the grid with sample art and glyph tiles (gallery only).",
+  "stage": {
+    "bg": "radial-gradient(90% 70% at 50% 40%, #102221 0%, #070b0b 70%)",
+    "accent": "#2de0c0",
+    "theme": "dark"
+  },
+  "controls": [
+    {
+      "group": "Grid",
+      "key": "columns",
+      "label": "Columns",
+      "type": "range",
+      "min": 5,
+      "max": 16,
+      "step": 1,
+      "default": 11
+    },
+    {
+      "group": "Grid",
+      "key": "rows",
+      "label": "Rows",
+      "type": "range",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "group": "Grid",
+      "key": "gap",
+      "label": "Gap",
+      "type": "range",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "group": "Grid",
+      "key": "tileRadius",
+      "label": "Tile radius",
+      "type": "range",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "group": "Lens",
+      "key": "lensRadius",
+      "label": "Lens radius",
+      "type": "range",
+      "min": 60,
+      "max": 340,
+      "step": 2,
+      "unit": "px",
+      "default": 170
+    },
+    {
+      "group": "Lens",
+      "key": "magnify",
+      "label": "Magnify",
+      "type": "range",
+      "min": 1,
+      "max": 3.5,
+      "step": 0.05,
+      "unit": "×",
+      "default": 2.1
+    },
+    {
+      "group": "Lens",
+      "key": "falloff",
+      "label": "Falloff",
+      "type": "range",
+      "min": 0.4,
+      "max": 4,
+      "step": 0.05,
+      "default": 1.6
+    },
+    {
+      "group": "Lens",
+      "key": "push",
+      "label": "Outward push",
+      "type": "range",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 26
+    },
+    {
+      "group": "Lens",
+      "key": "showLens",
+      "label": "Show lens ring",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Motion",
+      "key": "stiffness",
+      "label": "Follow stiffness",
+      "type": "range",
+      "min": 60,
+      "max": 800,
+      "step": 10,
+      "default": 300
+    },
+    {
+      "group": "Motion",
+      "key": "damping",
+      "label": "Follow damping",
+      "type": "range",
+      "min": 8,
+      "max": 60,
+      "step": 1,
+      "default": 30
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Icon dock": {
+      "rows": 3,
+      "columns": 14,
+      "magnify": 2.6,
+      "lensRadius": 130,
+      "push": 10
+    },
+    "Loupe": {
+      "magnify": 3.2,
+      "lensRadius": 110,
+      "falloff": 2.8,
+      "push": 40
+    },
+    "Gentle": {
+      "magnify": 1.45,
+      "lensRadius": 280,
+      "falloff": 1,
+      "showLens": false
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "items",
+      "type": "Array<{ id, label, image?, alt?, node?, art?, palette?, variant?, disabled?, onSelect? }>",
+      "description": "The tiles, in reading order. label names the tile's button (and is its tooltip); image (URL) or node (ReactNode) is the tile, else procedural art from palette/variant (or an art id in art), else the label on a plain tile; disabled tiles cannot be chosen; onSelect(item, index, event) is called for that tile alone.",
+      "default": []
+    },
+    {
+      "key": "onSelect",
+      "type": "function",
+      "description": "(item, index, event) => void, when a tile is chosen (click, tap, Enter or Space). Called after the item's own onSelect."
+    },
+    {
+      "key": "label",
+      "type": "string",
+      "description": "Accessible name of the grid (role group)."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Dims the grid, hides the lens and disables every tile.",
+      "default": false
+    },
+    {
+      "key": "maxWidth",
+      "type": "number",
+      "description": "Width cap in px; the grid fills its parent up to it. 0 means no cap.",
+      "default": 820
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "With no items, fill columns × rows with the sample art and glyph tiles. Gallery only; leave off in real UI.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLDivElement>",
+      "description": "The root element, for measuring or scrolling to the grid. className, style and other props (data-*, aria-*) land on it too."
+    }
+  ],
+  "example": "<LensGrid\n  items={team.map((p) => ({ id: p.id, label: p.name, image: p.photo }))}\n  columns={8}\n  label=\"Team\"\n  maxWidth={0}\n  onSelect={(person) => openProfile(person.id)}\n/>"
+}

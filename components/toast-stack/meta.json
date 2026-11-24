@@ -1,0 +1,186 @@
+{
+  "name": "Toast Stack",
+  "slug": "toast-stack",
+  "export": "ToastStack",
+  "order": 34,
+  "kind": "components",
+  "category": "feedback",
+  "subcategory": "messages",
+  "platform": "web",
+  "level": "composite",
+  "tier": "free",
+  "hint": "Hover the stack to fan it open. Flick a toast sideways to dismiss.",
+  "description": "Render once, call toast() from anywhere. Toasts stack like cards, fan open on hover or focus, flick away sideways, and pause their timers while you read or the tab is hidden.",
+  "intents": [
+    "show a toast notification",
+    "snackbar message after saving",
+    "notify the user something happened",
+    "undo toast"
+  ],
+  "tags": [
+    "toast",
+    "snackbar",
+    "notification",
+    "stack",
+    "sonner",
+    "undo",
+    "message",
+    "swipe"
+  ],
+  "usage": "Mount <ToastStack fixed /> once at the app root, then call toast({ title, description, tone, duration, action: { label, onClick }, onDismiss }) from anywhere: event handlers, effects, plain modules. It returns the toast's id; toast.dismiss(id), toast.update(id, patch), toast.success(title, opts), toast.error(title, opts), toast.warning, toast.info are there too, and useToast() gives the same functions plus the toasts on screen. Use danger tone only for failures (it is announced as an alert; other tones are polite status); one action at most. Timers pause while the stack is hovered or focused and while the tab is hidden. `demo` (old name `showDemo`) adds the gallery's sample toasts and their triggers: leave it off in real UI.",
+  "states": [
+    "default",
+    "open"
+  ],
+  "keyboard": [
+    {
+      "keys": "Tab",
+      "does": "Moves to the front toast's action and × button; the stack fans open, its timers pause, and the toasts behind become Tab stops.",
+      "when": "toasts are showing"
+    },
+    {
+      "keys": "Enter / Space",
+      "does": "Runs the focused action or dismisses the toast; focus moves to the next toast, or back to where it was before the stack when none are left."
+    },
+    {
+      "keys": "Escape",
+      "does": "Dismisses the toast that holds focus, with the same focus move."
+    }
+  ],
+  "screenReader": "An ordered list named by `label` (\"Notifications\"); while the stack is collapsed the toasts behind the front one are inert and hidden, until hover, focus or a tap fans it open. Each new toast is spoken once through a polite status region, or an assertive alert region for danger toasts; the × is named \"Dismiss notification\", and a swipe has the × as its button equivalent.",
+  "dataProps": [
+    {
+      "key": "fixed",
+      "type": "boolean",
+      "description": "Pin the stack to the viewport at `position`. Use this in an app; without it the stack sits in the flow (the gallery stage).",
+      "default": false
+    },
+    {
+      "key": "position",
+      "type": "\"bottom-right\" | \"bottom-left\" | \"bottom-center\" | \"top-right\" | \"top-left\" | \"top-center\"",
+      "description": "Corner or edge the stack grows from. On phones (≤640px) a fixed stack spans the width at the top or bottom edge.",
+      "default": "bottom-right"
+    },
+    {
+      "key": "offset",
+      "type": "number | string | { x?: number | string; y?: number | string }",
+      "description": "Distance from the screen edges when fixed (px or any CSS length). Raise y to clear a bottom tab bar or dock; on phones it is added above the safe area. Defaults to 16px (12px above the safe area on phones)."
+    },
+    {
+      "key": "duration",
+      "type": "number",
+      "description": "Milliseconds before a toast dismisses itself; 0 keeps toasts until closed. A toast's own `duration` (or `persist: true`) overrides it.",
+      "default": 6000
+    },
+    {
+      "key": "max",
+      "type": "number",
+      "description": "How many toasts are visible at once; older ones wait behind.",
+      "default": 3
+    },
+    {
+      "key": "label",
+      "type": "string",
+      "description": "Accessible name of the notification list.",
+      "default": "Notifications"
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Show the gallery's sample toasts and trigger buttons. Same as the older `showDemo`, which still works. Leave off in real UI.",
+      "default": false
+    },
+    {
+      "key": "showDemo",
+      "type": "boolean",
+      "description": "Older name for `demo`, kept working.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLOListElement>",
+      "description": "The list element that holds the toasts (focus it to let keyboard users reach them)."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-*, data-*) goes to the list of toasts, an <ol>, and so do className and style, merged with the list's own."
+    }
+  ],
+  "example": "// once, at the app root\n<ToastStack fixed position=\"bottom-right\" offset={{ y: 72 }} />\n\n// anywhere in the app\nimport { toast } from \"./components/toast-stack\";\nconst id = toast({\n  title: \"Invoice archived\",\n  description: \"INV-0411 moved to Archive.\",\n  tone: \"success\",\n  duration: 8000,\n  action: { label: \"Undo\", onClick: () => restore(\"INV-0411\") },\n  onDismiss: (id, reason) => console.log(reason), // \"timeout\" | \"close\" | \"swipe\" | \"action\" | \"dismiss\"\n});\ntoast.update(id, { title: \"Invoice archived for good\" });\ntoast.dismiss(id);",
+  "controls": [
+    {
+      "group": "Layout",
+      "key": "position",
+      "label": "Position",
+      "type": "select",
+      "options": [
+        "bottom-right",
+        "bottom-left",
+        "bottom-center",
+        "top-right",
+        "top-left",
+        "top-center"
+      ],
+      "default": "bottom-right"
+    },
+    {
+      "group": "Layout",
+      "key": "max",
+      "label": "Visible",
+      "type": "range",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "group": "Layout",
+      "key": "expand",
+      "label": "Always expanded",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Timing",
+      "key": "duration",
+      "label": "Duration (ms, 0 = stay)",
+      "type": "range",
+      "min": 0,
+      "max": 12000,
+      "step": 500,
+      "default": 6000
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "height",
+      "label": "Demo height",
+      "type": "range",
+      "min": 240,
+      "max": 520,
+      "step": 10,
+      "default": 360
+    }
+  ],
+  "presets": {
+    "Expanded": {
+      "expand": true
+    },
+    "Top": {
+      "position": "top-center"
+    },
+    "Sticky": {
+      "duration": 0
+    }
+  },
+  "demoProps": {
+    "demo": true
+  }
+}

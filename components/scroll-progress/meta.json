@@ -1,0 +1,223 @@
+{
+  "name": "Scroll Progress + TOC",
+  "slug": "scroll-progress",
+  "export": "ScrollProgress",
+  "order": 54,
+  "kind": "components",
+  "category": "navigation",
+  "subcategory": "page-navigation",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Scroll the article: the TOC rail highlights exactly the part of the page you can see.",
+  "description": "Reading progress and a table of contents for long pages, or the in-page section nav of a settings page. The TOC rail highlights a reading window, the span of the page currently on screen mapped onto the headings, so it stretches across short sections and slides through long ones. The section being read is bold, clicking one glides there and moves focus to its heading. Phones get a compact On this page pill. The indicator is a bar or a ring that scrolls back to top.",
+  "intents": [
+    "table of contents that highlights the current section",
+    "reading progress bar for a blog post",
+    "scroll progress indicator",
+    "on this page navigation for docs",
+    "back to top button with progress"
+  ],
+  "tags": [
+    "table of contents",
+    "toc",
+    "scroll progress",
+    "reading progress",
+    "scrollspy",
+    "on this page",
+    "article",
+    "docs",
+    "back to top"
+  ],
+  "usage": "Use on articles, docs and settings pages longer than about three screens. Pass `sections` ([{ id, label, level, icon }], ids of your headings or section elements) or `target` (an element, ref or selector) to read its h2 and h3 headings. Pass `scroller` when the page scrolls inside an element rather than the window, and `offset` for the height of a sticky header. Read the current section from `onActiveChange`, or own it with `active`. Place the root in a side column with position:sticky; top:<offset> on desktop; below `compactBelow` px it becomes a pill that opens the list. For a progress bar alone, set showToc={false} and fix the root to the top of the page.",
+  "states": [
+    "default",
+    "scrolled"
+  ],
+  "controls": [
+    {
+      "group": "Progress",
+      "key": "indicator",
+      "label": "Indicator",
+      "type": "select",
+      "options": [
+        "bar",
+        "ring",
+        "none"
+      ],
+      "default": "bar"
+    },
+    {
+      "group": "Progress",
+      "key": "minutesLeft",
+      "label": "Minutes left pill",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Contents",
+      "key": "showToc",
+      "label": "Table of contents",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Contents",
+      "key": "readingWindow",
+      "label": "Reading window on rail",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "frameHeight",
+      "label": "Page height",
+      "type": "range",
+      "min": 400,
+      "max": 720,
+      "step": 10,
+      "default": 540
+    }
+  ],
+  "presets": {
+    "Ring": {
+      "indicator": "ring",
+      "minutesLeft": false
+    },
+    "Bar only": {
+      "showToc": false
+    }
+  },
+  "demoProps": {
+    "demo": true,
+    "minutesLeft": true
+  },
+  "dataProps": [
+    {
+      "key": "sections",
+      "type": "array",
+      "description": "[{ id, label, level, icon }]: id is the id of a heading or section element on the page; level (2, 3…) indents deeper entries; icon is an icon name or node. label is a string or a node (for example a label with a status dot)."
+    },
+    {
+      "key": "target",
+      "type": "element | ref | string",
+      "description": "Element, ref or selector whose headings become the sections when sections is not given (ids are added to headings that lack one). Also bounds the last section and gives the word count for minutesLeft."
+    },
+    {
+      "key": "headings",
+      "type": "string",
+      "description": "Selector for the headings read from target.",
+      "default": "h2, h3"
+    },
+    {
+      "key": "scroller",
+      "type": "element | ref",
+      "description": "The element that scrolls. Leave out for the window."
+    },
+    {
+      "key": "offset",
+      "type": "number",
+      "description": "Height in px of anything sticky above the content (a header): scrolling lands below it and the active line starts under it.",
+      "default": 0
+    },
+    {
+      "key": "active",
+      "type": "string",
+      "description": "Controlled id of the active section (aria-current=\"location\"). Setting a new id from outside scrolls there."
+    },
+    {
+      "key": "defaultActive",
+      "type": "string",
+      "description": "Uncontrolled starting active section (scrolling updates it)."
+    },
+    {
+      "key": "onActiveChange",
+      "type": "function",
+      "description": "(id, section, reason) => void; reason is \"scroll\" or \"click\"."
+    },
+    {
+      "key": "onNavigate",
+      "type": "function",
+      "description": "(section, event) => void when an entry is clicked, before it scrolls and focuses the section heading."
+    },
+    {
+      "key": "indicator",
+      "type": "string",
+      "description": "\"bar\" (a progressbar), \"ring\" (a back-to-top button showing the percentage) or \"none\".",
+      "default": "bar"
+    },
+    {
+      "key": "showToc",
+      "type": "boolean",
+      "description": "Show the list of sections (the pill on phones).",
+      "default": true
+    },
+    {
+      "key": "readingWindow",
+      "type": "boolean",
+      "description": "Highlight the visible span of the page on the list's rail.",
+      "default": true
+    },
+    {
+      "key": "minutesLeft",
+      "type": "boolean",
+      "description": "Show minutes left to read, counted from the target's words.",
+      "default": false
+    },
+    {
+      "key": "wordsPerMinute",
+      "type": "number",
+      "description": "Reading speed for minutesLeft.",
+      "default": 200
+    },
+    {
+      "key": "compactBelow",
+      "type": "number",
+      "description": "Viewport width in px below which the list becomes the compact pill. 0 never.",
+      "default": 700
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Entries inert and announced as disabled.",
+      "default": false
+    },
+    {
+      "key": "labels",
+      "type": "object",
+      "description": "Text merged over { title: \"On this page\" (the list heading and the nav's name), progress: \"Reading progress\", backToTop: (pct) => …, minutesLeft: (n) => `${n} min left`, done: \"Done\" }."
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Render the sample article in a browser frame, as in the gallery. Content you pass wins.",
+      "default": false
+    },
+    {
+      "key": "frameHeight",
+      "type": "number",
+      "description": "Demo frame height in px (demo only).",
+      "default": 540
+    },
+    {
+      "key": "ref",
+      "type": "ref",
+      "description": "The root nav (or the bar's wrapper without a list); the demo frame's scroller with demo on."
+    }
+  ],
+  "example": "// settings page: sticky section nav beside the form, a pill on phones\n<div style={{ display: \"grid\", gridTemplateColumns: \"200px 1fr\", gap: 32 }}>\n  <ScrollProgress\n    sections={[\n      { id: \"profile\", label: \"Profile\", icon: \"user\" },\n      { id: \"notifications\", label: \"Notifications\", icon: \"bell\" },\n      { id: \"security\", label: \"Security\", icon: \"lock\" },\n    ]}\n    offset={72}\n    indicator=\"none\"\n    labels={{ title: \"Settings sections\" }}\n    onActiveChange={(id) => history.replaceState(null, \"\", \"#\" + id)}\n    style={{ position: \"sticky\", top: 88, alignSelf: \"start\" }}\n  />\n  <form>\n    <section id=\"profile\"><h2>Profile</h2>…</section>\n    <section id=\"notifications\"><h2>Notifications</h2>…</section>\n    <section id=\"security\"><h2>Security</h2>…</section>\n  </form>\n</div>"
+}

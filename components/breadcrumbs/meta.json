@@ -1,0 +1,202 @@
+{
+  "name": "Breadcrumbs",
+  "slug": "breadcrumbs",
+  "export": "Breadcrumbs",
+  "order": 51,
+  "kind": "components",
+  "category": "navigation",
+  "subcategory": "page-navigation",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "free",
+  "hint": "Drag the box's corner narrower: the middle folds into a … menu, one level at a time.",
+  "description": "A location trail that truncates by meaning. As space runs out, middle levels fold into a … menu one at a time, always keeping the root and the levels nearest the current page; the current page is ellipsised only as a last resort. Crumbs slide to their new positions instead of jumping.",
+  "intents": [
+    "breadcrumb trail for nested folders",
+    "show where the user is in a hierarchy",
+    "file path navigation",
+    "truncate long breadcrumbs"
+  ],
+  "tags": [
+    "breadcrumbs",
+    "breadcrumb",
+    "path",
+    "trail",
+    "hierarchy",
+    "truncation",
+    "folders",
+    "navigation"
+  ],
+  "usage": "Use on pages three or more levels deep. Pass `items` ({ label, href, icon? }, root first, current page last); the last item is the current page and is not a link. With a client-side router pass `linkAs={Link}` (it receives href, to, className, onClick and children) or `renderLink(item, props)`, and `onNavigate` so levels picked from the … menu route too. The trail folds its middle to fit its container; `maxItems` also caps how many crumbs show. Don't use breadcrumbs as the only navigation.",
+  "states": [
+    "default",
+    "open"
+  ],
+  "keyboard": [
+    {
+      "keys": "Tab",
+      "does": "Moves through the linked crumbs and the … button; the current page is not a Tab stop."
+    },
+    {
+      "keys": "Enter",
+      "does": "Follows the focused crumb."
+    },
+    {
+      "keys": "Enter / Space",
+      "does": "Opens the menu of folded levels and focuses its first level.",
+      "when": "on the … button"
+    },
+    {
+      "keys": "ArrowDown / ArrowUp",
+      "does": "Moves to the next or previous folded level.",
+      "when": "the menu is open"
+    },
+    {
+      "keys": "Home / End",
+      "does": "Moves to the first or last folded level.",
+      "when": "the menu is open"
+    },
+    {
+      "keys": "Enter",
+      "does": "Goes to the focused level and closes the menu.",
+      "when": "the menu is open"
+    },
+    {
+      "keys": "Escape",
+      "does": "Closes the menu and returns focus to the … button.",
+      "when": "the menu is open"
+    }
+  ],
+  "screenReader": "A nav landmark named by `ariaLabel` (\"Breadcrumb\" by default) holding an ordered list; the last crumb carries aria-current=\"page\" and the separators are hidden. The … button is named \"Show N hidden levels\" and reports aria-haspopup=\"menu\" and aria-expanded; the folded levels open as a menu of menu items, and a polite live region names the level picked from it.",
+  "controls": [
+    {
+      "group": "Look",
+      "key": "separator",
+      "label": "Separator",
+      "type": "select",
+      "options": [
+        "chevron",
+        "slash",
+        "dot"
+      ],
+      "default": "chevron"
+    },
+    {
+      "group": "Look",
+      "key": "showIcons",
+      "label": "Icons",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Look",
+      "key": "maxItems",
+      "label": "Max crumbs (0 = fit)",
+      "type": "range",
+      "min": 0,
+      "max": 7,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "width",
+      "label": "Width",
+      "type": "range",
+      "min": 220,
+      "max": 760,
+      "step": 10,
+      "default": 640
+    }
+  ],
+  "presets": {
+    "Narrow": {
+      "width": 340
+    },
+    "Slashes": {
+      "separator": "slash",
+      "showIcons": false
+    }
+  },
+  "previewProps": {
+    "width": 420
+  },
+  "dataProps": [
+    {
+      "key": "items",
+      "type": "Array<{ label: node; href?: string; onClick?: (event: MouseEvent | null, item: { label: node; href?: string; icon?: string | node; disabled?: boolean }, index: number) => void; icon?: string | node; disabled?: boolean }>",
+      "description": "The path, root first: [{ label, href?, onClick?, icon?, disabled? }]. The last item is the current page (aria-current=\"page\", never a link). onClick is (event, item, index). An item without href renders as a button. icon is an icon name or a node. Empty renders nothing.",
+      "default": []
+    },
+    {
+      "key": "maxItems",
+      "type": "number",
+      "description": "Most crumbs shown before the middle folds into the … menu (root and the levels nearest the current page stay). 0 = fold only when out of room.",
+      "default": 0
+    },
+    {
+      "key": "linkAs",
+      "type": "component",
+      "description": "Component rendered for linked crumbs instead of <a>, e.g. your router's Link. Receives href, to (same value), className, onClick and children."
+    },
+    {
+      "key": "renderLink",
+      "type": "(item: { label: node; href?: string; onClick?: (event: MouseEvent | null, item: { label: node; href?: string; icon?: string | node; disabled?: boolean }, index: number) => void; icon?: string | node; disabled?: boolean }, props: { href?: string; className: string; onClick: (event: MouseEvent) => void; children: node }, index: number) => node",
+      "description": "(item, props, index) => node: render a crumb link yourself. Spread props (href, className, onClick, children) onto your link."
+    },
+    {
+      "key": "onNavigate",
+      "type": "(item: { label: node; href?: string; onClick?: (event: MouseEvent | null, item: { label: node; href?: string; icon?: string | node; disabled?: boolean }, index: number) => void; icon?: string | node; disabled?: boolean }, index: number, event: MouseEvent | null) => void",
+      "description": "(item, index, event) => void when a crumb is clicked or picked from the … menu. For menu picks event is null; without onNavigate or an item onClick the menu follows the item's href."
+    },
+    {
+      "key": "open",
+      "type": "boolean",
+      "description": "Controlled: whether the … menu of folded levels is open (only shows while something is folded). Pass with onOpenChange."
+    },
+    {
+      "key": "defaultOpen",
+      "type": "boolean",
+      "description": "Uncontrolled: the … menu starts open.",
+      "default": false
+    },
+    {
+      "key": "onOpenChange",
+      "type": "(open: boolean) => void",
+      "description": "(open: boolean) => void when the … menu opens or closes."
+    },
+    {
+      "key": "separator",
+      "type": "string | node",
+      "description": "\"chevron\", \"slash\", \"dot\", or your own node.",
+      "default": "chevron"
+    },
+    {
+      "key": "ariaLabel",
+      "type": "string",
+      "description": "Accessible name of the nav landmark.",
+      "default": "Breadcrumb"
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLDivElement>",
+      "description": "The root element (wraps the nav)."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (id, aria-*, data-*) goes to the root <div>. className and style are merged with the component's own."
+    }
+  ],
+  "demoProps": {
+    "demo": true
+  },
+  "example": "<Breadcrumbs\n  items={[\n    { label: \"Acme\", href: \"/\", icon: \"home\" },\n    { label: \"Projects\", href: \"/projects\" },\n    { label: \"Website\", href: \"/projects/website\" },\n    { label: \"Launch plan\" },\n  ]}\n  linkAs={Link}\n  onNavigate={(item) => navigate(item.href)}\n  maxItems={4}\n/>"
+}

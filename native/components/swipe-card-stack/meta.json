@@ -1,0 +1,97 @@
+{
+  "name": "Swipe Card Stack",
+  "slug": "swipe-card-stack",
+  "export": "SwipeCardStack",
+  "order": 65,
+  "kind": "components",
+  "category": "mobile",
+  "platform": "native",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Grab the top card near its top edge and drag right, then try the bottom edge: it tilts the other way. Flick to throw it, or let go early and it springs back.",
+  "description": "A swipeable card deck for React Native, shown as an art discovery screen of generative works. The top card follows the finger 1:1 and pivots on where you grabbed it, so holding the top half tilts it with the drag and the bottom half against it. SAVE, PASS and SUPER stamps slam in with travel while the cards behind rise and grow to take its place. Crossing the decision line ticks a selection haptic; letting go projects your velocity, so a flick throws the card off along its path with its spin and a short drag springs back with a slight overshoot. The Pass, Super and Save buttons throw the same way and swell as you drag toward them, Undo flies the last card back in from the side it left, and the end of the deck shows a caught-up state with Start over. Every action is also a screen-reader action; Reduce Motion drops the tilt and fades cards out instead.",
+  "intents": [
+    "tinder style swipe cards",
+    "swipe left right card stack react native",
+    "card deck to save or pass items",
+    "swipeable discovery cards with undo"
+  ],
+  "tags": [
+    "art",
+    "cards",
+    "deck",
+    "discovery",
+    "expo",
+    "gesture",
+    "haptics",
+    "like",
+    "react native",
+    "stack",
+    "super like",
+    "swipe",
+    "swipe cards",
+    "tinder",
+    "undo"
+  ],
+  "usage": "Use when people judge one item at a time and the decision is quick and binary (save or pass, keep or skip). Always pair the swipe with visible buttons, keep Undo one tap away, and end the deck with a clear state rather than a blank screen.",
+  "states": [
+    "default",
+    "empty"
+  ],
+  "controls": [
+    {
+      "group": "Gesture",
+      "key": "threshold",
+      "label": "Decision distance",
+      "type": "range",
+      "min": 60,
+      "max": 200,
+      "step": 10,
+      "default": 120
+    },
+    {
+      "group": "Gesture",
+      "key": "tilt",
+      "label": "Tilt (degrees)",
+      "type": "range",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "group": "Gesture",
+      "key": "allowSuper",
+      "label": "Swipe up to super like",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Display",
+      "key": "showStamps",
+      "label": "Stamps",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Display",
+      "key": "showButtons",
+      "label": "Action buttons",
+      "type": "toggle",
+      "default": true
+    }
+  ],
+  "presets": {
+    "Two-way": {
+      "allowSuper": false
+    },
+    "Gesture only": {
+      "showButtons": false,
+      "showStamps": false
+    },
+    "Loose": {
+      "threshold": 80,
+      "tilt": 18
+    }
+  }
+}

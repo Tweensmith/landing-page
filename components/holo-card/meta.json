@@ -1,0 +1,320 @@
+{
+  "name": "Holo Card",
+  "slug": "holo-card",
+  "export": "HoloCard",
+  "order": 1,
+  "kind": "components",
+  "category": "showpieces",
+  "subcategory": "cards",
+  "platform": "web",
+  "level": "hero",
+  "tier": "pro",
+  "hint": "Move across the card, or Tab to it and use the arrow keys. Press it.",
+  "description": "Collectible / membership card with pointer- and keyboard-driven 3D tilt. Sunburst foil, glitter and a tight glare are separate materials that follow the light at different rates over the art.",
+  "intents": [
+    "show a membership card",
+    "loyalty or rewards card",
+    "digital collectible or launch pass",
+    "referral reward reveal",
+    "premium tier badge",
+    "ticket or event pass"
+  ],
+  "tags": [
+    "card",
+    "3d",
+    "tilt",
+    "holographic",
+    "foil",
+    "membership",
+    "nft",
+    "collectible",
+    "hero",
+    "pricing tier",
+    "loyalty"
+  ],
+  "usage": "Use as a hero object: membership tiers, launch passes, digital collectibles, referral rewards, or a 'your card' moment in onboarding. One per viewport. Do not use in dense grids. Everything printed is yours: `title`, `holder`, `number` (shown after `numberPrefix`, default \"Nº\"), `tier` (the pill) and `brand` (top left); each prints only when given. The picture is `artwork` (your node), else `image` (a URL), else the procedural `art`; `children` replace the printed text entirely. Pass `onPress` to make the card a button (click, Enter or Space), e.g. to open the pass; without it the card is one named image (role img, named from title, tier, holder and number, or `label`). `disabled` stops tilt, light and press, dims the card and takes it out of the tab order. `idle` sweeps the light across once each time the card comes into view, then rests (no loop). `forceState` (\"hover\" | \"focus\") pins a demo state. Arrow keys tilt it and move the light, Shift for bigger steps, Home or Escape levels it. Vertical swipes on the card scroll the page; presses and sideways drags tilt it. Under reduced motion there is no tilt, sweep or entrance travel; the light still follows pointer and keys. The ref is the card itself (the tab stop). `demo` prints a sample holder, number, tier and brand (gallery only).",
+  "stage": {
+    "bg": "radial-gradient(110% 90% at 50% 0%, #1d1d25 0%, #08080a 62%)",
+    "accent": "#c8ff3d",
+    "theme": "dark"
+  },
+  "controls": [
+    {
+      "group": "Card",
+      "key": "art",
+      "label": "Artwork",
+      "type": "select",
+      "options": [
+        "night-bloom",
+        "ember-silk",
+        "glacier",
+        "chrome",
+        "citrine",
+        "tidal",
+        "orchid",
+        "eclipse"
+      ],
+      "default": "night-bloom"
+    },
+    {
+      "group": "Card",
+      "key": "width",
+      "label": "Width",
+      "type": "range",
+      "min": 220,
+      "max": 380,
+      "step": 2,
+      "unit": "px",
+      "default": 300
+    },
+    {
+      "group": "Card",
+      "key": "radius",
+      "label": "Corner radius",
+      "type": "range",
+      "min": 6,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 22
+    },
+    {
+      "group": "Tilt",
+      "key": "maxTilt",
+      "label": "Max tilt",
+      "type": "range",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "°",
+      "default": 16
+    },
+    {
+      "group": "Tilt",
+      "key": "depth",
+      "label": "Text depth",
+      "type": "range",
+      "min": 0,
+      "max": 90,
+      "step": 1,
+      "unit": "px",
+      "default": 34
+    },
+    {
+      "group": "Tilt",
+      "key": "stiffness",
+      "label": "Spring stiffness",
+      "type": "range",
+      "min": 40,
+      "max": 400,
+      "step": 5,
+      "default": 160
+    },
+    {
+      "group": "Tilt",
+      "key": "damping",
+      "label": "Spring damping",
+      "type": "range",
+      "min": 6,
+      "max": 40,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "group": "Surface",
+      "key": "foil",
+      "label": "Foil",
+      "type": "range",
+      "min": 0,
+      "max": 1,
+      "step": 0.01,
+      "default": 0.55
+    },
+    {
+      "group": "Surface",
+      "key": "foilHue",
+      "label": "Foil hue",
+      "type": "range",
+      "min": 0,
+      "max": 360,
+      "step": 1,
+      "unit": "°",
+      "default": 0
+    },
+    {
+      "group": "Surface",
+      "key": "glare",
+      "label": "Glare",
+      "type": "range",
+      "min": 0,
+      "max": 1,
+      "step": 0.01,
+      "default": 0.55
+    },
+    {
+      "group": "Surface",
+      "key": "sparkle",
+      "label": "Sparkle",
+      "type": "range",
+      "min": 0,
+      "max": 1,
+      "step": 0.01,
+      "default": 0.35
+    },
+    {
+      "group": "Surface",
+      "key": "grain",
+      "label": "Grain",
+      "type": "range",
+      "min": 0,
+      "max": 0.4,
+      "step": 0.01,
+      "default": 0.12
+    },
+    {
+      "group": "Motion",
+      "key": "idle",
+      "label": "Idle sweep",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Foil rare": {
+      "foil": 0.9,
+      "sparkle": 0.65,
+      "maxTilt": 20,
+      "glare": 0.7
+    },
+    "Matte black": {
+      "art": "eclipse",
+      "foil": 0.08,
+      "glare": 0.25,
+      "sparkle": 0,
+      "grain": 0.24
+    },
+    "Chrome pass": {
+      "art": "chrome",
+      "foil": 0.4,
+      "foilHue": 190,
+      "depth": 60
+    }
+  },
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "disabled"
+  ],
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "title",
+      "type": "ReactNode",
+      "description": "The big line on the card. None by default (the demo uses the artwork's name)."
+    },
+    {
+      "key": "holder",
+      "type": "string",
+      "description": "Name printed bottom left. None by default."
+    },
+    {
+      "key": "number",
+      "type": "string",
+      "description": "Card or member number printed bottom right, after numberPrefix. None by default."
+    },
+    {
+      "key": "numberPrefix",
+      "type": "string",
+      "description": "Printed before the number; empty string for none.",
+      "default": "Nº"
+    },
+    {
+      "key": "tier",
+      "type": "string",
+      "description": "Text of the pill top right (a tier or status). No pill when empty."
+    },
+    {
+      "key": "brand",
+      "type": "ReactNode",
+      "description": "Your mark or name, printed small top left. None by default."
+    },
+    {
+      "key": "artwork",
+      "type": "ReactNode",
+      "description": "Your own picture for the card face (an <img>, <video>, <svg> or any node). It fills the face under the foil, glare and glitter."
+    },
+    {
+      "key": "image",
+      "type": "string",
+      "description": "URL of an image for the card face (used when artwork is not given)."
+    },
+    {
+      "key": "children",
+      "type": "ReactNode",
+      "description": "Replaces the printed text plane (brand, tier, title, holder, number) with your own layout; it floats at `depth` like the text does."
+    },
+    {
+      "key": "label",
+      "type": "string",
+      "description": "Accessible name of the card. Default: built from title, tier, holder and number (\"Card\" if all are empty)."
+    },
+    {
+      "key": "onPress",
+      "type": "function",
+      "description": "(event) => void. Makes the card a button: called on click, Enter or Space. Not called while disabled."
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "No tilt, light or press; dimmed, aria-disabled and out of the tab order.",
+      "default": false
+    },
+    {
+      "key": "showKeys",
+      "type": "boolean",
+      "description": "Show the arrow-key hint that appears 18px under the card while it has keyboard focus. It sits outside the card's box, so turn it off (or leave about 40px below the card) when content follows directly.",
+      "default": true
+    },
+    {
+      "key": "keysLabel",
+      "type": "string",
+      "description": "Word shown after the arrow-key hint under the card while it has keyboard focus.",
+      "default": "tilt"
+    },
+    {
+      "key": "keyHint",
+      "type": "string",
+      "description": "Screen-reader description of the keys.",
+      "default": "Arrow keys tilt the card and move the light. Escape levels it."
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Fill holder, number, tier, brand and title with a sample. Gallery only; leave off in real UI.",
+      "default": false
+    },
+    {
+      "key": "ref",
+      "type": "Ref<HTMLDivElement>",
+      "description": "The card element (the tab stop), to focus or measure it. className, style and other props (data-*, aria-*) land on the outer wrapper."
+    }
+  ],
+  "example": "<HoloCard\n  title=\"Founding member\"\n  holder={user.name}\n  number={user.memberNo}\n  tier=\"Gold\"\n  brand=\"Members ✦\"\n  image={user.passArt}\n  onPress={() => openPass()}\n/>"
+}

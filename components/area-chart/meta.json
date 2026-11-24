@@ -1,0 +1,340 @@
+{
+  "name": "Area Chart",
+  "slug": "area-chart",
+  "export": "AreaChart",
+  "order": 81,
+  "kind": "components",
+  "category": "display",
+  "subcategory": "charts",
+  "platform": "web",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Drag across the overview strip: the plot springs to that window. Double-click resets.",
+  "description": "Stacked or overlapping area chart for one measure split into a few parts over many points: your rows, your series, your formats. Its signature is brush to zoom: drag across the slim overview (or its handles, or the window itself) and the main plot's x-scale springs to that window, paths staying continuous while ticks re-flow and fade and the y-axis re-fits. A crosshair snaps to the nearest point with one glass tooltip listing every series plus the total, and arrow keys walk it. The legend toggles series and the stack re-settles on springs without repainting colours; flags on the x-axis open notes about events. Dates get a time axis whose ticks re-flow from quarters to days; anything else gets a category axis. The sample content (`demo`) is a year of household energy by source.",
+  "intents": [
+    "stacked area chart with brush zoom",
+    "energy usage by source over a year",
+    "time series chart with zoomable overview",
+    "traffic by channel area chart with annotations",
+    "daily metrics chart with range selector"
+  ],
+  "tags": [
+    "area chart",
+    "stacked area",
+    "chart",
+    "time series",
+    "brush",
+    "zoom",
+    "range selector",
+    "crosshair",
+    "annotations",
+    "energy",
+    "dashboard",
+    "analytics"
+  ],
+  "usage": "Use for one measure split into 1 to 8 parts over many points, where the reader needs both the whole range and a close look at a stretch of it. Pass `data` (rows of plain objects), `xKey` (Date values give a time axis, strings or numbers a category axis) and `series: [{ key, label, tone }]` (or `yKey` for a single series); format numbers with `formatValue` / `formatAxis` and x labels with `formatX`. Own the zoom with `range` + `onRangeChange` ([start, end] row indices), the visible series with `hiddenSeries` + `onHiddenSeriesChange`, and the data states with `loading`, `error` + `onRetry` and `emptyMessage`. `onPointClick(row, index)` fires on click or Enter at the crosshair. Stack when the parts add up to a meaningful total; switch to overlap to compare shapes. One y-axis and one unit; values are drawn from 0 up (negatives are not plotted), and points are evenly spaced, one per row. The view switch (Chart / Table) and the Stacked / Overlap switch are the kit's shared `Segmented` control from components/_shared/chart.jsx, which has no slug of its own.",
+  "states": [
+    "default",
+    "hover",
+    "loading",
+    "empty",
+    "error"
+  ],
+  "controls": [
+    {
+      "group": "Data",
+      "key": "mode",
+      "label": "Layout",
+      "type": "select",
+      "options": [
+        "stacked",
+        "overlap"
+      ],
+      "default": "stacked"
+    },
+    {
+      "group": "Data",
+      "key": "initialRange",
+      "label": "Initial window (sample)",
+      "type": "select",
+      "options": [
+        "year",
+        "summer",
+        "heatwave"
+      ],
+      "default": "year"
+    },
+    {
+      "group": "Look",
+      "key": "height",
+      "label": "Plot height",
+      "type": "range",
+      "min": 200,
+      "max": 420,
+      "step": 10,
+      "unit": "px",
+      "default": 280
+    },
+    {
+      "group": "Look",
+      "key": "smooth",
+      "label": "Smooth curves",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Look",
+      "key": "showEvents",
+      "label": "Event flags",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Look",
+      "key": "showOverview",
+      "label": "Overview brush",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Look",
+      "key": "showModeToggle",
+      "label": "Stacked / Overlap switch",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Motion",
+      "key": "drawOn",
+      "label": "Draw-on entrance",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "State",
+      "key": "loading",
+      "label": "Loading",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Heatwave close-up": {
+      "demo": true,
+      "initialRange": "heatwave"
+    },
+    "Summer, overlapping": {
+      "demo": true,
+      "initialRange": "summer",
+      "mode": "overlap"
+    },
+    "Quiet": {
+      "demo": true,
+      "showEvents": false,
+      "showOverview": false,
+      "height": 240
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "data",
+      "type": "array",
+      "description": "Rows of plain objects, one per point, in x order. Each row holds the x value under `xKey` and one number per series under its key. Missing or non-numeric values draw as 0."
+    },
+    {
+      "key": "xKey",
+      "type": "string",
+      "description": "Field holding each row's x value. Date objects give a time axis; strings or numbers a category axis.",
+      "default": "x"
+    },
+    {
+      "key": "yKey",
+      "type": "string",
+      "description": "Shortcut for one series: the field holding its value (label = the key). Ignored when `series` is given."
+    },
+    {
+      "key": "series",
+      "type": "array",
+      "description": "[{ key, label, tone }]: which fields to draw, bottom of the stack first. `tone` is a series slot 0–7 or a --ts-* token name (\"--ts-series-4\"); default is the slot by position. Up to 8; lines after the first are dashed so series differ by more than hue."
+    },
+    {
+      "key": "events",
+      "type": "array",
+      "description": "[{ x | index, endX | endIndex, title, note }]: flags under the x axis with a note on hover, focus or tap. `x` is matched against the rows' x values (Dates by time)."
+    },
+    {
+      "key": "title",
+      "type": "node",
+      "description": "Card title (also the chart's accessible name when a string)."
+    },
+    {
+      "key": "subtitle",
+      "type": "node",
+      "description": "Line under the title."
+    },
+    {
+      "key": "headline",
+      "type": "node | function",
+      "description": "Hero slot above the plot: a node, or ({ rows, from, to, fromIndex, toIndex }) => node for figures that follow the zoom window."
+    },
+    {
+      "key": "formatValue",
+      "type": "function",
+      "description": "(value, series) => string for tooltip, table and summary values. Default: Intl number in the Theme's locale, no unit."
+    },
+    {
+      "key": "formatAxis",
+      "type": "function",
+      "description": "(value) => string for y-axis ticks. Default: compact Intl number."
+    },
+    {
+      "key": "formatX",
+      "type": "function",
+      "description": "(x, { kind, sub, index }) => string for x labels; kind is \"month\", \"tick\" or \"full\" (tooltip, table). Default: Intl dates in the Theme's locale, other values as given."
+    },
+    {
+      "key": "xLabel",
+      "type": "string",
+      "description": "Header of the x column in the table view.",
+      "default": "\"Date\" or \"Category\""
+    },
+    {
+      "key": "totalLabel",
+      "type": "string",
+      "description": "Label of the stacked total in the tooltip and table.",
+      "default": "Total"
+    },
+    {
+      "key": "legendLabel",
+      "type": "string",
+      "description": "Accessible name of the legend.",
+      "default": "Series"
+    },
+    {
+      "key": "resetLabel",
+      "type": "string",
+      "description": "Text of the button that shows the whole range after zooming.",
+      "default": "Show all"
+    },
+    {
+      "key": "range",
+      "type": "[number, number]",
+      "description": "Controlled zoom window as [start, end] row indices. Pass with onRangeChange."
+    },
+    {
+      "key": "defaultRange",
+      "type": "[number, number]",
+      "description": "Uncontrolled starting window. Default: every row."
+    },
+    {
+      "key": "onRangeChange",
+      "type": "function",
+      "description": "([start, end]) => void while the brush, its handles, the arrow keys, double-click or the reset button move the window."
+    },
+    {
+      "key": "hiddenSeries",
+      "type": "string[]",
+      "description": "Controlled list of series keys switched off in the legend. Pass with onHiddenSeriesChange."
+    },
+    {
+      "key": "defaultHiddenSeries",
+      "type": "string[]",
+      "description": "Uncontrolled starting list of hidden series keys.",
+      "default": "[]"
+    },
+    {
+      "key": "onHiddenSeriesChange",
+      "type": "function",
+      "description": "(keys) => void when a legend item is toggled."
+    },
+    {
+      "key": "onModeChange",
+      "type": "function",
+      "description": "(\"stacked\" | \"overlap\") => void when the in-card switch is used. `mode` sets it from outside."
+    },
+    {
+      "key": "onPointClick",
+      "type": "function",
+      "description": "(row, index, event) => void on click, or Enter / Space with the plot focused, at the crosshair's point."
+    },
+    {
+      "key": "summary",
+      "type": "string",
+      "description": "One-line text alternative read by screen readers. Default: series, point count, range and the highest value, from your formatters."
+    },
+    {
+      "key": "loading",
+      "type": "boolean",
+      "description": "You are fetching: the plot shimmers (a placeholder area when there is no data yet) and is aria-busy.",
+      "default": false
+    },
+    {
+      "key": "loadingLabel",
+      "type": "string",
+      "description": "Text of the busy chip while loading.",
+      "default": "Loading"
+    },
+    {
+      "key": "error",
+      "type": "string | node",
+      "description": "Shown in the plot box instead of the chart, with a retry button when onRetry is given."
+    },
+    {
+      "key": "onRetry",
+      "type": "function",
+      "description": "() => void from the error form's Try again button."
+    },
+    {
+      "key": "emptyMessage",
+      "type": "string | node",
+      "description": "Shown in the plot box when there are no rows.",
+      "default": "No data to show"
+    },
+    {
+      "key": "dashes",
+      "type": "boolean",
+      "description": "Dash the lines of series after the first (and their legend keys). Default on; off in the sample.",
+      "default": true
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "The whole card inert: not focusable, dimmed, aria-disabled.",
+      "default": false
+    },
+    {
+      "key": "ariaLabel",
+      "type": "string",
+      "description": "Accessible name when there is no string title (the aria-label attribute works too)."
+    },
+    {
+      "key": "ref",
+      "type": "ref",
+      "description": "The card's <section> element."
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Show the sample year of household energy (titles, kWh formats, events, the self-powered headline). Your own props win over it.",
+      "default": false
+    }
+  ],
+  "example": "<AreaChart\n  data={weeks}            // [{ weekOf: Date, free: 120, pro: 40 }, …]\n  xKey=\"weekOf\"\n  series={[{ key: \"free\", label: \"Free\" }, { key: \"pro\", label: \"Pro\" }]}\n  title=\"Sign-ups by plan\"\n  formatValue={(v) => `${v} sign-ups`}\n  loading={isFetching}\n  error={error?.message}\n  onRetry={refetch}\n  onPointClick={(row) => openWeek(row.weekOf)}\n/>"
+}

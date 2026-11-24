@@ -1,0 +1,267 @@
+{
+  "name": "Split Button",
+  "slug": "split-button",
+  "export": "SplitButton",
+  "order": 14,
+  "kind": "components",
+  "category": "actions",
+  "subcategory": "buttons",
+  "platform": "web",
+  "level": "primitive",
+  "tier": "pro",
+  "hint": "Use the caret, then the arrow keys.",
+  "description": "The main action plus a caret that opens related actions in a menu that grows from the button's edge (and flips above it when there is no room below). Full keyboard menu: arrows, Home/End, a letter jumps, Escape returns focus to the caret, outside press closes. `fullWidth` fills a grid cell or a phone dock.",
+  "intents": [
+    "button with a dropdown of more options",
+    "publish or schedule",
+    "primary action with alternatives",
+    "save with more save options",
+    "snooze with a choice of times"
+  ],
+  "tags": [
+    "button",
+    "split",
+    "dropdown",
+    "menu",
+    "caret",
+    "options",
+    "publish",
+    "schedule"
+  ],
+  "usage": "Use when one action is the obvious default but close variants exist (publish / schedule / draft, snooze / snooze until). If the options are equally likely, use Dropdown Menu instead. Start with `label`, `onClick(event)` for the main half, and `items` (Dropdown Menu's plain objects: {id, label, icon, hint, disabled, danger}, with {separator:true} and {type:'label', label}) with `onSelect(id, item, index)`. With no items it is a plain button with no caret. `fullWidth` makes it fill its container (the main half takes the spare width, the caret keeps its size), so it sits beside a Button in a two-column grid at the same height with no CSS. `loading` is yours to set and clear: it shows a spinner in place, keeps the width and blocks both halves. Control the menu with `open` / `onOpenChange`. The ref and attributes such as `aria-keyshortcuts`, `name`, `value`, `form` and `data-*` go to the main <button>; `className` and `style` go to the root.",
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "active",
+    "open",
+    "disabled",
+    "loading"
+  ],
+  "controls": [
+    {
+      "group": "Content",
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "group": "Style",
+      "key": "variant",
+      "label": "Variant",
+      "type": "select",
+      "options": [
+        "primary",
+        "secondary"
+      ],
+      "default": "primary"
+    },
+    {
+      "group": "Style",
+      "key": "size",
+      "label": "Size",
+      "type": "select",
+      "options": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md"
+    },
+    {
+      "group": "Style",
+      "key": "fullWidth",
+      "label": "Full width",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Menu",
+      "key": "align",
+      "label": "Menu align",
+      "type": "select",
+      "options": [
+        "end",
+        "start"
+      ],
+      "default": "end"
+    },
+    {
+      "group": "Menu",
+      "key": "side",
+      "label": "Menu side",
+      "type": "select",
+      "options": [
+        "auto",
+        "bottom",
+        "top"
+      ],
+      "default": "auto"
+    },
+    {
+      "group": "State",
+      "key": "loading",
+      "label": "Loading",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "State",
+      "key": "disabled",
+      "label": "Disabled",
+      "type": "toggle",
+      "default": false
+    },
+    {
+      "group": "Demo",
+      "key": "demo",
+      "label": "Sample content",
+      "type": "toggle",
+      "default": false
+    }
+  ],
+  "presets": {
+    "Secondary": {
+      "variant": "secondary",
+      "label": "Export"
+    },
+    "Large": {
+      "size": "lg"
+    }
+  },
+  "demoProps": {
+    "demo": true
+  },
+  "dataProps": [
+    {
+      "key": "label",
+      "type": "string",
+      "description": "Text of the main half. Blank shows the neutral \"Continue\" (or the sample \"Publish\" with `demo`). Also the start of the menu's accessible name (\"<label> options\").",
+      "default": ""
+    },
+    {
+      "key": "onClick",
+      "type": "function",
+      "description": "(event) => void when the main half is pressed. Not called while `loading` or `disabled`; two clicks in the same tick call it once."
+    },
+    {
+      "key": "items",
+      "type": "array",
+      "description": "The caret's menu, as Dropdown Menu takes it: [{ id, label, icon (icon name or node), hint (or shortcut: short text at the row's end, hidden on touch), disabled, danger, onSelect }], plus { separator: true } and { type: 'label', label } for a group heading. No submenus or checkbox rows. Empty by default; with no items the caret is not rendered and the component is a plain button."
+    },
+    {
+      "key": "onSelect",
+      "type": "function",
+      "description": "(id, item, index) => void when a menu row is chosen; id falls back to the label, index is the row's position in your `items` array. The menu then closes and focus returns to the caret. Same first two arguments as Dropdown Menu."
+    },
+    {
+      "key": "icon",
+      "type": "string | node",
+      "description": "Leading icon in the main half: an icon name (sized to `size`) or your own node."
+    },
+    {
+      "key": "variant",
+      "type": "\"primary\" | \"secondary\"",
+      "description": "Emphasis, as on Button. Both halves share it.",
+      "default": "primary"
+    },
+    {
+      "key": "size",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "description": "Height 34 / 42 / 52px, the same as Button's sizes, so the two line up. Both halves grow to at least 44px on touch screens.",
+      "default": "md"
+    },
+    {
+      "key": "fullWidth",
+      "type": "boolean",
+      "description": "The root fills its container's width: the main half takes the spare width and the caret keeps its size. Use it in a grid cell or a phone dock; no CSS needed.",
+      "default": false
+    },
+    {
+      "key": "align",
+      "type": "\"end\" | \"start\"",
+      "description": "Which edge of the button the menu lines up with. Use \"end\" when the button sits at the right of its row or screen.",
+      "default": "end"
+    },
+    {
+      "key": "side",
+      "type": "\"auto\" | \"bottom\" | \"top\"",
+      "description": "Where the menu opens. \"auto\" opens below, or above when there is not room below and there is more above (a bottom dock on a phone).",
+      "default": "auto"
+    },
+    {
+      "key": "loading",
+      "type": "boolean",
+      "description": "You own it: set it when the action's async work starts and clear it when it ends. The label is replaced by a spinner in place (the width does not change), the main half does not fire or submit, the caret does not open, and an open menu closes.",
+      "default": false
+    },
+    {
+      "key": "disabled",
+      "type": "boolean",
+      "description": "Native disabled on both halves: not focusable, not clickable, dimmed.",
+      "default": false
+    },
+    {
+      "key": "type",
+      "type": "\"button\" | \"submit\" | \"reset\"",
+      "description": "Native type of the main half. Use \"submit\" inside a <form>; the caret is always type=\"button\" and never submits.",
+      "default": "button"
+    },
+    {
+      "key": "menuLabel",
+      "type": "string",
+      "description": "Accessible name of the caret (and of the menu when there is no label), for screen readers.",
+      "default": "More options"
+    },
+    {
+      "key": "open",
+      "type": "boolean",
+      "description": "Controlled open state of the menu. Opening it this way does not move focus; opening from the caret focuses the first row."
+    },
+    {
+      "key": "defaultOpen",
+      "type": "boolean",
+      "description": "Open on mount when uncontrolled.",
+      "default": false
+    },
+    {
+      "key": "onOpenChange",
+      "type": "function",
+      "description": "(open: boolean, reason) => void; reason is \"trigger\" (the caret), \"select\", \"escape\" (Escape or Tab) or \"outside\"."
+    },
+    {
+      "key": "demo",
+      "type": "boolean",
+      "description": "Fills in the gallery's sample label and items. Your own `label` and `items` win. Off by default; leave it off in real UI.",
+      "default": false
+    },
+    {
+      "key": "className",
+      "type": "string",
+      "description": "Added to the root (the element that holds both halves)."
+    },
+    {
+      "key": "style",
+      "type": "object",
+      "description": "Inline style on the root."
+    },
+    {
+      "key": "...rest",
+      "type": "attributes",
+      "description": "Any other attribute (aria-label, aria-describedby, aria-keyshortcuts, id, name, value, form, data-*, tabIndex) goes to the main <button>, as on Button."
+    },
+    {
+      "key": "ref",
+      "type": "ref",
+      "description": "Forwarded to the main <button>, so it can be focused (after an error, from a shortcut) or measured."
+    },
+    {
+      "key": "portal",
+      "type": "boolean | Element | ref",
+      "description": "Where the menu renders. true: through a portal into document.body, carrying the theme tokens found at the button, so an ancestor with overflow:hidden (a card, a table cell), transform or filter can't clip or move it; it follows the button, flips above it and caps its height when squeezed. false: in the button's own DOM (still placed against the viewport). An element or ref: portaled into that element instead.",
+      "default": true
+    }
+  ],
+  "example": "const SNOOZE = [\n  { id: \"later\", label: \"Later today, 16:00\", icon: \"clock\" },\n  { id: \"tomorrow\", label: \"Tomorrow, 09:00\", icon: \"sun\", hint: \"S\" },\n  { id: \"monday\", label: \"Monday, 09:00\", icon: \"calendar\" },\n];\n\n<SplitButton\n  label=\"Snooze\"\n  variant=\"secondary\"\n  items={SNOOZE}\n  onClick={() => snooze(\"tomorrow\")}\n  onSelect={(id) => snooze(id)}\n  aria-keyshortcuts=\"S\"\n/>\n\n{/* half of a phone dock, beside a Button: same height, each fills its cell */}\n<div style={{ display: \"grid\", gridTemplateColumns: \"1fr 1fr\", gap: 8 }}>\n  <Button label=\"Send back\" variant=\"secondary\" size=\"lg\" fullWidth onClick={openSendBack} />\n  <SplitButton label=\"Snooze\" variant=\"secondary\" size=\"lg\" fullWidth align=\"end\" items={SNOOZE} onClick={() => snooze(\"tomorrow\")} onSelect={(id) => snooze(id)} />\n</div>"
+}

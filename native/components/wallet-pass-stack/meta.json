@@ -1,0 +1,91 @@
+{
+  "name": "Wallet Pass Stack",
+  "slug": "wallet-pass-stack",
+  "export": "WalletPassStack",
+  "order": 68,
+  "kind": "components",
+  "category": "mobile",
+  "platform": "native",
+  "level": "composite",
+  "tier": "pro",
+  "hint": "Tap a pass: it pulls out and the rest shuffle into a pile. Hold and move on it to tilt the foil; drag it down to put it back.",
+  "description": "An Apple Wallet–style pass stack for React Native with five passes designed as their real kinds on generated artwork: a debit card, a boarding pass, a concert ticket, a gallery membership and a coffee loyalty card with stamps. At rest the passes are stacked with depth, each peeking below the last. Tap one and it lifts off the stack and rises to the top on a spring while the others slide down, staggered, into a tight pile at the bottom; its back half unfolds with details and a seeded QR code or barcode that opens full screen. Drag the open pass down and it follows your finger, dropping back into its slot past a threshold or with a flick, or springing back up. While you hold and move on it the card tilts toward your finger in 3D and a holographic sheen slides across its face. Pull the resting stack down and the cards fan apart on a rubber band. Every pass is a button with a full description and Done puts it back without the drag.",
+  "intents": [
+    "apple wallet card stack",
+    "boarding pass and tickets wallet screen",
+    "tap a card to expand it from a stack",
+    "react native stacked cards with drag to dismiss"
+  ],
+  "tags": [
+    "barcode",
+    "boarding pass",
+    "card stack",
+    "cards",
+    "drag to dismiss",
+    "expo",
+    "haptics",
+    "holographic",
+    "loyalty card",
+    "passes",
+    "qr code",
+    "react native",
+    "spring",
+    "stack",
+    "ticket",
+    "tilt",
+    "wallet"
+  ],
+  "usage": "Use for collections of cards people pull out one at a time (passes, tickets, payment methods, memberships). Keep each pass's most important field in the strip that peeks out of the stack, and always offer a Done button so dismissal never depends on the drag.",
+  "states": [
+    "default",
+    "open"
+  ],
+  "controls": [
+    {
+      "group": "Stack",
+      "key": "peek",
+      "label": "Peek height",
+      "type": "range",
+      "min": 40,
+      "max": 84,
+      "step": 2,
+      "default": 56
+    },
+    {
+      "group": "Stack",
+      "key": "passes",
+      "label": "Passes shown",
+      "type": "range",
+      "min": 3,
+      "max": 5,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "group": "Look",
+      "key": "depth",
+      "label": "Stack depth effect",
+      "type": "toggle",
+      "default": true
+    },
+    {
+      "group": "Look",
+      "key": "holo",
+      "label": "Holo sheen and tilt",
+      "type": "toggle",
+      "default": true
+    }
+  ],
+  "presets": {
+    "Tight stack": {
+      "peek": 44
+    },
+    "Three passes": {
+      "passes": 3
+    },
+    "Flat": {
+      "depth": false,
+      "holo": false
+    }
+  }
+}
